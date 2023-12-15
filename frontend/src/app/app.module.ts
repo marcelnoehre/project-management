@@ -10,6 +10,8 @@ import {HttpClient, HttpClientModule} from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
+import { SidenavComponent } from './components/sidenav/sidenav.component';
+import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 import { ReactiveFormsModule } from '@angular/forms';
@@ -23,6 +25,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
   declarations: [
     AppComponent,
     LoginComponent,
+    SidenavComponent,
+    ToolbarComponent,
     DashboardComponent
   ],
   imports: [

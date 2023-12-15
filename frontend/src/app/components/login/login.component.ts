@@ -43,8 +43,7 @@ export class LoginComponent implements OnInit {
 	}
 
 	public login(): void {
-    // TODO: validate
-    this.router.navigateByUrl('/');
+    throw new Error('Method not implemented!');
   }
 
 	public userValid(): boolean {

@@ -1,0 +1,22 @@
+.toolbar {
+	--toolbar-height: 3rem;
+	position: sticky;
+	top: 0;
+	z-index: 1000;
+}
+
+mat-toolbar {
+	background: linear-gradient(to top, rgb(79, 83, 88), rgb(56, 60, 65));
+	color: white;
+}
+
+mat-toolbar-row {
+	display: flex;
+	justify-content: space-between;
+}
+
+.toolbar-section {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}

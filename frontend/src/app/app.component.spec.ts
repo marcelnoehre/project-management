@@ -2,17 +2,19 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { SidenavComponent } from './components/sidenav/sidenav.component';
+import { AppModule } from './app.module';
 
 describe('AppComponent', () => {
-  let component: AppComponent;
+  	let component: AppComponent;
 	let fixture: ComponentFixture<AppComponent>;
 
-  beforeEach(() => {
+  	beforeEach(() => {
 		TestBed.configureTestingModule({
-			imports: [RouterTestingModule, TranslateModule.forRoot()],
+			imports: [RouterTestingModule, AppModule],
 			declarations: [AppComponent],
 			providers: [
-				{ provide: TranslateService, useClass: TranslateService }
+				{ provide: TranslateService, useClass: TranslateService },
 			]
 		});
 		fixture = TestBed.createComponent(AppComponent);
@@ -20,11 +22,11 @@ describe('AppComponent', () => {
 		fixture.detectChanges();
 	});
 
-  it('should create the app', () => {
-    expect(component).toBeTruthy();
-  });
+	it('should create the app', () => {
+		expect(component).toBeTruthy();
+	});
 
-  it(`should have as title 'frontend'`, () => {
-    expect(component.title).toEqual('frontend');
-  });
+	it(`should have as title 'frontend'`, () => {
+		expect(component.title).toEqual('frontend');
+	});
 });
