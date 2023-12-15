@@ -1,0 +1,51 @@
+:host {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+}
+
+.sidenav-center {
+	display: flex;
+	align-items: center;
+	padding-left: 1rem;
+}
+
+.mat-sidenav-container {
+	flex: 1 1 auto;
+}
+
+.mat-nav-list-caption {
+	text-transform: uppercase;
+}
+
+.mat-nav-list-icon {
+	margin-right: 0.5rem;
+	color: rgba(0, 0, 0, 0.87);
+}
+
+.hidden-text {
+	margin-left: 0.75rem;
+}
+
+.active-route {
+	width: calc(100% - 1rem);
+	margin: 0.5rem;
+	border-radius: 0.25rem;
+	background: #545556;
+	div {
+		transform: translateX(-0.5rem);
+		color: white;
+	}
+	mat-icon {
+		color: white;
+		background: #545556;
+		border-radius: 0.25rem;
+	}
+}
+
+mat-nav-list {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
