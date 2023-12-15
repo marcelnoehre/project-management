@@ -2,13 +2,17 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
+
+import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
+
+import { ReactiveFormsModule } from '@angular/forms';
+import { MaterialModule } from './material.module';
 
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
 	return new TranslateHttpLoader(http);
@@ -21,6 +25,10 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
   ],
   imports: [
     BrowserModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    ReactiveFormsModule,
+    MaterialModule,
     HttpClientModule,
 		TranslateModule.forRoot({
 			loader: {
@@ -28,9 +36,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
 				useFactory: HttpLoaderFactory,
 				deps: [HttpClient]
 			}
-		}),
-    AppRoutingModule,
-    BrowserAnimationsModule
+		})
   ],
   providers: [],
   bootstrap: [AppComponent]

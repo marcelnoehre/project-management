@@ -1,6 +1,10 @@
 {
     "LOGIN": {
+        "HEADER": "Webtechnologien",
         "USERNAME": "Nutzername",
-        "PASSWORD": "Passwort"
+        "PASSWORD": "Passwort",
+        "USERNAME_REQUIRED": "Benutzername ist ein Pflichtfeld",
+		"PASSWORD_REQUIRED": "Passwort ist ein Pflichtfeld",
+		"LOGIN": "Anmelden"
     }
 }

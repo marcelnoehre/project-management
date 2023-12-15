@@ -1,0 +1,40 @@
+.login-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+}
+
+.login-card {
+	width: 340px;
+	padding: 2.5rem;    
+}
+
+.login-card-header {
+	justify-content: center;
+	margin-bottom: 40px;
+}
+
+.submit-button {
+	width: 100%;
+	height: 50px;
+	display: flex;
+	margin: 10px auto auto;
+	font-size: 15px;
+}
+
+::-ms-reveal {
+	display: none;
+}
+
+.align-center {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+:host ::ng-deep .login-form-field {
+	width: 100%;
+	margin-bottom: 10px;
+	font-size: 15px;
+}

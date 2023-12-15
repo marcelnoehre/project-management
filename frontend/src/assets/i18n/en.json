@@ -1,6 +1,10 @@
 {
     "LOGIN": {
+        "HEADER": "webtechnologies",
         "USERNAME": "username",
-        "PASSWORD": "passwort"
+        "PASSWORD": "passwort",
+        "USERNAME_REQUIRED": "The username is required",
+		"PASSWORD_REQUIRED": "The password is required",
+		"LOGIN": "login"
     }
-} 
+}
