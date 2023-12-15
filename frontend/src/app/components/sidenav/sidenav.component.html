@@ -1,28 +1,28 @@
 <app-toolbar (sidenavClickEvent)="toggleSidebar()"></app-toolbar>
 	
 	<mat-sidenav-container class="h-100" autosize>
-	<mat-sidenav #sidenav *ngIf="isLoggedIn()" [autoFocus]="false" mode="side" disableClose="true" opened="true">
-		<mat-nav-list>
-			<div>
-				<div *ngFor="let item of appItems; index as i">
-                    <mat-list-item (click)="toggleSidebar(false)" class="p-1" [ngClass]="isActive(item.route)" [routerLink]="item.route">
-                        <div class="sidenav-center">
-                            <mat-icon class="mat-nav-list-icon m-0">{{item.icon}}</mat-icon>
-                            <span *ngIf="isExpanded" class="hidden-text">{{'SIDENAV.' + item.name|translate}}</span>
-                        </div>
-                    </mat-list-item>
+		<mat-sidenav #sidenav *ngIf="isLoggedIn()" [autoFocus]="false" mode="side" disableClose="true" opened="true">
+			<mat-nav-list>
+				<div>
+					<div *ngFor="let item of appItems; index as i">
+							<mat-list-item (click)="toggleSidebar(false)" class="p-1" [ngClass]="isActive(item.route)" [routerLink]="item.route">
+								<div class="sidenav-center">
+									<mat-icon class="mat-nav-list-icon m-0">{{item.icon}}</mat-icon>
+									<span *ngIf="isExpanded" class="hidden-text">{{'SIDENAV.' + item.name|translate}}</span>
+								</div>
+							</mat-list-item>
+						</div>
 				</div>
-			</div>
-			<div>
-				<mat-list-item (click)="logout()" class="p-1">
-					<div class="sidenav-center">
-						<mat-icon class="mat-nav-list-icon m-0">logout</mat-icon>
-						<span *ngIf="isExpanded" class="hidden-text">{{ 'SIDENAV.LOGOUT'|translate }}</span>
-					</div>
-				</mat-list-item>
-			</div>
-		</mat-nav-list>
-	</mat-sidenav>
+				<div>
+					<mat-list-item (click)="logout()" class="p-1">
+						<div class="sidenav-center">
+							<mat-icon class="mat-nav-list-icon m-0">logout</mat-icon>
+							<span *ngIf="isExpanded" class="hidden-text">{{ 'SIDENAV.LOGOUT'|translate }}</span>
+						</div>
+					</mat-list-item>
+				</div>
+			</mat-nav-list>
+		</mat-sidenav>
 	<mat-sidenav-content>
 		<router-outlet></router-outlet>
 	</mat-sidenav-content>
