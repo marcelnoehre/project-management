@@ -2,10 +2,20 @@
     "LOGIN": {
         "HEADER": "webtechnologies",
         "USERNAME": "username",
-        "PASSWORD": "passwort",
-        "USERNAME_REQUIRED": "The username is required",
-		"PASSWORD_REQUIRED": "The password is required",
+        "PASSWORD": "password",
+        "USERNAME_REQUIRED": "The username is required!",
+		"PASSWORD_REQUIRED": "The password is required!",
 		"LOGIN": "login"
+    },
+    "REGISTRATION": {
+        "HEADER": "Create account",
+        "USERNAME": "username",
+        "USERNAME_REQUIRED": "The username is required!",
+        "PASSWORD": "password",
+        "PASSWORD_REQUIRED": "The password is required!",
+        "PASSWORD_REPEAT": "Repeat password",
+        "PASSWORD_REPEAT_REQUIRED": "The password repetition is required!",
+        "REGISTER": "register"
     },
     "NAV": {
         "DASHBOARD": "Dashboard",

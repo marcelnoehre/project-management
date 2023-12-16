@@ -1,0 +1,94 @@
+<div class="registration-container">
+	<mat-card appearance="outlined" class="registration-card">
+		<mat-card-header class="registration-card-header">
+            <h1>{{ 'REGISTRATION.HEADER' | translate }}</h1>
+        </mat-card-header>
+		<mat-card-content class="p-0">
+			<form [formGroup]="registrationForm">
+				<div>
+					<mat-form-field appearance="outline" class="registration-form-field" MatInput>
+						<mat-label> {{ 'REGISTRATION.USERNAME' | translate }} </mat-label>
+						<input #inputUser
+							id="username-input"
+                            name="username"
+							formControlName="usernameFormControl"
+							placeholder="{{'REGISTRATION.USERNAME'|translate}}"
+							matInput
+							required
+						/>
+						<mat-icon matPrefix> person </mat-icon>
+						<mat-error *ngIf="!userValid()"> {{ 'REGISTRATION.USERNAME_REQUIRED' | translate }} </mat-error>
+					</mat-form-field>
+				</div>
+				<div>
+					<mat-form-field appearance="outline" class="registration-form-field">
+						<mat-label> {{ 'REGISTRATION.PASSWORD' | translate }}</mat-label>
+						<input
+							id="password-input"
+							name="password"
+							formControlName="passwordFormControl"
+							placeholder="{{'REGISTRATION.PASSWORD'|translate}}"
+							[type]="hidePassword ? 'password' : 'text'"
+							matInput
+							required
+						/>
+						<mat-icon matPrefix> lock </mat-icon>
+						<button
+							id="hide-password-button"
+							type="button"
+							[attr.aria-label]="'Hide password'"
+							[attr.aria-pressed]="hidePassword"
+							(click)="hidePassword = !hidePassword"
+							matSuffix
+							mat-icon-button
+						>
+							<mat-icon> {{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+						</button>
+						<mat-error *ngIf="!passwordValid()"> {{ 'REGISTRATION.PASSWORD_REQUIRED' | translate }} </mat-error>
+					</mat-form-field>
+				</div>
+                <div>
+					<mat-form-field appearance="outline" class="registration-form-field">
+						<mat-label> {{ 'REGISTRATION.PASSWORD_REPEAT' | translate }}</mat-label>
+						<input
+							id="password-repeat-input"
+							name="password-repeat"
+							formControlName="passwordRepeatFormControl"
+							placeholder="{{'REGISTRATION.PASSWORD_REPEAT'|translate}}"
+							[type]="hidePasswordRepeat ? 'password' : 'text'"
+							matInput
+							required
+						/>
+						<mat-icon matPrefix> lock </mat-icon>
+						<button
+							id="hide-password-repeat-button"
+							type="button"
+							[attr.aria-label]="'Hide password'"
+							[attr.aria-pressed]="hidePasswordRepeat"
+							(click)="hidePasswordRepeat = !hidePasswordRepeat"
+							matSuffix
+							mat-icon-button
+						>
+							<mat-icon> {{ hidePasswordRepeat ? 'visibility_off' : 'visibility' }}</mat-icon>
+						</button>
+						<mat-error *ngIf="!passwordRepeatValid()"> {{ 'REGISTRATION.PASSWORD_REPEAT_REQUIRED' | translate }} </mat-error>
+					</mat-form-field>
+				</div>
+				<div>
+					<button #submitRegistration
+						id="registration-button"
+						type="submit"
+						class="submit-button align-center"
+						color="primary"
+						[disabled]="!registrationForm.valid"
+						(click)="register()"
+						mat-raised-button
+					>
+						<mat-icon> login </mat-icon>
+						{{ 'REGISTRATION.REGISTER' | translate }}
+					</button>
+				</div>
+			</form>
+		</mat-card-content>
+	</mat-card>
+</div>

@@ -7,6 +7,16 @@
 		"PASSWORD_REQUIRED": "Passwort ist ein Pflichtfeld",
 		"LOGIN": "Anmelden"
     },
+    "REGISTRATION": {
+        "HEADER": "Account erstellen",
+        "USERNAME": "Nutzername",
+        "USERNAME_REQUIRED": "Der Nutzername ist ein Pflichtfeld1",
+        "PASSWORD": "Passwort",
+        "PASSWORD_REQUIRED": "Das Passwort ist ein Pflichtfeld!",
+        "PASSWORD_REPEAT": "Passwort wiederholen",
+        "PASSWORD_REPEAT_REQUIRED": "Wiederholung des Passworts ist ein Pflichtpfeld!",
+        "REGISTER": "Registrieren"
+    },
     "NAV": {
         "DASHBOARD": "Startseite",
         "LOGOUT": "Abmelden"
