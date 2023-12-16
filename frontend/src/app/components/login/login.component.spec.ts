@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { LoginComponent } from './login.component';
 import { TranslateService } from '@ngx-translate/core';
 import { AppModule } from 'src/app/app.module';
-import { ApiService } from 'src/app/services/api.service';
+import { ApiService } from 'src/app/services/api/api.service';
 
 class ApiMock { }
 

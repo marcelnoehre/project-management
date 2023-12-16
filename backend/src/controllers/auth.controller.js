@@ -5,6 +5,7 @@ async function login(req, res, next) {
                 token: 1634113024,
                 username: "mock",
                 fullName: "Mock User",
+                role: "ADMIN",
                 language: "de-DE",
                 isLoggedIn: true
         });
