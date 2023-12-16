@@ -16,7 +16,7 @@ import { StorageService } from 'src/app/services/storage.service';
 })
 export class SidenavComponent implements OnInit {
 	@ViewChild('sidenav', { static: false }) sidenav!: MatSidenav;
-	  
+
 	public activeRoute!: string;
 	public isExpanded = false;
 
@@ -67,7 +67,7 @@ export class SidenavComponent implements OnInit {
 	}
 
 	public logout(): void {
-    	this.storage.deleteSessionEntry('user');
+		this.storage.deleteSessionEntry('user');
 		this.router.navigateByUrl('/login')
 	}
 }
