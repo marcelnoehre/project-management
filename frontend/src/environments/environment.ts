@@ -1,4 +1,4 @@
 export const environment = {
-	selectedApi: 'db',
+	selectedApi: 'mock',
 	apiBasePath: 'http://localhost:3000/'
 };

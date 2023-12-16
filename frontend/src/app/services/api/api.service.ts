@@ -5,6 +5,7 @@ import { MockService } from './mock.service';
 import { Adapter } from 'src/app/enums/adapter.enum';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
+import { User } from 'src/app/interfaces/data/user';
 
 @Injectable({
   providedIn: 'root'
@@ -35,7 +36,7 @@ export class ApiService {
 	}
 
   	// ### AUTH ###
-	public login(username: string, password: string): Observable<any> {
+	public login(username: string, password: string): Observable<User> {
 		return this.adapter.login(username, password);
 	}
 }
