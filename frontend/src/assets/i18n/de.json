@@ -6,5 +6,9 @@
         "USERNAME_REQUIRED": "Benutzername ist ein Pflichtfeld",
 		"PASSWORD_REQUIRED": "Passwort ist ein Pflichtfeld",
 		"LOGIN": "Anmelden"
+    },
+    "NAV": {
+        "DASHBOARD": "Startseite",
+        "LOGOUT": "Abmelden"
     }
 }

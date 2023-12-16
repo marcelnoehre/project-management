@@ -12,6 +12,7 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
+import { ToolbarProfileMenuComponent } from './components/toolbar/toolbar-profile-menu/toolbar-profile-menu.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 import { ReactiveFormsModule } from '@angular/forms';
@@ -27,6 +28,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     LoginComponent,
     SidenavComponent,
     ToolbarComponent,
+    ToolbarProfileMenuComponent,
     DashboardComponent
   ],
   imports: [

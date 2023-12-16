@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { EventService } from './services/event.service';
 
 @Component({
   selector: 'app-root',
@@ -10,9 +11,15 @@ export class AppComponent {
   title = 'frontend';
   
   constructor(
-    private _translate: TranslateService
+    private _translate: TranslateService,
+    private _event: EventService
   ) {
     _translate.setDefaultLang('en');
     _translate.use(_translate.getBrowserLang() || 'en');
+  }
+
+  @HostListener('document:click', ['$event'])
+  documentClick(event: any): void {
+    this._event.documentClick$.next(event.target);
   }
 }

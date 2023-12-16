@@ -2,7 +2,14 @@
 	<mat-toolbar>
 		<mat-toolbar-row>
 			<div class="toolbar-section">
-				
+				<div class="col-auto">
+					<button mat-icon-button (click)="toggleSidenav()">
+						<mat-icon>menu</mat-icon>
+					</button>
+				</div>
+			</div>
+			<div class="toolbar-section">
+				<app-toolbar-profile-menu></app-toolbar-profile-menu>
 			</div>
 		</mat-toolbar-row>
 	</mat-toolbar>

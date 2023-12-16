@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { StorageService } from '../../services/storage.service';
+import { ApiService } from 'src/app/services/api.service';
 
 @Component({
 	selector: 'app-login',
@@ -19,6 +20,7 @@ export class LoginComponent implements OnInit {
 	constructor(
 		private storage: StorageService,
 		private router: Router,
+		private api: ApiService
 	) {
 		this.createForm();
 	}
@@ -36,15 +38,20 @@ export class LoginComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
-    if (this.user?.['isLoggedIn']) {
-      this.router.navigateByUrl('/');
-    }
+		if (this.user?.['isLoggedIn']) {
+			this.router.navigateByUrl('/');
+		}
 		setTimeout(() => this.inputUser.nativeElement.focus());
 	}
 
 	public login(): void {
-    throw new Error('Method not implemented!');
-  }
+		this.api.login(this.username, this.password).subscribe((user) => {
+			if (user?.isLoggedIn) {
+				this.storage.setSessionEntry('user', user);
+				this.router.navigateByUrl('/');
+			}
+		});
+	}
 
 	public userValid(): boolean {
 		return this.loginForm.controls['usernameFormControl'].valid;

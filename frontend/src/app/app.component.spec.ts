@@ -1,15 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { SidenavComponent } from './components/sidenav/sidenav.component';
+import { TranslateService } from '@ngx-translate/core';
 import { AppModule } from './app.module';
 
 describe('AppComponent', () => {
-  	let component: AppComponent;
+	let component: AppComponent;
 	let fixture: ComponentFixture<AppComponent>;
 
-  	beforeEach(() => {
+	beforeEach(() => {
 		TestBed.configureTestingModule({
 			imports: [RouterTestingModule, AppModule],
 			declarations: [AppComponent],
