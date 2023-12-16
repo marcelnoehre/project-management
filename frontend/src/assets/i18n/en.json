@@ -5,7 +5,10 @@
         "PASSWORD": "password",
         "USERNAME_REQUIRED": "The username is required!",
 		"PASSWORD_REQUIRED": "The password is required!",
-		"LOGIN": "login"
+		"LOGIN": "login",
+        "FORGOT_PASSWORD": "Forgotten your password?",
+        "NOT_REGISTERED": "No account yet? ",
+        "REGISTRATION": "Register."
     },
     "REGISTRATION": {
         "HEADER": "Create account",
@@ -15,7 +18,8 @@
         "PASSWORD_REQUIRED": "The password is required!",
         "PASSWORD_REPEAT": "Repeat password",
         "PASSWORD_REPEAT_REQUIRED": "The password repetition is required!",
-        "REGISTER": "register"
+        "REGISTER": "register",
+        "BACK": "Back to login"
     },
     "NAV": {
         "DASHBOARD": "Dashboard",

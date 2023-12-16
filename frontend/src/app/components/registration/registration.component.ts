@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { MatButton } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { StorageService } from 'src/app/services/storage.service';
 
@@ -9,6 +10,9 @@ import { StorageService } from 'src/app/services/storage.service';
   styleUrls: ['./registration.component.scss']
 })
 export class RegistrationComponent {
+  @ViewChild('inputUser') inputUser!: ElementRef;
+  @ViewChild('submitRegistration') submitLogin!: MatButton;
+
   hidePassword = true;
   hidePasswordRepeat = true;
   registrationForm!: FormGroup;
@@ -16,10 +20,15 @@ export class RegistrationComponent {
   constructor(
     private router: Router,
     private _storage: StorageService
-    ) { }
+    ) {
+      this.createForm();
+    }
 
   ngOnInit(): void {
-    this.createForm();
+    if (this.user?.['isLoggedIn']) {
+			this.router.navigateByUrl('/');
+		}
+		setTimeout(() => this.inputUser.nativeElement.focus());
   }
 
   private createForm(): void {
@@ -32,6 +41,22 @@ export class RegistrationComponent {
       {}
     );
   }
+
+  get user(): Record<string, unknown> {
+		return this._storage.getSessionEntry('user');
+	}
+
+	get username(): string {
+		return this.registrationForm.get('usernameFormControl')?.value;
+	}
+
+	get password(): string {
+		return this.registrationForm.get('passwordFormControl')?.value;
+	}
+
+  get passwordRepeat(): string {
+		return this.registrationForm.get('passwordRepeatFormControl')?.value;
+	}
 
   public userValid(): boolean {
 		return this.registrationForm.controls['usernameFormControl'].valid;
@@ -49,4 +74,7 @@ export class RegistrationComponent {
     throw new Error('Method not implemented!');
   }
 
+  login() {
+    this.router.navigateByUrl('/login');
+  }
 }
