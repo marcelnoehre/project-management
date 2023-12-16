@@ -1,6 +1,6 @@
 async function login(req, res, next) {
     try {
-        if(req.query.username === 'mock' && req.query.password === 'mock') {
+        if(req.body.username === 'mock' && req.body.password === 'mock') {
             res.json({
                 token: 1634113024,
                 username: "mock",
