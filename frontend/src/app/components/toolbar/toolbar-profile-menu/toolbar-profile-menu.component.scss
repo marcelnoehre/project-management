@@ -1,0 +1,16 @@
+.dropdown-menu-button {
+	height: 100%;
+	width: 100%;
+	font-size: 1rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.mat-mdc-button {
+	flex-direction: row-reverse;
+	& > .mat-icon {
+		display: inline-flex;
+		align-items: center;
+	}
+}

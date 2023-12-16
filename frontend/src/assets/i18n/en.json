@@ -7,7 +7,7 @@
 		"PASSWORD_REQUIRED": "The password is required",
 		"LOGIN": "login"
     },
-    "SIDENAV": {
+    "NAV": {
         "DASHBOARD": "Dashboard",
         "LOGOUT": "Logout"
     }

@@ -7,7 +7,7 @@
 		"PASSWORD_REQUIRED": "Passwort ist ein Pflichtfeld",
 		"LOGIN": "Anmelden"
     },
-    "SIDENAV": {
+    "NAV": {
         "DASHBOARD": "Startseite",
         "LOGOUT": "Abmelden"
     }

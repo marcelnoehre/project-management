@@ -1,0 +1,11 @@
+<button mat-button class="dropdown-menu-button" [matMenuTriggerFor]="menu">
+	<span>{{ fullName }}</span>
+	<mat-icon class="header-profile-menu-mat-icon" [inline]="true">arrow_drop_down</mat-icon>
+</button>
+
+<mat-menu #menu="matMenu" [overlapTrigger]="false">
+	<button (click)="logout()" mat-menu-item>
+		<mat-icon>logout</mat-icon>
+		{{ 'NAV.LOGOUT' | translate }}
+	</button>
+</mat-menu>

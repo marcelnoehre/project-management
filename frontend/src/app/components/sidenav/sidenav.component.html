@@ -8,7 +8,7 @@
 							<mat-list-item (click)="toggleSidebar(false)" class="p-1" [ngClass]="isActive(item.route)" [routerLink]="item.route">
 								<div class="sidenav-center">
 									<mat-icon class="mat-nav-list-icon m-0">{{item.icon}}</mat-icon>
-									<span *ngIf="isExpanded" class="hidden-text">{{'SIDENAV.' + item.name|translate}}</span>
+									<span *ngIf="isExpanded" class="hidden-text">{{'NAV.' + item.name|translate}}</span>
 								</div>
 							</mat-list-item>
 						</div>
@@ -17,7 +17,7 @@
 					<mat-list-item (click)="logout()" class="p-1">
 						<div class="sidenav-center">
 							<mat-icon class="mat-nav-list-icon m-0">logout</mat-icon>
-							<span *ngIf="isExpanded" class="hidden-text">{{ 'SIDENAV.LOGOUT'|translate }}</span>
+							<span *ngIf="isExpanded" class="hidden-text">{{ 'NAV.LOGOUT'|translate }}</span>
 						</div>
 					</mat-list-item>
 				</div>
