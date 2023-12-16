@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { StorageService } from 'src/app/services/storage.service';
 
 @Component({
@@ -8,6 +7,7 @@ import { StorageService } from 'src/app/services/storage.service';
   styleUrls: ['./toolbar.component.scss']
 })
 export class ToolbarComponent {
+	@Output() sidenavClickEvent = new EventEmitter<void>();
 
 	constructor(
 		private storage: StorageService
@@ -20,5 +20,9 @@ export class ToolbarComponent {
 
 	private getUser(): any {
 		return this.storage.getSessionEntry('user');
+	}
+
+	public toggleSidenav(): void {
+		this.sidenavClickEvent.emit();
 	}
 }

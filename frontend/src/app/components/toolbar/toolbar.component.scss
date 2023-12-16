@@ -1,11 +1,11 @@
 .toolbar {
-	--toolbar-height: 3rem;
 	position: sticky;
 	top: 0;
 	z-index: 1000;
 }
 
 mat-toolbar {
+	height: 3rem;
 	background: linear-gradient(to top, rgb(79, 83, 88), rgb(56, 60, 65));
 	color: white;
 }

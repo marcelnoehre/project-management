@@ -6,5 +6,9 @@
         "USERNAME_REQUIRED": "The username is required",
 		"PASSWORD_REQUIRED": "The password is required",
 		"LOGIN": "login"
+    },
+    "SIDENAV": {
+        "DASHBOARD": "Dashboard",
+        "LOGOUT": "Logout"
     }
 }
