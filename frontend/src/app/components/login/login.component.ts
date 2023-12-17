@@ -25,6 +25,23 @@ export class LoginComponent implements OnInit {
 		this.createForm();
 	}
 
+	ngOnInit(): void {
+		if (this.user?.['isLoggedIn']) {
+			this.router.navigateByUrl('/');
+		}
+		setTimeout(() => this.inputUser.nativeElement.focus());
+	}
+
+	private createForm(): void {
+		this.loginForm = new FormGroup(
+			{
+				usernameFormControl: new FormControl('', { validators: [Validators.required] }),
+				passwordFormControl: new FormControl('', { validators: [Validators.required] })
+			},
+			{}
+		);
+	}
+
 	get user(): Record<string, unknown> {
 		return this.storage.getSessionEntry('user');
 	}
@@ -35,13 +52,6 @@ export class LoginComponent implements OnInit {
 
 	get password(): string {
 		return this.loginForm.get('passwordFormControl')?.value;
-	}
-
-	ngOnInit(): void {
-		if (this.user?.['isLoggedIn']) {
-			this.router.navigateByUrl('/');
-		}
-		setTimeout(() => this.inputUser.nativeElement.focus());
 	}
 
 	public login(): void {
@@ -61,13 +71,11 @@ export class LoginComponent implements OnInit {
 		return this.loginForm.controls['passwordFormControl'].valid;
 	}
 
-	private createForm(): void {
-		this.loginForm = new FormGroup(
-			{
-				usernameFormControl: new FormControl('', { validators: [Validators.required] }),
-				passwordFormControl: new FormControl('', { validators: [Validators.required] })
-			},
-			{}
-		);
+	public forgotPassword(): void {
+		throw new Error('Method not implemented!');
+	}
+
+	public registration(): void {
+		this.router.navigate(['/registration']);
 	}
 }

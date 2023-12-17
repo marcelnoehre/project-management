@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { EventService } from './services/event.service';
 

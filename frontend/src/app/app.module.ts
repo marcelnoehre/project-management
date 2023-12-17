@@ -10,6 +10,7 @@ import {HttpClient, HttpClientModule} from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
+import { RegistrationComponent } from './components/registration/registration.component';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { ToolbarProfileMenuComponent } from './components/toolbar/toolbar-profile-menu/toolbar-profile-menu.component';
@@ -26,6 +27,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
   declarations: [
     AppComponent,
     LoginComponent,
+    RegistrationComponent,
     SidenavComponent,
     ToolbarComponent,
     ToolbarProfileMenuComponent,

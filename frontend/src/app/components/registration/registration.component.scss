@@ -1,16 +1,16 @@
-.login-container {
+.registration-container {
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	height: 100%;
 }
 
-.login-card {
+.registration-card {
 	width: 340px;
 	padding: 2.5rem;    
 }
 
-.login-card-header {
+.registration-card-header {
 	justify-content: center;
 	margin-bottom: 40px;
 	color: #4054b4;
@@ -38,7 +38,7 @@
 	align-items: center;
 }
 
-:host ::ng-deep .login-form-field {
+:host ::ng-deep .registration-form-field {
 	width: 100%;
 	margin-bottom: 10px;
 	font-size: 15px;
@@ -46,10 +46,6 @@
 
 mat-card-footer {
     text-align: center;
-    div {
-        display: flex;
-        justify-content: center;
-    }
     .clickable {
         color: #4054b4;
     }

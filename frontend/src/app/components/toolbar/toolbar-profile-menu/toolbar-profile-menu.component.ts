@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { MatMenu } from '@angular/material/menu';
 import { Router } from '@angular/router';
 import { EventService } from 'src/app/services/event.service';

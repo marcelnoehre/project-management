@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { NavigationEnd, Router, Event } from '@angular/router';
 import { Subscription, filter } from 'rxjs';
@@ -14,7 +14,7 @@ import { StorageService } from 'src/app/services/storage.service';
   templateUrl: './sidenav.component.html',
   styleUrls: ['./sidenav.component.scss']
 })
-export class SidenavComponent implements OnInit {
+export class SidenavComponent implements OnInit, OnDestroy {
 	@ViewChild('sidenav', { static: false }) sidenav!: MatSidenav;
 
 	public activeRoute!: string;
@@ -64,6 +64,10 @@ export class SidenavComponent implements OnInit {
 
 	toggleSidebar(newState?: boolean) {
 		this.isExpanded = newState !== undefined ? newState : !this.isExpanded;
+	}
+
+	showBackground() {
+		return this.activeRoute === '/login' || this.activeRoute === '/registration';
 	}
 
 	public logout(): void {

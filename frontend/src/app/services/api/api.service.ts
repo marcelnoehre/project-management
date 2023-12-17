@@ -21,7 +21,7 @@ export class ApiService {
     this.resolveAdapter();
   }
 
-  	private resolveAdapter() {
+	private resolveAdapter() {
 		switch (this.chosenAdapter) {
 			case Adapter.db:
 				this.adapter = this.db;
@@ -35,7 +35,7 @@ export class ApiService {
 		}
 	}
 
-  	// ### AUTH ###
+	// ### AUTH ###
 	public login(username: string, password: string): Observable<User> {
 		return this.adapter.login(username, password);
 	}
