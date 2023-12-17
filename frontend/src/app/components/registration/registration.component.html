@@ -91,7 +91,7 @@
 			</form>
 		</mat-card-content>
 		<mat-card-footer class="pt-2">
-            <div class="clickable" (click)="login()">{{'REGISTRATION.BACK'|translate}}</div>
+            <div class="clickable" (click)="login()" (keyup.enter)="login()" tabindex="0">{{'REGISTRATION.BACK'|translate}}</div>
         </mat-card-footer>
 	</mat-card>
 </div>

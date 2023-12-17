@@ -72,7 +72,7 @@ export class LoginComponent implements OnInit {
 	}
 
 	public forgotPassword(): void {
-
+		throw new Error('Method not implemented!');
 	}
 
 	public registration(): void {

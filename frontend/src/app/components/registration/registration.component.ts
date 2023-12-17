@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { Router } from '@angular/router';
@@ -9,7 +9,7 @@ import { StorageService } from 'src/app/services/storage.service';
   templateUrl: './registration.component.html',
   styleUrls: ['./registration.component.scss']
 })
-export class RegistrationComponent {
+export class RegistrationComponent implements OnInit {
   @ViewChild('inputUser') inputUser!: ElementRef;
   @ViewChild('submitRegistration') submitLogin!: MatButton;
 

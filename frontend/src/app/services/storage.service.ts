@@ -5,7 +5,7 @@ import { Injectable } from "@angular/core";
 })
 export class StorageService {
 	public getLocalEntry(key: string): any {
-		return JSON.parse(localStorage.getItem(key)!);
+		return JSON.parse(localStorage.getItem(key) || '');
 	}
 
 	public setLocalEntry(key: string, data: unknown): void {
@@ -25,7 +25,7 @@ export class StorageService {
 	}
 
 	public getSessionEntry(key: string): any {
-		return JSON.parse(sessionStorage.getItem(key)!);
+		return JSON.parse(sessionStorage.getItem(key)  || '');
 	}
 
 	public setSessionEntry(key: string, data: unknown): void {
