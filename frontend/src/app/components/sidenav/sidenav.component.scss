@@ -50,3 +50,33 @@ mat-nav-list {
 	flex-direction: column;
 	justify-content: space-between;
 }
+
+.bg {
+    position: fixed;
+    z-index: -1;
+    top: 0;
+    bottom: 0;
+    left: -50%;
+    right: -50%;
+    opacity: 0.5;
+    animation: slide 3s ease-in-out infinite alternate;
+    background-image: linear-gradient(-60deg, #4054b4 50%, lightblue 50%);
+}
+
+.bg2 {
+    animation-direction: alternate-reverse;
+    animation-duration: 4s;
+}
+
+.bg3 {
+    animation-duration: 5s;
+}
+
+@keyframes slide {
+    0% {
+        transform: translateX(-25%);
+    }
+    100% {
+        transform: translateX(25%);
+    }
+}

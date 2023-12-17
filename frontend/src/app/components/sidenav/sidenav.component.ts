@@ -66,6 +66,10 @@ export class SidenavComponent implements OnInit {
 		this.isExpanded = newState !== undefined ? newState : !this.isExpanded;
 	}
 
+	showBackground() {
+		return this.activeRoute === '/login' || this.activeRoute === '/registration';
+	}
+
 	public logout(): void {
 		this.storage.deleteSessionEntry('user');
 		this.router.navigateByUrl('/login')
