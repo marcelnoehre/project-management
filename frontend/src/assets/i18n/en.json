@@ -1,4 +1,7 @@
 {
+    "APP": {
+        "OK": "OK"
+    },
     "LOGIN": {
         "HEADER": "webtechnologies",
         "USERNAME": "username",

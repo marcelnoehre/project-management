@@ -4,6 +4,7 @@ import { MatButton } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { StorageService } from '../../services/storage.service';
 import { ApiService } from 'src/app/services/api/api.service';
+import { SnackbarService } from 'src/app/services/snackbar.service';
 
 @Component({
 	selector: 'app-login',
@@ -18,6 +19,7 @@ export class LoginComponent implements OnInit {
 	public hidePassword = true;
 
 	constructor(
+		private snackbar: SnackbarService,
 		private storage: StorageService,
 		private router: Router,
 		private api: ApiService
@@ -55,12 +57,17 @@ export class LoginComponent implements OnInit {
 	}
 
 	public login(): void {
-		this.api.login(this.username, this.password).subscribe((user) => {
-			if (user?.isLoggedIn) {
+		this.api.login(this.username, this.password).subscribe(
+			(user) => {
+			  if (user?.isLoggedIn) {
 				this.storage.setSessionEntry('user', user);
 				this.router.navigateByUrl('/');
+			  }
+			},
+			(error) => {
+			  this.snackbar.open(error.error.message);
 			}
-		});
+		  );
 	}
 
 	public userValid(): boolean {
