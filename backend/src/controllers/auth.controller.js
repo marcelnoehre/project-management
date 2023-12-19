@@ -10,7 +10,7 @@ async function login(req, res, next) {
                 isLoggedIn: true
         });
         } else {
-            res.status(401).send({ error: "Invalid credentials!" });
+            res.status(401).send({message: "Invalid credentials!"});
         }
     } catch (err) {
         next(err);
