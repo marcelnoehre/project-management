@@ -3,6 +3,7 @@ import { AdapterService } from './adapter.service';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { User } from 'src/app/interfaces/data/user';
+import { SnackbarService } from '../snackbar.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,8 @@ import { User } from 'src/app/interfaces/data/user';
 export class MockService extends AdapterService {
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private snackbar: SnackbarService
   ) {
     super();
   }
@@ -24,7 +26,8 @@ export class MockService extends AdapterService {
     if (this.availableMockData.validUsers.includes(username) && password === '1234') {
 			return this.http.get<User>(`assets/mock-data/auth/login/${username}.json`);
 		} else {
-			throw new Error('Wrong credentials');
+      this.snackbar.open('Wrong credentials!');
+			throw new Error('Wrong credentials!');
 		}
   }
 }
