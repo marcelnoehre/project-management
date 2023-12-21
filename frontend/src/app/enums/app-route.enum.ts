@@ -1,3 +1,4 @@
 export enum AppRoute {
-    Dashboard = '/'
+    Dashboard = '/',
+    CreateTask = '/task/create'
 }

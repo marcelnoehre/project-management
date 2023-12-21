@@ -26,6 +26,7 @@
     },
     "NAV": {
         "DASHBOARD": "Startseite",
-        "LOGOUT": "Abmelden"
+        "LOGOUT": "Abmelden",
+        "CREATE_TASK": "Aufgabe erstellen"
     }
 }

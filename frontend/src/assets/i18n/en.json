@@ -26,6 +26,7 @@
     },
     "NAV": {
         "DASHBOARD": "Dashboard",
-        "LOGOUT": "Logout"
+        "LOGOUT": "Logout",
+        "CREATE_TASK": "Create task"
     }
 }
