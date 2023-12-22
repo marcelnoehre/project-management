@@ -22,7 +22,7 @@ export class DbService extends AdapterService {
 		return this.http.post<any>(this.basePath + this.auth + 'login', {username: username, password: password});
 	}
 
-  // ### TASK ###
+  // ### TASKS ###
   public getTaskList(): Observable<Task[]> {
     throw new Error('Method not implemented!');
   }

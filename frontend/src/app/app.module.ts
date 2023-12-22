@@ -19,6 +19,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from './modules/material.module';
 import { CreateTaskComponent } from './components/create-task/create-task.component';
+import { KanbanBoardComponent } from './components/kanban-board/kanban-board.component';
 
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
 	return new TranslateHttpLoader(http);
@@ -33,7 +34,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     ToolbarComponent,
     ToolbarProfileMenuComponent,
     DashboardComponent,
-    CreateTaskComponent
+    CreateTaskComponent,
+    KanbanBoardComponent
   ],
   imports: [
     BrowserModule,

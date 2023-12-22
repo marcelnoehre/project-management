@@ -11,7 +11,7 @@ export abstract class AdapterService {
   // ### AUTH ###
   public abstract login(username: string, password: string): Observable<User>;
 
-  // ### TASK ###
+  // ### TASKS ###
   public abstract getTaskList(): Observable<Task[]>;
 
 }

@@ -41,7 +41,7 @@ export class ApiService {
 		return this.adapter.login(username, password);
 	}
 
-	// ### TASK ###
+	// ### TASKS ###
 	public getTaskList(): Observable<Task[]> {
 		return this.adapter.getTaskList();
 	}

@@ -27,7 +27,8 @@
     "NAV": {
         "DASHBOARD": "Startseite",
         "LOGOUT": "Abmelden",
-        "CREATE_TASK": "Aufgabe erstellen"
+        "CREATE_TASK": "Aufgabe erstellen",
+        "KANBAN": "Board"
     },
     "TASK_STATE": {
         "NO_STATUS": "Kein Status",

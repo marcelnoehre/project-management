@@ -32,7 +32,7 @@ export class MockService extends AdapterService {
 		}
   }
 
-  // ### TASK ###
+  // ### TASKS ###
   public getTaskList(): Observable<Task[]> {
     return this.http.get<Task[]>('assets/mock-data/task/getTaskList/list.json');
   }
