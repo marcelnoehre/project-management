@@ -18,7 +18,7 @@ describe('ApiService', () => {
   });
 
   it('should load test environment', () => {
-		expect(environment.selectedApi).toBe('test');
+		expect(environment.environement).toBe('test');
 	});
 
   it('should be created', () => {
