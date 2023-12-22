@@ -3,7 +3,7 @@
         "OK": "OK"
     },
     "LOGIN": {
-        "HEADER": "Webtechnologien",
+        "HEADER": "Kanban",
         "USERNAME": "Nutzername",
         "PASSWORD": "Passwort",
         "USERNAME_REQUIRED": "Benutzername ist ein Pflichtfeld",
@@ -26,6 +26,14 @@
     },
     "NAV": {
         "DASHBOARD": "Startseite",
-        "LOGOUT": "Abmelden"
+        "LOGOUT": "Abmelden",
+        "CREATE_TASK": "Aufgabe erstellen"
+    },
+    "TASK_STATE": {
+        "NO_STATUS": "Kein Status",
+        "TODO": "Zu erledigen",
+        "PROGRESS": "In Arbeit",
+        "REVIEW": "In Prüfung",
+        "DONE": "Fertig"
     }
 }

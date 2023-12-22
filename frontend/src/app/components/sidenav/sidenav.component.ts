@@ -26,6 +26,11 @@ export class SidenavComponent implements OnInit, OnDestroy {
 			route: AppRoute.Dashboard,
 			icon: AppIcon.Dashboard
 		},
+		{
+			name: AppItem.CreateTask,
+			route: AppRoute.CreateTask,
+			icon: AppIcon.CreateTask
+		},
 	]
 	clickEvent$!: Subscription;
 
@@ -41,7 +46,7 @@ export class SidenavComponent implements OnInit, OnDestroy {
 		.pipe(
 			filter((event: Event): event is NavigationEnd => event instanceof NavigationEnd)
 		).subscribe((event: NavigationEnd) => {
-			this.activeRoute = event.url;
+			this.activeRoute = event.urlAfterRedirects;
 		});
 		this.clickEvent$ = this.event.documentClick$.subscribe((target) => {			
 			if (this.isExpanded && !['mat-mdc-nav-list', 'mat-mdc-button-touch-target'].some(cls => target.classList.contains(cls))) this.toggleSidebar(false);

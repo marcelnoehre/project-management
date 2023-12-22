@@ -18,6 +18,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 import { ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from './modules/material.module';
+import { CreateTaskComponent } from './components/create-task/create-task.component';
 
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
 	return new TranslateHttpLoader(http);
@@ -31,7 +32,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     SidenavComponent,
     ToolbarComponent,
     ToolbarProfileMenuComponent,
-    DashboardComponent
+    DashboardComponent,
+    CreateTaskComponent
   ],
   imports: [
     BrowserModule,

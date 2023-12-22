@@ -1,3 +1,4 @@
 export enum AppIcon {
-	Dashboard = 'home'
+	Dashboard = 'home',
+	CreateTask = 'note_add'
 }

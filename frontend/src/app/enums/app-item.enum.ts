@@ -1,3 +1,4 @@
 export enum AppItem {
-	Dashboard = 'DASHBOARD'
+	Dashboard = 'DASHBOARD',
+	CreateTask = 'CREATE_TASK'
 }
