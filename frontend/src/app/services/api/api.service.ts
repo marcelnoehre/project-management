@@ -6,6 +6,7 @@ import { Adapter } from 'src/app/enums/adapter.enum';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 import { User } from 'src/app/interfaces/data/user';
+import { Task } from 'src/app/interfaces/data/task';
 
 @Injectable({
   providedIn: 'root'
@@ -38,5 +39,10 @@ export class ApiService {
 	// ### AUTH ###
 	public login(username: string, password: string): Observable<User> {
 		return this.adapter.login(username, password);
+	}
+
+	// ### TASK ###
+	public getTaskList(): Observable<Task[]> {
+		return this.adapter.getTaskList();
 	}
 }

@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { AdapterService } from './adapter.service';
 import { environment } from 'src/environments/environment';
 import { User } from 'src/app/interfaces/data/user';
+import { Task } from 'src/app/interfaces/data/task';
 
 @Injectable({
   providedIn: 'root'
@@ -20,5 +21,10 @@ export class DbService extends AdapterService {
   public login(username: string, password: string): Observable<User> {
 		return this.http.post<any>(this.basePath + this.auth + 'login', {username: username, password: password});
 	}
+
+  // ### TASK ###
+  public getTaskList(): Observable<Task[]> {
+    throw new Error('Method not implemented!');
+  }
 
 }
