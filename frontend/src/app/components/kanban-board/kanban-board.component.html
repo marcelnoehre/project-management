@@ -1,0 +1,15 @@
+<div class="kanban-container">
+    <h1 class="header pt-4">
+        KanBan
+    </h1>
+    <div class="board">
+        <div class="column" *ngFor="let state of taskStates; index as i">
+            <div class="state" style="--color:  {{ stateColors[i] }}">
+                {{ state | translate }}
+            </div>
+            <div class="tasks">
+
+            </div>
+        </div>
+    </div>
+</div>
