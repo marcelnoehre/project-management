@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CreateTaskComponent } from './create-task.component';
+import { AppModule } from 'src/app/app.module';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 describe('CreateTaskComponent', () => {
   let component: CreateTaskComponent;
@@ -8,7 +10,9 @@ describe('CreateTaskComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [CreateTaskComponent]
+      imports: [AppModule, TranslateModule.forRoot()],
+      declarations: [CreateTaskComponent],
+      providers: [{ provide: TranslateService, useClass: TranslateService }]
     });
     fixture = TestBed.createComponent(CreateTaskComponent);
     component = fixture.componentInstance;
