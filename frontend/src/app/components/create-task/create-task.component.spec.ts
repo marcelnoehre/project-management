@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CreateTaskComponent } from './create-task.component';
 import { AppModule } from 'src/app/app.module';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { environment } from 'src/environments/environment';
 
 describe('CreateTaskComponent', () => {
   let component: CreateTaskComponent;
@@ -18,6 +19,10 @@ describe('CreateTaskComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
+
+  it('should load test environment', () => {
+		expect(environment.selectedApi).toBe('test');
+	});
 
   it('should create', () => {
     expect(component).toBeTruthy();
