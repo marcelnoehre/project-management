@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { StorageService } from './storage.service';
+import { environment } from 'src/environments/environment';
 
 describe('StorageService', () => {
   let service: StorageService;
@@ -9,6 +10,10 @@ describe('StorageService', () => {
     TestBed.configureTestingModule({});
     service = TestBed.inject(StorageService);
   });
+
+  it('should load test environment', () => {
+		expect(environment.selectedApi).toBe('test');
+	});
 
   it('should be created', () => {
     expect(service).toBeTruthy();

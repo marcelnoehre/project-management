@@ -3,6 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { SnackbarService } from './snackbar.service';
 import { MaterialModule } from '../modules/material.module';
 import { TranslateModule } from '@ngx-translate/core';
+import { environment } from 'src/environments/environment';
 
 describe('SnackbarService', () => {
   let service: SnackbarService;
@@ -13,6 +14,10 @@ describe('SnackbarService', () => {
     });
     service = TestBed.inject(SnackbarService);
   });
+
+  it('should load test environment', () => {
+		expect(environment.selectedApi).toBe('test');
+	});
 
   it('should be created', () => {
     expect(service).toBeTruthy();

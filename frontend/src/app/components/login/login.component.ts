@@ -59,15 +59,15 @@ export class LoginComponent implements OnInit {
 	public login(): void {
 		this.api.login(this.username, this.password).subscribe(
 			(user) => {
-			  if (user?.isLoggedIn) {
-				this.storage.setSessionEntry('user', user);
-				this.router.navigateByUrl('/');
-			  }
+				if (user?.isLoggedIn) {
+					this.storage.setSessionEntry('user', user);
+					this.router.navigateByUrl('/');
+				}
 			},
 			(error) => {
-			  this.snackbar.open(error.error.message);
+				this.snackbar.open(error.error.message);
 			}
-		  );
+		);
 	}
 
 	public userValid(): boolean {
