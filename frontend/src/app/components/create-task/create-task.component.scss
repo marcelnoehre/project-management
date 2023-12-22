@@ -1,0 +1,29 @@
+.create-task-container {
+    top: 7.5vh;
+    height: 92.5vh;
+    width: 100%;
+    background-color: lightgray;
+    display: flex;
+    justify-content: center;
+}
+
+.create-task-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 80%;
+}
+
+.header {
+    text-align: center;
+}
+
+section {
+    width: 100%;
+}
+
+:host ::ng-deep {
+    mat-form-field {
+        width: 100%;
+    }
+}
