@@ -5,6 +5,7 @@ import { authGuard } from './guards/auth.guard';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { RegistrationComponent } from './components/registration/registration.component';
 import { CreateTaskComponent } from './components/create-task/create-task.component';
+import { KanbanBoardComponent } from './components/kanban-board/kanban-board.component';
 
 const routes: Routes = [
   {
@@ -18,6 +19,11 @@ const routes: Routes = [
   {
     path: 'task/create',
     component: CreateTaskComponent,
+    canActivate: [authGuard]
+  },
+  {
+    path: 'tasks/board',
+    component: KanbanBoardComponent,
     canActivate: [authGuard]
   },
   {

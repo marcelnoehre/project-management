@@ -27,7 +27,8 @@
     "NAV": {
         "DASHBOARD": "Dashboard",
         "LOGOUT": "Logout",
-        "CREATE_TASK": "Create task"
+        "CREATE_TASK": "Create task",
+        "KANBAN": "Board"
     },
     "TASK_STATE": {
         "NO_STATUS": "No status",

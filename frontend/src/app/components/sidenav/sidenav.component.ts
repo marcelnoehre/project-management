@@ -31,6 +31,11 @@ export class SidenavComponent implements OnInit, OnDestroy {
 			route: AppRoute.CreateTask,
 			icon: AppIcon.CreateTask
 		},
+		{
+			name: AppItem.KanBan,
+			route: AppRoute.KanBan,
+			icon: AppIcon.KanBan
+		}
 	]
 	clickEvent$!: Subscription;
 

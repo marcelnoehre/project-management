@@ -1,0 +1,19 @@
+<div class="kanban-container">
+    <h1 class="header pt-4">
+        KanBan
+    </h1>
+    <div class="board">
+        <div class="column" *ngFor="let state of taskList">
+            <div class="state" style="--color:  {{ state.color }}">
+                {{ 'TASK_STATE.' + state.state | translate }}
+            </div>
+            <div cdkDropList class="tasks" [id]="state.state" [cdkDropListConnectedTo]="stateList" [cdkDropListData]="state.tasks" (cdkDropListDropped)="drop($event)">
+                <div cdkDrag class="task mt-3" *ngFor="let task of state.tasks">
+                    <div [id]="task.uid">
+                        {{ task.name }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

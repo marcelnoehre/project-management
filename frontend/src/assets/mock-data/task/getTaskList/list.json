@@ -1,0 +1,87 @@
+[
+  {
+    "state": "NO_STATUS",
+    "color": "blue",
+    "tasks": [
+      {
+        "uid": "task_1",
+        "name": "Documentation",
+        "description": "Prepare comprehensive documentation for the project, including user manuals and technical guides."
+      },
+      {
+        "uid": "task_2",
+        "name": "Finalize Project",
+        "description": "Review all aspects of the project and prepare for the final release."
+      }
+    ]
+  },
+  {
+    "state": "TODO",
+    "color": "orange",
+    "tasks": [
+      {
+        "uid": "task_3",
+        "name": "Complete Project Proposal",
+        "description": "Draft a detailed project proposal outlining goals, scope, and deliverables."
+      },
+      {
+        "uid": "task_4",
+        "name": "Revise User Interface",
+        "description": "Gather feedback on the prototype and make necessary revisions to the user interface."
+      },
+      {
+        "uid": "task_5",
+        "name": "Client Presentation",
+        "description": "Prepare a presentation for the client showcasing the project progress and features."
+      }
+    ]
+  },
+  {
+    "state": "PROGRESS",
+    "color": "red",
+    "tasks": [
+      {
+        "uid": "task_6",
+        "name": "Research Market Trends",
+        "description": "Conduct market research to identify current trends and customer preferences."
+      },
+      {
+        "uid": "task_7",
+        "name": "Code Refactoring",
+        "description": "Optimize and refactor existing codebase to improve performance and maintainability."
+      }
+    ]
+  },
+  {
+    "state": "REVIEW",
+    "color": "green",
+    "tasks": [
+      {
+        "uid": "task_8",
+        "name": "Develop Prototype",
+        "description": "Create a prototype for the new product feature based on the research findings."
+      },
+      {
+        "uid": "task_9",
+        "name": "Quality Assurance Testing",
+        "description": "Conduct thorough testing to ensure the product meets quality standards."
+      }
+    ]
+  },
+  {
+    "state": "DONE",
+    "color": "brown",
+    "tasks": [
+      {
+        "uid": "task_10",
+        "name": "Project Kickoff",
+        "description": "Hold a meeting to officially start the project."
+      },
+      {
+        "uid": "task_11",
+        "name": "Release Version 1.0",
+        "description": "Publish the final version of the product."
+      }
+    ]
+  }
+]

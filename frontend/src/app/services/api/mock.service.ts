@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { User } from 'src/app/interfaces/data/user';
 import { SnackbarService } from '../snackbar.service';
+import { State } from 'src/app/interfaces/data/state';
 
 @Injectable({
   providedIn: 'root'
@@ -29,5 +30,10 @@ export class MockService extends AdapterService {
       this.snackbar.open('Wrong credentials!');
 			throw new Error('Wrong credentials!');
 		}
+  }
+
+  // ### TASKS ###
+  public getTaskList(): Observable<State[]> {
+    return this.http.get<State[]>('assets/mock-data/task/getTaskList/list.json');
   }
 }
