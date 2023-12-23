@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { User } from 'src/app/interfaces/data/user';
 import { SnackbarService } from '../snackbar.service';
-import { Task } from 'src/app/interfaces/data/task';
+import { State } from 'src/app/interfaces/data/state';
 
 @Injectable({
   providedIn: 'root'
@@ -33,7 +33,7 @@ export class MockService extends AdapterService {
   }
 
   // ### TASKS ###
-  public getTaskList(): Observable<Task[]> {
-    return this.http.get<Task[]>('assets/mock-data/task/getTaskList/list.json');
+  public getTaskList(): Observable<State[]> {
+    return this.http.get<State[]>('assets/mock-data/task/getTaskList/list.json');
   }
 }

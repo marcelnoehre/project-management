@@ -1,47 +1,76 @@
 [
   {
-    "name": "Complete Project Proposal",
-    "description": "Draft a detailed project proposal outlining goals, scope, and deliverables.",
-    "state": "TASK_STATE.TODO"
+    "state": "NO_STATUS",
+    "color": "blue",
+    "tasks": [
+      {
+        "name": "Documentation",
+        "description": "Prepare comprehensive documentation for the project, including user manuals and technical guides."
+      },
+      {
+        "name": "Finalize Project",
+        "description": "Review all aspects of the project and prepare for the final release."
+      }
+    ]
   },
   {
-    "name": "Research Market Trends",
-    "description": "Conduct market research to identify current trends and customer preferences.",
-    "state": "TASK_STATE.PROGRESS"
+    "state": "TODO",
+    "color": "orange",
+    "tasks": [
+      {
+        "name": "Complete Project Proposal",
+        "description": "Draft a detailed project proposal outlining goals, scope, and deliverables."
+      },
+      {
+        "name": "Revise User Interface",
+        "description": "Gather feedback on the prototype and make necessary revisions to the user interface."
+      },
+      {
+        "name": "Client Presentation",
+        "description": "Prepare a presentation for the client showcasing the project progress and features."
+      }
+    ]
   },
   {
-    "name": "Develop Prototype",
-    "description": "Create a prototype for the new product feature based on the research findings.",
-    "state": "TASK_STATE.REVIEW"
+    "state": "PROGRESS",
+    "color": "red",
+    "tasks": [
+      {
+        "name": "Research Market Trends",
+        "description": "Conduct market research to identify current trends and customer preferences."
+      },
+      {
+        "name": "Code Refactoring",
+        "description": "Optimize and refactor existing codebase to improve performance and maintainability."
+      }
+    ]
   },
   {
-    "name": "Revise User Interface",
-    "description": "Gather feedback on the prototype and make necessary revisions to the user interface.",
-    "state": "TASK_STATE.TODO"
+    "state": "REVIEW",
+    "color": "green",
+    "tasks": [
+      {
+        "name": "Develop Prototype",
+        "description": "Create a prototype for the new product feature based on the research findings."
+      },
+      {
+        "name": "Quality Assurance Testing",
+        "description": "Conduct thorough testing to ensure the product meets quality standards."
+      }
+    ]
   },
   {
-    "name": "Code Refactoring",
-    "description": "Optimize and refactor existing codebase to improve performance and maintainability.",
-    "state": "TASK_STATE.PROGRESS"
-  },
-  {
-    "name": "Quality Assurance Testing",
-    "description": "Conduct thorough testing to ensure the product meets quality standards.",
-    "state": "TASK_STATE.REVIEW"
-  },
-  {
-    "name": "Documentation",
-    "description": "Prepare comprehensive documentation for the project, including user manuals and technical guides.",
-    "state": "TASK_STATE.NO_STATUS"
-  },
-  {
-    "name": "Client Presentation",
-    "description": "Prepare a presentation for the client showcasing the project progress and features.",
-    "state": "TASK_STATE.TODO"
-  },
-  {
-    "name": "Finalize Project",
-    "description": "Review all aspects of the project and prepare for the final release.",
-    "state": "TASK_STATE.NO_STATUS"
+    "state": "DONE",
+    "color": "brown",
+    "tasks": [
+      {
+        "name": "Project Kickoff",
+        "description": "Hold a meeting to officially start the project."
+      },
+      {
+        "name": "Release Version 1.0",
+        "description": "Publish the final version of the product."
+      }
+    ]
   }
-]  
+]

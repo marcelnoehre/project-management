@@ -3,17 +3,15 @@
         KanBan
     </h1>
     <div class="board">
-        <div class="column" *ngFor="let state of taskStates; index as i">
-            <div class="state" style="--color:  {{ stateColors[i] }}">
-                {{ state | translate }}
+        <div class="column" *ngFor="let state of taskList">
+            <div class="state" style="--color:  {{ state.color }}">
+                {{ 'TASK_STATE.' + state.state | translate }}
             </div>
             <div class="tasks">
-                <ng-container *ngFor="let task of taskList">
-                    <ng-container *ngIf="showTask(task, state)">
-                        <div class="task mt-2">
-                            {{ task.name }}
-                        </div>
-                    </ng-container>
+                <ng-container *ngFor="let task of state.tasks">
+                    <div class="task mt-2">
+                        {{ task.name }}
+                    </div>
                 </ng-container>
             </div>
         </div>

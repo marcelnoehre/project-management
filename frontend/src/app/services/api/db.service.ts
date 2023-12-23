@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { AdapterService } from './adapter.service';
 import { environment } from 'src/environments/environment';
 import { User } from 'src/app/interfaces/data/user';
-import { Task } from 'src/app/interfaces/data/task';
+import { State } from 'src/app/interfaces/data/state';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +23,7 @@ export class DbService extends AdapterService {
 	}
 
   // ### TASKS ###
-  public getTaskList(): Observable<Task[]> {
+  public getTaskList(): Observable<State[]> {
     throw new Error('Method not implemented!');
   }
 
