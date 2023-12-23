@@ -46,3 +46,15 @@
     height: 92.5%;
     overflow-y: scroll;
 }
+
+.task {
+    width: 90%;
+    height: 2rem;
+    text-align: center;
+    margin-left: 5%;
+    background-color: aqua;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-radius: 5px;
+}

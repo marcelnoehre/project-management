@@ -28,4 +28,8 @@ export class KanbanBoardComponent implements OnInit {
     );
   }
 
+  showTask(task: Task, state: string) {
+    return task.state === state;
+  }
+  
 }

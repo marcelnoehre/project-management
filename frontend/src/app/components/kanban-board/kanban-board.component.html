@@ -8,7 +8,13 @@
                 {{ state | translate }}
             </div>
             <div class="tasks">
-
+                <ng-container *ngFor="let task of taskList">
+                    <ng-container *ngIf="showTask(task, state)">
+                        <div class="task mt-2">
+                            {{ task.name }}
+                        </div>
+                    </ng-container>
+                </ng-container>
             </div>
         </div>
     </div>
