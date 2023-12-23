@@ -7,12 +7,8 @@
             <div class="state" style="--color:  {{ state.color }}">
                 {{ 'TASK_STATE.' + state.state | translate }}
             </div>
-            <div class="tasks">
-                <ng-container *ngFor="let task of state.tasks">
-                    <div class="task mt-2">
-                        {{ task.name }}
-                    </div>
-                </ng-container>
+            <div cdkDropList class="tasks" [id]="state.state" [cdkDropListConnectedTo]="stateList" [cdkDropListData]="state.tasks" (cdkDropListDropped)="drop($event)">
+                <div cdkDrag class="task mt-3" *ngFor="let item of state.tasks">{{ item.name }}</div>
             </div>
         </div>
     </div>
