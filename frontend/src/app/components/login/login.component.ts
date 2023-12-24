@@ -56,8 +56,9 @@ export class LoginComponent implements OnInit {
 		return this.loginForm.get('passwordFormControl')?.value;
 	}
 
-	public login(): void {
-		this.api.login(this.username, this.password).subscribe(
+	public async login(): Promise<void> {
+		const hashedPassword = await this.sha256(this.password);
+		this.api.login(this.username, hashedPassword).subscribe(
 			(user) => {
 				if (user?.isLoggedIn) {
 					this.storage.setSessionEntry('user', user);
@@ -84,5 +85,14 @@ export class LoginComponent implements OnInit {
 
 	public registration(): void {
 		this.router.navigate(['/registration']);
+	}
+
+	async sha256(message: string): Promise<string> {
+		const encoder = new TextEncoder();
+		const data = encoder.encode(message);
+		const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+		const hashArray = Array.from(new Uint8Array(hashBuffer));
+		const hashHex = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
+		return hashHex;
 	}
 }

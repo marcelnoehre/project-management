@@ -1,16 +1,22 @@
+const admin = require('firebase-admin');
+const db = admin.firestore();
+
 async function login(req, res, next) {
     try {
-        if(req.body.username === 'mock' && req.body.password === 'mock') {
-            res.json({
-                token: 1634113024,
-                username: "mock",
-                fullName: "Mock User",
-                role: "ADMIN",
-                language: "de-DE",
-                isLoggedIn: true
-        });
+        const passwordsCollection = db.collection('passwords');
+        const passwordsSnapshot = await passwordsCollection.where('username', '==', req.body.username).get();
+        if (passwordsSnapshot.empty) {
+            res.status(401).send({ message: "Invalid credentials!" });
+        } else if (passwordsSnapshot.docs[0].data().password === req.body.password) {
+            const usersCollection = db.collection('users');
+            const usersSnapshot = await usersCollection.where('username', '==', req.body.username).get();
+            if (usersSnapshot.empty) {
+                res.status(500).send({ message: "Internal server Error!" });
+            } else {
+                res.json(usersSnapshot.docs[0].data());
+            }
         } else {
-            res.status(401).send({message: "Invalid credentials!"});
+            res.status(401).send({ message: "Invalid credentials!" });
         }
     } catch (err) {
         next(err);

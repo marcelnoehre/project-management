@@ -8,6 +8,13 @@ app.use(cors({ origin: 'http://localhost:4200' }));
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 
+var admin = require("firebase-admin");
+var serviceAccount = require("./kanban-d66f1-firebase-adminsdk-1xlx0-db55c62e7b.json");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount)
+});
+
 const authRouter = require('./src/routes/auth');
 app.use('/auth', authRouter);
 
