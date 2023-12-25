@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { State } from 'src/app/interfaces/data/state';
+import { State } from 'src/app/interfaces/state';
 import { User } from 'src/app/interfaces/data/user';
 
 @Injectable({

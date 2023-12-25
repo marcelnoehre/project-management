@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { AdapterService } from './adapter.service';
 import { environment } from 'src/environments/environment';
 import { User } from 'src/app/interfaces/data/user';
-import { State } from 'src/app/interfaces/data/state';
+import { State } from 'src/app/interfaces/state';
 
 @Injectable({
   providedIn: 'root'

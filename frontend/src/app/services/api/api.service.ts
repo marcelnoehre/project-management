@@ -6,7 +6,7 @@ import { Adapter } from 'src/app/enums/adapter.enum';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 import { User } from 'src/app/interfaces/data/user';
-import { State } from 'src/app/interfaces/data/state';
+import { State } from 'src/app/interfaces/state';
 
 @Injectable({
   providedIn: 'root'

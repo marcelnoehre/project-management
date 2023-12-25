@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { State } from 'src/app/interfaces/data/state';
+import { State } from 'src/app/interfaces/state';
 import { ApiService } from 'src/app/services/api/api.service';
 import { TaskState } from 'src/app/enums/task-state.enum';
 import { moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';

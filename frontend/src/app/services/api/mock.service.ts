@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { User } from 'src/app/interfaces/data/user';
 import { SnackbarService } from '../snackbar.service';
-import { State } from 'src/app/interfaces/data/state';
+import { State } from 'src/app/interfaces/state';
 
 @Injectable({
   providedIn: 'root'

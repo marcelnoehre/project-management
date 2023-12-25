@@ -9,7 +9,6 @@
         "USERNAME_REQUIRED": "The username is required!",
 		"PASSWORD_REQUIRED": "The password is required!",
 		"LOGIN": "login",
-        "FORGOT_PASSWORD": "Forgotten your password?",
         "NOT_REGISTERED": "No account yet? ",
         "REGISTRATION": "Register."
     },

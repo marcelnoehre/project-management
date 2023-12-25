@@ -9,7 +9,6 @@
         "USERNAME_REQUIRED": "Benutzername ist ein Pflichtfeld",
 		"PASSWORD_REQUIRED": "Passwort ist ein Pflichtfeld",
 		"LOGIN": "Anmelden",
-        "FORGOT_PASSWORD": "Passwort vergessen?",
         "NOT_REGISTERED": "Noch kein Account? ",
         "REGISTRATION": "Registrieren."
     },
