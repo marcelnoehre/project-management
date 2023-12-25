@@ -2,6 +2,11 @@
     "APP": {
         "OK": "OK"
     },
+    "ERROR": {
+        "INVALID_CREDENTIALS": "Daten ungültig!",
+        "INTERNAL": "Interner Systemfehler!",
+        "REGISTRATION": "Registrierung fehlgeschlagen!"
+    },
     "LOGIN": {
         "HEADER": "Kanban",
         "USERNAME": "Nutzername",
@@ -23,8 +28,10 @@
         "PASSWORD_REQUIRED": "Das Passwort ist ein Pflichtfeld!",
         "PASSWORD_REPEAT": "Passwort wiederholen",
         "PASSWORD_REPEAT_REQUIRED": "Wiederholung des Passworts ist ein Pflichtpfeld!",
+        "PASSWORDS_DONT_MATCH": "Die Passwörter stimmen nicht überein!",
         "REGISTER": "Registrieren",
-        "BACK": "Zurück zur Anmeldung"
+        "BACK": "Zurück zur Anmeldung",
+        "SUCCESS": "Account erfolgreich erstellt!"
     },
     "NAV": {
         "DASHBOARD": "Startseite",

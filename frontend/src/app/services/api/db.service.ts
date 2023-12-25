@@ -5,6 +5,7 @@ import { AdapterService } from './adapter.service';
 import { environment } from 'src/environments/environment';
 import { User } from 'src/app/interfaces/data/user';
 import { State } from 'src/app/interfaces/state';
+import { Response } from 'src/app/interfaces/data/response';
 
 @Injectable({
   providedIn: 'root'
@@ -26,11 +27,11 @@ export class DbService extends AdapterService {
 		return this.http.post<User>(this.basePath + this.auth + 'login', body);
 	}
 
-  public override register(username: string, password: string, name: string, lang: string): Observable<Response> {
+  public override register(username: string, password: string, fullname: string, lang: string): Observable<Response> {
     const body = {
       username: username,
       password: password,
-      name: name,
+      fullname: fullname,
       lang: lang
     };
     return this.http.post<Response>(this.basePath + this.auth + 'register', body);

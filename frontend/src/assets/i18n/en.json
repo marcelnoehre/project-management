@@ -2,6 +2,11 @@
     "APP": {
         "OK": "OK"
     },
+    "ERROR": {
+        "INVALID_CREDENTIALS": "Invalid credentials!",
+        "INTERNAL": "Internal Server Error!",
+        "REGISTRATION": "Registration failed!"
+    },
     "LOGIN": {
         "HEADER": "Kanban",
         "USERNAME": "username",
@@ -23,8 +28,10 @@
         "PASSWORD_REQUIRED": "The password is required!",
         "PASSWORD_REPEAT": "Repeat password",
         "PASSWORD_REPEAT_REQUIRED": "The password repetition is required!",
+        "PASSWORDS_DONT_MATCH": "The passwords don't match!",
         "REGISTER": "register",
-        "BACK": "Back to login"
+        "BACK": "Back to login",
+        "SUCCESS": "Registered successfully!"
     },
     "NAV": {
         "DASHBOARD": "Dashboard",

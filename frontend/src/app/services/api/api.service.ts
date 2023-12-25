@@ -7,6 +7,7 @@ import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 import { User } from 'src/app/interfaces/data/user';
 import { State } from 'src/app/interfaces/state';
+import { Response } from 'src/app/interfaces/data/response';
 
 @Injectable({
   providedIn: 'root'
@@ -41,8 +42,8 @@ export class ApiService {
 		return this.adapter.login(username, password);
 	}
 
-	public register(username: string, password: string, name: string, lang: string) {
-		return this.adapter.register(username, password, name, lang);
+	public register(username: string, password: string, fullname: string, lang: string): Observable<Response> {
+		return this.adapter.register(username, password, fullname, lang);
 	}
 
 

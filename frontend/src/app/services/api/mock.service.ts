@@ -5,6 +5,8 @@ import { HttpClient } from '@angular/common/http';
 import { User } from 'src/app/interfaces/data/user';
 import { SnackbarService } from '../snackbar.service';
 import { State } from 'src/app/interfaces/state';
+import { Response } from 'src/app/interfaces/data/response';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +17,8 @@ export class MockService extends AdapterService {
 
   constructor(
     private http: HttpClient,
-    private snackbar: SnackbarService
+    private snackbar: SnackbarService,
+    private translate: TranslateService
   ) {
     super();
   }
@@ -27,22 +30,23 @@ export class MockService extends AdapterService {
 
   // ### AUTH ###
   public override login(username: string, password: string): Observable<User> {
-    if (this.availableMockData.validUsers.includes(username) && password === '1234') {
+    const hash = '03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4'; //pw = 1234
+    if (this.availableMockData.validUsers.includes(username) && password === hash) {
       const url = this.basePath + this.auth + `login/${username}.json`;
 			return this.http.get<User>(url);
 		} else {
-      this.snackbar.open('Wrong credentials!');
-			throw new Error('Wrong credentials!');
+      this.snackbar.open(this.translate.instant('ERROR.INVALID_CREDENTIALS'));
+			throw new Error(this.translate.instant('ERROR.INVALID_CREDENTIALS'));
 		}
   }
 
-  public override register(username: string, password: string, name: string, lang: string): Observable<Response> {
+  public override register(username: string, password: string, fullname: string, lang: string): Observable<Response> {
     if(this.availableMockData.register.includes(username)) {
-      const url = this.basePath + this.auth + `register/${username}`;
+      const url = this.basePath + this.auth + `register/${username}.json`;
       return this.http.get<Response>(url);
     } else {
-      this.snackbar.open('Registration failed!');
-      throw new Error('Registration failed!');
+      this.snackbar.open(this.translate.instant('ERROR.REGISTRATION'));
+      throw new Error(this.translate.instant('ERROR.REGISTRATION'));
     }
   }
 

@@ -2,7 +2,10 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import { Language } from 'src/app/interfaces/language';
+import { ApiService } from 'src/app/services/api/api.service';
+import { SnackbarService } from 'src/app/services/snackbar.service';
 import { StorageService } from 'src/app/services/storage.service';
 
 @Component({
@@ -30,7 +33,10 @@ export class RegistrationComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private _storage: StorageService
+    private storage: StorageService,
+    private snackbar: SnackbarService,
+    private translate: TranslateService,
+    private api: ApiService
     ) {
       this.createForm();
     }
@@ -56,7 +62,7 @@ export class RegistrationComponent implements OnInit {
   }
 
   get user(): Record<string, unknown> {
-		return this._storage.getSessionEntry('user');
+		return this.storage.getSessionEntry('user');
 	}
 
 	get username(): string {
@@ -95,8 +101,21 @@ export class RegistrationComponent implements OnInit {
 		return this.registrationForm.controls['passwordRepeatFormControl'].valid;
 	}
 
-  register() {
-    throw new Error('Method not implemented!');
+  async register() {
+    if (this.password !== this.passwordRepeat) {
+      this.snackbar.open(this.translate.instant('REGISTRATION.PASSWORDS_DONT_MATCH'));
+    } else {
+      const hashedPassword = await this.sha256(this.password);
+      this.api.register(this.username, hashedPassword, this.fullname, this.language).subscribe(
+        (response) => {
+          this.snackbar.open(this.translate.instant(response.message));
+          this.router.navigateByUrl('/login');
+        },
+        (error) => {
+          this.snackbar.open(this.translate.instant(error.error.message));
+        }
+      );
+    }
   }
 
   login() {
