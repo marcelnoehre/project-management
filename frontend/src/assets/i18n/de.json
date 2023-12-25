@@ -15,7 +15,10 @@
     "REGISTRATION": {
         "HEADER": "Account erstellen",
         "USERNAME": "Nutzername",
-        "USERNAME_REQUIRED": "Der Nutzername ist ein Pflichtfeld1",
+        "USERNAME_REQUIRED": "Der Nutzername ist ein Pflichtfeld!",
+        "FULLNAME": "Vollständiger Name",
+        "FULLNAME_REQUIRED": "Der vollständige Name ist ein Pflichtpfeld!",
+        "LANGUAGE": "Sprache",
         "PASSWORD": "Passwort",
         "PASSWORD_REQUIRED": "Das Passwort ist ein Pflichtfeld!",
         "PASSWORD_REPEAT": "Passwort wiederholen",

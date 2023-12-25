@@ -2,6 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { Router } from '@angular/router';
+import { Language } from 'src/app/interfaces/language';
 import { StorageService } from 'src/app/services/storage.service';
 
 @Component({
@@ -16,6 +17,16 @@ export class RegistrationComponent implements OnInit {
   hidePassword = true;
   hidePasswordRepeat = true;
   registrationForm!: FormGroup;
+  languages: Language[] = [
+    {
+      key: 'en',
+      label: 'English'
+    },
+    {
+      key: 'de',
+      label: 'Deutsch'
+    }
+  ];
 
   constructor(
     private router: Router,
@@ -35,10 +46,12 @@ export class RegistrationComponent implements OnInit {
     this.registrationForm = new FormGroup(
       {
         usernameFormControl: new FormControl('', {validators: [Validators.required] }),
-        passwordFormControl: new FormControl('', { validators: [Validators.required] }), 
+        fullnameFormControl: new FormControl('', {validators: [Validators.required]}),
+        languageFormControl: new FormControl('', {validators: []}),
+        passwordFormControl: new FormControl('', { validators: [Validators.required] }),
         passwordRepeatFormControl: new FormControl('', { validators: [Validators.required] })
       },
-      {}
+      { }
     );
   }
 
@@ -49,6 +62,14 @@ export class RegistrationComponent implements OnInit {
 	get username(): string {
 		return this.registrationForm.get('usernameFormControl')?.value;
 	}
+  
+  get fullname(): string {
+    return this.registrationForm.get('fullnameFormControl')?.value;
+  }
+
+  get language(): string {
+    return this.registrationForm.get('languageFormControl')?.value;
+  }
 
 	get password(): string {
 		return this.registrationForm.get('passwordFormControl')?.value;
@@ -58,9 +79,13 @@ export class RegistrationComponent implements OnInit {
 		return this.registrationForm.get('passwordRepeatFormControl')?.value;
 	}
 
-  public userValid(): boolean {
+  public usernameValid(): boolean {
 		return this.registrationForm.controls['usernameFormControl'].valid;
 	}
+
+  public fullnameValid(): boolean {
+    return this.registrationForm.controls['fullnameFormControl'].valid;
+  }
 
 	public passwordValid(): boolean {
 		return this.registrationForm.controls['passwordFormControl'].valid;
