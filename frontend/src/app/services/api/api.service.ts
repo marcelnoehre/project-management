@@ -41,6 +41,11 @@ export class ApiService {
 		return this.adapter.login(username, password);
 	}
 
+	public register(username: string, password: string, name: string, lang: string) {
+		return this.adapter.register(username, password, name, lang);
+	}
+
+
 	// ### TASKS ###
 	public getTaskList(): Observable<State[]> {
 		return this.adapter.getTaskList();

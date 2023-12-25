@@ -10,6 +10,8 @@ import { State } from 'src/app/interfaces/state';
   providedIn: 'root'
 })
 export class MockService extends AdapterService {
+  private basePath = 'assets/mock-data/';
+  private auth = 'auth/'
 
   constructor(
     private http: HttpClient,
@@ -20,17 +22,30 @@ export class MockService extends AdapterService {
 
   private availableMockData = {
 		validUsers: ['admin'],
+    register: ['mock']
 	};
 
   // ### AUTH ###
   public override login(username: string, password: string): Observable<User> {
     if (this.availableMockData.validUsers.includes(username) && password === '1234') {
-			return this.http.get<User>(`assets/mock-data/auth/login/${username}.json`);
+      const url = this.basePath + this.auth + `login/${username}.json`;
+			return this.http.get<User>(url);
 		} else {
       this.snackbar.open('Wrong credentials!');
 			throw new Error('Wrong credentials!');
 		}
   }
+
+  public override register(username: string, password: string, name: string, lang: string): Observable<Response> {
+    if(this.availableMockData.register.includes(username)) {
+      const url = this.basePath + this.auth + `register/${username}`;
+      return this.http.get<Response>(url);
+    } else {
+      this.snackbar.open('Registration failed!');
+      throw new Error('Registration failed!');
+    }
+  }
+
 
   // ### TASKS ###
   public getTaskList(): Observable<State[]> {

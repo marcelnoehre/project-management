@@ -18,9 +18,24 @@ export class DbService extends AdapterService {
   }
 
   // ### AUTH ###
-  public login(username: string, password: string): Observable<User> {
-		return this.http.post<any>(this.basePath + this.auth + 'login', {username: username, password: password});
+  public override login(username: string, password: string): Observable<User> {
+    const body = {
+      username: username,
+      password: password
+    };
+		return this.http.post<User>(this.basePath + this.auth + 'login', body);
 	}
+
+  public override register(username: string, password: string, name: string, lang: string): Observable<Response> {
+    const body = {
+      username: username,
+      password: password,
+      name: name,
+      lang: lang
+    };
+    return this.http.post<Response>(this.basePath + this.auth + 'register', body);
+  }
+
 
   // ### TASKS ###
   public getTaskList(): Observable<State[]> {
