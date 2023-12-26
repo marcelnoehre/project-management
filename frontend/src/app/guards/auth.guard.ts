@@ -7,7 +7,7 @@ export const authGuard: CanActivateFn = () => {
   const storage = new StorageService();
   const user = storage.getSessionEntry('user');
   
-  if (user?.isLoggedIn) {
+  if (user?.isLoggedIn && user?.project !== '') {
     return true;
   }
   

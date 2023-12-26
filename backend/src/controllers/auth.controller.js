@@ -32,7 +32,7 @@ async function register(req, res, next) {
                 username: req.body.username,
                 fullName: req.body.fullName,
                 language: req.body.language,
-                team: '',
+                project: '',
                 role: '',
                 isLoggedIn: true
             }

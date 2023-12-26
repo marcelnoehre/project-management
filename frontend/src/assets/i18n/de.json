@@ -1,6 +1,8 @@
 {
     "APP": {
-        "OK": "OK"
+        "OK": "OK",
+        "CANCEL": "Abbrechen",
+        "CONFIRM": "Bestätigen"
     },
     "ERROR": {
         "INVALID_CREDENTIALS": "Daten ungültig!",
@@ -36,7 +38,8 @@
     },
     "CREATE_PROJECT": {
         "HEADLINE": "Sie sind derzeit kein Mitglied eines Projekts",
-        "INFO": "Erstellen Sie ein neues Projekt oder bitten Sie ihren Teamleiter ihnen eine Einladung zu schicken."
+        "INFO": "Erstellen Sie ein neues Projekt oder bitten Sie ihren Teamleiter ihnen eine Einladung zu schicken",
+        "PROJECT": "Projektname"
     },
     "NAV": {
         "DASHBOARD": "Startseite",

@@ -1,6 +1,8 @@
 {
     "APP": {
-        "OK": "OK"
+        "OK": "OK",
+        "CANCEL": "Cancel",
+        "CONFIRM": "Confirm"
     },
     "ERROR": {
         "INVALID_CREDENTIALS": "Invalid credentials!",
@@ -36,7 +38,8 @@
     },
     "CREATE_PROJECT": {
         "HEADLINE": "You are not currently a member of a project",
-        "INFO": "Create a new project or ask your team leader to send you an invitation."
+        "INFO": "Create a new project or ask your team leader to send you an invitation",
+        "PROJECT": "Project name"
     },
     "NAV": {
         "DASHBOARD": "Dashboard",

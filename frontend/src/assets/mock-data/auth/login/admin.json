@@ -2,7 +2,7 @@
     "username": "admin",
     "fullName": "Mock Admin",
     "language": "de-DE",
-    "team": "Mock Team",
+    "project": "Mock Team",
     "role": "ADMIN",
     "isLoggedIn": true
 }
