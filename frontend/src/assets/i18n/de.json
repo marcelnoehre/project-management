@@ -2,7 +2,7 @@
     "APP": {
         "OK": "OK",
         "CANCEL": "Abbrechen",
-        "CONFIRM": "Bestätigen"
+        "CREATE": "Erstellen"
     },
     "ERROR": {
         "INVALID_CREDENTIALS": "Daten ungültig!",

@@ -2,7 +2,7 @@
     "APP": {
         "OK": "OK",
         "CANCEL": "Cancel",
-        "CONFIRM": "Confirm"
+        "CREATE": "Create"
     },
     "ERROR": {
         "INVALID_CREDENTIALS": "Invalid credentials!",

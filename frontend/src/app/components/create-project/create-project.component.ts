@@ -1,5 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
@@ -8,13 +8,13 @@ import { MatDialogRef } from '@angular/material/dialog';
   styleUrls: ['./create-project.component.scss']
 })
 export class CreateProjectComponent implements OnDestroy {
-  projectFormControl =  new FormControl('', {validators: [Validators.required] });
+  projectForm!: FormGroup;
   created: boolean = false;
 
   constructor(
     private dialogRef: MatDialogRef<CreateProjectComponent>
   ) {
-
+    this.createForm();
   }
 
   ngOnDestroy(): void {
@@ -28,4 +28,14 @@ export class CreateProjectComponent implements OnDestroy {
   createProject() {
     this.dialogRef.close(true);
   }
+
+  createForm() {
+    this.projectForm = new FormGroup({
+      projectFormControl: new FormControl('', {validators: [Validators.required] })
+    });
+  }
+
+  public projectValid(): boolean {
+		return this.projectForm.controls['projectFormControl'].valid;
+	}
 }
