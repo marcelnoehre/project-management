@@ -8,14 +8,6 @@
         "isLoggedIn": true
     },
     {
-        "username": "admin2",
-        "fullName": "Another Admin",
-        "language": "en",
-        "project": "mockProject",
-        "permission": "ADMIN",
-        "isLoggedIn": true
-    },
-    {
         "username": "user1",
         "fullName": "Mock User 1",
         "language": "de",
@@ -78,6 +70,14 @@
         "project": "mockProject",
         "permission": "MEMBER",
         "isLoggedIn": false
+    },
+    {
+        "username": "admin2",
+        "fullName": "Another Admin",
+        "language": "en",
+        "project": "mockProject",
+        "permission": "ADMIN",
+        "isLoggedIn": true
     },
     {
         "username": "user9",
