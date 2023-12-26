@@ -27,7 +27,17 @@ async function createProject(req, res, next) {
 
 async function getTeamMembers(req, res, next) {
     try {
-        res.status(500).send({ message: 'ERROR.INTERNAL' });
+        const usersCollection = db.collection('users');
+        const usersSnapshot = await usersCollection.where('project', '==', req.query.project).get();
+        if(usersSnapshot.empty) {
+            res.status(500).send({ message: 'ERROR.INTERNAL' });
+        } else {
+            const users = [];
+            usersSnapshot.forEach(doc => {
+                users.push(doc.data());
+            });
+            res.json(users);
+        }
     } catch (err) {
         next(err);
     }

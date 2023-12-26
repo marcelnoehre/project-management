@@ -49,7 +49,7 @@ export class DbService extends AdapterService {
   }
 
   public override getTeamMembers(project: string): Observable<User[]> {
-    throw new Error('Method not implemented!');
+    return this.http.get<User[]>(this.basePath + this.project + 'get-team-members' + `?project=${project}`);
   }
 
 
