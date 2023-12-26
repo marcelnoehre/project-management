@@ -6,6 +6,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { RegistrationComponent } from './components/registration/registration.component';
 import { CreateTaskComponent } from './components/create-task/create-task.component';
 import { KanbanBoardComponent } from './components/kanban-board/kanban-board.component';
+import { SettingsComponent } from './components/settings/settings.component';
 
 const routes: Routes = [
   {
@@ -15,6 +16,11 @@ const routes: Routes = [
   {
     path: 'registration',
     component: RegistrationComponent,
+  },
+  {
+    path: 'settings',
+    component: SettingsComponent,
+    canActivate: [authGuard]
   },
   {
     path: 'task/create',

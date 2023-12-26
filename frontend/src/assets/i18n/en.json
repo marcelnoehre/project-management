@@ -45,6 +45,7 @@
     },
     "NAV": {
         "DASHBOARD": "Dashboard",
+        "SETTINGS": "Settings",
         "LOGOUT": "Logout",
         "CREATE_TASK": "Create task",
         "KANBAN": "Board"
