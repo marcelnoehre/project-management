@@ -12,7 +12,8 @@ import { Response } from 'src/app/interfaces/data/response';
 })
 export class DbService extends AdapterService {
   private basePath = environment.apiBasePath;
-  private auth = 'auth/'
+  private auth = 'auth/';
+  private project = 'project/';
 
   constructor(private http: HttpClient) {
     super();
@@ -37,15 +38,16 @@ export class DbService extends AdapterService {
     return this.http.post<Response>(this.basePath + this.auth + 'register', body);
   }
 
+
+  // ### PROJECT ###
   public override createProject(username: string, project: string): Observable<Response> {
     const body = {
       username: username,
       project: project
     };
-    return this.http.post<Response>(this.basePath + this.auth + 'create-project', body);
+    return this.http.post<Response>(this.basePath + this.project + 'create-project', body);
   }
 
-  // ### PROJECT ###
   public override getTeamMembers(project: string): Observable<User[]> {
     throw new Error('Method not implemented!');
   }

@@ -52,9 +52,10 @@ export class MockService extends AdapterService {
     }
   }
 
+  // ### PROJECT ###
   public override createProject(username: string, project: string): Observable<Response> {
     if (this.availableMockData.projects.includes(project)) {
-      const url = this.basePath + this.auth + `create-project/${project}.json`;
+      const url = this.basePath + this.project + `create-project/${project}.json`;
       return this.http.get<Response>(url);
     } else {
       this.snackbar.open(this.translate.instant('ERROR.CREATE_PROJECT'));
@@ -62,7 +63,6 @@ export class MockService extends AdapterService {
     }
   }
 
-  // ### PROJECT ###
   public override getTeamMembers(project: string): Observable<User[]> {
     if (this.availableMockData.projects.includes(project)) {
       const url = this.basePath + this.project + `get-team-members/${project}.json`;

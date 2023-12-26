@@ -46,12 +46,12 @@ export class ApiService {
 		return this.adapter.register(username, password, fullName, language);
 	}
 
+
+	// ### PROJECT ###
 	public createProject(username: string, project: string): Observable<Response> {
 		return this.adapter.createProject(username, project);
 	}
-
-
-	// ### PROJECT ###
+	
 	public getTeamMembers(project: string): Observable<User[]> {
 		return this.adapter.getTeamMembers(project);
 	}
