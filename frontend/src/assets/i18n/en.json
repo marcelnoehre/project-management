@@ -34,6 +34,10 @@
         "BACK": "Back to login",
         "SUCCESS": "Registered successfully!"
     },
+    "CREATE_PROJECT": {
+        "HEADLINE": "You are not currently a member of a project",
+        "INFO": "Create a new project or ask your team leader to send you an invitation."
+    },
     "NAV": {
         "DASHBOARD": "Dashboard",
         "LOGOUT": "Logout",

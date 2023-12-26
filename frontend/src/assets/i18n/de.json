@@ -34,6 +34,10 @@
         "BACK": "Zurück zur Anmeldung",
         "SUCCESS": "Account erfolgreich erstellt!"
     },
+    "CREATE_PROJECT": {
+        "HEADLINE": "Sie sind derzeit kein Mitglied eines Projekts",
+        "INFO": "Erstellen Sie ein neues Projekt oder bitten Sie ihren Teamleiter ihnen eine Einladung zu schicken."
+    },
     "NAV": {
         "DASHBOARD": "Startseite",
         "LOGOUT": "Abmelden",

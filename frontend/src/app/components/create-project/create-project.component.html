@@ -1,0 +1,24 @@
+<div class="create-project-container" mat-dialog-container>
+	<h1 class="header" mat-dialog-title>{{ 'CREATE_PROJECT.HEADLINE' | translate }}</h1>
+	<mat-dialog-content class="mat-typography">
+		{{ 'CREATE_PROJECT.INFO' | translate }}
+	</mat-dialog-content>
+	<mat-dialog-actions class="actions">
+		<button
+			(click)="closeDialog(false)"
+			[mat-dialog-close]="false" 
+			color="dark" 
+			mat-raised-button
+		>
+			Cancel
+		</button>
+		<button
+			(click)="closeDialog(true)"
+			[mat-dialog-close]="true"
+			color="dark"
+			mat-raised-button
+		>
+			Confirm
+		</button>
+	</mat-dialog-actions>
+</div>
