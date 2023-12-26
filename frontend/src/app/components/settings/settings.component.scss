@@ -1,0 +1,30 @@
+.settings-container {
+    width: 100%;
+    min-height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+table {
+    width: 90%;
+    tr {
+        display: flex;
+        justify-content: space-evenly;
+        text-align: center;
+        background-color: lightgray;
+    }
+    td, th {
+        width: 100%;
+    }
+    th {
+        background-color: black;
+        color: white;
+    }
+    tr:nth-child(odd) {
+        background-color: gray;
+    }
+    tr:nth-child(1) {
+        background-color: black;
+    }
+}

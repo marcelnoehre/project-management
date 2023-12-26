@@ -26,7 +26,19 @@ export class SettingsComponent implements OnInit {
   ngOnInit(): void {
     this.api.getTeamMembers(this.getUser().project).subscribe(
       (users) => {
-        this.members = users.sort((a, b) => (a.permission === Permission.ADMIN ? -1 : 1) - (b.permission === Permission.ADMIN ? -1 : 1));
+        this.members = users.sort((a, b) => {
+          if (a.permission === Permission.OWNER && b.permission !== Permission.OWNER) {
+            return -1;
+          } else if (b.permission === Permission.OWNER && a.permission !== Permission.OWNER) {
+            return 1;
+          } else if (a.permission === Permission.ADMIN && b.permission !== Permission.ADMIN) {
+            return -1;
+          } else if (b.permission === Permission.ADMIN && a.permission !== Permission.ADMIN) {
+            return 1;
+          } else {
+            return 0;
+          }
+        });
       },
       (error) => {
         this.snackbar.open(this.translate.instant(error.error.message));

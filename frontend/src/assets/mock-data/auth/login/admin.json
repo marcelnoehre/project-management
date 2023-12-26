@@ -4,5 +4,5 @@
     "language": "de",
     "project": "mockProject",
     "permission": "ADMIN",
-    "isLoggedIn": true
+    "isLoggedIn": false
 }

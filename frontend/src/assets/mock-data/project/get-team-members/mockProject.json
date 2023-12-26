@@ -1,5 +1,13 @@
 [
     {
+        "username": "owner",
+        "fullName": "Mock Owner",
+        "language": "en",
+        "project": "mockProject",
+        "permission": "OWNER",
+        "isLoggedIn": false
+    },
+    {
         "username": "admin",
         "fullName": "Mock Admin",
         "language": "de",

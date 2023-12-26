@@ -44,7 +44,7 @@ export class CreateProjectComponent {
         this.snackbar.open(this.translate.instant(response.message));
         let user = this.getUser();
         user.project = this.project;
-        user.permission = Permission.ADMIN;
+        user.permission = Permission.OWNER;
         user.isLoggedIn = true;
         this.storage.setSessionEntry('user', user);
         this.dialogRef.close(true);

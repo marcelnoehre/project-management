@@ -1,1 +1,17 @@
-<p>settings works!</p>
+<div class="settings-container">
+    <table>
+        <tr class="py-2">
+            <th>Username</th>
+            <th>Fullname</th>
+            <th>LANGUAGE</th>
+            <th>PERMISSION</th>
+        </tr>
+        <tr *ngFor="let member of members" class="py-2">
+            <td>{{ member.username }}</td>
+            <td>{{ member.fullName }}</td>
+            <td>{{ member.language }}</td>
+            <td>{{ member.permission }}</td>
+        </tr>
+    </table>
+
+</div>

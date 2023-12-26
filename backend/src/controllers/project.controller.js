@@ -13,7 +13,7 @@ async function createProject(req, res, next) {
                 const userDoc = usersSnapshot.docs[0];
                 await userDoc.ref.update({
                     project: req.body.project,
-                    permission: 'ADMIN'
+                    permission: 'OWNER'
                 });
                 res.json({ message: "CREATE_PROJECT.SUCCESS" });
             } else {
