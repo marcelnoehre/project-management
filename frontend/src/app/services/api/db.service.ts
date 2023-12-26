@@ -37,6 +37,10 @@ export class DbService extends AdapterService {
     return this.http.post<Response>(this.basePath + this.auth + 'register', body);
   }
 
+  public override createProject(username: string, project: string): Observable<Response> {
+    throw new Error('Method not implemented!');  
+  }
+
 
   // ### TASKS ###
   public getTaskList(): Observable<State[]> {

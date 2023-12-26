@@ -8,7 +8,8 @@
         "INVALID_CREDENTIALS": "Invalid credentials!",
         "INTERNAL": "Internal Server Error!",
         "REGISTRATION": "Registration failed!",
-        "USERNAME_TAKEN": "Username is already taken!"
+        "USERNAME_TAKEN": "The username is already taken!",
+        "CREATE_PROJECT": "The project name is already taken!"
     },
     "LOGIN": {
         "HEADER": "Kanban",
@@ -39,7 +40,8 @@
     "CREATE_PROJECT": {
         "HEADLINE": "You are not currently a member of a project",
         "INFO": "Create a new project or ask your team leader to send you an invitation",
-        "PROJECT": "Project name"
+        "PROJECT": "Project name",
+        "SUCCESS": "Project created successfully"
     },
     "NAV": {
         "DASHBOARD": "Dashboard",

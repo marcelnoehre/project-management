@@ -46,6 +46,10 @@ export class ApiService {
 		return this.adapter.register(username, password, fullName, language);
 	}
 
+	public createProject(username: string, project: string): Observable<Response> {
+		return this.adapter.createProject(username, project);
+	}
+
 
 	// ### TASKS ###
 	public getTaskList(): Observable<State[]> {

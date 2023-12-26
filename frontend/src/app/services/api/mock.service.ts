@@ -25,7 +25,8 @@ export class MockService extends AdapterService {
 
   private availableMockData = {
 		validUsers: ['admin'],
-    register: ['mock']
+    register: ['mock'],
+    projects: ['mock']
 	};
 
   // ### AUTH ###
@@ -47,6 +48,16 @@ export class MockService extends AdapterService {
     } else {
       this.snackbar.open(this.translate.instant('ERROR.REGISTRATION'));
       throw new Error(this.translate.instant('ERROR.REGISTRATION'));
+    }
+  }
+
+  public override createProject(username: string, project: string): Observable<Response> {
+    if(this.availableMockData.projects.includes(project)) {
+      const url = this.basePath + this.auth + `create-project/${project}.json`;
+      return this.http.get<Response>(url);
+    } else {
+      this.snackbar.open(this.translate.instant('ERROR.CREATE_PROJECT'));
+      throw new Error(this.translate.instant('ERROR.CREATE_PROJECT'));
     }
   }
 

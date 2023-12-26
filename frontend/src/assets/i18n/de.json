@@ -8,7 +8,8 @@
         "INVALID_CREDENTIALS": "Daten ungültig!",
         "INTERNAL": "Interner Systemfehler!",
         "REGISTRATION": "Registrierung fehlgeschlagen!",
-        "USERNAME_TAKEN": "Der Nutzername ist bereits vergeben!"
+        "USERNAME_TAKEN": "Der Nutzername ist bereits vergeben!",
+        "CREATE_PROJECT": "Der Projektname ist bereits vergeben!"
     },
     "LOGIN": {
         "HEADER": "Kanban",
@@ -39,7 +40,8 @@
     "CREATE_PROJECT": {
         "HEADLINE": "Sie sind derzeit kein Mitglied eines Projekts",
         "INFO": "Erstellen Sie ein neues Projekt oder bitten Sie ihren Teamleiter ihnen eine Einladung zu schicken",
-        "PROJECT": "Projektname"
+        "PROJECT": "Projektname",
+        "SUCCESS": "Projekt erfolgreich erstellt"
     },
     "NAV": {
         "DASHBOARD": "Startseite",

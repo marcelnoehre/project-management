@@ -73,7 +73,7 @@ export class LoginComponent implements OnInit {
 							if (!created) {
 								this.router.navigateByUrl('login');
 								this.storage.deleteSessionEntry('user');
-							} 
+							}
 						});
 					} else {
 						this.router.navigateByUrl('/');
