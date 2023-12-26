@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
+import { Permission } from 'src/app/enums/permission.enum';
 import { ApiService } from 'src/app/services/api/api.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { StorageService } from 'src/app/services/storage.service';
@@ -43,6 +44,7 @@ export class CreateProjectComponent {
         this.snackbar.open(this.translate.instant(response.message));
         let user = this.getUser();
         user.project = this.project;
+        user.permission = Permission.ADMIN;
         user.isLoggedIn = true;
         this.storage.setSessionEntry('user', user);
         this.dialogRef.close(true);

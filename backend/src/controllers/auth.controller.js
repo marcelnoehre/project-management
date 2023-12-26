@@ -33,7 +33,7 @@ async function register(req, res, next) {
                 fullName: req.body.fullName,
                 language: req.body.language,
                 project: '',
-                role: '',
+                permission: '',
                 isLoggedIn: true
             }
             const usersRef = db.collection('users').doc();
@@ -64,7 +64,8 @@ async function createProject(req, res, next) {
             if (projectSnapshot.empty) {
                 const userDoc = usersSnapshot.docs[0];
                 await userDoc.ref.update({
-                    project: req.body.project
+                    project: req.body.project,
+                    permission: 'ADMIN'
                 });
                 res.json({ message: "CREATE_PROJECT.SUCCESS" });
             } else {

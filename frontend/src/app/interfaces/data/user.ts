@@ -3,6 +3,6 @@ export interface User {
     fullName: string,
     language: string,
     project: string,
-    role: string,
+    permission: string,
     isLoggedIn: string
 }

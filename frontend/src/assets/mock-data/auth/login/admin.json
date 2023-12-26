@@ -3,6 +3,6 @@
     "fullName": "Mock Admin",
     "language": "de-DE",
     "project": "Mock Team",
-    "role": "ADMIN",
+    "permission": "ADMIN",
     "isLoggedIn": true
 }
