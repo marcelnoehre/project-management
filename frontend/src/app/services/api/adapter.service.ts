@@ -14,6 +14,8 @@ export abstract class AdapterService {
 
   public abstract register(username: string, password: string, fullName: string, language: string): Observable<Response>;
 
+  public abstract createProject(username: string, project: string): Observable<Response>;
+
 
   // ### TASKS ###
   public abstract getTaskList(): Observable<State[]>;

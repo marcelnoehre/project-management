@@ -6,6 +6,8 @@ import { StorageService } from '../../services/storage.service';
 import { ApiService } from 'src/app/services/api/api.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { TranslateService } from '@ngx-translate/core';
+import { MatDialog } from '@angular/material/dialog';
+import { CreateProjectComponent } from '../create-project/create-project.component';
 
 @Component({
 	selector: 'app-login',
@@ -24,13 +26,14 @@ export class LoginComponent implements OnInit {
 		private storage: StorageService,
 		private router: Router,
 		private translate: TranslateService,
-		private api: ApiService
+		private api: ApiService,
+		private dialog: MatDialog
 	) {
 		this.createForm();
 	}
 
 	ngOnInit(): void {
-		if (this.user?.['isLoggedIn']) {
+		if (this.user?.['isLoggedIn'] && this.user?.['project'] !== '') {
 			this.router.navigateByUrl('/');
 		}
 		setTimeout(() => this.inputUser.nativeElement.focus());
@@ -62,7 +65,17 @@ export class LoginComponent implements OnInit {
 		const hashedPassword = await this.sha256(this.password);
 		this.api.login(this.username, hashedPassword).subscribe(
 			(user) => {
-				if (user?.isLoggedIn) {
+				this.storage.setSessionEntry('user', user);
+				if (user.project === '') {
+					this.dialog.open(CreateProjectComponent).afterClosed().subscribe((created) => {
+						if (created) {
+							this.router.navigateByUrl('/');
+						} else {
+							this.storage.deleteSessionEntry('user');
+						}
+					});
+				} else {
+					user.isLoggedIn = 'true';
 					this.storage.setSessionEntry('user', user);
 					this.router.navigateByUrl('/');
 				}
@@ -79,10 +92,6 @@ export class LoginComponent implements OnInit {
 
 	public passwordValid(): boolean {
 		return this.loginForm.controls['passwordFormControl'].valid;
-	}
-
-	public forgotPassword(): void {
-		throw new Error('Method not implemented!');
 	}
 
 	public registration(): void {

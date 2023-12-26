@@ -15,7 +15,8 @@ export class ToolbarComponent {
 	}
 
 	public isLoggedIn(): unknown {
-		return this.getUser()?.isLoggedIn;
+		const user = this.getUser();
+		return user?.isLoggedIn && user?.project !== ''
 	}
 
 	private getUser(): any {

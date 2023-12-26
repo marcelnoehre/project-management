@@ -13,6 +13,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegistrationComponent } from './components/registration/registration.component';
+import { CreateProjectComponent } from './components/create-project/create-project.component';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { ToolbarProfileMenuComponent } from './components/toolbar/toolbar-profile-menu/toolbar-profile-menu.component';
@@ -31,6 +32,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     AppComponent,
     LoginComponent,
     RegistrationComponent,
+    CreateProjectComponent,
     SidenavComponent,
     ToolbarComponent,
     ToolbarProfileMenuComponent,

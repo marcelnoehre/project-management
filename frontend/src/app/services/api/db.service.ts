@@ -37,6 +37,14 @@ export class DbService extends AdapterService {
     return this.http.post<Response>(this.basePath + this.auth + 'register', body);
   }
 
+  public override createProject(username: string, project: string): Observable<Response> {
+    const body = {
+      username: username,
+      project: project
+    };
+    return this.http.post<Response>(this.basePath + this.auth + 'create-project', body);
+  }
+
 
   // ### TASKS ###
   public getTaskList(): Observable<State[]> {

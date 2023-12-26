@@ -1,0 +1,40 @@
+<div class="create-project-container" mat-dialog-container>
+	<h1 class="header" mat-dialog-title>{{ 'CREATE_PROJECT.HEADLINE' | translate }}</h1>
+	<mat-dialog-content class="mat-typography">
+		<p>
+			{{ 'CREATE_PROJECT.INFO' | translate }}
+		</p>
+		<form [formGroup]="projectForm">
+			<mat-form-field appearance="outline" class="project-form-field" MatInput>
+				<mat-label> {{ 'CREATE_PROJECT.PROJECT' | translate }} </mat-label>
+				<input
+					id="project-input"
+					name="project"
+					class="project-form-field"
+					formControlName="projectFormControl"
+					placeholder="{{'CREATE_PROJECT.PROJECT'|translate}}"
+					matInput
+				/>
+				<mat-icon matPrefix> add_box </mat-icon>
+			</mat-form-field>
+		</form>
+	</mat-dialog-content>
+	<mat-dialog-actions class="actions">
+		<button
+			(click)="closeDialog(false)"
+			[mat-dialog-close]="false"
+			color="dark" 
+			mat-raised-button
+		>
+			{{ 'APP.CANCEL' | translate }}
+		</button>
+		<button
+			(click)="createProject()"
+			color="dark"
+			[disabled]="!projectValid()"
+			mat-raised-button
+		>
+			{{ 'APP.CREATE' | translate }}
+		</button>
+	</mat-dialog-actions>
+</div>

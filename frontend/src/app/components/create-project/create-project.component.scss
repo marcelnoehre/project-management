@@ -1,0 +1,28 @@
+.create-project-container {
+	padding: 1rem;
+}
+
+mat-dialog-content {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	text-align: center;
+}
+
+.header {
+	text-align: center;
+	font-size: 2rem;
+}
+
+.actions {
+	justify-content: center;
+	& > button {
+		padding-block: 1rem;
+	}
+}
+
+:host ::ng-deep .project-form-field {
+	width: 100%;
+	margin-bottom: 10px;
+	font-size: 15px;
+}
