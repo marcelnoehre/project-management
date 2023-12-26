@@ -13,7 +13,8 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class MockService extends AdapterService {
   private basePath = 'assets/mock-data/';
-  private auth = 'auth/'
+  private auth = 'auth/';
+  private project = 'project/';
 
   constructor(
     private http: HttpClient,
@@ -26,7 +27,7 @@ export class MockService extends AdapterService {
   private availableMockData = {
 		validUsers: ['admin'],
     register: ['mock'],
-    projects: ['mock']
+    projects: ['mockProject']
 	};
 
   // ### AUTH ###
@@ -42,7 +43,7 @@ export class MockService extends AdapterService {
   }
 
   public override register(username: string, password: string, fullName: string, language: string): Observable<Response> {
-    if(this.availableMockData.register.includes(username)) {
+    if (this.availableMockData.register.includes(username)) {
       const url = this.basePath + this.auth + `register/${username}.json`;
       return this.http.get<Response>(url);
     } else {
@@ -52,7 +53,7 @@ export class MockService extends AdapterService {
   }
 
   public override createProject(username: string, project: string): Observable<Response> {
-    if(this.availableMockData.projects.includes(project)) {
+    if (this.availableMockData.projects.includes(project)) {
       const url = this.basePath + this.auth + `create-project/${project}.json`;
       return this.http.get<Response>(url);
     } else {
@@ -61,9 +62,20 @@ export class MockService extends AdapterService {
     }
   }
 
+  // ### PROJECT ###
+  public override getTeamMembers(project: string): Observable<User[]> {
+    if (this.availableMockData.projects.includes(project)) {
+      const url = this.basePath + this.project + `get-team-members/${project}.json`;
+      return this.http.get<User[]>(url);
+    } else {
+      this.snackbar.open(this.translate.instant('ERROR.INTERNAL'));
+      throw new Error(this.translate.instant('ERROR.INTERNAL'));
+    }
+  }
+
 
   // ### TASKS ###
   public getTaskList(): Observable<State[]> {
-    return this.http.get<State[]>('assets/mock-data/task/getTaskList/list.json');
+    return this.http.get<State[]>('assets/mock-data/task/get-task-list/list.json');
   }
 }

@@ -1,0 +1,98 @@
+[
+    {
+        "username": "admin",
+        "fullName": "Mock Admin",
+        "language": "de",
+        "project": "mockProject",
+        "permission": "ADMIN",
+        "isLoggedIn": true
+    },
+    {
+        "username": "admin2",
+        "fullName": "Another Admin",
+        "language": "en",
+        "project": "mockProject",
+        "permission": "ADMIN",
+        "isLoggedIn": true
+    },
+    {
+        "username": "user1",
+        "fullName": "Mock User 1",
+        "language": "de",
+        "project": "mockProject",
+        "permission": "MEMBER",
+        "isLoggedIn": false
+    },
+    {
+        "username": "user2",
+        "fullName": "Mock User 2",
+        "language": "de",
+        "project": "mockProject",
+        "permission": "MEMBER",
+        "isLoggedIn": false
+    },
+    {
+        "username": "user3",
+        "fullName": "Mock User 3",
+        "language": "de",
+        "project": "mockProject",
+        "permission": "MEMBER",
+        "isLoggedIn": false
+    },
+    {
+        "username": "user4",
+        "fullName": "Mock User 4",
+        "language": "de",
+        "project": "mockProject",
+        "permission": "MEMBER",
+        "isLoggedIn": false
+    },
+    {
+        "username": "user5",
+        "fullName": "Mock User 5",
+        "language": "de",
+        "project": "mockProject",
+        "permission": "MEMBER",
+        "isLoggedIn": false
+    },
+    {
+        "username": "user6",
+        "fullName": "Mock User 6",
+        "language": "de",
+        "project": "mockProject",
+        "permission": "MEMBER",
+        "isLoggedIn": false
+    },
+    {
+        "username": "user7",
+        "fullName": "Mock User 7",
+        "language": "de",
+        "project": "mockProject",
+        "permission": "MEMBER",
+        "isLoggedIn": false
+    },
+    {
+        "username": "user8",
+        "fullName": "Mock User 8",
+        "language": "de",
+        "project": "mockProject",
+        "permission": "MEMBER",
+        "isLoggedIn": false
+    },
+    {
+        "username": "user9",
+        "fullName": "Mock User 9",
+        "language": "de",
+        "project": "mockProject",
+        "permission": "MEMBER",
+        "isLoggedIn": false
+    },
+    {
+        "username": "user10",
+        "fullName": "Mock User 10",
+        "language": "de",
+        "project": "mockProject",
+        "permission": "MEMBER",
+        "isLoggedIn": false
+    }
+]
