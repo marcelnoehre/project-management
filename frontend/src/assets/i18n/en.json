@@ -5,7 +5,8 @@
     "ERROR": {
         "INVALID_CREDENTIALS": "Invalid credentials!",
         "INTERNAL": "Internal Server Error!",
-        "REGISTRATION": "Registration failed!"
+        "REGISTRATION": "Registration failed!",
+        "USERNAME_TAKEN": "Username is already taken!"
     },
     "LOGIN": {
         "HEADER": "Kanban",
@@ -22,7 +23,7 @@
         "USERNAME": "username",
         "USERNAME_REQUIRED": "The username is required!",
         "FULLNAME": "Fullname",
-        "FULLNAME_REQUIRED": "The fullname is required!",
+        "FULLNAME_REQUIRED": "The full name is required!",
         "LANGUAGE": "Language",
         "PASSWORD": "password",
         "PASSWORD_REQUIRED": "The password is required!",

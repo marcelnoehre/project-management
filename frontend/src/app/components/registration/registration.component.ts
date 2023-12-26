@@ -69,7 +69,7 @@ export class RegistrationComponent implements OnInit {
 		return this.registrationForm.get('usernameFormControl')?.value;
 	}
   
-  get fullname(): string {
+  get fullName(): string {
     return this.registrationForm.get('fullnameFormControl')?.value;
   }
 
@@ -106,7 +106,7 @@ export class RegistrationComponent implements OnInit {
       this.snackbar.open(this.translate.instant('REGISTRATION.PASSWORDS_DONT_MATCH'));
     } else {
       const hashedPassword = await this.sha256(this.password);
-      this.api.register(this.username, hashedPassword, this.fullname, this.language).subscribe(
+      this.api.register(this.username, hashedPassword, this.fullName, this.language).subscribe(
         (response) => {
           this.snackbar.open(this.translate.instant(response.message));
           this.router.navigateByUrl('/login');

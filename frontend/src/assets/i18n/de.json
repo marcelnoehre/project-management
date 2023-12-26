@@ -5,7 +5,8 @@
     "ERROR": {
         "INVALID_CREDENTIALS": "Daten ungültig!",
         "INTERNAL": "Interner Systemfehler!",
-        "REGISTRATION": "Registrierung fehlgeschlagen!"
+        "REGISTRATION": "Registrierung fehlgeschlagen!",
+        "USERNAME_TAKEN": "Der Nutzername ist bereits vergeben!"
     },
     "LOGIN": {
         "HEADER": "Kanban",

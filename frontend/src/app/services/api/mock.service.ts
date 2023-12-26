@@ -40,7 +40,7 @@ export class MockService extends AdapterService {
 		}
   }
 
-  public override register(username: string, password: string, fullname: string, lang: string): Observable<Response> {
+  public override register(username: string, password: string, fullName: string, language: string): Observable<Response> {
     if(this.availableMockData.register.includes(username)) {
       const url = this.basePath + this.auth + `register/${username}.json`;
       return this.http.get<Response>(url);
