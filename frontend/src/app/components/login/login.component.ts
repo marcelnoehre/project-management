@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { StorageService } from '../../services/storage.service';
 import { ApiService } from 'src/app/services/api/api.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
 	selector: 'app-login',
@@ -22,6 +23,7 @@ export class LoginComponent implements OnInit {
 		private snackbar: SnackbarService,
 		private storage: StorageService,
 		private router: Router,
+		private translate: TranslateService,
 		private api: ApiService
 	) {
 		this.createForm();
@@ -66,7 +68,7 @@ export class LoginComponent implements OnInit {
 				}
 			},
 			(error) => {
-				this.snackbar.open(error.error.message);
+				this.snackbar.open(this.translate.instant(error.error.message));
 			}
 		);
 	}

@@ -2,6 +2,12 @@
     "APP": {
         "OK": "OK"
     },
+    "ERROR": {
+        "INVALID_CREDENTIALS": "Daten ungültig!",
+        "INTERNAL": "Interner Systemfehler!",
+        "REGISTRATION": "Registrierung fehlgeschlagen!",
+        "USERNAME_TAKEN": "Der Nutzername ist bereits vergeben!"
+    },
     "LOGIN": {
         "HEADER": "Kanban",
         "USERNAME": "Nutzername",
@@ -9,20 +15,24 @@
         "USERNAME_REQUIRED": "Benutzername ist ein Pflichtfeld",
 		"PASSWORD_REQUIRED": "Passwort ist ein Pflichtfeld",
 		"LOGIN": "Anmelden",
-        "FORGOT_PASSWORD": "Passwort vergessen?",
         "NOT_REGISTERED": "Noch kein Account? ",
         "REGISTRATION": "Registrieren."
     },
     "REGISTRATION": {
         "HEADER": "Account erstellen",
         "USERNAME": "Nutzername",
-        "USERNAME_REQUIRED": "Der Nutzername ist ein Pflichtfeld1",
+        "USERNAME_REQUIRED": "Der Nutzername ist ein Pflichtfeld!",
+        "FULLNAME": "Vollständiger Name",
+        "FULLNAME_REQUIRED": "Der vollständige Name ist ein Pflichtpfeld!",
+        "LANGUAGE": "Sprache",
         "PASSWORD": "Passwort",
         "PASSWORD_REQUIRED": "Das Passwort ist ein Pflichtfeld!",
         "PASSWORD_REPEAT": "Passwort wiederholen",
         "PASSWORD_REPEAT_REQUIRED": "Wiederholung des Passworts ist ein Pflichtpfeld!",
+        "PASSWORDS_DONT_MATCH": "Die Passwörter stimmen nicht überein!",
         "REGISTER": "Registrieren",
-        "BACK": "Zurück zur Anmeldung"
+        "BACK": "Zurück zur Anmeldung",
+        "SUCCESS": "Account erfolgreich erstellt!"
     },
     "NAV": {
         "DASHBOARD": "Startseite",

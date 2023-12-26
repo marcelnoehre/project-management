@@ -1,8 +1,8 @@
 export interface User {
-    token: string,
     username: string,
     fullName: string,
-    role: string,
     language: string,
+    team: string,
+    role: string,
     isLoggedIn: string
 }

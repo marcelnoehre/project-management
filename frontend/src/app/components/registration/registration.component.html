@@ -17,7 +17,41 @@
 							required
 						/>
 						<mat-icon matPrefix> person </mat-icon>
-						<mat-error *ngIf="!userValid()"> {{ 'REGISTRATION.USERNAME_REQUIRED' | translate }} </mat-error>
+						<mat-error *ngIf="!usernameValid()"> {{ 'REGISTRATION.USERNAME_REQUIRED' | translate }} </mat-error>
+					</mat-form-field>
+				</div>
+				<div>
+					<mat-form-field appearance="outline" class="registration-form-field" MatInput>
+						<mat-label> {{ 'REGISTRATION.FULLNAME' | translate }} </mat-label>
+						<input
+							id="fullName-input"
+                            name="fullName"
+							formControlName="fullnameFormControl"
+							placeholder="{{'REGISTRATION.FULLNAME'|translate}}"
+							matInput
+							required
+						/>
+						<mat-icon matPrefix> badge </mat-icon>
+						<mat-error *ngIf="!fullnameValid()"> {{ 'REGISTRATION.FULLNAME_REQUIRED' | translate }} </mat-error>
+					</mat-form-field>
+				</div>
+				<div>
+					<mat-form-field appearance="outline" class="registration-form-field">
+						<mat-label>{{ 'REGISTRATION.LANGUAGE' | translate }}</mat-label>
+						<mat-select 
+							id="language-select"
+							name="language"
+							formControlName="languageFormControl"
+							placeholder="{{'REGISTRATION.LANGUAGE'|translate}}"
+						>
+							<mat-option
+							*ngFor="let lang of languages"
+							[value]="lang.key"
+							>
+							{{ lang.label }}
+							</mat-option>
+						</mat-select>
+						<mat-icon matPrefix> language </mat-icon>
 					</mat-form-field>
 				</div>
 				<div>

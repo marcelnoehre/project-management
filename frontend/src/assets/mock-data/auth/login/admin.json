@@ -1,8 +1,8 @@
 {
-    "token": 1634113024,
     "username": "admin",
     "fullName": "Mock Admin",
-    "role": "ADMIN",
     "language": "de-DE",
+    "team": "Mock Team",
+    "role": "ADMIN",
     "isLoggedIn": true
 }
