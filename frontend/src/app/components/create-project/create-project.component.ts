@@ -43,13 +43,14 @@ export class CreateProjectComponent {
         this.snackbar.open(this.translate.instant(response.message));
         let user = this.getUser();
         user.project = this.project;
+        user.isLoggedIn = true;
         this.storage.setSessionEntry('user', user);
+        this.dialogRef.close(true);
       },
       (error) => {
-        this.snackbar.open(error.error.message);
+        this.snackbar.open(this.translate.instant(error.error.message));
       }
     );
-    this.dialogRef.close(true);
   }
 
   createForm() {

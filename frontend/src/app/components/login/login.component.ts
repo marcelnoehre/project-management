@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
-		if (this.user?.['isLoggedIn']) {
+		if (this.user?.['isLoggedIn'] && this.user?.['project'] !== '') {
 			this.router.navigateByUrl('/');
 		}
 		setTimeout(() => this.inputUser.nativeElement.focus());
@@ -65,18 +65,19 @@ export class LoginComponent implements OnInit {
 		const hashedPassword = await this.sha256(this.password);
 		this.api.login(this.username, hashedPassword).subscribe(
 			(user) => {
-				if (user?.isLoggedIn) {
+				this.storage.setSessionEntry('user', user);
+				if (user.project === '') {
+					this.dialog.open(CreateProjectComponent).afterClosed().subscribe((created) => {
+						if (created) {
+							this.router.navigateByUrl('/');
+						} else {
+							this.storage.deleteSessionEntry('user');
+						}
+					});
+				} else {
+					user.isLoggedIn = 'true';
 					this.storage.setSessionEntry('user', user);
-					if (user.project === '') {
-						this.dialog.open(CreateProjectComponent).afterClosed().subscribe((created) => {
-							if (!created) {
-								this.storage.deleteSessionEntry('user');
-							}
-						});
-					} else {
-						this.router.navigateByUrl('/');
-					}
-					
+					this.router.navigateByUrl('/');
 				}
 			},
 			(error) => {
@@ -91,10 +92,6 @@ export class LoginComponent implements OnInit {
 
 	public passwordValid(): boolean {
 		return this.loginForm.controls['passwordFormControl'].valid;
-	}
-
-	public forgotPassword(): void {
-		throw new Error('Method not implemented!');
 	}
 
 	public registration(): void {

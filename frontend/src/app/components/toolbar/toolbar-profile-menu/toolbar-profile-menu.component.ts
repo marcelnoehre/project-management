@@ -23,8 +23,8 @@ export class ToolbarProfileMenuComponent {
 	}
 
 	public logout(): void {
-    this.storage.deleteSessionEntry('user');
-    this.router.navigateByUrl('/login');
+    	this.storage.deleteSessionEntry('user');
+    	this.router.navigateByUrl('/login');
 	}
 
 	public getFullName() {
