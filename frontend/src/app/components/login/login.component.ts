@@ -67,11 +67,9 @@ export class LoginComponent implements OnInit {
 			(user) => {
 				if (user?.isLoggedIn) {
 					this.storage.setSessionEntry('user', user);
-					this.router.navigateByUrl('/');
 					if (user.project === '') {
 						this.dialog.open(CreateProjectComponent).afterClosed().subscribe((created) => {
 							if (!created) {
-								this.router.navigateByUrl('login');
 								this.storage.deleteSessionEntry('user');
 							}
 						});

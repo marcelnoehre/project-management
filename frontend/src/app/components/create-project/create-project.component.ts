@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
@@ -11,7 +11,7 @@ import { StorageService } from 'src/app/services/storage.service';
   templateUrl: './create-project.component.html',
   styleUrls: ['./create-project.component.scss']
 })
-export class CreateProjectComponent implements OnDestroy {
+export class CreateProjectComponent {
   projectForm!: FormGroup;
   created: boolean = false;
 
@@ -23,10 +23,6 @@ export class CreateProjectComponent implements OnDestroy {
     private translate: TranslateService
   ) {
     this.createForm();
-  }
-
-  ngOnDestroy(): void {
-    if (!this.created) this.dialogRef.close(false);
   }
 
   closeDialog(res: boolean): void {
