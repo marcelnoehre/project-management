@@ -9,6 +9,7 @@ import { ApiService } from 'src/app/services/api/api.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { StorageService } from 'src/app/services/storage.service';
 import { DialogComponent } from '../dialog/dialog.component';
+import { Language } from 'src/app/interfaces/language';
 
 @Component({
   selector: 'app-settings',
@@ -18,6 +19,16 @@ import { DialogComponent } from '../dialog/dialog.component';
 export class SettingsComponent implements OnInit {
   inviteForm!: FormGroup;
   members: User[] = [];
+  languages: Language[] = [
+    {
+      key: 'en',
+      label: 'English'
+    },
+    {
+      key: 'de',
+      label: 'Deutsch'
+    }
+  ];
 
   constructor(
     private api: ApiService,
@@ -67,6 +78,11 @@ export class SettingsComponent implements OnInit {
 		return this.inviteForm.get('usernameFormControl')?.value;
 	}
 
+  getLanguage(key: string): string {
+    const language = this.languages.find(lang => lang.key === key);
+    return language ? language.label : key;
+  }
+
   usernameValid(): boolean {
     return this.inviteForm.controls['usernameFormControl'].valid;
   }
@@ -75,6 +91,7 @@ export class SettingsComponent implements OnInit {
     this.api.inviteUser(this.username, this.getUser().project).subscribe(
       (user) => {
         this.members.push(user);
+        this.inviteForm.controls['usernameFormControl'].reset();
         this.snackbar.open(this.translate.instant('SETTINGS.INVITE_SUCCESS'));
       },
       (error) => {

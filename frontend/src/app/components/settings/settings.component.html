@@ -1,17 +1,17 @@
 <div class="settings-container">
     <table>
         <tr class="header py-2">
-            <th>Fullname</th>
-            <th>Username</th>
-            <th>LANGUAGE</th>
-            <th>PERMISSION</th>
-            <th>ACTIONS</th>
+            <th>{{ 'SETTINGS.FULLNAME' | translate }}</th>
+            <th>{{ 'SETTINGS.USERNAME' | translate }}</th>
+            <th>{{ 'SETTINGS.LANGUAGE' | translate }}</th>
+            <th>{{ 'SETTINGS.PERMISSION' | translate }}</th>
+            <th>{{ 'SETTINGS.ACTIONS' | translate }}</th>
         </tr>
         <div class="content">
             <tr *ngFor="let member of members; index as i">
                 <td>{{ member.fullName }}</td>
                 <td>{{ member.username }}</td>
-                <td>{{ member.language }}</td>
+                <td>{{ getLanguage(member.language) }}</td>
                 <td>{{ member.permission }}</td>
                 <td>
                     <div>

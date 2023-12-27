@@ -53,7 +53,11 @@
         "KANBAN": "Board"
     },
     "SETTINGS": {
-        "USERNAME": "username",
+        "FULLNAME": "Fullname",
+        "USERNAME": "Username",
+        "LANGUAGE": "Language",
+        "PERMISSION": "Permission",
+        "ACTIONS": "Actions",
         "INVITE_USER": "Invite a user to the project",
         "INVITE_SUCCESS": "Invitation delivered successfully!",
         "REMOVE_HEADLINE": "Remove {{username}}?",
