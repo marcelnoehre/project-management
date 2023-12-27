@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { Permission } from 'src/app/enums/permission.enum';
 import { User } from 'src/app/interfaces/data/user';
@@ -12,6 +13,7 @@ import { StorageService } from 'src/app/services/storage.service';
   styleUrls: ['./settings.component.scss']
 })
 export class SettingsComponent implements OnInit {
+  addForm!: FormGroup;
   members: User[] = [];
 
   constructor(
@@ -20,7 +22,7 @@ export class SettingsComponent implements OnInit {
     private snackbar: SnackbarService,
     private translate: TranslateService
   ) {
-
+    this.createForm();
   }
 
   ngOnInit(): void {
@@ -45,9 +47,20 @@ export class SettingsComponent implements OnInit {
       }
     );
   }
+  
+  createForm() {
+    this.addForm = new FormGroup({
+      addFormControl: new FormControl('', {validators: [Validators.required] })
+    });
+  }
 
 	private getUser(): any {
 		return this.storage.getSessionEntry('user');
 	}
+
+  usernameValid(): boolean {
+    return this.addForm.controls['addFormControl'].valid;
+  }
+
 
 }

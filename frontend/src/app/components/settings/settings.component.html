@@ -1,17 +1,49 @@
 <div class="settings-container">
     <table>
-        <tr class="py-2">
-            <th>Username</th>
+        <tr class="header py-2">
             <th>Fullname</th>
+            <th>Username</th>
             <th>LANGUAGE</th>
             <th>PERMISSION</th>
+            <th>ACTIONS</th>
         </tr>
-        <tr *ngFor="let member of members" class="py-2">
-            <td>{{ member.username }}</td>
-            <td>{{ member.fullName }}</td>
-            <td>{{ member.language }}</td>
-            <td>{{ member.permission }}</td>
-        </tr>
+        <div class="content">
+            <tr *ngFor="let member of members">
+                <td>{{ member.fullName }}</td>
+                <td>{{ member.username }}</td>
+                <td>{{ member.language }}</td>
+                <td>{{ member.permission }}</td>
+                <td>
+                    <div class="actions">
+                        <button mat-fab color="primary">
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                        <button mat-fab color="warn">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        </div>
     </table>
-
+    <form [formGroup]="addForm" class="add">
+        <p>{{ 'SETTINGS.ADD_USER' | translate }}</p>
+        <div style="display: flex;">
+            <mat-form-field appearance="outline" class="add-form-field" MatInput>
+                <mat-label> {{ 'SETTINGS.USERNAME' | translate }} </mat-label>
+                <input
+                    id="add-input"
+                    name="add"
+                    class="add-form-field"
+                    formControlName="addFormControl"
+                    placeholder="{{'SETTINGS.USERNAME'|translate}}"
+                    matInput
+                />
+                <mat-icon matPrefix> person </mat-icon>
+            </mat-form-field>
+            <button mat-fab color="primary" [disabled]="!usernameValid()">
+                <mat-icon>add</mat-icon>
+            </button>
+        </div>
+    </form>
 </div>

@@ -50,6 +50,10 @@
         "CREATE_TASK": "Create task",
         "KANBAN": "Board"
     },
+    "SETTINGS": {
+        "USERNAME": "username",
+        "ADD_USER": "Add a user to the project"
+    },
     "TASK_STATE": {
         "NO_STATUS": "No status",
         "TODO": "ToDo",
