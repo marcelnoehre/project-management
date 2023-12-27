@@ -46,7 +46,7 @@ async function getTeamMembers(req, res, next) {
 async function inviteUser(req, res, next) {
     try {
         const usersCollection = db.collection('users');
-        const usersSnapshot = await usersCollection.where('username', '==', req.body.username).get();
+        let usersSnapshot = await usersCollection.where('username', '==', req.body.username).get();
         if (usersSnapshot.empty) {
             res.status(404).send({ message: 'ERROR.NO_USER' });
         } else {
@@ -55,7 +55,27 @@ async function inviteUser(req, res, next) {
                 project: req.body.project,
                 permission: 'INVITED'
             });
-            res.json(userDoc.data());
+            usersSnapshot = await usersCollection.where('username', '==', req.body.username).get();
+            res.json(usersSnapshot.docs[0].data());
+        }
+    } catch (err) {
+        next(err);
+    }
+}
+
+async function removeUser(req, res, next) {
+    try {
+        const usersCollection = db.collection('users');
+        const usersSnapshot = await usersCollection.where('username', '==', req.body.username).get();
+        if (usersSnapshot.empty) {
+            res.status(500).send({ message: 'ERROR.INTERNAL' });
+        } else {
+            const userDoc = usersSnapshot.docs[0];
+            await userDoc.ref.update({
+                project: '',
+                permission: ''
+            });
+            res.json({message: 'SETTINGS.REMOVE_SUCCESS'});
         }
     } catch (err) {
         next(err);
@@ -65,5 +85,6 @@ async function inviteUser(req, res, next) {
 module.exports = {
     createProject,
     getTeamMembers,
-    inviteUser
+    inviteUser,
+    removeUser
 };
