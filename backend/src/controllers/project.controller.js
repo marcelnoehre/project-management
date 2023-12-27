@@ -63,6 +63,32 @@ async function inviteUser(req, res, next) {
     }
 }
 
+async function handleInvite(req, res, next) {
+    try {
+        const usersCollection = db.collection('users');
+        const usersSnapshot = await usersCollection.where('username', '==', req.body.username).get();
+        if (usersSnapshot.empty) {
+            res.status(500).send({ message: 'ERROR.INTERNAL' });
+        } else {
+            const userDoc = usersSnapshot.docs[0];
+            if (req.body.decision) {
+                await userDoc.ref.update({
+                    permission: 'MEMBER'
+                });
+                res.json({ message: 'LOGIN.INVITE_ACCEPTED'});
+            } else {
+                await userDoc.ref.update({
+                    project: '',
+                    permission: ''
+                });
+                res.json({ message: 'LOGIN.INVITE_REJECTED'});
+            }
+        }
+    } catch (err) {
+        next(err);
+    }
+}
+
 async function removeUser(req, res, next) {
     try {
         const usersCollection = db.collection('users');
@@ -86,5 +112,6 @@ module.exports = {
     createProject,
     getTeamMembers,
     inviteUser,
+    handleInvite,
     removeUser
 };
