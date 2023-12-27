@@ -60,6 +60,14 @@ export class DbService extends AdapterService {
     return this.http.post<User>(this.basePath + this.project + 'invite', body);
   }
 
+  public override handleInvite(username: string, decision: boolean): Observable<Response> {
+    const body = {
+      username: username,
+      decision: decision
+    };
+    return this.http.post<Response>(this.basePath + this.project + 'handleInvite', body);
+  }
+
   public override removeUser(username: string): Observable<Response> {
     const body = {
       username: username

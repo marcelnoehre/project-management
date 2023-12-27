@@ -25,7 +25,7 @@ export class MockService extends AdapterService {
   }
 
   private availableMockData = {
-		user: ['owner', 'admin'],
+		user: ['owner', 'admin', 'invited'],
     invitable: ['user'],
     register: ['mock'],
     projects: ['mockProject']
@@ -82,6 +82,11 @@ export class MockService extends AdapterService {
       this.snackbar.open(this.translate.instant('ERROR.NO_USER'));
       throw new Error(this.translate.instant('ERROR.NO_USER'));
     }
+  }
+
+  public override handleInvite(username: string, decision: boolean): Observable<Response> {
+    const url = this.basePath + this.project + `handleInvite/${decision}.json`;
+    return this.http.get<Response>(url);
   }
 
   public override removeUser(username: string): Observable<Response> {

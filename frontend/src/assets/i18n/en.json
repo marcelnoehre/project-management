@@ -21,7 +21,13 @@
 		"PASSWORD_REQUIRED": "The password is required!",
 		"LOGIN": "login",
         "NOT_REGISTERED": "No account yet? ",
-        "REGISTRATION": "Register."
+        "REGISTRATION": "Register.",
+        "INVITE_HEADLINE": "Invitation",
+        "INVITE_INFO": "You have received an invitation to the project {{project}}",
+        "INVITE_ACCEPT": "Accept",
+        "INVITE_REJECT": "Reject",
+        "INVITE_ACCEPTED": "Joining successful!",
+        "INVITE_REJECTED": "The invitation has been deleted! Create a project or ask for a new invitation."
     },
     "REGISTRATION": {
         "HEADER": "Create account",

@@ -22,6 +22,8 @@ export abstract class AdapterService {
 
   public abstract inviteUser(username: string, project: string): Observable<User>;
 
+  public abstract handleInvite(username: string, decision: boolean): Observable<Response>;
+
   public abstract removeUser(username: string): Observable<Response>;
 
 

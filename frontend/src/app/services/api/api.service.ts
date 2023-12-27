@@ -60,6 +60,10 @@ export class ApiService {
 		return this.adapter.inviteUser(username, project);
 	}
 
+	public handleInvite(username: string, decision: boolean): Observable<Response> {
+		return this.adapter.handleInvite(username, decision);
+	}
+
 	public removeUser(username: string): Observable<Response> {
 		return this.adapter.removeUser(username);
 	}
