@@ -55,8 +55,10 @@
     "SETTINGS": {
         "USERNAME": "Benutzername",
         "INVITE_USER": "Benutzer zum Projekt einladen",
+        "INVITE_SUCCESS": "Einladung erfolgreich zugestellt!",
         "REMOVE_HEADLINE": "{{username}} entfernen?",
-        "REMOVE_DESCRIPTION": "Wenn Sie den Benutzer entfernen, hat dieser keinen Zugriff mehr auf das Projekt. Vorhandene Aufgaben bleiben weiterhin unter diesem Benutzernamen gelistet."
+        "REMOVE_DESCRIPTION": "Wenn Sie den Benutzer entfernen, hat dieser keinen Zugriff mehr auf das Projekt. Vorhandene Aufgaben bleiben weiterhin unter diesem Benutzernamen gelistet.",
+        "REMOVE_SUCCESS": "Benutzer wurde aus dem Projekt entfernt!"
     },
     "TASK_STATE": {
         "NO_STATUS": "Kein Status",

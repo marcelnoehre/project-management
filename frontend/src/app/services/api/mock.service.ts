@@ -75,13 +75,18 @@ export class MockService extends AdapterService {
   }
 
   public override inviteUser(username: string, project: string): Observable<User> {
-    if(this.availableMockData.invitable.includes(username)) {
+    if (this.availableMockData.invitable.includes(username)) {
       const url = this.basePath + this.project + `invite/${username}.json`;
       return this.http.get<User>(url);
     } else {
       this.snackbar.open(this.translate.instant('ERROR.NO_USER'));
       throw new Error(this.translate.instant('ERROR.NO_USER'));
     }
+  }
+
+  public override removeUser(username: string): Observable<Response> {
+    const url = this.basePath + this.project + 'remove/user.json';
+    return this.http.get<Response>(url);
   }
 
 

@@ -60,6 +60,10 @@ export class ApiService {
 		return this.adapter.inviteUser(username, project);
 	}
 
+	public removeUser(username: string): Observable<Response> {
+		return this.adapter.removeUser(username);
+	}
+
 
 	// ### TASKS ###
 	public getTaskList(): Observable<State[]> {

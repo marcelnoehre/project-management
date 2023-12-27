@@ -75,6 +75,7 @@ export class SettingsComponent implements OnInit {
     this.api.inviteUser(this.username, this.getUser().project).subscribe(
       (user) => {
         this.members.push(user);
+        this.snackbar.open(this.translate.instant('SETTINGS.INVITE_SUCCESS'));
       },
       (error) => {
         this.snackbar.open(this.translate.instant(error.error.message));
@@ -82,7 +83,7 @@ export class SettingsComponent implements OnInit {
     );
   }
 
-  removeUser(username: string): void {
+  removeUser(username: string, index: number): void {
     const data = {
       headline: this.translate.instant('SETTINGS.REMOVE_HEADLINE', { username: username }),
       description: this.translate.instant('SETTINGS.REMOVE_DESCRIPTION'),
@@ -91,8 +92,15 @@ export class SettingsComponent implements OnInit {
     };
     this.dialog.open(DialogComponent, { data, ...{} }).afterClosed().subscribe((remove) => {
       if (remove) {
-        // TODO: remove user from database
-        // TODO: adjust array
+        this.api.removeUser(username).subscribe(
+          (response) => {
+            this.members.splice(index, 1);
+            this.snackbar.open(this.translate.instant(response.message));
+          },
+          (error) => {
+            this.snackbar.open(this.translate.instant(error.error.message));
+          }
+        )
       }
     });
   }

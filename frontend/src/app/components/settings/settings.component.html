@@ -8,14 +8,14 @@
             <th>ACTIONS</th>
         </tr>
         <div class="content">
-            <tr *ngFor="let member of members">
+            <tr *ngFor="let member of members; index as i">
                 <td>{{ member.fullName }}</td>
                 <td>{{ member.username }}</td>
                 <td>{{ member.language }}</td>
                 <td>{{ member.permission }}</td>
                 <td>
                     <div>
-                        <button mat-fab color="warn" (click)="removeUser(member.username)" [disabled]="disableAction(member.username)">
+                        <button mat-fab color="warn" (click)="removeUser(member.username, i)" [disabled]="disableAction(member.username)">
                             <mat-icon>delete</mat-icon>
                         </button>
                     </div>
