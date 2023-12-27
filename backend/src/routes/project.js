@@ -4,5 +4,6 @@ const projectController = require('../controllers/project.controller');
 
 router.post('/create-project', projectController.createProject);
 router.get('/get-team-members', projectController.getTeamMembers);
+router.post('/invite', projectController.inviteUser);
 
 module.exports = router;
