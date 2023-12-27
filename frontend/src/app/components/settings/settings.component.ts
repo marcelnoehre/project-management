@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Permission } from 'src/app/enums/permission.enum';
 import { User } from 'src/app/interfaces/data/user';
 import { ApiService } from 'src/app/services/api/api.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { StorageService } from 'src/app/services/storage.service';
+import { DialogComponent } from '../dialog/dialog.component';
 
 @Component({
   selector: 'app-settings',
@@ -20,7 +23,9 @@ export class SettingsComponent implements OnInit {
     private api: ApiService,
     private storage: StorageService,
     private snackbar: SnackbarService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private dialog: MatDialog,
+    private router: Router
   ) {
     this.createForm();
   }
@@ -50,7 +55,7 @@ export class SettingsComponent implements OnInit {
   
   createForm() {
     this.addForm = new FormGroup({
-      addFormControl: new FormControl('', {validators: [Validators.required] })
+      usernameFormControl: new FormControl('', {validators: [Validators.required] })
     });
   }
 
@@ -58,9 +63,35 @@ export class SettingsComponent implements OnInit {
 		return this.storage.getSessionEntry('user');
 	}
 
+  get username(): string {
+		return this.addForm.get('usernameFormControl')?.value;
+	}
+
   usernameValid(): boolean {
-    return this.addForm.controls['addFormControl'].valid;
+    return this.addForm.controls['usernameFormControl'].valid;
   }
 
+  addUser(): void {
+    // TODO: add user to database
+  }
+
+  removeUser(username: string): void {
+    const data = {
+      headline: this.translate.instant('SETTINGS.REMOVE_HEADLINE', { username: username }),
+      description: this.translate.instant('SETTINGS.REMOVE_DESCRIPTION'),
+      falseButton: this.translate.instant('APP.CANCEL'),
+      trueButton: this.translate.instant('APP.REMOVE')
+    };
+    this.dialog.open(DialogComponent, { data, ...{} }).afterClosed().subscribe((remove) => {
+      if (remove) {
+        // TODO: remove user from database
+        // TODO: adjust array
+      }
+    });
+  }
+
+  disableAction(username: string) {
+    return this.getUser().username === username;
+  }
 
 }

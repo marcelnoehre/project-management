@@ -2,7 +2,8 @@
     "APP": {
         "OK": "OK",
         "CANCEL": "Abbrechen",
-        "CREATE": "Erstellen"
+        "CREATE": "Erstellen",
+        "REMOVE": "Entfernen"
     },
     "ERROR": {
         "INVALID_CREDENTIALS": "Daten ungültig!",
@@ -52,7 +53,9 @@
     },
     "SETTINGS": {
         "USERNAME": "Benutzername",
-        "ADD_USER": "Benutzer zum Projekt hinzufügen"
+        "ADD_USER": "Benutzer zum Projekt hinzufügen",
+        "REMOVE_HEADLINE": "{{username}} entfernen?",
+        "REMOVE_DESCRIPTION": "Wenn Sie den Benutzer entfernen, hat dieser keinen Zugriff mehr auf das Projekt. Vorhandene Aufgaben bleiben weiterhin unter diesem Benutzernamen gelistet."
     },
     "TASK_STATE": {
         "NO_STATUS": "Kein Status",

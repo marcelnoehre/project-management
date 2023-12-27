@@ -2,7 +2,8 @@
     "APP": {
         "OK": "OK",
         "CANCEL": "Cancel",
-        "CREATE": "Create"
+        "CREATE": "Create",
+        "REMOVE": "Remove"
     },
     "ERROR": {
         "INVALID_CREDENTIALS": "Invalid credentials!",
@@ -52,7 +53,9 @@
     },
     "SETTINGS": {
         "USERNAME": "username",
-        "ADD_USER": "Add a user to the project"
+        "ADD_USER": "Add a user to the project",
+        "REMOVE_HEADLINE": "Remove {{username}}?",
+        "REMOVE_DESCRIPTION": "If you remove the user, he or she will no longer have access to the project. Existing tasks remain listed under this username."
     },
     "TASK_STATE": {
         "NO_STATUS": "No status",

@@ -14,11 +14,8 @@
                 <td>{{ member.language }}</td>
                 <td>{{ member.permission }}</td>
                 <td>
-                    <div class="actions">
-                        <button mat-fab color="primary">
-                            <mat-icon>edit</mat-icon>
-                        </button>
-                        <button mat-fab color="warn">
+                    <div>
+                        <button mat-fab color="warn" (click)="removeUser(member.username)" [disabled]="disableAction(member.username)">
                             <mat-icon>delete</mat-icon>
                         </button>
                     </div>
@@ -29,19 +26,19 @@
     <form [formGroup]="addForm" class="add">
         <p>{{ 'SETTINGS.ADD_USER' | translate }}</p>
         <div style="display: flex;">
-            <mat-form-field appearance="outline" class="add-form-field" MatInput>
+            <mat-form-field appearance="outline" class="username-form-field" MatInput>
                 <mat-label> {{ 'SETTINGS.USERNAME' | translate }} </mat-label>
                 <input
-                    id="add-input"
-                    name="add"
-                    class="add-form-field"
-                    formControlName="addFormControl"
+                    id="username-input"
+                    name="username"
+                    class="username-form-field"
+                    formControlName="usernameFormControl"
                     placeholder="{{'SETTINGS.USERNAME'|translate}}"
                     matInput
                 />
-                <mat-icon matPrefix> person </mat-icon>
+                <mat-icon matPrefix> group_add </mat-icon>
             </mat-form-field>
-            <button mat-fab color="primary" [disabled]="!usernameValid()">
+            <button mat-fab color="primary" (click)="addUser()" [disabled]="!usernameValid()">
                 <mat-icon>add</mat-icon>
             </button>
         </div>

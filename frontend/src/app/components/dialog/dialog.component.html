@@ -1,7 +1,7 @@
 <div class="dialog-container" mat-dialog-container>
-	<h1 class="header" mat-dialog-title>{{ headline | translate }}</h1>
+	<h1 class="header" mat-dialog-title>{{ headline }}</h1>
 	<mat-dialog-content class="mat-typography">
-			{{ description | translate }}
+			{{ description }}
 	</mat-dialog-content>
 	<mat-dialog-actions class="actions">
 		<button
@@ -10,7 +10,7 @@
 			color="dark" 
 			mat-raised-button
 		>
-			{{ falseButton | translate }}
+			{{ falseButton }}
 		</button>
 		<button
 			(click)="closeDialog(true)"
@@ -18,7 +18,7 @@
             color="dark"
 			mat-raised-button
 		>
-			{{ trueButton | translate }}
+			{{ trueButton }}
 		</button>
 	</mat-dialog-actions>
 </div>
