@@ -10,7 +10,8 @@
         "INTERNAL": "Interner Systemfehler!",
         "REGISTRATION": "Registrierung fehlgeschlagen!",
         "USERNAME_TAKEN": "Der Nutzername ist bereits vergeben!",
-        "CREATE_PROJECT": "Der Projektname ist bereits vergeben!"
+        "CREATE_PROJECT": "Der Projektname ist bereits vergeben!",
+        "NO_USER": "Benutzer konnte nicht gefunden werden!"
     },
     "LOGIN": {
         "HEADER": "Kanban",
@@ -53,7 +54,7 @@
     },
     "SETTINGS": {
         "USERNAME": "Benutzername",
-        "ADD_USER": "Benutzer zum Projekt hinzufügen",
+        "INVITE_USER": "Benutzer zum Projekt einladen",
         "REMOVE_HEADLINE": "{{username}} entfernen?",
         "REMOVE_DESCRIPTION": "Wenn Sie den Benutzer entfernen, hat dieser keinen Zugriff mehr auf das Projekt. Vorhandene Aufgaben bleiben weiterhin unter diesem Benutzernamen gelistet."
     },

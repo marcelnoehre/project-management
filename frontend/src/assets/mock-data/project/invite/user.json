@@ -1,0 +1,8 @@
+{
+    "username": "user",
+    "fullName": "Mock User",
+    "language": "de",
+    "project": "mockProject",
+    "permission": "INVITED",
+    "isLoggedIn": false
+}

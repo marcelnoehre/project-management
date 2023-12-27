@@ -16,7 +16,7 @@ import { DialogComponent } from '../dialog/dialog.component';
   styleUrls: ['./settings.component.scss']
 })
 export class SettingsComponent implements OnInit {
-  addForm!: FormGroup;
+  inviteForm!: FormGroup;
   members: User[] = [];
 
   constructor(
@@ -54,7 +54,7 @@ export class SettingsComponent implements OnInit {
   }
   
   createForm() {
-    this.addForm = new FormGroup({
+    this.inviteForm = new FormGroup({
       usernameFormControl: new FormControl('', {validators: [Validators.required] })
     });
   }
@@ -64,15 +64,22 @@ export class SettingsComponent implements OnInit {
 	}
 
   get username(): string {
-		return this.addForm.get('usernameFormControl')?.value;
+		return this.inviteForm.get('usernameFormControl')?.value;
 	}
 
   usernameValid(): boolean {
-    return this.addForm.controls['usernameFormControl'].valid;
+    return this.inviteForm.controls['usernameFormControl'].valid;
   }
 
-  addUser(): void {
-    // TODO: add user to database
+  inviteUser(): void {
+    this.api.inviteUser(this.username, this.getUser().project).subscribe(
+      (user) => {
+        this.members.push(user);
+      },
+      (error) => {
+        this.snackbar.open(this.translate.instant(error.error.message));
+      }
+    );
   }
 
   removeUser(username: string): void {

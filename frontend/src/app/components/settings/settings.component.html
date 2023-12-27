@@ -23,8 +23,8 @@
             </tr>
         </div>
     </table>
-    <form [formGroup]="addForm" class="add">
-        <p>{{ 'SETTINGS.ADD_USER' | translate }}</p>
+    <form [formGroup]="inviteForm" class="invite">
+        <p>{{ 'SETTINGS.INVITE_USER' | translate }}</p>
         <div style="display: flex;">
             <mat-form-field appearance="outline" class="username-form-field" MatInput>
                 <mat-label> {{ 'SETTINGS.USERNAME' | translate }} </mat-label>
@@ -38,7 +38,7 @@
                 />
                 <mat-icon matPrefix> group_add </mat-icon>
             </mat-form-field>
-            <button mat-fab color="primary" (click)="addUser()" [disabled]="!usernameValid()">
+            <button mat-fab color="primary" (click)="inviteUser()" [disabled]="!usernameValid()">
                 <mat-icon>add</mat-icon>
             </button>
         </div>

@@ -56,6 +56,10 @@ export class ApiService {
 		return this.adapter.getTeamMembers(project);
 	}
 
+	public inviteUser(username: string, project: string): Observable<User> {
+		return this.adapter.inviteUser(username, project);
+	}
+
 
 	// ### TASKS ###
 	public getTaskList(): Observable<State[]> {

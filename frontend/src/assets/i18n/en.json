@@ -10,7 +10,8 @@
         "INTERNAL": "Internal Server Error!",
         "REGISTRATION": "Registration failed!",
         "USERNAME_TAKEN": "The username is already taken!",
-        "CREATE_PROJECT": "The project name is already taken!"
+        "CREATE_PROJECT": "The project name is already taken!",
+        "NO_USER": "User could not be found!"
     },
     "LOGIN": {
         "HEADER": "Kanban",
@@ -53,7 +54,7 @@
     },
     "SETTINGS": {
         "USERNAME": "username",
-        "ADD_USER": "Add a user to the project",
+        "INVITE_USER": "Invite a user to the project",
         "REMOVE_HEADLINE": "Remove {{username}}?",
         "REMOVE_DESCRIPTION": "If you remove the user, he or she will no longer have access to the project. Existing tasks remain listed under this username."
     },

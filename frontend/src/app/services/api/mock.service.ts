@@ -25,7 +25,8 @@ export class MockService extends AdapterService {
   }
 
   private availableMockData = {
-		validUsers: ['owner', 'admin'],
+		user: ['owner', 'admin'],
+    invitable: ['user'],
     register: ['mock'],
     projects: ['mockProject']
 	};
@@ -33,7 +34,7 @@ export class MockService extends AdapterService {
   // ### AUTH ###
   public override login(username: string, password: string): Observable<User> {
     const hash = '03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4'; //pw = 1234
-    if (this.availableMockData.validUsers.includes(username) && password === hash) {
+    if (this.availableMockData.user.includes(username) && password === hash) {
       const url = this.basePath + this.auth + `login/${username}.json`;
 			return this.http.get<User>(url);
 		} else {
@@ -70,6 +71,16 @@ export class MockService extends AdapterService {
     } else {
       this.snackbar.open(this.translate.instant('ERROR.INTERNAL'));
       throw new Error(this.translate.instant('ERROR.INTERNAL'));
+    }
+  }
+
+  public override inviteUser(username: string, project: string): Observable<User> {
+    if(this.availableMockData.invitable.includes(username)) {
+      const url = this.basePath + this.project + `invite/${username}.json`;
+      return this.http.get<User>(url);
+    } else {
+      this.snackbar.open(this.translate.instant('ERROR.NO_USER'));
+      throw new Error(this.translate.instant('ERROR.NO_USER'));
     }
   }
 
