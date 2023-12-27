@@ -8,6 +8,8 @@ import { SnackbarService } from 'src/app/services/snackbar.service';
 import { TranslateService } from '@ngx-translate/core';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateProjectComponent } from '../create-project/create-project.component';
+import { Permission } from 'src/app/enums/permission.enum';
+import { DialogComponent } from '../dialog/dialog.component';
 
 @Component({
 	selector: 'app-login',
@@ -73,6 +75,31 @@ export class LoginComponent implements OnInit {
 						} else {
 							this.storage.deleteSessionEntry('user');
 						}
+					});
+				} else if (user.permission === Permission.INVITED) {
+					const data = {
+						headline: this.translate.instant('LOGIN.INVITE_HEADLINE'),
+						description: this.translate.instant('LOGIN.INVITE_INFO', { project: user.project}),
+						falseButton: this.translate.instant('LOGIN.INVITE_REJECT'),
+						trueButton: this.translate.instant('LOGIN.INVITE_ACCEPT')
+					};
+					this.dialog.open(DialogComponent, { data, ...{} }).afterClosed().subscribe((accept) => {
+						this.api.handleInvite(user.username, accept).subscribe(
+							(response) => {
+								if(accept) {
+									user.permission = Permission.MEMBER;
+									user.isLoggedIn = 'true';
+									this.storage.setSessionEntry('user', user);
+									this.router.navigateByUrl('/');
+								} else {
+									this.storage.deleteSessionEntry('user');
+								}
+								this.snackbar.open(this.translate.instant(response.message));
+							},
+							(error) => {
+								this.snackbar.open(this.translate.instant(error.error.message));
+							}
+						)
 					});
 				} else {
 					user.isLoggedIn = 'true';

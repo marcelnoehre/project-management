@@ -1,8 +1,8 @@
 {
     "username": "admin",
     "fullName": "Mock Admin",
-    "language": "de-DE",
-    "project": "Mock Team",
+    "language": "de",
+    "project": "mockProject",
     "permission": "ADMIN",
-    "isLoggedIn": true
+    "isLoggedIn": false
 }

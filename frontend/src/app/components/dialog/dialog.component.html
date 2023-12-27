@@ -1,0 +1,24 @@
+<div class="dialog-container" mat-dialog-container>
+	<h1 class="header" mat-dialog-title>{{ headline }}</h1>
+	<mat-dialog-content class="mat-typography">
+			{{ description }}
+	</mat-dialog-content>
+	<mat-dialog-actions class="actions">
+		<button
+			(click)="closeDialog(false)"
+			[mat-dialog-close]="false"
+			color="dark" 
+			mat-raised-button
+		>
+			{{ falseButton }}
+		</button>
+		<button
+			(click)="closeDialog(true)"
+			[mat-dialog-close]="true"
+            color="dark"
+			mat-raised-button
+		>
+			{{ trueButton }}
+		</button>
+	</mat-dialog-actions>
+</div>

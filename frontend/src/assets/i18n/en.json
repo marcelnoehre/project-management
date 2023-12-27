@@ -2,14 +2,16 @@
     "APP": {
         "OK": "OK",
         "CANCEL": "Cancel",
-        "CREATE": "Create"
+        "CREATE": "Create",
+        "REMOVE": "Remove"
     },
     "ERROR": {
         "INVALID_CREDENTIALS": "Invalid credentials!",
         "INTERNAL": "Internal Server Error!",
         "REGISTRATION": "Registration failed!",
         "USERNAME_TAKEN": "The username is already taken!",
-        "CREATE_PROJECT": "The project name is already taken!"
+        "CREATE_PROJECT": "The project name is already taken!",
+        "NO_USER": "User could not be found!"
     },
     "LOGIN": {
         "HEADER": "Kanban",
@@ -19,7 +21,13 @@
 		"PASSWORD_REQUIRED": "The password is required!",
 		"LOGIN": "login",
         "NOT_REGISTERED": "No account yet? ",
-        "REGISTRATION": "Register."
+        "REGISTRATION": "Register.",
+        "INVITE_HEADLINE": "Invitation",
+        "INVITE_INFO": "You have received an invitation to the project {{project}}",
+        "INVITE_ACCEPT": "Accept",
+        "INVITE_REJECT": "Reject",
+        "INVITE_ACCEPTED": "Joining successful!",
+        "INVITE_REJECTED": "The invitation has been deleted! Create a project or ask for a new invitation."
     },
     "REGISTRATION": {
         "HEADER": "Create account",
@@ -45,9 +53,22 @@
     },
     "NAV": {
         "DASHBOARD": "Dashboard",
+        "SETTINGS": "Settings",
         "LOGOUT": "Logout",
         "CREATE_TASK": "Create task",
         "KANBAN": "Board"
+    },
+    "SETTINGS": {
+        "FULLNAME": "Fullname",
+        "USERNAME": "Username",
+        "LANGUAGE": "Language",
+        "PERMISSION": "Permission",
+        "ACTIONS": "Actions",
+        "INVITE_USER": "Invite a user to the project",
+        "INVITE_SUCCESS": "Invitation delivered successfully!",
+        "REMOVE_HEADLINE": "Remove {{username}}?",
+        "REMOVE_DESCRIPTION": "If you remove the user, he or she will no longer have access to the project. Existing tasks remain listed under this username.",
+        "REMOVE_SUCCESS": "User removed from the project!"
     },
     "TASK_STATE": {
         "NO_STATUS": "No status",

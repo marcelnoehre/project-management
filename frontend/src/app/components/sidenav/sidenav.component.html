@@ -15,6 +15,12 @@
 						</div>
 				</div>
 				<div>
+					<mat-list-item class="p-1" [ngClass]="isActive('/settings')" [routerLink]="'/settings'">
+						<div class="sidenav-center">
+							<mat-icon class="mat-nav-list-icon m-0">settings</mat-icon>
+							<span *ngIf="isExpanded" class="hidden-text">{{ 'NAV.SETTINGS'|translate }}</span>
+						</div>
+					</mat-list-item>
 					<mat-list-item (click)="logout()" class="p-1">
 						<div class="sidenav-center">
 							<mat-icon class="mat-nav-list-icon m-0">logout</mat-icon>

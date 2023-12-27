@@ -1,0 +1,46 @@
+<div class="settings-container">
+    <table>
+        <tr class="header py-2">
+            <th>{{ 'SETTINGS.FULLNAME' | translate }}</th>
+            <th>{{ 'SETTINGS.USERNAME' | translate }}</th>
+            <th>{{ 'SETTINGS.LANGUAGE' | translate }}</th>
+            <th>{{ 'SETTINGS.PERMISSION' | translate }}</th>
+            <th>{{ 'SETTINGS.ACTIONS' | translate }}</th>
+        </tr>
+        <div class="content">
+            <tr *ngFor="let member of members; index as i">
+                <td>{{ member.fullName }}</td>
+                <td>{{ member.username }}</td>
+                <td>{{ getLanguage(member.language) }}</td>
+                <td>{{ member.permission }}</td>
+                <td>
+                    <div>
+                        <button mat-fab color="warn" (click)="removeUser(member.username, i)" [disabled]="disableAction(member.username)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        </div>
+    </table>
+    <form [formGroup]="inviteForm" class="invite">
+        <p>{{ 'SETTINGS.INVITE_USER' | translate }}</p>
+        <div style="display: flex;">
+            <mat-form-field appearance="outline" class="username-form-field" MatInput>
+                <mat-label> {{ 'SETTINGS.USERNAME' | translate }} </mat-label>
+                <input
+                    id="username-input"
+                    name="username"
+                    class="username-form-field"
+                    formControlName="usernameFormControl"
+                    placeholder="{{'SETTINGS.USERNAME'|translate}}"
+                    matInput
+                />
+                <mat-icon matPrefix> group_add </mat-icon>
+            </mat-form-field>
+            <button mat-fab color="primary" (click)="inviteUser()" [disabled]="!usernameValid()">
+                <mat-icon>add</mat-icon>
+            </button>
+        </div>
+    </form>
+</div>

@@ -46,8 +46,26 @@ export class ApiService {
 		return this.adapter.register(username, password, fullName, language);
 	}
 
+
+	// ### PROJECT ###
 	public createProject(username: string, project: string): Observable<Response> {
 		return this.adapter.createProject(username, project);
+	}
+	
+	public getTeamMembers(project: string): Observable<User[]> {
+		return this.adapter.getTeamMembers(project);
+	}
+
+	public inviteUser(username: string, project: string): Observable<User> {
+		return this.adapter.inviteUser(username, project);
+	}
+
+	public handleInvite(username: string, decision: boolean): Observable<Response> {
+		return this.adapter.handleInvite(username, decision);
+	}
+
+	public removeUser(username: string): Observable<Response> {
+		return this.adapter.removeUser(username);
 	}
 
 

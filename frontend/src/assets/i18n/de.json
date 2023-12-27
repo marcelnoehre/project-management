@@ -2,14 +2,16 @@
     "APP": {
         "OK": "OK",
         "CANCEL": "Abbrechen",
-        "CREATE": "Erstellen"
+        "CREATE": "Erstellen",
+        "REMOVE": "Entfernen"
     },
     "ERROR": {
         "INVALID_CREDENTIALS": "Daten ungültig!",
         "INTERNAL": "Interner Systemfehler!",
         "REGISTRATION": "Registrierung fehlgeschlagen!",
         "USERNAME_TAKEN": "Der Nutzername ist bereits vergeben!",
-        "CREATE_PROJECT": "Der Projektname ist bereits vergeben!"
+        "CREATE_PROJECT": "Der Projektname ist bereits vergeben!",
+        "NO_USER": "Benutzer konnte nicht gefunden werden!"
     },
     "LOGIN": {
         "HEADER": "Kanban",
@@ -19,7 +21,13 @@
 		"PASSWORD_REQUIRED": "Passwort ist ein Pflichtfeld",
 		"LOGIN": "Anmelden",
         "NOT_REGISTERED": "Noch kein Account? ",
-        "REGISTRATION": "Registrieren."
+        "REGISTRATION": "Registrieren.",
+        "INVITE_HEADLINE": "Einladung",
+        "INVITE_INFO": "Sie haben eine Einladung zu dem Projekt {{project}} erhalten",
+        "INVITE_ACCEPT": "Akzeptieren",
+        "INVITE_REJECT": "Ablehnen",
+        "INVITE_ACCEPTED": "Beitritt erfolgreich!",
+        "INVITE_REJECTED": "Die Einladung wurde gelöscht! Erstellen Sie ein Projekt oder bitten Sie um eine erneute Einladung."
     },
     "REGISTRATION": {
         "HEADER": "Account erstellen",
@@ -45,9 +53,22 @@
     },
     "NAV": {
         "DASHBOARD": "Startseite",
+        "SETTINGS": "Einstellungen",
         "LOGOUT": "Abmelden",
         "CREATE_TASK": "Aufgabe erstellen",
         "KANBAN": "Board"
+    },
+    "SETTINGS": {
+        "FULLNAME": "Vollständiger Name",
+        "USERNAME": "Benutzername",
+        "LANGUAGE": "Sprache",
+        "PERMISSION": "Berechtigung",
+        "ACTIONS": "Aktionen",
+        "INVITE_USER": "Benutzer zum Projekt einladen",
+        "INVITE_SUCCESS": "Einladung erfolgreich zugestellt!",
+        "REMOVE_HEADLINE": "{{username}} entfernen?",
+        "REMOVE_DESCRIPTION": "Wenn Sie den Benutzer entfernen, hat dieser keinen Zugriff mehr auf das Projekt. Vorhandene Aufgaben bleiben weiterhin unter diesem Benutzernamen gelistet.",
+        "REMOVE_SUCCESS": "Benutzer wurde aus dem Projekt entfernt!"
     },
     "TASK_STATE": {
         "NO_STATUS": "Kein Status",
