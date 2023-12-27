@@ -17,6 +17,7 @@ import { CreateProjectComponent } from './components/create-project/create-proje
 import { SidenavComponent } from './components/sidenav/sidenav.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { ToolbarProfileMenuComponent } from './components/toolbar/toolbar-profile-menu/toolbar-profile-menu.component';
+import { DialogComponent } from './components/dialog/dialog.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { CreateTaskComponent } from './components/create-task/create-task.component';
@@ -37,6 +38,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     SidenavComponent,
     ToolbarComponent,
     ToolbarProfileMenuComponent,
+    DialogComponent,
     DashboardComponent,
     SettingsComponent,
     CreateTaskComponent,
