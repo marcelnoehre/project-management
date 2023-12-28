@@ -84,7 +84,7 @@ export class LoginComponent implements OnInit {
 						trueButton: this.translate.instant('LOGIN.INVITE_ACCEPT')
 					};
 					this.dialog.open(DialogComponent, { data, ...{} }).afterClosed().subscribe((accept) => {
-						this.api.handleInvite(user.username, accept).subscribe(
+						this.api.handleInvite(this.user?.['token'] as string, user.username, accept).subscribe(
 							(response) => {
 								if(accept) {
 									user.permission = Permission.MEMBER;

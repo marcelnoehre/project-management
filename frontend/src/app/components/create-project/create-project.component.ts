@@ -41,7 +41,7 @@ export class CreateProjectComponent {
 	}
 
   createProject() {
-    this.api.createProject(this.getUser().username, this.project).subscribe(
+    this.api.createProject(this.getUser().token, this.getUser().username, this.project).subscribe(
       (response) => {
         this.snackbar.open(this.translate.instant(response.message));
         let user = this.getUser();

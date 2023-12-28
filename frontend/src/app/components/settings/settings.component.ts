@@ -92,7 +92,7 @@ export class SettingsComponent implements OnInit {
   }
 
   inviteUser(): void {
-    this.api.inviteUser(this.username, this.getUser().project).subscribe(
+    this.api.inviteUser(this.getUser().token, this.username, this.getUser().project).subscribe(
       (user) => {
         this.members.push(user);
         this.inviteForm.controls['usernameFormControl'].reset();
@@ -117,7 +117,7 @@ export class SettingsComponent implements OnInit {
     };
     this.dialog.open(DialogComponent, { data, ...{} }).afterClosed().subscribe((remove) => {
       if (remove) {
-        this.api.removeUser(username).subscribe(
+        this.api.removeUser(this.getUser().token, username).subscribe(
           (response) => {
             this.members.splice(index, 1);
             this.snackbar.open(this.translate.instant(response.message));
