@@ -6,7 +6,7 @@ import { Permission } from '../enums/permission.enum';
 })
 export class PermissionService {
   private permission!: Permission;
-  private strength: Permission[] = [Permission.OWNER, Permission.ADMIN, Permission.MEMBER, Permission.INVITED];
+  private strength: Permission[] = [Permission.INVITED, Permission.MEMBER, Permission.ADMIN, Permission.OWNER];
 
   constructor() { }
 

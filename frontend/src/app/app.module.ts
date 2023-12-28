@@ -23,6 +23,8 @@ import { SettingsComponent } from './components/settings/settings.component';
 import { CreateTaskComponent } from './components/create-task/create-task.component';
 import { KanbanBoardComponent } from './components/kanban-board/kanban-board.component';
 
+import { PermissionService } from './services/permission.service';
+
 import { MaterialModule } from './modules/material.module';
 
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
@@ -60,7 +62,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
 			}
 		})
   ],
-  providers: [],
+  providers: [PermissionService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
