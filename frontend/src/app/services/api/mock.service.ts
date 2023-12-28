@@ -64,7 +64,7 @@ export class MockService extends AdapterService {
     }
   }
 
-  public override getTeamMembers(project: string): Observable<User[]> {
+  public override getTeamMembers(token: string, project: string): Observable<User[]> {
     if (this.availableMockData.projects.includes(project)) {
       const url = this.basePath + this.project + `get-team-members/${project}.json`;
       return this.http.get<User[]>(url);

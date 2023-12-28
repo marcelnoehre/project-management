@@ -8,6 +8,7 @@
     "ERROR": {
         "INVALID_CREDENTIALS": "Invalid credentials!",
         "INTERNAL": "Internal Server Error!",
+        "INVALID_TOKEN": "You have been logged out for security reasons!",
         "REGISTRATION": "Registration failed!",
         "USERNAME_TAKEN": "The username is already taken!",
         "CREATE_PROJECT": "The project name is already taken!",

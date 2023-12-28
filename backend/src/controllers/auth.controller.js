@@ -1,4 +1,5 @@
 const admin = require('firebase-admin');
+const jwt = require('jsonwebtoken');
 const db = admin.firestore();
 
 async function login(req, res, next) {
@@ -13,7 +14,9 @@ async function login(req, res, next) {
             if (usersSnapshot.empty) {
                 res.status(500).send({ message: 'ERROR.INTERNAL' });
             } else {
-                res.json(usersSnapshot.docs[0].data());
+                const user = usersSnapshot.docs[0].data();
+                user.token = jwt.sign(user, 'my-secret-key', { expiresIn: '1h' });
+                res.json(user);
             }
         } else {
             res.status(401).send({ message: 'ERROR.INVALID_CREDENTIALS' });

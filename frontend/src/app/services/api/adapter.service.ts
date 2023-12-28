@@ -18,7 +18,7 @@ export abstract class AdapterService {
   // ### PROJECT ###
   public abstract createProject(username: string, project: string): Observable<Response>;
   
-  public abstract getTeamMembers(project: string): Observable<User[]>;
+  public abstract getTeamMembers(token: string, project: string): Observable<User[]>;
 
   public abstract inviteUser(username: string, project: string): Observable<User>;
 

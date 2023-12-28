@@ -42,7 +42,7 @@ export class SettingsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.api.getTeamMembers(this.getUser().project).subscribe(
+    this.api.getTeamMembers(this.getUser().token, this.getUser().project).subscribe(
       (users) => {
         this.members = users.sort((a, b) => {
           if (a.permission === Permission.OWNER && b.permission !== Permission.OWNER) {
@@ -59,6 +59,10 @@ export class SettingsComponent implements OnInit {
         });
       },
       (error) => {
+        if (error.status === 403) {
+          this.storage.clearSession();
+          this.router.navigateByUrl('/login');
+        }
         this.snackbar.open(this.translate.instant(error.error.message));
       }
     );

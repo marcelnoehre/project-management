@@ -28,7 +28,7 @@ async function createProject(req, res, next) {
 async function getTeamMembers(req, res, next) {
     try {
         const usersCollection = db.collection('users');
-        const usersSnapshot = await usersCollection.where('project', '==', req.query.project).get();
+        const usersSnapshot = await usersCollection.where('project', '==', req.body.project).get();
         if (usersSnapshot.empty) {
             res.status(500).send({ message: 'ERROR.INTERNAL' });
         } else {

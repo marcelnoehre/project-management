@@ -48,8 +48,12 @@ export class DbService extends AdapterService {
     return this.http.post<Response>(this.basePath + this.project + 'create-project', body);
   }
 
-  public override getTeamMembers(project: string): Observable<User[]> {
-    return this.http.get<User[]>(this.basePath + this.project + 'get-team-members' + `?project=${project}`);
+  public override getTeamMembers(token: string, project: string): Observable<User[]> {
+    const body = {
+      token: token,
+      project: project
+    };
+    return this.http.post<User[]>(this.basePath + this.project + 'get-team-members', body);
   }
 
   public override inviteUser(username: string, project: string): Observable<User> {

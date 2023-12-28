@@ -52,8 +52,8 @@ export class ApiService {
 		return this.adapter.createProject(username, project);
 	}
 	
-	public getTeamMembers(project: string): Observable<User[]> {
-		return this.adapter.getTeamMembers(project);
+	public getTeamMembers(token: string, project: string): Observable<User[]> {
+		return this.adapter.getTeamMembers(token, project);
 	}
 
 	public inviteUser(username: string, project: string): Observable<User> {
