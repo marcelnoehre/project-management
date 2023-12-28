@@ -10,6 +10,7 @@ import { SnackbarService } from 'src/app/services/snackbar.service';
 import { StorageService } from 'src/app/services/storage.service';
 import { DialogComponent } from '../dialog/dialog.component';
 import { Language } from 'src/app/interfaces/language';
+import { PermissionService } from 'src/app/services/permission.service';
 
 @Component({
   selector: 'app-settings',
@@ -36,7 +37,8 @@ export class SettingsComponent implements OnInit {
     private snackbar: SnackbarService,
     private translate: TranslateService,
     private dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    public permission: PermissionService
   ) {
     this.createForm();
   }
@@ -134,8 +136,10 @@ export class SettingsComponent implements OnInit {
     });
   }
 
-  disableAction(username: string) {
-    return this.getUser().username === username;
+  disableRemove(username: string, permission: string) {
+    permission = permission as Permission;
+    const required: Permission = permission === Permission.ADMIN ? Permission.OWNER : Permission.ADMIN;
+    return !this.permission.hasPermission(required) || permission === Permission.OWNER;
   }
 
 }

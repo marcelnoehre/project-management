@@ -1,9 +1,9 @@
 {
     "token": "1234",
-    "username": "invited",
-    "fullName": "Mock Invite",
+    "username": "member",
+    "fullName": "Mock Member",
     "language": "de",
     "project": "mockProject",
-    "permission": "INVITED",
+    "permission": "MEMBER",
     "isLoggedIn": false
 }

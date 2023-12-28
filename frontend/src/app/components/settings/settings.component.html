@@ -15,7 +15,7 @@
                 <td>{{ member.permission }}</td>
                 <td>
                     <div>
-                        <button mat-fab color="warn" (click)="removeUser(member.username, i)" [disabled]="disableAction(member.username)">
+                        <button mat-fab color="warn" (click)="removeUser(member.username, i)" [disabled]="disableRemove(member.username, member.permission)">
                             <mat-icon>delete</mat-icon>
                         </button>
                     </div>
