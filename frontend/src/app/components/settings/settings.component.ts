@@ -99,6 +99,10 @@ export class SettingsComponent implements OnInit {
         this.snackbar.open(this.translate.instant('SETTINGS.INVITE_SUCCESS'));
       },
       (error) => {
+        if (error.status === 403) {
+          this.storage.clearSession();
+          this.router.navigateByUrl('/login');
+        }
         this.snackbar.open(this.translate.instant(error.error.message));
       }
     );
@@ -119,6 +123,10 @@ export class SettingsComponent implements OnInit {
             this.snackbar.open(this.translate.instant(response.message));
           },
           (error) => {
+            if (error.status === 403) {
+              this.storage.clearSession();
+              this.router.navigateByUrl('/login');
+            }
             this.snackbar.open(this.translate.instant(error.error.message));
           }
         )

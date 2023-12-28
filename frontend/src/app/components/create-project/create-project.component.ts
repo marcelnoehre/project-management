@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Permission } from 'src/app/enums/permission.enum';
 import { ApiService } from 'src/app/services/api/api.service';
@@ -21,7 +22,8 @@ export class CreateProjectComponent {
     private api: ApiService,
     private storage: StorageService,
     private snackbar: SnackbarService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private router: Router
   ) {
     this.createForm();
   }
@@ -50,6 +52,10 @@ export class CreateProjectComponent {
         this.dialogRef.close(true);
       },
       (error) => {
+        if (error.status === 403) {
+          this.storage.clearSession();
+          this.router.navigateByUrl('/login');
+        }
         this.snackbar.open(this.translate.instant(error.error.message));
       }
     );

@@ -17,7 +17,7 @@ async function createProject(req, res, next) {
                 });
                 res.json({ message: "CREATE_PROJECT.SUCCESS" });
             } else {
-                res.status(403).send({ message: 'ERROR.CREATE_PROJECT' });
+                res.status(402).send({ message: 'ERROR.CREATE_PROJECT' });
             }
         }
     } catch (err) {
