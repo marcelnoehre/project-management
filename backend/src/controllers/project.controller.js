@@ -17,7 +17,7 @@ async function createProject(req, res, next) {
                 });
                 res.json({ message: "CREATE_PROJECT.SUCCESS" });
             } else {
-                res.status(403).send({ message: 'ERROR.CREATE_PROJECT' });
+                res.status(402).send({ message: 'ERROR.CREATE_PROJECT' });
             }
         }
     } catch (err) {
@@ -28,7 +28,7 @@ async function createProject(req, res, next) {
 async function getTeamMembers(req, res, next) {
     try {
         const usersCollection = db.collection('users');
-        const usersSnapshot = await usersCollection.where('project', '==', req.query.project).get();
+        const usersSnapshot = await usersCollection.where('project', '==', req.body.project).get();
         if (usersSnapshot.empty) {
             res.status(500).send({ message: 'ERROR.INTERNAL' });
         } else {

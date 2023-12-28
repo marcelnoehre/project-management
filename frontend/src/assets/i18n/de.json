@@ -8,6 +8,7 @@
     "ERROR": {
         "INVALID_CREDENTIALS": "Daten ungültig!",
         "INTERNAL": "Interner Systemfehler!",
+        "INVALID_TOKEN": "Sie wurden aus Sicherheitsgründen abgemeldet!",
         "REGISTRATION": "Registrierung fehlgeschlagen!",
         "USERNAME_TAKEN": "Der Nutzername ist bereits vergeben!",
         "CREATE_PROJECT": "Der Projektname ist bereits vergeben!",

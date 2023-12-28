@@ -25,7 +25,7 @@ export class MockService extends AdapterService {
   }
 
   private availableMockData = {
-		user: ['owner', 'admin', 'invited'],
+		user: ['owner', 'admin', 'invited', 'member'],
     invitable: ['user'],
     register: ['mock'],
     projects: ['mockProject']
@@ -53,8 +53,18 @@ export class MockService extends AdapterService {
     }
   }
 
+  public override verify(token: string, username: string): Observable<User> {
+    if (this.availableMockData.user.includes(username)) {
+      const url = this.basePath + this.auth + `verify/${username}.json`;
+      return this.http.get<User>(url);
+    } else {
+      this.snackbar.open(this.translate.instant('ERROR.INVALID_TOKEN'));
+      throw new Error(this.translate.instant('ERROR.INVALID_TOKEN'));
+    }
+  }
+
   // ### PROJECT ###
-  public override createProject(username: string, project: string): Observable<Response> {
+  public override createProject(token: string, username: string, project: string): Observable<Response> {
     if (this.availableMockData.projects.includes(project)) {
       const url = this.basePath + this.project + `create-project/${project}.json`;
       return this.http.get<Response>(url);
@@ -64,7 +74,7 @@ export class MockService extends AdapterService {
     }
   }
 
-  public override getTeamMembers(project: string): Observable<User[]> {
+  public override getTeamMembers(token: string, project: string): Observable<User[]> {
     if (this.availableMockData.projects.includes(project)) {
       const url = this.basePath + this.project + `get-team-members/${project}.json`;
       return this.http.get<User[]>(url);
@@ -74,7 +84,7 @@ export class MockService extends AdapterService {
     }
   }
 
-  public override inviteUser(username: string, project: string): Observable<User> {
+  public override inviteUser(token: string, username: string, project: string): Observable<User> {
     if (this.availableMockData.invitable.includes(username)) {
       const url = this.basePath + this.project + `invite/${username}.json`;
       return this.http.get<User>(url);
@@ -84,12 +94,12 @@ export class MockService extends AdapterService {
     }
   }
 
-  public override handleInvite(username: string, decision: boolean): Observable<Response> {
+  public override handleInvite(token: string, username: string, decision: boolean): Observable<Response> {
     const url = this.basePath + this.project + `handleInvite/${decision}.json`;
     return this.http.get<Response>(url);
   }
 
-  public override removeUser(username: string): Observable<Response> {
+  public override removeUser(token: string, username: string): Observable<Response> {
     const url = this.basePath + this.project + 'remove/user.json';
     return this.http.get<Response>(url);
   }

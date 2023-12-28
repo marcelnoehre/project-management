@@ -14,17 +14,19 @@ export abstract class AdapterService {
 
   public abstract register(username: string, password: string, fullName: string, language: string): Observable<Response>;
 
+  public abstract verify(token: string, username: string): Observable<User>;
+
   
   // ### PROJECT ###
-  public abstract createProject(username: string, project: string): Observable<Response>;
+  public abstract createProject(token: string, username: string, project: string): Observable<Response>;
   
-  public abstract getTeamMembers(project: string): Observable<User[]>;
+  public abstract getTeamMembers(token: string, project: string): Observable<User[]>;
 
-  public abstract inviteUser(username: string, project: string): Observable<User>;
+  public abstract inviteUser(token: string, username: string, project: string): Observable<User>;
 
-  public abstract handleInvite(username: string, decision: boolean): Observable<Response>;
+  public abstract handleInvite(token: string, username: string, decision: boolean): Observable<Response>;
 
-  public abstract removeUser(username: string): Observable<Response>;
+  public abstract removeUser(token: string, username: string): Observable<Response>;
 
 
   // ### TASKS ###

@@ -10,6 +10,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { CreateProjectComponent } from '../create-project/create-project.component';
 import { Permission } from 'src/app/enums/permission.enum';
 import { DialogComponent } from '../dialog/dialog.component';
+import { PermissionService } from 'src/app/services/permission.service';
 
 @Component({
 	selector: 'app-login',
@@ -29,7 +30,8 @@ export class LoginComponent implements OnInit {
 		private router: Router,
 		private translate: TranslateService,
 		private api: ApiService,
-		private dialog: MatDialog
+		private dialog: MatDialog,
+		private permission: PermissionService
 	) {
 		this.createForm();
 	}
@@ -71,6 +73,7 @@ export class LoginComponent implements OnInit {
 				if (user.project === '') {
 					this.dialog.open(CreateProjectComponent).afterClosed().subscribe((created) => {
 						if (created) {
+							this.permission.setPermission(Permission.OWNER);
 							this.router.navigateByUrl('/');
 						} else {
 							this.storage.deleteSessionEntry('user');
@@ -84,12 +87,13 @@ export class LoginComponent implements OnInit {
 						trueButton: this.translate.instant('LOGIN.INVITE_ACCEPT')
 					};
 					this.dialog.open(DialogComponent, { data, ...{} }).afterClosed().subscribe((accept) => {
-						this.api.handleInvite(user.username, accept).subscribe(
+						this.api.handleInvite(this.user?.['token'] as string, user.username, accept).subscribe(
 							(response) => {
 								if(accept) {
 									user.permission = Permission.MEMBER;
 									user.isLoggedIn = 'true';
 									this.storage.setSessionEntry('user', user);
+									this.permission.setPermission(Permission.MEMBER);
 									this.router.navigateByUrl('/');
 								} else {
 									this.storage.deleteSessionEntry('user');
@@ -104,6 +108,7 @@ export class LoginComponent implements OnInit {
 				} else {
 					user.isLoggedIn = 'true';
 					this.storage.setSessionEntry('user', user);
+					this.permission.setPermission(user?.permission as Permission);
 					this.router.navigateByUrl('/');
 				}
 			},

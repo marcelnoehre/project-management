@@ -38,38 +38,54 @@ export class DbService extends AdapterService {
     return this.http.post<Response>(this.basePath + this.auth + 'register', body);
   }
 
+  public override verify(token: string, username: string): Observable<User> {
+    const body = {
+      token: token,
+      username: username,
+    }
+    return this.http.post<User>(this.basePath + this.auth + 'verify', body);
+  }
+
 
   // ### PROJECT ###
-  public override createProject(username: string, project: string): Observable<Response> {
+  public override createProject(token: string, username: string, project: string): Observable<Response> {
     const body = {
+      token: token,
       username: username,
       project: project
     };
     return this.http.post<Response>(this.basePath + this.project + 'create-project', body);
   }
 
-  public override getTeamMembers(project: string): Observable<User[]> {
-    return this.http.get<User[]>(this.basePath + this.project + 'get-team-members' + `?project=${project}`);
+  public override getTeamMembers(token: string, project: string): Observable<User[]> {
+    const body = {
+      token: token,
+      project: project
+    };
+    return this.http.post<User[]>(this.basePath + this.project + 'get-team-members', body);
   }
 
-  public override inviteUser(username: string, project: string): Observable<User> {
+  public override inviteUser(token: string, username: string, project: string): Observable<User> {
     const body = {
+      token: token,
       username: username,
       project: project
     };
     return this.http.post<User>(this.basePath + this.project + 'invite', body);
   }
 
-  public override handleInvite(username: string, decision: boolean): Observable<Response> {
+  public override handleInvite(token: string, username: string, decision: boolean): Observable<Response> {
     const body = {
+      token: token,
       username: username,
       decision: decision
     };
     return this.http.post<Response>(this.basePath + this.project + 'handleInvite', body);
   }
 
-  public override removeUser(username: string): Observable<Response> {
+  public override removeUser(token: string, username: string): Observable<Response> {
     const body = {
+      token: token,
       username: username
     };
     return this.http.post<Response>(this.basePath + this.project + 'remove', body);

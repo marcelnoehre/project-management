@@ -46,26 +46,30 @@ export class ApiService {
 		return this.adapter.register(username, password, fullName, language);
 	}
 
+	public verify(token: string, username: string): Observable<User> {
+		return this.adapter.verify(token, username);
+	}
+
 
 	// ### PROJECT ###
-	public createProject(username: string, project: string): Observable<Response> {
-		return this.adapter.createProject(username, project);
+	public createProject(token: string, username: string, project: string): Observable<Response> {
+		return this.adapter.createProject(token, username, project);
 	}
 	
-	public getTeamMembers(project: string): Observable<User[]> {
-		return this.adapter.getTeamMembers(project);
+	public getTeamMembers(token: string, project: string): Observable<User[]> {
+		return this.adapter.getTeamMembers(token, project);
 	}
 
-	public inviteUser(username: string, project: string): Observable<User> {
-		return this.adapter.inviteUser(username, project);
+	public inviteUser(token: string, username: string, project: string): Observable<User> {
+		return this.adapter.inviteUser(token, username, project);
 	}
 
-	public handleInvite(username: string, decision: boolean): Observable<Response> {
-		return this.adapter.handleInvite(username, decision);
+	public handleInvite(token: string, username: string, decision: boolean): Observable<Response> {
+		return this.adapter.handleInvite(token, username, decision);
 	}
 
-	public removeUser(username: string): Observable<Response> {
-		return this.adapter.removeUser(username);
+	public removeUser(token: string, username: string): Observable<Response> {
+		return this.adapter.removeUser(token, username);
 	}
 
 

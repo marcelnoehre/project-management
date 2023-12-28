@@ -10,6 +10,7 @@ import { SnackbarService } from 'src/app/services/snackbar.service';
 import { StorageService } from 'src/app/services/storage.service';
 import { DialogComponent } from '../dialog/dialog.component';
 import { Language } from 'src/app/interfaces/language';
+import { PermissionService } from 'src/app/services/permission.service';
 
 @Component({
   selector: 'app-settings',
@@ -36,13 +37,14 @@ export class SettingsComponent implements OnInit {
     private snackbar: SnackbarService,
     private translate: TranslateService,
     private dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    public permission: PermissionService
   ) {
     this.createForm();
   }
 
   ngOnInit(): void {
-    this.api.getTeamMembers(this.getUser().project).subscribe(
+    this.api.getTeamMembers(this.getUser().token, this.getUser().project).subscribe(
       (users) => {
         this.members = users.sort((a, b) => {
           if (a.permission === Permission.OWNER && b.permission !== Permission.OWNER) {
@@ -59,6 +61,10 @@ export class SettingsComponent implements OnInit {
         });
       },
       (error) => {
+        if (error.status === 403) {
+          this.storage.clearSession();
+          this.router.navigateByUrl('/login');
+        }
         this.snackbar.open(this.translate.instant(error.error.message));
       }
     );
@@ -88,13 +94,17 @@ export class SettingsComponent implements OnInit {
   }
 
   inviteUser(): void {
-    this.api.inviteUser(this.username, this.getUser().project).subscribe(
+    this.api.inviteUser(this.getUser().token, this.username, this.getUser().project).subscribe(
       (user) => {
         this.members.push(user);
         this.inviteForm.controls['usernameFormControl'].reset();
         this.snackbar.open(this.translate.instant('SETTINGS.INVITE_SUCCESS'));
       },
       (error) => {
+        if (error.status === 403) {
+          this.storage.clearSession();
+          this.router.navigateByUrl('/login');
+        }
         this.snackbar.open(this.translate.instant(error.error.message));
       }
     );
@@ -109,12 +119,16 @@ export class SettingsComponent implements OnInit {
     };
     this.dialog.open(DialogComponent, { data, ...{} }).afterClosed().subscribe((remove) => {
       if (remove) {
-        this.api.removeUser(username).subscribe(
+        this.api.removeUser(this.getUser().token, username).subscribe(
           (response) => {
             this.members.splice(index, 1);
             this.snackbar.open(this.translate.instant(response.message));
           },
           (error) => {
+            if (error.status === 403) {
+              this.storage.clearSession();
+              this.router.navigateByUrl('/login');
+            }
             this.snackbar.open(this.translate.instant(error.error.message));
           }
         )
@@ -122,8 +136,10 @@ export class SettingsComponent implements OnInit {
     });
   }
 
-  disableAction(username: string) {
-    return this.getUser().username === username;
+  disableRemove(username: string, permission: string) {
+    permission = permission as Permission;
+    const required: Permission = permission === Permission.ADMIN ? Permission.OWNER : Permission.ADMIN;
+    return !this.permission.hasPermission(required) || permission === Permission.OWNER;
   }
 
 }
