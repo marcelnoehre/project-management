@@ -1,12 +1,15 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { NavigationEnd, Router, Event } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import { Subscription, filter } from 'rxjs';
 import { AppIcon } from 'src/app/enums/app-icon.enum';
 import { AppItem } from 'src/app/enums/app-item.enum';
 import { AppRoute } from 'src/app/enums/app-route.enum';
 import { App } from 'src/app/interfaces/app';
+import { ApiService } from 'src/app/services/api/api.service';
 import { EventService } from 'src/app/services/event.service';
+import { SnackbarService } from 'src/app/services/snackbar.service';
 import { StorageService } from 'src/app/services/storage.service';
 
 @Component({
@@ -42,11 +45,29 @@ export class SidenavComponent implements OnInit, OnDestroy {
 	constructor(
 		private storage: StorageService,
 		private router: Router,
-		private event: EventService
+		private event: EventService,
+		private api: ApiService,
+		private snackbar: SnackbarService,
+		private translate: TranslateService
 	) {
 	}
 
 	ngOnInit(): void {
+		if (this.isLoggedIn()) {
+			const user = this.storage.getSessionEntry('user');
+			this.api.verify(user?.token, user?.username).subscribe(
+				(user) => {
+					this.storage.setSessionEntry('user', user);
+				},
+				(error) => {
+					if (error.status === 403) {
+						this.storage.clearSession();
+						this.router.navigateByUrl('/login');
+					}
+					this.snackbar.open(this.translate.instant(error.error.message));
+				}
+			);
+		}
 		this.router.events
 		.pipe(
 			filter((event: Event): event is NavigationEnd => event instanceof NavigationEnd)

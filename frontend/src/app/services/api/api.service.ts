@@ -46,6 +46,10 @@ export class ApiService {
 		return this.adapter.register(username, password, fullName, language);
 	}
 
+	public verify(token: string, username: string): Observable<User> {
+		return this.adapter.verify(token, username);
+	}
+
 
 	// ### PROJECT ###
 	public createProject(token: string, username: string, project: string): Observable<Response> {

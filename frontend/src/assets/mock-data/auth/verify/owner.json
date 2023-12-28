@@ -1,0 +1,8 @@
+{
+    "username": "owner",
+    "fullName": "Mock Owner",
+    "language": "en",
+    "project": "mockProject",
+    "permission": "OWNER",
+    "isLoggedIn": false
+}

@@ -1,0 +1,8 @@
+{
+    "username": "admin",
+    "fullName": "Mock Admin",
+    "language": "de",
+    "project": "mockProject",
+    "permission": "ADMIN",
+    "isLoggedIn": false
+}

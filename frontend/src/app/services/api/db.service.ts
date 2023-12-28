@@ -38,6 +38,14 @@ export class DbService extends AdapterService {
     return this.http.post<Response>(this.basePath + this.auth + 'register', body);
   }
 
+  public override verify(token: string, username: string): Observable<User> {
+    const body = {
+      token: token,
+      username: username,
+    }
+    return this.http.post<User>(this.basePath + this.auth + 'verify', body);
+  }
+
 
   // ### PROJECT ###
   public override createProject(token: string, username: string, project: string): Observable<Response> {

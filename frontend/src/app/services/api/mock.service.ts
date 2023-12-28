@@ -53,6 +53,16 @@ export class MockService extends AdapterService {
     }
   }
 
+  public override verify(token: string, username: string): Observable<User> {
+    if (this.availableMockData.user.includes(username)) {
+      const url = this.basePath + this.auth + `verify/${username}.json`;
+      return this.http.get<User>(url);
+    } else {
+      this.snackbar.open(this.translate.instant('ERROR.INVALID_TOKEN'));
+      throw new Error(this.translate.instant('ERROR.INVALID_TOKEN'));
+    }
+  }
+
   // ### PROJECT ###
   public override createProject(token: string, username: string, project: string): Observable<Response> {
     if (this.availableMockData.projects.includes(project)) {

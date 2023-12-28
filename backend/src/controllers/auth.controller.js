@@ -56,7 +56,25 @@ async function register(req, res, next) {
     }
 }
 
+async function verify(req, res, next) {
+    try {
+        const usersCollection = db.collection('users');
+        const usersSnapshot = await usersCollection.where('username', '==', req.body.username).get();
+        if (usersSnapshot.empty) {
+            res.status(500).send({ message: 'ERROR.INVALID_TOKEN' });
+        } else {
+            const user = usersSnapshot.docs[0].data();
+            user.token = req.body.token;
+            user.isLoggedIn = true;
+            res.json(user);
+        }
+    } catch(err) {
+        next(err);
+    }
+}
+
 module.exports = {
     login,
-    register
+    register,
+    verify
 };
