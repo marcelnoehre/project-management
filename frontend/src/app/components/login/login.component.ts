@@ -74,6 +74,7 @@ export class LoginComponent implements OnInit {
 					this.dialog.open(CreateProjectComponent).afterClosed().subscribe((created) => {
 						if (created) {
 							this.permission.setPermission(Permission.OWNER);
+							this.permission.setProject(user.project);
 							this.router.navigateByUrl('/');
 						} else {
 							this.storage.deleteSessionEntry('user');
@@ -94,6 +95,7 @@ export class LoginComponent implements OnInit {
 									user.isLoggedIn = 'true';
 									this.storage.setSessionEntry('user', user);
 									this.permission.setPermission(Permission.MEMBER);
+									this.permission.setProject(user.project);
 									this.router.navigateByUrl('/');
 								} else {
 									this.storage.deleteSessionEntry('user');
@@ -109,6 +111,7 @@ export class LoginComponent implements OnInit {
 					user.isLoggedIn = 'true';
 					this.storage.setSessionEntry('user', user);
 					this.permission.setPermission(user?.permission as Permission);
+					this.permission.setProject(user.project);
 					this.router.navigateByUrl('/');
 				}
 			},
