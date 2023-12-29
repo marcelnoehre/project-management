@@ -77,4 +77,9 @@ export class ApiService {
 	public getTaskList(token: string, project: string): Observable<State[]> {
 		return this.adapter.getTaskList(token, project);
 	}
+
+	public createTask(token: string, username: string, project: string, title: string, description: string, state: string): Observable<Response> {
+		return this.adapter.createTask(token, username, project, title, description, state);
+	}
+	
 }

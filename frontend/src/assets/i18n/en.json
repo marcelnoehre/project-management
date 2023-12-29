@@ -77,5 +77,12 @@
         "PROGRESS": "In Progress",
         "REVIEW": "In Review",
         "DONE": "Done"
+    },
+    "CREATE_TASK": {
+        "TITLE": "Title",
+        "DESCRIPTION": "Description",
+        "STATE": "State",
+        "CREATE": "Create",
+        "SUCCESS": "Task created successfully!"
     }
 }

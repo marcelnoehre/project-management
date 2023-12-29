@@ -32,4 +32,6 @@ export abstract class AdapterService {
   // ### TASKS ###
   public abstract getTaskList(token: string, project: string): Observable<State[]>;
 
+  public abstract createTask(token: string, username: string, project: string, title: string, description: string, state: string): Observable<Response>;
+
 }

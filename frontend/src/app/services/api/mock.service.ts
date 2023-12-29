@@ -15,6 +15,7 @@ export class MockService extends AdapterService {
   private basePath = 'assets/mock-data/';
   private auth = 'auth/';
   private project = 'project/';
+  private task = 'task/';
 
   constructor(
     private http: HttpClient,
@@ -107,6 +108,12 @@ export class MockService extends AdapterService {
 
   // ### TASKS ###
   public override getTaskList(token: string, project: string): Observable<State[]> {
-    return this.http.get<State[]>('assets/mock-data/task/get-task-list/list.json');
+    const url = this.basePath + this.task + 'get-task-list/list.json';
+    return this.http.get<State[]>(url);
+  }
+
+  public override createTask(token: string, username: string, project: string, title: string, description: string, state: string): Observable<Response> {
+    const url = this.basePath + this.task + 'createTask/mockTask.json';
+    return this.http.get<Response>(url);
   }
 }
