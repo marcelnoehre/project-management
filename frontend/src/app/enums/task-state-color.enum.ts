@@ -1,5 +1,5 @@
 export enum TaskStateColor {
-    NO_STATUS = 'red',
+    NONE = 'red',
     TODO = 'blue',
     PROGRESS = 'green',
     REVIEW = 'orange',

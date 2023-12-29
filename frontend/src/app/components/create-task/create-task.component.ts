@@ -12,7 +12,7 @@ import { StorageService } from 'src/app/services/storage.service';
 export class CreateTaskComponent implements OnInit {
 	@ViewChild('inputTitle') inputTitle!: ElementRef;
   
-  taskStates = [TaskState.NO_STATUS, TaskState.TODO, TaskState.PROGRESS, TaskState.REVIEW, TaskState.DONE];
+  taskStates = [TaskState.NONE, TaskState.TODO, TaskState.PROGRESS, TaskState.REVIEW, TaskState.DONE];
   createTaskForm!: FormGroup;
 
   constructor(

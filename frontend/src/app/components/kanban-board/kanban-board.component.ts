@@ -15,7 +15,7 @@ import { Router } from '@angular/router';
 })
 export class KanbanBoardComponent implements OnInit {
   taskList: State[] = [];
-  stateList: string[] = [TaskState.NO_STATUS, TaskState.TODO, TaskState.PROGRESS, TaskState.REVIEW, TaskState.DONE];
+  stateList: string[] = [TaskState.NONE, TaskState.TODO, TaskState.PROGRESS, TaskState.REVIEW, TaskState.DONE];
 
   constructor(
     private api: ApiService,
@@ -28,9 +28,10 @@ export class KanbanBoardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.api.getTaskList().subscribe(
+    const user = this.getUser();
+    this.api.getTaskList(user.token, user.project).subscribe(
       (taskList) => {
-        this.taskList = taskList;         
+        this.taskList = taskList;        
       },
       (error) => {
         if (error.status === 403) {
@@ -41,6 +42,10 @@ export class KanbanBoardComponent implements OnInit {
       }
     );
   }
+
+	private getUser(): any {
+		return this.storage.getSessionEntry('user');
+	}
 
   drop(event: any) {
     if (event.previousContainer === event.container) {

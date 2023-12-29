@@ -1,5 +1,5 @@
 export enum TaskState {
-    NO_STATUS = 'NO_STATUS',
+    NONE = 'NONE',
     TODO = 'TODO',
     PROGRESS = 'PROGRESS',
     REVIEW = 'REVIEW',

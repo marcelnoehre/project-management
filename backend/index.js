@@ -21,6 +21,9 @@ app.use('/auth', authRouter);
 const projectRouter = require('./src/routes/project');
 app.use('/project', projectRouter);
 
+const taskRouter = require('./src/routes/task');
+app.use('/task', taskRouter);
+
 app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
 });

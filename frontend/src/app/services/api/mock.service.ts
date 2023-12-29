@@ -106,7 +106,7 @@ export class MockService extends AdapterService {
 
 
   // ### TASKS ###
-  public getTaskList(): Observable<State[]> {
+  public override getTaskList(token: string, project: string): Observable<State[]> {
     return this.http.get<State[]>('assets/mock-data/task/get-task-list/list.json');
   }
 }

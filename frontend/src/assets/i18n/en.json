@@ -72,7 +72,7 @@
         "REMOVE_SUCCESS": "User removed from the project!"
     },
     "TASK_STATE": {
-        "NO_STATUS": "No status",
+        "NONE": "No status",
         "TODO": "ToDo",
         "PROGRESS": "In Progress",
         "REVIEW": "In Review",

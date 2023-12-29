@@ -14,6 +14,7 @@ export class DbService extends AdapterService {
   private basePath = environment.apiBasePath;
   private auth = 'auth/';
   private project = 'project/';
+  private task = 'task/';
 
   constructor(private http: HttpClient) {
     super();
@@ -93,8 +94,12 @@ export class DbService extends AdapterService {
 
 
   // ### TASKS ###
-  public getTaskList(): Observable<State[]> {
-    throw new Error('Method not implemented!');
+  public override getTaskList(token: string, project: string): Observable<State[]> {
+    const body = {
+      token: token,
+      project: project
+    };
+    return this.http.post<State[]>(this.basePath + this.task + 'getTaskList', body);
   }
 
 }

@@ -74,7 +74,7 @@ export class ApiService {
 
 
 	// ### TASKS ###
-	public getTaskList(): Observable<State[]> {
-		return this.adapter.getTaskList();
+	public getTaskList(token: string, project: string): Observable<State[]> {
+		return this.adapter.getTaskList(token, project);
 	}
 }
