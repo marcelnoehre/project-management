@@ -16,6 +16,7 @@
     display: flex;
     background-color: white;
     border: 2px solid #000;
+    border-radius: 5px;
 }
 
 .column {
@@ -59,4 +60,12 @@
     justify-content: center;
     border-radius: 5px;
     cursor: move;
+}
+
+.actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1%;
+    width: 90%;
+    margin-left: 5%;
 }

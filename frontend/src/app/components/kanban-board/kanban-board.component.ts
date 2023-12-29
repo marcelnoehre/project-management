@@ -70,6 +70,10 @@ export class KanbanBoardComponent implements AfterViewInit {
         this.taskList = tasklist;
       },
       (error) => {
+        if (error.status === 403) {
+          this.storage.clearSession();
+          this.router.navigateByUrl('/login');
+        }
         this.snackbar.open(this.translate.instant(error.error.message));
       }
     );
@@ -81,4 +85,19 @@ export class KanbanBoardComponent implements AfterViewInit {
     return TaskStateColor[state as keyof typeof TaskStateColor];
   }
 
+  json() {    
+    const blob = new Blob([JSON.stringify(this.taskList, null, 2)], { type: 'application/json' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'export-' + this.permission.getProject() + '-tasks.json';
+    link.click();
+  }
+
+  xml() {
+
+  }
+
+  yaml() {
+
+  }
 }
