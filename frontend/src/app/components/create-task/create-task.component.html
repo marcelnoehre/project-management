@@ -5,7 +5,7 @@
         </h1>
         <mat-form-field>
             <mat-label>{{ 'CREATE_TASK.TITLE' | translate }}</mat-label>
-            <input #inputTitle matInput type="text" formControlName="titleFormControl">
+            <input #inputTitle matInput type="text" formControlName="titleFormControl" required>
         </mat-form-field>
         <mat-form-field>
             <mat-label>{{ 'CREATE_TASK.DESCRIPTION' | translate }}</mat-label>
@@ -13,7 +13,7 @@
         </mat-form-field>
         <mat-form-field>
             <mat-label>{{ 'CREATE_TASK.STATE' | translate }}</mat-label>
-            <mat-select>
+            <mat-select formControlName="stateFormControl">
                 <mat-option
                   *ngFor="let state of taskStates"
                   [value]="state"
@@ -22,7 +22,12 @@
                 </mat-option>
               </mat-select>
         </mat-form-field>
-        <button mat-raised-button>
+        <button 
+            #submitCreateTask
+            (click)="createTask()"
+            tabindex="0"
+            mat-raised-button
+        >
             {{ 'CREATE_TASK.CREATE' | translate }}
         </button>
     </form>

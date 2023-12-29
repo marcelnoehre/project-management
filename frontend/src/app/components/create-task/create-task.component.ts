@@ -1,7 +1,11 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { MatButton } from '@angular/material/button';
+import { TranslateService } from '@ngx-translate/core';
 import { TaskState } from 'src/app/enums/task-state.enum';
+import { ApiService } from 'src/app/services/api/api.service';
+import { PermissionService } from 'src/app/services/permission.service';
+import { SnackbarService } from 'src/app/services/snackbar.service';
 import { StorageService } from 'src/app/services/storage.service';
 
 @Component({
@@ -11,13 +15,17 @@ import { StorageService } from 'src/app/services/storage.service';
 })
 export class CreateTaskComponent implements OnInit {
 	@ViewChild('inputTitle') inputTitle!: ElementRef;
+  @ViewChild('submitCreateTask') submitCreateTask!: MatButton;
   
-  taskStates = [TaskState.NONE, TaskState.TODO, TaskState.PROGRESS, TaskState.REVIEW, TaskState.DONE];
+  taskStates = [TaskState.TODO, TaskState.PROGRESS, TaskState.REVIEW, TaskState.DONE];
   createTaskForm!: FormGroup;
 
   constructor(
-    private router: Router,
-    private storage: StorageService
+    private storage: StorageService,
+    private api: ApiService,
+    private permission: PermissionService,
+    private snackbar: SnackbarService,
+    private translate: TranslateService
   ) {
     this.createForm();
   }
@@ -31,6 +39,7 @@ export class CreateTaskComponent implements OnInit {
       {
         titleFormControl: new FormControl('', { validators: [Validators.required] }),
         descriptionFormControl: new FormControl('', { validators: [] }),
+        stateFormControl: new FormControl('', { validators: [] })
       },
       {}
     );
@@ -48,4 +57,25 @@ export class CreateTaskComponent implements OnInit {
 		return this.createTaskForm.get('descriptionFormControl')?.value;
 	}
 
+  get state(): string {
+    return this.createTaskForm.get('stateFormControl')?.value;
+  }
+
+  private getUser(): any {
+		return this.storage.getSessionEntry('user');
+	}
+
+  public createTask() {
+    const user = this.getUser();
+    this.api.createTask(user.token, user.username, this.permission.getProject(), this.title, this.description, this.state === '' ? TaskState.NONE : this.state).subscribe(
+      (response) => {
+        this.createTaskForm.reset();
+        setTimeout(() => this.inputTitle.nativeElement.focus());
+        this.snackbar.open(this.translate.instant(response.message));
+      },
+      (error) => {
+        this.snackbar.open(this.translate.instant(error.error.message));
+      }
+    );
+  }
 }
