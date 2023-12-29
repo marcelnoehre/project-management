@@ -1,5 +1,9 @@
 export interface Task {
     uid: string,
-    name: string,
-    description: string
+    author: string,
+    project: string,
+    state: string,
+    title: string,
+    description: string,
+    order: number
 }

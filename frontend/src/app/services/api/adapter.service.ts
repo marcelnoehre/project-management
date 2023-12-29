@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { State } from 'src/app/interfaces/state';
+import { State } from 'src/app/interfaces/data/state';
 import { User } from 'src/app/interfaces/data/user';
 import { Response } from 'src/app/interfaces/data/response';
 
@@ -30,6 +30,10 @@ export abstract class AdapterService {
 
 
   // ### TASKS ###
-  public abstract getTaskList(): Observable<State[]>;
+  public abstract createTask(token: string, author: string, project: string, title: string, description: string, state: string): Observable<Response>;
+  
+  public abstract getTaskList(token: string, project: string): Observable<State[]>;
+
+  public abstract updatePosition(token: string, project: string, uid: string, state: string, order: number): Observable<State[]>;
 
 }

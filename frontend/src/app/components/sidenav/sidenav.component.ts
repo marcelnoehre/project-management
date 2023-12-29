@@ -62,6 +62,7 @@ export class SidenavComponent implements OnInit, OnDestroy {
 				(user) => {
 					this.storage.setSessionEntry('user', user);
 					this.permission.setPermission(user.permission as Permission);
+					this.permission.setProject(user.project);
 				},
 				(error) => {
 					if (error.status === 403) {

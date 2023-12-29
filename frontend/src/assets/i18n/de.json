@@ -12,7 +12,8 @@
         "REGISTRATION": "Registrierung fehlgeschlagen!",
         "USERNAME_TAKEN": "Der Nutzername ist bereits vergeben!",
         "CREATE_PROJECT": "Der Projektname ist bereits vergeben!",
-        "NO_USER": "Benutzer konnte nicht gefunden werden!"
+        "NO_USER": "Benutzer konnte nicht gefunden werden!",
+        "CREATE_TASK": "Aufgabe konnte nicht erstellt werden!"
     },
     "LOGIN": {
         "HEADER": "Kanban",
@@ -72,10 +73,20 @@
         "REMOVE_SUCCESS": "Benutzer wurde aus dem Projekt entfernt!"
     },
     "TASK_STATE": {
-        "NO_STATUS": "Kein Status",
+        "NONE": "Kein Status",
         "TODO": "Zu erledigen",
         "PROGRESS": "In Arbeit",
         "REVIEW": "In Prüfung",
         "DONE": "Fertig"
+    },
+    "CREATE_TASK": {
+        "TITLE": "Titel",
+        "DESCRIPTION": "Beschreibung",
+        "STATE": "Status",
+        "CREATE": "erstellen",
+        "SUCCESS": "Aufgabe erfolgreich erstellt!"
+    },
+    "EDIT_TASK": {
+        "SUCCESS": "Aufgabe erfolgreich aktualisiert!"
     }
 }

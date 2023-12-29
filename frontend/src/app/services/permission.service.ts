@@ -5,13 +5,22 @@ import { Permission } from '../enums/permission.enum';
   providedIn: 'root'
 })
 export class PermissionService {
+  private project!: string;
   private permission!: Permission;
   private strength: Permission[] = [Permission.INVITED, Permission.MEMBER, Permission.ADMIN, Permission.OWNER];
 
   constructor() { }
 
+  setProject(project: string): void {
+    this.project = project;
+  }
+
   setPermission(permission: Permission): void {
     this.permission = permission;
+  }
+
+  getProject(): string {
+    return this.project;
   }
 
   hasPermission(required: Permission) {

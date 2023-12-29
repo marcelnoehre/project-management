@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { AdapterService } from './adapter.service';
 import { environment } from 'src/environments/environment';
 import { User } from 'src/app/interfaces/data/user';
-import { State } from 'src/app/interfaces/state';
+import { State } from 'src/app/interfaces/data/state';
 import { Response } from 'src/app/interfaces/data/response';
 
 @Injectable({
@@ -14,6 +14,7 @@ export class DbService extends AdapterService {
   private basePath = environment.apiBasePath;
   private auth = 'auth/';
   private project = 'project/';
+  private task = 'task/';
 
   constructor(private http: HttpClient) {
     super();
@@ -93,8 +94,35 @@ export class DbService extends AdapterService {
 
 
   // ### TASKS ###
-  public getTaskList(): Observable<State[]> {
-    throw new Error('Method not implemented!');
+  public override createTask(token: string, author: string, project: string, title: string, description: string, state: string): Observable<Response> {
+    const body = {
+      token: token,
+      author: author,
+      project: project,
+      title: title,
+      description: description,
+      state: state
+    };
+    return this.http.post<Response>(this.basePath + this.task + 'createTask', body);
+  }
+  
+  public override getTaskList(token: string, project: string): Observable<State[]> {
+    const body = {
+      token: token,
+      project: project
+    };
+    return this.http.post<State[]>(this.basePath + this.task + 'getTaskList', body);
   }
 
+  public override updatePosition(token: string, project: string, uid: string, state: string, order: number): Observable<State[]> {
+    const body = {
+      token: token,
+      project: project,
+      uid: uid,
+      state: state,
+      order: order
+    }
+    return this.http.post<State[]>(this.basePath + this.task + 'updatePosition', body);
+  }
+  
 }

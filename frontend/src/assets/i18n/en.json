@@ -12,7 +12,8 @@
         "REGISTRATION": "Registration failed!",
         "USERNAME_TAKEN": "The username is already taken!",
         "CREATE_PROJECT": "The project name is already taken!",
-        "NO_USER": "User could not be found!"
+        "NO_USER": "User could not be found!",
+        "CREATE_TASK": "Task could not be created!"
     },
     "LOGIN": {
         "HEADER": "Kanban",
@@ -72,10 +73,20 @@
         "REMOVE_SUCCESS": "User removed from the project!"
     },
     "TASK_STATE": {
-        "NO_STATUS": "No status",
+        "NONE": "No status",
         "TODO": "ToDo",
         "PROGRESS": "In Progress",
         "REVIEW": "In Review",
         "DONE": "Done"
+    },
+    "CREATE_TASK": {
+        "TITLE": "Title",
+        "DESCRIPTION": "Description",
+        "STATE": "State",
+        "CREATE": "Create",
+        "SUCCESS": "Task created successfully!"
+    },
+    "EDIT_TASK": {
+        "SUCCESS": "Task updated successfully!"
     }
 }
