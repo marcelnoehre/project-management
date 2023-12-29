@@ -94,18 +94,10 @@ export class DbService extends AdapterService {
 
 
   // ### TASKS ###
-  public override getTaskList(token: string, project: string): Observable<State[]> {
+  public override createTask(token: string, author: string, project: string, title: string, description: string, state: string): Observable<Response> {
     const body = {
       token: token,
-      project: project
-    };
-    return this.http.post<State[]>(this.basePath + this.task + 'getTaskList', body);
-  }
-
-  public override createTask(token: string, username: string, project: string, title: string, description: string, state: string): Observable<Response> {
-    const body = {
-      token: token,
-      username: username,
+      author: author,
       project: project,
       title: title,
       description: description,
@@ -113,4 +105,13 @@ export class DbService extends AdapterService {
     };
     return this.http.post<Response>(this.basePath + this.task + 'createTask', body);
   }
+  
+  public override getTaskList(token: string, project: string): Observable<State[]> {
+    const body = {
+      token: token,
+      project: project
+    };
+    return this.http.post<State[]>(this.basePath + this.task + 'getTaskList', body);
+  }
+  
 }

@@ -74,12 +74,12 @@ export class ApiService {
 
 
 	// ### TASKS ###
-	public getTaskList(token: string, project: string): Observable<State[]> {
-		return this.adapter.getTaskList(token, project);
+	public createTask(token: string, author: string, project: string, title: string, description: string, state: string): Observable<Response> {
+		return this.adapter.createTask(token, author, project, title, description, state);
 	}
 
-	public createTask(token: string, username: string, project: string, title: string, description: string, state: string): Observable<Response> {
-		return this.adapter.createTask(token, username, project, title, description, state);
+	public getTaskList(token: string, project: string): Observable<State[]> {
+		return this.adapter.getTaskList(token, project);
 	}
 	
 }

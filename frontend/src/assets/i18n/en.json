@@ -12,7 +12,8 @@
         "REGISTRATION": "Registration failed!",
         "USERNAME_TAKEN": "The username is already taken!",
         "CREATE_PROJECT": "The project name is already taken!",
-        "NO_USER": "User could not be found!"
+        "NO_USER": "User could not be found!",
+        "CREATE_TASK": "Task could not be created!"
     },
     "LOGIN": {
         "HEADER": "Kanban",

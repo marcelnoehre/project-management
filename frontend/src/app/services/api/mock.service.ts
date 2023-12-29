@@ -107,13 +107,14 @@ export class MockService extends AdapterService {
 
 
   // ### TASKS ###
+  public override createTask(token: string, author: string, project: string, title: string, description: string, state: string): Observable<Response> {
+    const url = this.basePath + this.task + 'createTask/mockTask.json';
+    return this.http.get<Response>(url);
+  }
+
   public override getTaskList(token: string, project: string): Observable<State[]> {
     const url = this.basePath + this.task + 'get-task-list/list.json';
     return this.http.get<State[]>(url);
   }
-
-  public override createTask(token: string, username: string, project: string, title: string, description: string, state: string): Observable<Response> {
-    const url = this.basePath + this.task + 'createTask/mockTask.json';
-    return this.http.get<Response>(url);
-  }
+  
 }
