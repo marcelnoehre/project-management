@@ -7,6 +7,7 @@ import { SnackbarService } from 'src/app/services/snackbar.service';
 import { TranslateService } from '@ngx-translate/core';
 import { StorageService } from 'src/app/services/storage.service';
 import { Router } from '@angular/router';
+import { TaskStateColor } from 'src/app/enums/task-state-color.enum';
 
 @Component({
   selector: 'app-kanban-board',
@@ -58,6 +59,10 @@ export class KanbanBoardComponent implements OnInit {
         event.currentIndex
       );
     }
+  }
+
+  getColor(state: string) {
+    return TaskStateColor[state as keyof typeof TaskStateColor];
   }
 
 }
