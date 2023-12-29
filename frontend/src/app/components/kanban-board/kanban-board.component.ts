@@ -1,5 +1,5 @@
 import { AfterViewInit, Component } from '@angular/core';
-import { State } from 'src/app/interfaces/state';
+import { State } from 'src/app/interfaces/data/state';
 import { ApiService } from 'src/app/services/api/api.service';
 import { TaskState } from 'src/app/enums/task-state.enum';
 import { moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
@@ -62,6 +62,21 @@ export class KanbanBoardComponent implements AfterViewInit {
         event.currentIndex
       );
     }
+
+    console.log(event.previousIndex, event.currentIndex, event.event.target.id);
+
+    const foundState = this.taskList.find((list) => list.state === event.event.target.id);
+    const order = (foundState!.tasks[event.currentIndex - 1].order + foundState!.tasks[event.currentIndex + 1].order) / 2;
+    this.api.updatePosition(this.getUser().token, this.permission.getProject(), foundState!.tasks[event.currentIndex].uid, foundState!.state, order).subscribe(
+      (tasklist) => {
+        this.taskList = tasklist;
+      },
+      (error) => {
+        this.snackbar.open(this.translate.instant(error.error.message));
+      }
+    );
+        
+    
   }
 
   getColor(state: string) {

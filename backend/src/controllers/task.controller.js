@@ -52,7 +52,39 @@ async function getTaskList(req, res, next) {
     }
 }
 
+async function updatePosition(req, res, next) {
+    try {
+        const tasksCollection = db.collection('tasks');
+        const tasksSnapshot = await tasksCollection.where('uid', '==', req.body.uid).get();
+        if (tasksSnapshot.empty) {
+            res.status(500).send({ message: 'ERROR.INTERNAL' });
+        } else {
+            const taskDoc = tasksSnapshot.docs[0];
+            await taskDoc.ref.update({
+                state: req.body.state,
+                order: req.body.order
+            });
+            const taskListSnapshot = await tasksCollection.where('project', '==', req.body.project).orderBy('order').get();
+            const response = [
+                { state: 'NONE', tasks: [] },
+                { state: 'TODO', tasks: [] },
+                { state: 'PROGRESS', tasks: [] },
+                { state: 'REVIEW', tasks: [] },
+                { state: 'DONE', tasks: [] }
+            ];
+            taskListSnapshot.forEach(doc => {
+                const task = doc.data();
+                response.find(list => list.state === task.state).tasks.push(task);
+            });
+            res.json(response);
+        }
+    } catch (err) {
+        next(err);
+    }
+}
+
 module.exports = {
     createTask,
-    getTaskList
+    getTaskList,
+    updatePosition
 };

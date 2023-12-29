@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { User } from 'src/app/interfaces/data/user';
 import { SnackbarService } from '../snackbar.service';
-import { State } from 'src/app/interfaces/state';
+import { State } from 'src/app/interfaces/data/state';
 import { Response } from 'src/app/interfaces/data/response';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -117,9 +117,9 @@ export class MockService extends AdapterService {
     return this.http.get<State[]>(url);
   }
 
-  public override updatePosition(token: string, project: string, uid: string, state: string, order: number): Observable<Response> {
+  public override updatePosition(token: string, project: string, uid: string, state: string, order: number): Observable<State[]> {
     const url = this.basePath + this.task + 'update-position/task.json';
-    return this.http.get<Response>(url);
+    return this.http.get<State[]>(url);
   }
   
 }

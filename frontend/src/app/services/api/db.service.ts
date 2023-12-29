@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { AdapterService } from './adapter.service';
 import { environment } from 'src/environments/environment';
 import { User } from 'src/app/interfaces/data/user';
-import { State } from 'src/app/interfaces/state';
+import { State } from 'src/app/interfaces/data/state';
 import { Response } from 'src/app/interfaces/data/response';
 
 @Injectable({
@@ -114,7 +114,7 @@ export class DbService extends AdapterService {
     return this.http.post<State[]>(this.basePath + this.task + 'getTaskList', body);
   }
 
-  public override updatePosition(token: string, project: string, uid: string, state: string, order: number): Observable<Response> {
+  public override updatePosition(token: string, project: string, uid: string, state: string, order: number): Observable<State[]> {
     const body = {
       token: token,
       project: project,
@@ -122,7 +122,7 @@ export class DbService extends AdapterService {
       state: state,
       order: order
     }
-    return this.http.post<Response>(this.basePath + this.task + 'updatePosition', body);
+    return this.http.post<State[]>(this.basePath + this.task + 'updatePosition', body);
   }
   
 }

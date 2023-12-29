@@ -6,7 +6,7 @@ import { Adapter } from 'src/app/enums/adapter.enum';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 import { User } from 'src/app/interfaces/data/user';
-import { State } from 'src/app/interfaces/state';
+import { State } from 'src/app/interfaces/data/state';
 import { Response } from 'src/app/interfaces/data/response';
 
 @Injectable({
@@ -82,7 +82,7 @@ export class ApiService {
 		return this.adapter.getTaskList(token, project);
 	}
 
-	public updatePosition(token: string, project: string, uid: string, state: string, order: number): Observable<Response> {
+	public updatePosition(token: string, project: string, uid: string, state: string, order: number): Observable<State[]> {
 		return this.adapter.updatePosition(token, project, uid, state, order);
 	}
 	
