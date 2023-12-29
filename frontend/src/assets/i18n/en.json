@@ -85,5 +85,8 @@
         "STATE": "State",
         "CREATE": "Create",
         "SUCCESS": "Task created successfully!"
+    },
+    "EDIT_TASK": {
+        "SUCCESS": "Task updated successfully!"
     }
 }

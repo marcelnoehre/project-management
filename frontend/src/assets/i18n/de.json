@@ -85,5 +85,8 @@
         "STATE": "Status",
         "CREATE": "erstellen",
         "SUCCESS": "Aufgabe erfolgreich erstellt!"
+    },
+    "EDIT_TASK": {
+        "SUCCESS": "Aufgabe erfolgreich aktualisiert!"
     }
 }
