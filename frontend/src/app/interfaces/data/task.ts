@@ -4,5 +4,6 @@ export interface Task {
     project: string,
     state: string,
     title: string,
-    description: string
+    description: string,
+    order: number
 }

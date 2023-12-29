@@ -67,7 +67,8 @@ export class CreateTaskComponent implements OnInit {
 
   public createTask() {
     const user = this.getUser();
-    this.api.createTask(user.token, user.username, this.permission.getProject(), this.title, this.description, this.state === '' ? TaskState.NONE : this.state).subscribe(
+    const state = this.state === '' || this.state === null ? TaskState.NONE : this.state;
+    this.api.createTask(user.token, user.username, this.permission.getProject(), this.title, this.description, state).subscribe(
       (response) => {
         this.createTaskForm.reset();
         setTimeout(() => this.inputTitle.nativeElement.focus());

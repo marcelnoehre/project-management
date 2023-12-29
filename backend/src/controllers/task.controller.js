@@ -4,6 +4,11 @@ const db = admin.firestore();
 async function createTask(req, res, next) {
     try {
         const tasksCollection = db.collection('tasks');
+        const orderSnapshot = await tasksCollection
+            .where('project', '==', req.body.project)
+            .where('state', '==', req.body.state)
+            .orderBy('order', 'desc').limit(1).get();
+        const order = orderSnapshot.empty ? 1 : (Math.ceil(orderSnapshot.docs[0].data().order) + 1);
         const newDocRef = tasksCollection.doc();
         const task = {
             uid: newDocRef.id,
@@ -11,7 +16,8 @@ async function createTask(req, res, next) {
             project: req.body.project,
             title: req.body.title,
             description: req.body.description,
-            state: req.body.state
+            state: req.body.state,
+            order: order
         };
         tasksCollection.doc(newDocRef.id).set(task)
         .then(() => {
@@ -28,7 +34,7 @@ async function createTask(req, res, next) {
 async function getTaskList(req, res, next) {
     try {
         const tasksCollection = db.collection('tasks');
-        const tasksSnapshot = await tasksCollection.where('project', '==', req.body.project).get();
+        const tasksSnapshot = await tasksCollection.where('project', '==', req.body.project).orderBy('order').get();
         const response = [
             { state: 'NONE', tasks: [] },
             { state: 'TODO', tasks: [] },
