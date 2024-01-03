@@ -56,12 +56,12 @@
     },
     "NAV": {
         "DASHBOARD": "Startseite",
-        "SETTINGS": "Einstellungen",
+        "PROJECT_SETTINGS": "Projekt-Einstellungen",
         "LOGOUT": "Abmelden",
         "CREATE_TASK": "Aufgabe erstellen",
         "KANBAN": "Board"
     },
-    "SETTINGS": {
+    "PROJECT_SETTINGS": {
         "FULLNAME": "Vollständiger Name",
         "USERNAME": "Benutzername",
         "LANGUAGE": "Sprache",

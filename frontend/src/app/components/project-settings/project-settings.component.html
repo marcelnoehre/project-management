@@ -1,11 +1,11 @@
-<div class="settings-container">
+<div class="project-settings-container">
     <table>
         <tr class="header py-2">
-            <th>{{ 'SETTINGS.FULLNAME' | translate }}</th>
-            <th>{{ 'SETTINGS.USERNAME' | translate }}</th>
-            <th>{{ 'SETTINGS.LANGUAGE' | translate }}</th>
-            <th>{{ 'SETTINGS.PERMISSION' | translate }}</th>
-            <th>{{ 'SETTINGS.ACTIONS' | translate }}</th>
+            <th>{{ 'PROJECT_SETTINGS.FULLNAME' | translate }}</th>
+            <th>{{ 'PROJECT_SETTINGS.USERNAME' | translate }}</th>
+            <th>{{ 'PROJECT_SETTINGS.LANGUAGE' | translate }}</th>
+            <th>{{ 'PROJECT_SETTINGS.PERMISSION' | translate }}</th>
+            <th>{{ 'PROJECT_SETTINGS.ACTIONS' | translate }}</th>
         </tr>
         <div class="content">
             <tr *ngFor="let member of members; index as i">
@@ -24,16 +24,16 @@
         </div>
     </table>
     <form [formGroup]="inviteForm" class="invite">
-        <p>{{ 'SETTINGS.INVITE_USER' | translate }}</p>
+        <p>{{ 'PROJECT_SETTINGS.INVITE_USER' | translate }}</p>
         <div style="display: flex;">
             <mat-form-field appearance="outline" class="username-form-field" MatInput>
-                <mat-label> {{ 'SETTINGS.USERNAME' | translate }} </mat-label>
+                <mat-label> {{ 'PROJECT_SETTINGS.USERNAME' | translate }} </mat-label>
                 <input
                     id="username-input"
                     name="username"
                     class="username-form-field"
                     formControlName="usernameFormControl"
-                    placeholder="{{'SETTINGS.USERNAME'|translate}}"
+                    placeholder="{{'PROJECT_SETTINGS.USERNAME'|translate}}"
                     matInput
                 />
                 <mat-icon matPrefix> group_add </mat-icon>
