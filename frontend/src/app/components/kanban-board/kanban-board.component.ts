@@ -79,24 +79,29 @@ export class KanbanBoardComponent implements AfterViewInit {
         this.snackbar.open(this.translate.instant(error.error.message));
       }
     );
-        
-    
   }
 
   getColor(state: string) {
     return TaskStateColor[state as keyof typeof TaskStateColor];
   }
 
-  json() {    
-    this.export(new Blob([JSON.stringify(this.taskList, null, 2)], { type: 'application/json' }), '.json');
+  parseExport(list: State[]) {
+    return list.map((item) => ({
+      state: item.state,
+      tasks: item.tasks.map(({ uid, project, state, ...task }) => task)
+    }));
+  }
+
+  json() {
+    this.export(new Blob([JSON.stringify(this.parseExport(this.taskList), null, 2)], { type: 'application/json' }), '.json');
   }
 
   xml() {
-    this.export(new Blob([JsonToXML.parse('root', this.taskList)], { type: 'application/xml' }), '.xml');
+    this.export(new Blob([JsonToXML.parse('root', this.parseExport(this.taskList))], { type: 'application/xml' }), '.xml');
   }
 
   yaml() {
-    this.export(new Blob([YAML.stringify(this.taskList)], { type: 'text/yaml' }), '.yaml');
+    this.export(new Blob([YAML.stringify(this.parseExport(this.taskList))], { type: 'text/yaml' }), '.yaml');
   }
 
   export(blob: Blob, fileExtension: string) {
