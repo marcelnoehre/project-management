@@ -1,8 +1,5 @@
-<div class="kanban-container">
-    <h1 class="header pt-4">
-        KanBan
-    </h1>
-    <div class="board">
+<div class="kanban-container pt-4">
+    <div class="board mb-4">
         <div class="column" *ngFor="let state of taskList">
             <div class="state" style="--color:  {{ getColor(state.state) }}">
                 {{ 'TASK_STATE.' + state.state | translate }}
@@ -15,5 +12,19 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="actions">
+        <button mat-raised-button (click)="json()">
+            JSON
+            <mat-icon>download</mat-icon>
+        </button>
+        <button mat-raised-button (click)="xml()">
+            XML
+            <mat-icon>download</mat-icon>
+        </button>
+        <button mat-raised-button (click)="yaml()">
+            YAML
+            <mat-icon>download</mat-icon>
+        </button>
     </div>
 </div>

@@ -9,6 +9,8 @@ import { StorageService } from 'src/app/services/storage.service';
 import { Router } from '@angular/router';
 import { TaskStateColor } from 'src/app/enums/task-state-color.enum';
 import { PermissionService } from 'src/app/services/permission.service';
+import * as JsonToXML from "js2xmlparser";
+import * as YAML from 'yaml';
 
 @Component({
   selector: 'app-kanban-board',
@@ -70,15 +72,42 @@ export class KanbanBoardComponent implements AfterViewInit {
         this.taskList = tasklist;
       },
       (error) => {
+        if (error.status === 403) {
+          this.storage.clearSession();
+          this.router.navigateByUrl('/login');
+        }
         this.snackbar.open(this.translate.instant(error.error.message));
       }
     );
-        
-    
   }
 
   getColor(state: string) {
     return TaskStateColor[state as keyof typeof TaskStateColor];
   }
 
+  parseExport(list: State[]) {
+    return list.map((item) => ({
+      state: item.state,
+      tasks: item.tasks.map(({ uid, project, state, ...task }) => task)
+    }));
+  }
+
+  json() {
+    this.export(new Blob([JSON.stringify(this.parseExport(this.taskList), null, 2)], { type: 'application/json' }), '.json');
+  }
+
+  xml() {
+    this.export(new Blob([JsonToXML.parse('root', this.parseExport(this.taskList))], { type: 'application/xml' }), '.xml');
+  }
+
+  yaml() {
+    this.export(new Blob([YAML.stringify(this.parseExport(this.taskList))], { type: 'text/yaml' }), '.yaml');
+  }
+
+  export(blob: Blob, fileExtension: string) {
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'export-' + this.permission.getProject() + '-tasks' + fileExtension;
+    link.click();
+  }
 }
