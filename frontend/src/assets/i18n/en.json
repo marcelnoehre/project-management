@@ -29,7 +29,8 @@
         "INVITE_ACCEPT": "Accept",
         "INVITE_REJECT": "Reject",
         "INVITE_ACCEPTED": "Joining successful!",
-        "INVITE_REJECTED": "The invitation has been deleted! Create a project or ask for a new invitation."
+        "INVITE_REJECTED": "The invitation has been deleted! Create a project or ask for a new invitation.",
+        "INITIALS_UPDATED": "Initials have been updated!"
     },
     "REGISTRATION": {
         "HEADER": "Create account",

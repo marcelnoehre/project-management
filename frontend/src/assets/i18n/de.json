@@ -29,7 +29,8 @@
         "INVITE_ACCEPT": "Akzeptieren",
         "INVITE_REJECT": "Ablehnen",
         "INVITE_ACCEPTED": "Beitritt erfolgreich!",
-        "INVITE_REJECTED": "Die Einladung wurde gelöscht! Erstellen Sie ein Projekt oder bitten Sie um eine erneute Einladung."
+        "INVITE_REJECTED": "Die Einladung wurde gelöscht! Erstellen Sie ein Projekt oder bitten Sie um eine erneute Einladung.",
+        "INITIALS_UPDATED": "Initialien wurden aktualisiert!"
     },
     "REGISTRATION": {
         "HEADER": "Account erstellen",
