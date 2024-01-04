@@ -57,6 +57,7 @@
     "NAV": {
         "DASHBOARD": "Dashboard",
         "PROJECT_SETTINGS": "Project settings",
+        "USER_SETTINGS": "User settings",
         "LOGOUT": "Logout",
         "CREATE_TASK": "Create task",
         "KANBAN": "Board"
