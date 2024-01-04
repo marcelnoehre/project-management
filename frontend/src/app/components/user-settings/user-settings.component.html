@@ -105,27 +105,6 @@
                 <mat-icon> done_all </mat-icon>
             </button>
         </div>
-
-        <div class="form-container center">
-            <input
-                id="profile-picture-input" 
-                name="profile-picture"
-                *ngIf="profilePicture !== null"
-                type="file" 
-                (change)="onFileSelected($event)"
-                class="file-input p-5 mb-3"
-            >
-            <button
-                class="submit-button"
-                type="button"
-                matSuffix
-                mat-icon-button
-            >
-                <mat-icon> done_all </mat-icon>
-            </button>
-        </div>
-
-
         <div class="form-container">
             <mat-form-field appearance="outline" class="user-settings-form-field" MatInput>
                 <mat-label> {{ 'REGISTRATION.INITIALS' | translate }}</mat-label>
@@ -139,6 +118,35 @@
                 />
                 <mat-icon matPrefix> image </mat-icon>
             </mat-form-field>
+            <button
+                class="submit-button"
+                type="button"
+                matSuffix
+                mat-icon-button
+            >
+                <mat-icon> done_all </mat-icon>
+            </button>
+        </div>
+        <div class="form-container center">
+            <input
+                id="profile-picture-input" 
+                name="profile-picture"
+                *ngIf="profilePicture === null"
+                type="file" 
+                (change)="onFileSelected($event)"
+                class="file-input p-5"
+            >
+            <div class="file-preview" *ngIf="profilePicture !== null">
+                <img [src]="profilePicture">
+                <div>
+                    <button 
+                        mat-fab
+                        color="warn"
+                        (click)="removeFile()">
+                        <mat-icon>delete</mat-icon>
+                    </button>  
+                </div>
+            </div>
             <button
                 class="submit-button"
                 type="button"

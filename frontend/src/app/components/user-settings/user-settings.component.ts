@@ -27,7 +27,7 @@ export class UserSettingsComponent implements OnInit {
   language!: string;
   password!: string;
   hidePassword = true;
-  profilePicture!: SafeUrl;
+  profilePicture!: SafeUrl | null;
 
   constructor(private storage: StorageService) {
 
@@ -39,6 +39,7 @@ export class UserSettingsComponent implements OnInit {
     this.initials = this.initialUser.initials;
     this.language = this.initialUser.language;
     this.password = '';
+    this.profilePicture = null;
   }
 
   private getUser(): any {
@@ -46,7 +47,21 @@ export class UserSettingsComponent implements OnInit {
 	}
 
   onFileSelected(event: Event) {
-    
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length) {
+      const file = input.files[0];
+      if(file.type.startsWith("image/")) {
+        const reader = new FileReader;
+        reader.onload = (e) => {
+            this.profilePicture = e.target?.result as string;
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+  }
+
+  removeFile() {
+    this.profilePicture = null;
   }
 
 }
