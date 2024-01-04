@@ -16,6 +16,8 @@ export abstract class AdapterService {
 
   public abstract verify(token: string, username: string): Observable<User>;
 
+  public abstract updateUser(attribute: string, value: string): Observable<Response>;
+
   
   // ### PROJECT ###
   public abstract createProject(token: string, username: string, project: string): Observable<Response>;

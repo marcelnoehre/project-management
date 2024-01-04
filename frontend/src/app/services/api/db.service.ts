@@ -48,6 +48,14 @@ export class DbService extends AdapterService {
     return this.http.post<User>(this.basePath + this.auth + 'verify', body);
   }
 
+  public override updateUser(attribute: string, value: string): Observable<Response> {
+    const body = {
+      attribute: attribute,
+      value: value
+    }
+    return this.http.post<Response>(this.basePath + this.auth + 'updateUser', body);
+  }
+
 
   // ### PROJECT ###
   public override createProject(token: string, username: string, project: string): Observable<Response> {

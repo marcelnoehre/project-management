@@ -48,7 +48,8 @@
         "NEW_PASSWORD": "Neues Passwort",
         "REGISTER": "Registrieren",
         "BACK": "Zurück zur Anmeldung",
-        "SUCCESS": "Account erfolgreich erstellt!"
+        "SUCCESS": "Account erfolgreich erstellt!",
+        "USER_UPDATE_SUCCESS" : "Account-Informationen aktualisiert!"
     },
     "CREATE_PROJECT": {
         "HEADLINE": "Sie sind derzeit kein Mitglied eines Projekts",

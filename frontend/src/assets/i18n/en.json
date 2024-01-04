@@ -48,7 +48,8 @@
         "NEW_PASSWORD": "New password",
         "REGISTER": "register",
         "BACK": "Back to login",
-        "SUCCESS": "Registered successfully!"
+        "SUCCESS": "Registered successfully!",
+        "USER_UPDATE_SUCCESS" : "User has been updated!"
     },
     "CREATE_PROJECT": {
         "HEADLINE": "You are not currently a member of a project",

@@ -50,6 +50,10 @@ export class ApiService {
 		return this.adapter.verify(token, username);
 	}
 
+	public updateUser(attribute: string, value: string): Observable<Response> {
+		return this.adapter.updateUser(attribute, value);
+	}
+
 
 	// ### PROJECT ###
 	public createProject(token: string, username: string, project: string): Observable<Response> {

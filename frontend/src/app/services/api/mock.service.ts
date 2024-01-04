@@ -64,6 +64,12 @@ export class MockService extends AdapterService {
     }
   }
 
+  public override updateUser(attribute: string, value: string): Observable<Response> {
+    const url = this.basePath + this.auth + 'updateUser/update.json';
+    return this.http.get<Response>(url);
+  }
+
+
   // ### PROJECT ###
   public override createProject(token: string, username: string, project: string): Observable<Response> {
     if (this.availableMockData.projects.includes(project)) {
