@@ -1,3 +1,80 @@
 <div class="user-settings-component">
-    
+    <form>
+        <mat-form-field appearance="outline" MatInput>
+            <mat-label> {{ 'REGISTRATION.USERNAME' | translate }}</mat-label>
+            <input
+                id="username-input"
+                [(ngModel)]="username"
+                name="username"
+                placeholder="{{'REGISTRATION.USERNAME' | translate}}"
+                matInput
+                required
+            />
+            <mat-icon matPrefix> person </mat-icon>
+        </mat-form-field>
+        <mat-form-field appearance="outline" MatInput>
+            <mat-label> {{ 'REGISTRATION.FULLNAME' | translate }}</mat-label>
+            <input
+                id="fullname-input"
+                [(ngModel)]="fullname"
+                name="fullname"
+                placeholder="{{'REGISTRATION.FULLNAME' | translate}}"
+                matInput
+                required
+            />
+            <mat-icon matPrefix> badge </mat-icon>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>{{ 'REGISTRATION.LANGUAGE' | translate }}</mat-label>
+            <mat-select 
+                id="language-select"
+                name="language"
+                placeholder="{{'REGISTRATION.LANGUAGE'|translate}}"
+                [(ngModel)]="language"
+            >
+                <mat-option
+                    *ngFor="let lang of languages"
+                    [value]="lang.key"
+                >
+                    {{ lang.label }}
+                </mat-option>
+            </mat-select>
+            <mat-icon matPrefix> language </mat-icon>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label> {{ 'REGISTRATION.NEW_PASSWORD' | translate }}</mat-label>
+            <input
+                id="password-input"
+                name="password"
+                placeholder="{{'REGISTRATION.NEW_PASSWORD'|translate}}"
+                [type]="hidePassword ? 'password' : 'text'"
+                matInput
+                required
+            />
+            <mat-icon matPrefix> lock </mat-icon>
+            <button
+                id="hide-password-button"
+                type="button"
+                [attr.aria-label]="'Hide password'"
+                [attr.aria-pressed]="hidePassword"
+                (click)="hidePassword = !hidePassword"
+                matSuffix
+                mat-icon-button
+            >
+                <mat-icon> {{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+            </button>
+        </mat-form-field>
+        <mat-form-field appearance="outline" MatInput>
+            <mat-label> {{ 'REGISTRATION.INITIALS' | translate }}</mat-label>
+            <input
+                id="initials-input"
+                [(ngModel)]="initials"
+                name="initials"
+                placeholder="{{ 'REGISTRATION.INITIALS' | translate }}"
+                matInput
+                required
+            />
+            <mat-icon matPrefix> image </mat-icon>
+        </mat-form-field>
+    </form>
 </div>
