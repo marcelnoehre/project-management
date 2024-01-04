@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { SafeUrl } from '@angular/platform-browser';
 import { User } from 'src/app/interfaces/data/user';
 import { Language } from 'src/app/interfaces/language';
 import { StorageService } from 'src/app/services/storage.service';
@@ -26,6 +27,7 @@ export class UserSettingsComponent implements OnInit {
   language!: string;
   password!: string;
   hidePassword = true;
+  profilePicture!: SafeUrl;
 
   constructor(private storage: StorageService) {
 
@@ -42,5 +44,9 @@ export class UserSettingsComponent implements OnInit {
   private getUser(): any {
 		return this.storage.getSessionEntry('user');
 	}
+
+  onFileSelected(event: Event) {
+    
+  }
 
 }
