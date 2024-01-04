@@ -12,7 +12,7 @@ export abstract class AdapterService {
   // ### AUTH ###
   public abstract login(username: string, password: string): Observable<User>;
 
-  public abstract register(username: string, password: string, fullName: string, language: string): Observable<Response>;
+  public abstract register(username: string, password: string, fullName: string, language: string, initials: string): Observable<Response>;
 
   public abstract verify(token: string, username: string): Observable<User>;
 

@@ -35,9 +35,11 @@ async function register(req, res, next) {
                 username: req.body.username,
                 fullName: req.body.fullName,
                 language: req.body.language,
+                initials: req.body.initials,
                 project: '',
                 permission: '',
-                isLoggedIn: true
+                profilePicture: '',
+                isLoggedIn: true,
             }
             const usersRef = db.collection('users').doc();
             await usersRef.set(user);
