@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { SafeUrl } from '@angular/platform-browser';
 import { User } from 'src/app/interfaces/data/user';
 import { Language } from 'src/app/interfaces/language';
 import { StorageService } from 'src/app/services/storage.service';
@@ -22,12 +21,12 @@ export class UserSettingsComponent implements OnInit {
   ];
   initialUser: User = this.getUser();
   username!: string;
-  fullname!: string;
+  fullName!: string;
   initials!: string;
   language!: string;
   password!: string;
   hidePassword = true;
-  profilePicture!: SafeUrl | null;
+  profilePicture!: string;
 
   constructor(private storage: StorageService) {
 
@@ -35,11 +34,11 @@ export class UserSettingsComponent implements OnInit {
 
   ngOnInit(): void {
     this.username = this.initialUser.username;
-    this.fullname = this.initialUser.fullName;
+    this.fullName = this.initialUser.fullName;
     this.initials = this.initialUser.initials;
     this.language = this.initialUser.language;
     this.password = '';
-    this.profilePicture = null;
+    this.profilePicture = this.initialUser.profilePicture;
   }
 
   private getUser(): any {
@@ -61,7 +60,18 @@ export class UserSettingsComponent implements OnInit {
   }
 
   removeFile() {
-    this.profilePicture = null;
+    this.profilePicture = '';
   }
 
+  updateUser(attribute: string, value: string) {
+    console.log(attribute, value);
+  }
+
+  isDisabled(attribute: string, value: string) {
+    return this.initialUser[attribute] === value || value === '' || value === null;
+  }
+
+  hasProfilePicture() {
+    return this.profilePicture !== '';
+  }
 }

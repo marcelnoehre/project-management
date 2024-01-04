@@ -1,4 +1,5 @@
 export interface User {
+    [key: string]: any,
     token: string,
     username: string,
     fullName: string,
@@ -6,5 +7,6 @@ export interface User {
     language: string,
     project: string,
     permission: string,
-    isLoggedIn: string
+    isLoggedIn: string,
+    profilePicture: string
 }

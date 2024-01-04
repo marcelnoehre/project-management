@@ -14,8 +14,10 @@
                 <mat-icon matPrefix> person </mat-icon>
             </mat-form-field>
             <button
-                class="submit-button"
                 type="button"
+                [ngClass]="{'submit-button': !isDisabled('username', username)}"
+                (click) = "updateUser('username', username)"
+                [disabled] = "isDisabled('username', username)"
                 matSuffix
                 mat-icon-button
             >
@@ -27,8 +29,8 @@
                 <mat-label> {{ 'REGISTRATION.FULLNAME' | translate }}</mat-label>
                 <input
                     id="fullname-input"
-                    [(ngModel)]="fullname"
-                    name="fullname"
+                    [(ngModel)]="fullName"
+                    name="fullName"
                     placeholder="{{'REGISTRATION.FULLNAME' | translate}}"
                     matInput
                     required
@@ -36,8 +38,10 @@
                 <mat-icon matPrefix> badge </mat-icon>
             </mat-form-field>
             <button
-                class="submit-button"
                 type="button"
+                [ngClass]="{'submit-button': !isDisabled('fullName', fullName)}"
+                (click) = "updateUser('fullName', fullName)"
+                [disabled] = "isDisabled('fullName', fullName)"
                 matSuffix
                 mat-icon-button
             >
@@ -63,8 +67,10 @@
                 <mat-icon matPrefix> language </mat-icon>
             </mat-form-field>
             <button
-                class="submit-button"
                 type="button"
+                [ngClass]="{'submit-button': !isDisabled('language', language)}"
+                (click) = "updateUser('language', language)"
+                [disabled] = "isDisabled('language', language)"
                 matSuffix
                 mat-icon-button
             >
@@ -119,8 +125,10 @@
                 <mat-icon matPrefix> image </mat-icon>
             </mat-form-field>
             <button
-                class="submit-button"
                 type="button"
+                [ngClass]="{'submit-button': !isDisabled('initials', initials)}"
+                (click) = "updateUser('initials', initials)"
+                [disabled] = "isDisabled('initials', initials)"
                 matSuffix
                 mat-icon-button
             >
@@ -131,12 +139,12 @@
             <input
                 id="profile-picture-input" 
                 name="profile-picture"
-                *ngIf="profilePicture === null"
+                *ngIf="!hasProfilePicture()"
                 type="file" 
                 (change)="onFileSelected($event)"
                 class="file-input p-5"
             >
-            <div class="file-preview" *ngIf="profilePicture !== null">
+            <div class="file-preview" *ngIf="hasProfilePicture()">
                 <img [src]="profilePicture">
                 <div>
                     <button 
@@ -148,8 +156,10 @@
                 </div>
             </div>
             <button
-                class="submit-button"
                 type="button"
+                [ngClass]="{'submit-button': !isDisabled('profilePicture', profilePicture)}"
+                (click) = "updateUser('profilePicture', profilePicture)"
+                [disabled] = "isDisabled('profilePicture', profilePicture)"
                 matSuffix
                 mat-icon-button
             >
