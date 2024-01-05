@@ -8,6 +8,7 @@ import { ApiService } from 'src/app/services/api/api.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { StorageService } from 'src/app/services/storage.service';
 import { DialogComponent } from '../dialog/dialog.component';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-user-settings',
@@ -25,7 +26,7 @@ export class UserSettingsComponent implements OnInit {
       label: 'Deutsch'
     }
   ];
-  initialUser: User = this.getUser();
+  initialUser: User = this.user.user;
   username!: string;
   fullName!: string;
   initials!: string;
@@ -40,7 +41,8 @@ export class UserSettingsComponent implements OnInit {
     private router: Router,
     private snackbar: SnackbarService,
     private translate: TranslateService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private user: UserService
   ) {
 
   }
@@ -53,10 +55,6 @@ export class UserSettingsComponent implements OnInit {
     this.password = '';
     this.profilePicture = this.initialUser.profilePicture;
   }
-
-  private getUser(): any {
-		return this.storage.getSessionEntry('user');
-	}
 
   onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
@@ -77,13 +75,12 @@ export class UserSettingsComponent implements OnInit {
   }
 
   updateUser(attribute: string, value: string) {
-    this.api.updateUser(this.getUser().token, this.getUser().username, attribute, value).subscribe(
+    this.api.updateUser(this.user.token, this.user.username, attribute, value).subscribe(
       (response) => {
         this.snackbar.open(this.translate.instant(response.message));
-        let user = this.getUser();
-        user[attribute] = value;
-        this.initialUser = user;
-        this.storage.setSessionEntry('user', user);
+        this.user.update(attribute, value);
+        this.initialUser = this.user.user;
+        this.storage.setSessionEntry('user', this.user.user);
       },
       (error) => {
         if (error.status === 403) {
@@ -122,7 +119,7 @@ export class UserSettingsComponent implements OnInit {
     this.dialog.open(DialogComponent, { data, ...{} }).afterClosed().subscribe(
       async (confirmed) => {
         if (confirmed) {
-          this.api.deleteUser(this.getUser().token, this.getUser().username).subscribe(
+          this.api.deleteUser(this.user.token, this.user.username).subscribe(
             (response) => {
               this.storage.clearSession();
               this.router.navigateByUrl('/login');

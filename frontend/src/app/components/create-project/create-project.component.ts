@@ -7,6 +7,7 @@ import { Permission } from 'src/app/enums/permission.enum';
 import { ApiService } from 'src/app/services/api/api.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { StorageService } from 'src/app/services/storage.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-create-project',
@@ -23,7 +24,8 @@ export class CreateProjectComponent {
     private storage: StorageService,
     private snackbar: SnackbarService,
     private translate: TranslateService,
-    private router: Router
+    private router: Router,
+    private user: UserService
   ) {
     this.createForm();
   }
@@ -36,19 +38,14 @@ export class CreateProjectComponent {
 		return this.projectForm.get('projectFormControl')?.value;
 	}
 
-	private getUser(): any {
-		return this.storage.getSessionEntry('user');
-	}
-
   createProject() {
-    this.api.createProject(this.getUser().token, this.getUser().username, this.project).subscribe(
+    this.api.createProject(this.user.token, this.user.username, this.project).subscribe(
       (response) => {
         this.snackbar.open(this.translate.instant(response.message));
-        let user = this.getUser();
-        user.project = this.project;
-        user.permission = Permission.OWNER;
-        user.isLoggedIn = true;
-        this.storage.setSessionEntry('user', user);
+        this.user.project = this.project;
+        this.user.permission = Permission.OWNER;
+        this.user.isLoggedIn = 'true';
+        this.storage.setSessionEntry('user', this.user.user);
         this.dialogRef.close(true);
       },
       (error) => {

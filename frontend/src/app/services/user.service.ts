@@ -91,6 +91,10 @@ export class UserService {
     this.userObj.isLoggedIn = isLoggedIn;
   }
 
+  update(attribute: string, value: string) {
+    this.userObj[attribute] = value;
+  }
+
   hasPermission(required: Permission) {
     return this.permissions.indexOf(this.permission as Permission) >= this.permissions.indexOf(required);
   }

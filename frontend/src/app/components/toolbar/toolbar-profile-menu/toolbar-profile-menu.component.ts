@@ -3,6 +3,7 @@ import { MatMenu } from '@angular/material/menu';
 import { Router } from '@angular/router';
 import { EventService } from 'src/app/services/event.service';
 import { StorageService } from 'src/app/services/storage.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
 	selector: 'app-toolbar-profile-menu',
@@ -17,13 +18,15 @@ export class ToolbarProfileMenuComponent {
 	constructor(
     private router: Router,
 		private storage: StorageService, 
-		private event: EventService
+		private event: EventService,
+		private user: UserService
 	) {
 		this.fullName = this.getFullName();
 	}
 
 	public logout(): void {
     	this.storage.deleteSessionEntry('user');
+		this.user.user = this.storage.getSessionEntry('user');
     	this.router.navigateByUrl('/login');
 	}
 

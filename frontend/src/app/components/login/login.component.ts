@@ -87,11 +87,11 @@ export class LoginComponent implements OnInit {
 						this.api.handleInvite(this.user?.['token'] as string, user.username, accept).subscribe(
 							(response) => {
 								if(accept) {
-									user.permission = Permission.MEMBER;
-									user.isLoggedIn = 'true';
-									this.storage.setSessionEntry('user', user);
+									this.user.user = user
 									this.user.permission = Permission.MEMBER;
 									this.user.project = user.project;
+									this.user.isLoggedIn = 'true';
+									this.storage.setSessionEntry('user', this.user.user);
 									this.router.navigateByUrl('/');
 								} else {
 									this.storage.deleteSessionEntry('user');
@@ -104,10 +104,9 @@ export class LoginComponent implements OnInit {
 						)
 					});
 				} else {
-					user.isLoggedIn = 'true';
-					this.storage.setSessionEntry('user', user);
-					this.user.permission = user?.permission as Permission;
-					this.user.project = user.project;
+					this.user.user = user;
+					this.user.isLoggedIn = 'true';
+					this.storage.setSessionEntry('user', this.user.user);
 					this.router.navigateByUrl('/');
 				}
 			},

@@ -8,9 +8,9 @@ import { TranslateService } from '@ngx-translate/core';
 import { StorageService } from 'src/app/services/storage.service';
 import { Router } from '@angular/router';
 import { TaskStateColor } from 'src/app/enums/task-state-color.enum';
+import { UserService } from 'src/app/services/user.service';
 import * as JsonToXML from "js2xmlparser";
 import * as YAML from 'yaml';
-import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-kanban-board',
@@ -34,10 +34,9 @@ export class KanbanBoardComponent implements AfterViewInit {
 
   async ngAfterViewInit(): Promise<void> {
     while (this.user.project === undefined) await new Promise<void>(done => setTimeout(() => done(), 5));
-    const user = this.getUser();
-    this.api.getTaskList(user.token, this.user.permission).subscribe(
+    this.api.getTaskList(this.user.token, this.user.project).subscribe(
       (taskList) => {
-        this.taskList = taskList;
+        this.taskList = taskList;        
       },
       (error) => {
         if (error.status === 403) {
@@ -48,10 +47,6 @@ export class KanbanBoardComponent implements AfterViewInit {
       }
     );
   }
-
-	private getUser(): any {
-		return this.storage.getSessionEntry('user');
-	}
 
   drop(event: any) {
     if (event.previousContainer === event.container) {
@@ -67,7 +62,7 @@ export class KanbanBoardComponent implements AfterViewInit {
     const foundState = this.taskList.find((list) => list.state === event.event.target.id);
     const previousIndex = foundState!.tasks[event.currentIndex - 1]?.order ? foundState!.tasks[event.currentIndex - 1].order : 0;
     const nextIndex = foundState!.tasks[event.currentIndex + 1]?.order === undefined ? previousIndex + 2 : foundState!.tasks[event.currentIndex + 1].order;
-    this.api.updatePosition(this.getUser().token, this.user.project, foundState!.tasks[event.currentIndex].uid, foundState!.state, (previousIndex + nextIndex) / 2).subscribe(
+    this.api.updatePosition(this.user.token, this.user.project, foundState!.tasks[event.currentIndex].uid, foundState!.state, (previousIndex + nextIndex) / 2).subscribe(
       (tasklist) => {
         this.taskList = tasklist;
       },

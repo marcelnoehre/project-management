@@ -55,17 +55,18 @@ export class SidenavComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit(): void {
+		this.user.user = this.storage.getSessionEntry('user');
 		if (this.isLoggedIn()) {
-			const user = this.storage.getSessionEntry('user');
-			this.api.verify(user?.token, user?.username).subscribe(
+			this.api.verify(this.user.token, this.user.username).subscribe(
 				(user) => {
 					this.storage.setSessionEntry('user', user);
-					this.user.permission = user.permission;
-					this.user.project = user.project;
+					this.user.user = user;
+					this.user.isLoggedIn = 'true';
 				},
 				(error) => {
 					if (error.status === 403) {
 						this.storage.clearSession();
+						this.user.user = this.storage.getSessionEntry('user');
 						this.router.navigateByUrl('/login');
 					}
 					this.snackbar.open(this.translate.instant(error.error.message));
@@ -88,9 +89,8 @@ export class SidenavComponent implements OnInit, OnDestroy {
 		this.clickEvent$.unsubscribe();
 	}
 
-	public isLoggedIn(): boolean {
-		const user = this.storage.getSessionEntry('user');
-		return user?.isLoggedIn && user?.project !== '';
+	isLoggedIn() {
+		return this.user.isLoggedIn === 'true' && this.user.project !== '';
 	}
 
 	isActive(route: string): string {
