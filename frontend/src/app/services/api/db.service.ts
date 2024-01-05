@@ -58,6 +58,14 @@ export class DbService extends AdapterService {
     return this.http.post<Response>(this.basePath + this.auth + 'updateUser', body);
   }
 
+  public override deleteUser(token: string, username: string): Observable<Response> {
+    const body = {
+      token: token,
+      username: username
+    }
+    return this.http.post<Response>(this.basePath + this.auth + 'deleteUser', body);
+  }
+
 
   // ### PROJECT ###
   public override createProject(token: string, username: string, project: string): Observable<Response> {

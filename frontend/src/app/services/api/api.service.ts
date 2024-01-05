@@ -54,6 +54,10 @@ export class ApiService {
 		return this.adapter.updateUser(token, username, attribute, value);
 	}
 
+	public deleteUser(token: string, username: string): Observable<Response> {
+		return this.adapter.deleteUser(token, username);
+	}
+
 
 	// ### PROJECT ###
 	public createProject(token: string, username: string, project: string): Observable<Response> {

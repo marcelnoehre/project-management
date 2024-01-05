@@ -54,7 +54,8 @@
         "CHANGE_PASSWORD_HEADLINE": "Change password",
         "CHANGE_PASSWORD_INFO": "Are you sure you want to change your password?",
         "DELETE_USER": "Delete account",
-        "DELETE_USER_INFO": "Are you sure you want to delete your account?"
+        "DELETE_USER_INFO": "Are you sure you want to delete your account?",
+        "DELETE_SUCCESS": "Account has been successfully deleted!"
     },
     "CREATE_PROJECT": {
         "HEADLINE": "You are not currently a member of a project",

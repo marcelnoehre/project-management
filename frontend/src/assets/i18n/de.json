@@ -54,7 +54,8 @@
         "CHANGE_PASSWORD_HEADLINE": "Passwort ändern",
         "CHANGE_PASSWORD_INFO": "Sind Sie sich sicher, dass Sie ihr Passwort ändern wollen?",
         "DELETE_USER": "Account löschen",
-        "DELETE_USER_INFO": "Sind Sie sicher, dass Sie ihren Account löschen möchten?"
+        "DELETE_USER_INFO": "Sind Sie sicher, dass Sie ihren Account löschen möchten?",
+        "DELETE_SUCCESS": "Account wurde erfolgreich gelöscht!"
     },
     "CREATE_PROJECT": {
         "HEADLINE": "Sie sind derzeit kein Mitglied eines Projekts",

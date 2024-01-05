@@ -69,6 +69,11 @@ export class MockService extends AdapterService {
     return this.http.get<Response>(url);
   }
 
+  public override deleteUser(token: string, username: string): Observable<Response> {
+    const url = this.basePath + this.auth + 'deleteUser/delete.json';
+    return this.http.get<Response>(url);
+  }
+
 
   // ### PROJECT ###
   public override createProject(token: string, username: string, project: string): Observable<Response> {
