@@ -7,6 +7,6 @@ export interface User {
     language: string,
     project: string,
     permission: string,
-    isLoggedIn: string,
-    profilePicture: string
+    profilePicture: string,
+    isLoggedIn: string
 }

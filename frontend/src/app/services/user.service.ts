@@ -1,0 +1,91 @@
+import { Injectable } from '@angular/core';
+import { User } from '../interfaces/data/user';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class UserService {
+  private userObj!: User;
+
+  constructor() { }
+
+  get user(): User {
+    return this.userObj;
+  }
+
+  get token(): string {
+    return this.userObj.token;
+  }
+
+  get username(): string {
+    return this.userObj.username;
+  }
+
+  get fullName(): string {
+    return this.userObj.fullName;
+  }
+
+  get initials(): string {
+    return this.userObj.initials;
+  }
+
+  get language(): string {
+    return this.userObj.language;
+  }
+
+  get project(): string {
+    return this.userObj.project;
+  }
+
+  get permission(): string {
+    return this.userObj.permission;
+  }
+
+  get profilePicture(): string {
+    return this.userObj.profilePicture;
+  }
+
+  get isLoggedIn(): string {
+    return this.userObj.isLoggedIn;
+  }
+
+  set user(user: User) {
+    this.userObj = user;
+  }
+
+  set token(token: string) {
+    this.userObj.token = token;
+  }
+
+  set username(username: string) {
+    this.userObj.username = username;
+  }
+
+  set fullName(fullName: string) {
+    this.userObj.fullName = fullName;
+  }
+
+  set initials(initials: string) {
+    this.userObj.initials = initials;
+  }
+
+  set language(language: string) {
+    this.userObj.language = language;
+  }
+
+  set project(project: string) {
+    this.userObj.project = project;
+  }
+
+  set permission(permission: string) {
+    this.userObj.permission = permission;
+  }
+
+  set profilePicture(profilePicture: string) {
+    this.userObj.profilePicture = profilePicture;
+  }
+
+  set isLoggedIn(isLoggedIn: string) {
+    this.userObj.isLoggedIn = isLoggedIn;
+  }
+}
