@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import { User } from 'src/app/interfaces/data/user';
 import { Language } from 'src/app/interfaces/language';
+import { ApiService } from 'src/app/services/api/api.service';
+import { SnackbarService } from 'src/app/services/snackbar.service';
 import { StorageService } from 'src/app/services/storage.service';
 
 @Component({
@@ -28,7 +32,13 @@ export class UserSettingsComponent implements OnInit {
   hidePassword = true;
   profilePicture!: string;
 
-  constructor(private storage: StorageService) {
+  constructor(
+    private storage: StorageService,
+    private api: ApiService,
+    private router: Router,
+    private snackbar: SnackbarService,
+    private translate: TranslateService
+  ) {
 
   }
 
@@ -64,6 +74,23 @@ export class UserSettingsComponent implements OnInit {
   }
 
   updateUser(attribute: string, value: string) {
+    this.api.updateUser(this.getUser().token, this.getUser().username, attribute, value).subscribe(
+      (response) => {
+        this.snackbar.open(this.translate.instant(response.message));
+        let user = this.getUser();
+        user[attribute] = value;
+        this.initialUser = user;
+        this.storage.setSessionEntry('user', user);
+      },
+      (error) => {
+        if (error.status === 403) {
+          this.storage.clearSession();
+          this.router.navigateByUrl('/login');
+        }
+        this.snackbar.open(this.translate.instant(error.error.message));
+      }
+    );
+
     console.log(attribute, value);
   }
 
