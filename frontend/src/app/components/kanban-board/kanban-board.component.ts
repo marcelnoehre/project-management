@@ -8,9 +8,9 @@ import { TranslateService } from '@ngx-translate/core';
 import { StorageService } from 'src/app/services/storage.service';
 import { Router } from '@angular/router';
 import { TaskStateColor } from 'src/app/enums/task-state-color.enum';
-import { PermissionService } from 'src/app/services/permission.service';
 import * as JsonToXML from "js2xmlparser";
 import * as YAML from 'yaml';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-kanban-board',
@@ -27,15 +27,15 @@ export class KanbanBoardComponent implements AfterViewInit {
     private router: Router,
     private snackbar: SnackbarService,
     private translate: TranslateService,
-    private permission: PermissionService
+    private user: UserService
   ) {
 
   }
 
   async ngAfterViewInit(): Promise<void> {
-    while (this.permission.getProject() === undefined) await new Promise<void>(done => setTimeout(() => done(), 5));
+    while (this.user.project === undefined) await new Promise<void>(done => setTimeout(() => done(), 5));
     const user = this.getUser();
-    this.api.getTaskList(user.token, this.permission.getProject()).subscribe(
+    this.api.getTaskList(user.token, this.user.permission).subscribe(
       (taskList) => {
         this.taskList = taskList;
       },
@@ -67,7 +67,7 @@ export class KanbanBoardComponent implements AfterViewInit {
     const foundState = this.taskList.find((list) => list.state === event.event.target.id);
     const previousIndex = foundState!.tasks[event.currentIndex - 1]?.order ? foundState!.tasks[event.currentIndex - 1].order : 0;
     const nextIndex = foundState!.tasks[event.currentIndex + 1]?.order === undefined ? previousIndex + 2 : foundState!.tasks[event.currentIndex + 1].order;
-    this.api.updatePosition(this.getUser().token, this.permission.getProject(), foundState!.tasks[event.currentIndex].uid, foundState!.state, (previousIndex + nextIndex) / 2).subscribe(
+    this.api.updatePosition(this.getUser().token, this.user.project, foundState!.tasks[event.currentIndex].uid, foundState!.state, (previousIndex + nextIndex) / 2).subscribe(
       (tasklist) => {
         this.taskList = tasklist;
       },
@@ -107,7 +107,7 @@ export class KanbanBoardComponent implements AfterViewInit {
   export(blob: Blob, fileExtension: string) {
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
-    link.download = 'export-' + this.permission.getProject() + '-tasks' + fileExtension;
+    link.download = 'export-' + this.user.project + '-tasks' + fileExtension;
     link.click();
   }
 }

@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { User } from '../interfaces/data/user';
+import { Permission } from '../enums/permission.enum';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
+  private permissions: Permission[] = [Permission.INVITED, Permission.MEMBER, Permission.ADMIN, Permission.OWNER];
   private userObj!: User;
 
   constructor() { }
@@ -87,5 +89,9 @@ export class UserService {
 
   set isLoggedIn(isLoggedIn: string) {
     this.userObj.isLoggedIn = isLoggedIn;
+  }
+
+  hasPermission(required: Permission) {
+    return this.permissions.indexOf(this.permission as Permission) >= this.permissions.indexOf(required);
   }
 }

@@ -6,13 +6,12 @@ import { Subscription, filter } from 'rxjs';
 import { AppIcon } from 'src/app/enums/app-icon.enum';
 import { AppItem } from 'src/app/enums/app-item.enum';
 import { AppRoute } from 'src/app/enums/app-route.enum';
-import { Permission } from 'src/app/enums/permission.enum';
 import { App } from 'src/app/interfaces/app';
 import { ApiService } from 'src/app/services/api/api.service';
 import { EventService } from 'src/app/services/event.service';
-import { PermissionService } from 'src/app/services/permission.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { StorageService } from 'src/app/services/storage.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-sidenav',
@@ -51,7 +50,7 @@ export class SidenavComponent implements OnInit, OnDestroy {
 		private api: ApiService,
 		private snackbar: SnackbarService,
 		private translate: TranslateService,
-		private permission: PermissionService
+		private user: UserService
 	) {
 	}
 
@@ -61,8 +60,8 @@ export class SidenavComponent implements OnInit, OnDestroy {
 			this.api.verify(user?.token, user?.username).subscribe(
 				(user) => {
 					this.storage.setSessionEntry('user', user);
-					this.permission.setPermission(user.permission as Permission);
-					this.permission.setProject(user.project);
+					this.user.permission = user.permission;
+					this.user.project = user.project;
 				},
 				(error) => {
 					if (error.status === 403) {
