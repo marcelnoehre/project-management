@@ -21,7 +21,7 @@ async function createTask(req, res, next) {
         };
         tasksCollection.doc(newDocRef.id).set(task)
         .then(() => {
-            res.json({ message: 'CREATE_TASK.SUCCESS' });
+            res.json({ message: 'SUCCESS.CREATE_TASK' });
         })
         .catch((err) => {
             res.status(402).send({ message: 'ERROR.CREATE_TASK' });

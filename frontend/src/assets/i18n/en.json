@@ -8,97 +8,98 @@
         "ACCEPT": "Accept",
         "REJECT": "Reject"
     },
+    "NAV": {
+        "DASHBOARD": "Dashboard",
+        "BOARD": "Board",
+        "CREATE_TASK": "Create task",
+        "PROJECT_SETTINGS": "Project settings",
+        "ACCOUNT_SETTINGS": "Account settings",
+        "LOGOUT": "Logout"
+    },
     "ERROR": {
-        "INVALID_CREDENTIALS": "Invalid credentials!",
         "INTERNAL": "Internal Server Error!",
         "INVALID_TOKEN": "You have been logged out for security reasons!",
+        "REQUIRED": {
+            "USERNAME": "The username is required!",
+            "PASSWORD": "The password is required!",
+            "REPEAT_PASSWORD": "The password repetition is required!",
+            "FULLNAME": "The full name is required!"
+        },
+        "PASSWORDS_MATCH": "The passwords don't match!",
+        "INVALID_CREDENTIALS": "Invalid credentials!",
         "REGISTRATION": "Registration failed!",
         "USERNAME_TAKEN": "The username is already taken!",
+        "NO_ACCOUNT": "Account could not be found!",
         "CREATE_PROJECT": "The project name is already taken!",
-        "NO_USER": "User could not be found!",
         "CREATE_TASK": "Task could not be created!"
+    },
+    "SUCCESS": {
+        "LOGOUT": "You have been successfully logged out!",
+        "REGISTRATION": "Registered successfully!",
+        "UPDATE_ACCOUNT" : "Account has been updated!",
+        "CREATE_PROJECT": "Project created successfully",
+        "REMOVE_MEMBER": "Removed from the project!",
+        "INVITE_DELIVERD": "Invitation delivered successfully!",
+        "INVITE_ACCEPTED": "Joining successful!",
+        "INVITE_REJECTED": "The invitation has been deleted! Create a project or ask for a new invitation.",
+        "DELETE_ACCOUNT": "Account has been successfully deleted!",
+        "CREATE_TASK": "Task created successfully!",
+        "EDIT_TASK": "Task edited successfully!"
+    },
+    "USER" : {
+        "USERNAME": "username",
+        "PASSWORD": "password",
+        "REPEAT_PASSWORD": "Repeat password",
+        "NEW_PASSWORD": "New password",
+        "FULLNAME": "Fullname",
+        "LANGUAGE": "Language",
+        "PERMISSION": "Permission",
+        "INITIALS": "Initials",
+        "DELETE": "Delete account"
     },
     "LOGIN": {
         "HEADER": "Kanban",
-        "USERNAME": "username",
-        "PASSWORD": "password",
-        "USERNAME_REQUIRED": "The username is required!",
-		"PASSWORD_REQUIRED": "The password is required!",
 		"LOGIN": "login",
         "NOT_REGISTERED": "No account yet? ",
-        "REGISTRATION": "Register.",
-        "INVITE_HEADLINE": "Invitation",
-        "INVITE_INFO": "You have received an invitation to the project {{project}}",
-        "INVITE_ACCEPTED": "Joining successful!",
-        "INVITE_REJECTED": "The invitation has been deleted! Create a project or ask for a new invitation.",
-        "INITIALS_UPDATED": "Initials have been updated!",
-        "LOGOUT_SUCCESS": "You have been successfully logged out!"
+        "REGISTRATION": "Register."
     },
     "REGISTRATION": {
         "HEADER": "Create account",
-        "USERNAME": "username",
-        "USERNAME_REQUIRED": "The username is required!",
-        "FULLNAME": "Fullname",
-        "FULLNAME_REQUIRED": "The full name is required!",
-        "INITIALS": "Initials",
-        "LANGUAGE": "Language",
-        "PASSWORD": "password",
-        "PASSWORD_REQUIRED": "The password is required!",
-        "PASSWORD_REPEAT": "Repeat password",
-        "PASSWORD_REPEAT_REQUIRED": "The password repetition is required!",
-        "PASSWORDS_DONT_MATCH": "The passwords don't match!",
-        "NEW_PASSWORD": "New password",
         "REGISTER": "register",
-        "BACK": "Back to login",
-        "SUCCESS": "Registered successfully!",
-        "USER_UPDATE_SUCCESS" : "User has been updated!",
-        "CHANGE_PASSWORD_HEADLINE": "Change password",
-        "CHANGE_PASSWORD_INFO": "Are you sure you want to change your password?",
-        "DELETE_USER": "Delete account",
-        "DELETE_USER_INFO": "Are you sure you want to delete your account?",
-        "DELETE_SUCCESS": "Account has been successfully deleted!"
+        "BACK": "Back to login"
     },
-    "CREATE_PROJECT": {
-        "HEADLINE": "You are not currently a member of a project",
-        "INFO": "Create a new project or ask your team leader to send you an invitation",
-        "PROJECT": "Project name",
-        "SUCCESS": "Project created successfully"
+    "DIALOG": {
+        "HEADLINE": {
+            "CREATE_PROJECT": "You are not currently a member of a project",
+            "INVITE": "Invitation",
+            "REMOVE_MEMBER": "Remove {{username}}?",
+            "CHANGE_PASSWORD": "Change password",
+            "DELETE_ACCOUNT": "Delete irrevocably!"
+        },
+        "INFO": {
+            "CREATE_PROJECT": "Create a new project or ask your team leader to send you an invitation",
+            "INVITE": "You have received an invitation to the project {{project}}",
+            "REMOVE_MEMBER": "If you remove the user, he or she will no longer have access to the project. Existing tasks remain listed under this username.",
+            "CHANGE_PASSWORD": "Are you sure you want to change your password?",
+            "DELETE_ACCOUNT": "Are you sure you want to delete your account?"
+        }
     },
-    "NAV": {
-        "DASHBOARD": "Dashboard",
-        "PROJECT_SETTINGS": "Project settings",
-        "USER_SETTINGS": "User settings",
-        "LOGOUT": "Logout",
-        "CREATE_TASK": "Create task",
-        "KANBAN": "Board"
-    },
-    "PROJECT_SETTINGS": {
-        "FULLNAME": "Fullname",
-        "USERNAME": "Username",
-        "LANGUAGE": "Language",
-        "PERMISSION": "Permission",
+    "PROJECT": {
+        "NAME": "Project name",
         "ACTIONS": "Actions",
-        "INVITE_USER": "Invite a user to the project",
-        "INVITE_SUCCESS": "Invitation delivered successfully!",
-        "REMOVE_HEADLINE": "Remove {{username}}?",
-        "REMOVE_DESCRIPTION": "If you remove the user, he or she will no longer have access to the project. Existing tasks remain listed under this username.",
-        "REMOVE_SUCCESS": "User removed from the project!"
+        "INVITE": "Invite a user to the project"
     },
-    "TASK_STATE": {
-        "NONE": "No status",
-        "TODO": "ToDo",
-        "PROGRESS": "In Progress",
-        "REVIEW": "In Review",
-        "DONE": "Done"
-    },
-    "CREATE_TASK": {
+    "TASK": {
         "TITLE": "Title",
         "DESCRIPTION": "Description",
         "STATE": "State",
         "CREATE": "Create",
-        "SUCCESS": "Task created successfully!"
-    },
-    "EDIT_TASK": {
-        "SUCCESS": "Task updated successfully!"
+        "STATE_ENUM": {
+            "NONE": "No status",
+            "TODO": "ToDo",
+            "PROGRESS": "In Progress",
+            "REVIEW": "In Review",
+            "DONE": "Done"
+        }
     }
 }

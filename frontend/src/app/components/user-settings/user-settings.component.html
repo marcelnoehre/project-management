@@ -2,12 +2,12 @@
     <form>
         <div class="form-container">
             <mat-form-field appearance="outline" class="user-settings-form-field" MatInput>
-                <mat-label> {{ 'REGISTRATION.USERNAME' | translate }}</mat-label>
+                <mat-label> {{ 'USER.USERNAME' | translate }}</mat-label>
                 <input
                     id="username-input"
                     [(ngModel)]="username"
                     name="username"
-                    placeholder="{{'REGISTRATION.USERNAME' | translate}}"
+                    placeholder="{{'USER.USERNAME' | translate}}"
                     matInput
                 />
                 <mat-icon matPrefix> person </mat-icon>
@@ -25,12 +25,12 @@
         </div>
         <div class="form-container">
             <mat-form-field appearance="outline" class="user-settings-form-field" MatInput>
-                <mat-label> {{ 'REGISTRATION.FULLNAME' | translate }}</mat-label>
+                <mat-label> {{ 'USER.FULLNAME' | translate }}</mat-label>
                 <input
                     id="fullname-input"
                     [(ngModel)]="fullName"
                     name="fullName"
-                    placeholder="{{'REGISTRATION.FULLNAME' | translate}}"
+                    placeholder="{{'USER.FULLNAME' | translate}}"
                     matInput
                 />
                 <mat-icon matPrefix> badge </mat-icon>
@@ -48,11 +48,11 @@
         </div>
         <div class="form-container">
             <mat-form-field appearance="outline" class="user-settings-form-field">
-                <mat-label>{{ 'REGISTRATION.LANGUAGE' | translate }}</mat-label>
+                <mat-label>{{ 'USER.LANGUAGE' | translate }}</mat-label>
                 <mat-select 
                     id="language-select"
                     name="language"
-                    placeholder="{{'REGISTRATION.LANGUAGE'|translate}}"
+                    placeholder="{{'USER.LANGUAGE'|translate}}"
                     [(ngModel)]="language"
                 >
                     <mat-option
@@ -78,11 +78,11 @@
 
         <div class="form-container">
             <mat-form-field appearance="outline" class="user-settings-form-field" MatInput>
-                <mat-label> {{ 'REGISTRATION.NEW_PASSWORD' | translate }}</mat-label>
+                <mat-label> {{ 'USER.NEW_PASSWORD' | translate }}</mat-label>
                 <input
                     id="password-input"
                     name="password"
-                    placeholder="{{'REGISTRATION.NEW_PASSWORD'|translate}}"
+                    placeholder="{{'USER.NEW_PASSWORD'|translate}}"
                     [(ngModel)]="password"
                     [type]="hidePassword ? 'password' : 'text'"
                     matInput
@@ -114,12 +114,12 @@
         </div>
         <div class="form-container">
             <mat-form-field appearance="outline" class="user-settings-form-field" MatInput>
-                <mat-label> {{ 'REGISTRATION.INITIALS' | translate }}</mat-label>
+                <mat-label> {{ 'USER.INITIALS' | translate }}</mat-label>
                 <input
                     id="initials-input"
                     [(ngModel)]="initials"
                     name="initials"
-                    placeholder="{{ 'REGISTRATION.INITIALS' | translate }}"
+                    placeholder="{{ 'USER.INITIALS' | translate }}"
                     matInput
                 />
                 <mat-icon matPrefix> image </mat-icon>
@@ -168,7 +168,7 @@
         </div>
         <div class="delete mt-5">
             <button color="warn" mat-raised-button (click)="deleteUser()">
-                {{ 'REGISTRATION.DELETE_USER' | translate }}
+                {{ 'USER.DELETE' | translate }}
                 <mat-icon> delete </mat-icon>
             </button>
         </div>

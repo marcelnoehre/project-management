@@ -106,8 +106,8 @@ export class MockService extends AdapterService {
       const url = this.basePath + this.project + `invite/${username}.json`;
       return this.http.get<User>(url);
     } else {
-      this.snackbar.open(this.translate.instant('ERROR.NO_USER'));
-      throw new Error(this.translate.instant('ERROR.NO_USER'));
+      this.snackbar.open(this.translate.instant('ERROR.NO_ACCOUNT'));
+      throw new Error(this.translate.instant('ERROR.NO_ACCOUNT'));
     }
   }
 

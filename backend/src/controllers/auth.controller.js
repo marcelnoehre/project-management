@@ -42,7 +42,7 @@ async function logout(req, res, next) {
             await usersSnapshot.docs[0].ref.update({
                 isLoggedIn: false
             });
-            res.json( { message: "LOGIN.LOGOUT_SUCCESS" } );
+            res.json( { message: "SUCCESS.LOGOUT" } );
         }
     } catch(err) {
         next(err);    
@@ -72,7 +72,7 @@ async function register(req, res, next) {
             }
             const passwordsRef = db.collection('passwords').doc();
             await passwordsRef.set(password);
-            res.json({ message: "REGISTRATION.SUCCESS" });
+            res.json({ message: "SUCCESS.REGISTRATION" });
         } else {
             res.status(402).send({ message: 'ERROR.USERNAME_TAKEN' });
         }
@@ -113,7 +113,7 @@ async function updateUser(req, res, next) {
                         res.status(500).send({ message: 'ERROR.INTERNAL' });
                     } else {
                         await passwordsSnapshot.docs[0].ref.update({ password: req.body.value });
-                        res.json({ message: 'REGISTRATION.USER_UPDATE_SUCCESS' });
+                        res.json({ message: 'SUCCESS.UPDATE_ACCOUNT' });
                     }
                 } else {
                     if (req.body.attribute === 'username') {
@@ -126,7 +126,7 @@ async function updateUser(req, res, next) {
                         }
                     }
                     await usersSnapshot.docs[0].ref.update({ [req.body.attribute]: req.body.value });
-                    res.json({ message: 'REGISTRATION.USER_UPDATE_SUCCESS' });
+                    res.json({ message: 'SUCCESS.UPDATE_ACCOUNT' });
                 }
             } else {
                 res.status(500).send({ message: 'ERROR.INTERNAL' });
@@ -153,7 +153,7 @@ async function deleteUser(req, res, next) {
                 await usersCollection.doc(userId).delete();
                 const passwordId = passwordsSnapshot.docs[0].id;
                 await passwordsCollection.doc(passwordId).delete();
-                res.json({ message: 'REGISTRATION.DELETE_SUCCESS' });
+                res.json({ message: 'SUCCESS.DELETE_ACCOUNT' });
             }
         }
     } catch (err) {

@@ -16,7 +16,7 @@ async function createProject(req, res, next) {
                     permission: 'OWNER',
                     isLoggedIn: true
                 });
-                res.json({ message: "CREATE_PROJECT.SUCCESS" });
+                res.json({ message: "SUCCESS.CREATE_PROJECT" });
             } else {
                 res.status(402).send({ message: 'ERROR.CREATE_PROJECT' });
             }
@@ -49,7 +49,7 @@ async function inviteUser(req, res, next) {
         const usersCollection = db.collection('users');
         let usersSnapshot = await usersCollection.where('username', '==', req.body.username).get();
         if (usersSnapshot.empty) {
-            res.status(404).send({ message: 'ERROR.NO_USER' });
+            res.status(404).send({ message: 'ERROR.NO_ACCOUNT' });
         } else {
             const userDoc = usersSnapshot.docs[0];
             await userDoc.ref.update({
@@ -77,13 +77,13 @@ async function handleInvite(req, res, next) {
                     permission: 'MEMBER',
                     isLoggedIn: true
                 });
-                res.json({ message: 'LOGIN.INVITE_ACCEPTED'});
+                res.json({ message: 'SUCCESS.INVITE_ACCEPTED'});
             } else {
                 await userDoc.ref.update({
                     project: '',
                     permission: ''
                 });
-                res.json({ message: 'LOGIN.INVITE_REJECTED'});
+                res.json({ message: 'SUCCESS.INVITE_REJECTED'});
             }
         }
     } catch (err) {
@@ -103,7 +103,7 @@ async function removeUser(req, res, next) {
                 project: '',
                 permission: ''
             });
-            res.json({message: 'PROJECT_SETTINGS.REMOVE_SUCCESS'});
+            res.json({message: 'SUCCESS.REMOVE_MEMBER'});
         }
     } catch (err) {
         next(err);

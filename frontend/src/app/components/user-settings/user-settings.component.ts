@@ -94,8 +94,8 @@ export class UserSettingsComponent implements OnInit {
 
   async updatePassword() {
     const data = {
-      headline: this.translate.instant('REGISTRATION.CHANGE_PASSWORD_HEADLINE'),
-      description: this.translate.instant('REGISTRATION.CHANGE_PASSWORD_INFO'),
+      headline: this.translate.instant('DIALOG.HEADLINE.CHANGE_PASSWORD'),
+      description: this.translate.instant('DIALOG.INFO.CHANGE_PASSWORD'),
       falseButton: this.translate.instant('APP.CANCEL'),
       trueButton: this.translate.instant('APP.CONFIRM')
     };
@@ -111,8 +111,8 @@ export class UserSettingsComponent implements OnInit {
 
   async deleteUser() {
     const data = {
-      headline: this.translate.instant('REGISTRATION.DELETE_USER'),
-      description: this.translate.instant('REGISTRATION.DELETE_USER_INFO'),
+      headline: this.translate.instant('DIALOG.HEADLINE.DELETE_ACCOUNT'),
+      description: this.translate.instant('DIALOG.INFO.DELETE_ACCOUNT'),
       falseButton: this.translate.instant('APP.CANCEL'),
       trueButton: this.translate.instant('APP.CONFIRM')
     };

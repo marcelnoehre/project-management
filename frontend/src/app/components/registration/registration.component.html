@@ -7,42 +7,42 @@
 			<form [formGroup]="registrationForm">
 				<div>
 					<mat-form-field appearance="outline" class="registration-form-field" MatInput>
-						<mat-label> {{ 'REGISTRATION.USERNAME' | translate }} </mat-label>
+						<mat-label> {{ 'USER.USERNAME' | translate }} </mat-label>
 						<input #inputUser
 							id="username-input"
                             name="username"
 							formControlName="usernameFormControl"
-							placeholder="{{'REGISTRATION.USERNAME'|translate}}"
+							placeholder="{{'USER.USERNAME'|translate}}"
 							matInput
 							required
 						/>
 						<mat-icon matPrefix> person </mat-icon>
-						<mat-error *ngIf="!usernameValid()"> {{ 'REGISTRATION.USERNAME_REQUIRED' | translate }} </mat-error>
+						<mat-error *ngIf="!usernameValid()"> {{ 'ERROR.REQUIRED.USERNAME' | translate }} </mat-error>
 					</mat-form-field>
 				</div>
 				<div>
 					<mat-form-field appearance="outline" class="registration-form-field" MatInput>
-						<mat-label> {{ 'REGISTRATION.FULLNAME' | translate }} </mat-label>
+						<mat-label> {{ 'USER.FULLNAME' | translate }} </mat-label>
 						<input
 							id="fullName-input"
                             name="fullName"
 							formControlName="fullnameFormControl"
-							placeholder="{{'REGISTRATION.FULLNAME'|translate}}"
+							placeholder="{{'USER.FULLNAME'|translate}}"
 							matInput
 							required
 						/>
 						<mat-icon matPrefix> badge </mat-icon>
-						<mat-error *ngIf="!fullnameValid()"> {{ 'REGISTRATION.FULLNAME_REQUIRED' | translate }} </mat-error>
+						<mat-error *ngIf="!fullnameValid()"> {{ 'ERROR.REQUIRED.FULLNAME' | translate }} </mat-error>
 					</mat-form-field>
 				</div>
 				<div>
 					<mat-form-field appearance="outline" class="registration-form-field">
-						<mat-label>{{ 'REGISTRATION.LANGUAGE' | translate }}</mat-label>
+						<mat-label>{{ 'USER.LANGUAGE' | translate }}</mat-label>
 						<mat-select 
 							id="language-select"
 							name="language"
 							formControlName="languageFormControl"
-							placeholder="{{'REGISTRATION.LANGUAGE'|translate}}"
+							placeholder="{{'USER.LANGUAGE'|translate}}"
 						>
 							<mat-option
 								*ngFor="let lang of languages"
@@ -56,12 +56,12 @@
 				</div>
 				<div>
 					<mat-form-field appearance="outline" class="registration-form-field">
-						<mat-label> {{ 'REGISTRATION.PASSWORD' | translate }}</mat-label>
+						<mat-label> {{ 'USER.PASSWORD' | translate }}</mat-label>
 						<input
 							id="password-input"
 							name="password"
 							formControlName="passwordFormControl"
-							placeholder="{{'REGISTRATION.PASSWORD'|translate}}"
+							placeholder="{{'USER.PASSWORD'|translate}}"
 							[type]="hidePassword ? 'password' : 'text'"
 							matInput
 							required
@@ -78,17 +78,17 @@
 						>
 							<mat-icon> {{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
 						</button>
-						<mat-error *ngIf="!passwordValid()"> {{ 'REGISTRATION.PASSWORD_REQUIRED' | translate }} </mat-error>
+						<mat-error *ngIf="!passwordValid()"> {{ 'ERROR.REQUIRED.PASSWORD' | translate }} </mat-error>
 					</mat-form-field>
 				</div>
                 <div>
 					<mat-form-field appearance="outline" class="registration-form-field">
-						<mat-label> {{ 'REGISTRATION.PASSWORD_REPEAT' | translate }}</mat-label>
+						<mat-label> {{ 'USER.REPEAT_PASSWORD' | translate }}</mat-label>
 						<input
 							id="password-repeat-input"
 							name="password-repeat"
 							formControlName="passwordRepeatFormControl"
-							placeholder="{{'REGISTRATION.PASSWORD_REPEAT'|translate}}"
+							placeholder="{{'USER.REPEAT_PASSWORD'|translate}}"
 							[type]="hidePasswordRepeat ? 'password' : 'text'"
 							matInput
 							required
@@ -105,7 +105,7 @@
 						>
 							<mat-icon> {{ hidePasswordRepeat ? 'visibility_off' : 'visibility' }}</mat-icon>
 						</button>
-						<mat-error *ngIf="!passwordRepeatValid()"> {{ 'REGISTRATION.PASSWORD_REPEAT_REQUIRED' | translate }} </mat-error>
+						<mat-error *ngIf="!passwordRepeatValid()"> {{ 'ERROR.REQUIRED.REPEAT_PASSWORD' | translate }} </mat-error>
 					</mat-form-field>
 				</div>
 				<div>

@@ -94,7 +94,7 @@ export class ProjectSettingsComponent implements OnInit {
       (user) => {
         this.members.push(user);
         this.inviteForm.controls['usernameFormControl'].reset();
-        this.snackbar.open(this.translate.instant('PROJECT_SETTINGS.INVITE_SUCCESS'));
+        this.snackbar.open(this.translate.instant('SUCCESS.INVITE_DELIVERD'));
       },
       (error) => {
         if (error.status === 403) {
@@ -108,8 +108,8 @@ export class ProjectSettingsComponent implements OnInit {
 
   removeUser(username: string, index: number): void {
     const data = {
-      headline: this.translate.instant('PROJECT_SETTINGS.REMOVE_HEADLINE', { username: username }),
-      description: this.translate.instant('PROJECT_SETTINGS.REMOVE_DESCRIPTION'),
+      headline: this.translate.instant('DIALOG.HEADLINE.REMOVE_MEMBER', { username: username }),
+      description: this.translate.instant('DIALOG.INFO.REMOVE_MEMBER'),
       falseButton: this.translate.instant('APP.CANCEL'),
       trueButton: this.translate.instant('APP.REMOVE')
     };
