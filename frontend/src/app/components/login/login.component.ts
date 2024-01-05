@@ -78,8 +78,8 @@ export class LoginComponent implements OnInit {
 					});
 				} else if (user.permission === Permission.INVITED) {
 					const data = {
-						headline: this.translate.instant('LOGIN.INVITE_HEADLINE'),
-						description: this.translate.instant('LOGIN.INVITE_INFO', { project: user.project}),
+						headline: this.translate.instant('DIALOG.HEADLINE.INVITE'),
+						description: this.translate.instant('DIALOG.INFO.INVITE', { project: user.project}),
 						falseButton: this.translate.instant('APP.REJECT'),
 						trueButton: this.translate.instant('APP.ACCEPT')
 					};

@@ -13,7 +13,7 @@
         "BOARD": "Board",
         "CREATE_TASK": "Create task",
         "PROJECT_SETTINGS": "Project settings",
-        "USER_SETTINGS": "User settings",
+        "ACCOUNT_SETTINGS": "Account settings",
         "LOGOUT": "Logout"
     },
     "ERROR": {
@@ -23,9 +23,9 @@
             "USERNAME": "The username is required!",
             "PASSWORD": "The password is required!",
             "REPEAT_PASSWORD": "The password repetition is required!",
-            "FULLNAME": "The full name is required!",
-            "PASSWORDS_MATCH": "The passwords don't match!"
+            "FULLNAME": "The full name is required!"
         },
+        "PASSWORDS_MATCH": "The passwords don't match!",
         "INVALID_CREDENTIALS": "Invalid credentials!",
         "REGISTRATION": "Registration failed!",
         "USERNAME_TAKEN": "The username is already taken!",
@@ -39,7 +39,6 @@
         "UPDATE_USER" : "User has been updated!",
         "CREATE_PROJECT": "Project created successfully",
         "REMOVE_MEMBER": "User removed from the project!",
-        "INITIALS_UPDATED": "Initials have been updated!",
         "INVITE_DELIVERD": "Invitation delivered successfully!",
         "INVITE_ACCEPTED": "Joining successful!",
         "INVITE_REJECTED": "The invitation has been deleted! Create a project or ask for a new invitation.",

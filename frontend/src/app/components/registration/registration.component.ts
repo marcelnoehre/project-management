@@ -103,7 +103,7 @@ export class RegistrationComponent implements OnInit {
 
   async register() {
     if (this.password !== this.passwordRepeat) {
-      this.snackbar.open(this.translate.instant('REGISTRATION.PASSWORDS_DONT_MATCH'));
+      this.snackbar.open(this.translate.instant('ERROR.PASSWORDS_MATCH'));
     } else {
       const hashedPassword = await this.sha256(this.password);
       const fullNameArr = this.fullName.split(/\s+/);

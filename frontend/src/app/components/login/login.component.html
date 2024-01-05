@@ -7,27 +7,27 @@
 			<form [formGroup]="loginForm">
 				<div>
 					<mat-form-field appearance="outline" class="login-form-field" MatInput>
-						<mat-label> {{ 'LOGIN.USERNAME' | translate }} </mat-label>
+						<mat-label> {{ 'USER.USERNAME' | translate }} </mat-label>
 						<input #inputUser
 							id="username-input"
                             name="username"
 							formControlName="usernameFormControl"
-							placeholder="{{'LOGIN.USERNAME'|translate}}"
+							placeholder="{{'USER.USERNAME'|translate}}"
 							matInput
 							required
 						/>
 						<mat-icon matPrefix> person </mat-icon>
-						<mat-error *ngIf="!userValid()"> {{ 'LOGIN.USERNAME_REQUIRED' | translate }} </mat-error>
+						<mat-error *ngIf="!userValid()"> {{ 'ERROR.REQUIRED.USERNAME' | translate }} </mat-error>
 					</mat-form-field>
 				</div>
 				<div>
 					<mat-form-field appearance="outline" class="login-form-field">
-						<mat-label> {{ 'LOGIN.PASSWORD' | translate }}</mat-label>
+						<mat-label> {{ 'USER.PASSWORD' | translate }}</mat-label>
 						<input
 							id="password-input"
 							name="password"
 							formControlName="passwordFormControl"
-							placeholder="{{'LOGIN.PASSWORD'|translate}}"
+							placeholder="{{'USER.PASSWORD'|translate}}"
 							[type]="hidePassword ? 'password' : 'text'"
 							matInput
 							required
@@ -44,7 +44,7 @@
 						>
 							<mat-icon> {{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
 						</button>
-						<mat-error *ngIf="!passwordValid()"> {{ 'LOGIN.PASSWORD_REQUIRED' | translate }} </mat-error>
+						<mat-error *ngIf="!passwordValid()"> {{ 'ERROR.REQUIRED.PASSWORD' | translate }} </mat-error>
 					</mat-form-field>
 				</div>
 				<div>

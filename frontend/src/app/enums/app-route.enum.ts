@@ -1,5 +1,5 @@
 export enum AppRoute {
     Dashboard = '/',
     CreateTask = '/task/create',
-    KanBan = '/tasks/board'
+    Board = '/tasks/board'
 }
