@@ -49,7 +49,7 @@ async function inviteUser(req, res, next) {
         const usersCollection = db.collection('users');
         let usersSnapshot = await usersCollection.where('username', '==', req.body.username).get();
         if (usersSnapshot.empty) {
-            res.status(404).send({ message: 'ERROR.NO_USER' });
+            res.status(404).send({ message: 'ERROR.NO_ACCOUNT' });
         } else {
             const userDoc = usersSnapshot.docs[0];
             await userDoc.ref.update({

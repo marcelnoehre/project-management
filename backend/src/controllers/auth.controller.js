@@ -113,7 +113,7 @@ async function updateUser(req, res, next) {
                         res.status(500).send({ message: 'ERROR.INTERNAL' });
                     } else {
                         await passwordsSnapshot.docs[0].ref.update({ password: req.body.value });
-                        res.json({ message: 'SUCCESS.UPDATE_USER' });
+                        res.json({ message: 'SUCCESS.UPDATE_ACCOUNT' });
                     }
                 } else {
                     if (req.body.attribute === 'username') {
@@ -126,7 +126,7 @@ async function updateUser(req, res, next) {
                         }
                     }
                     await usersSnapshot.docs[0].ref.update({ [req.body.attribute]: req.body.value });
-                    res.json({ message: 'SUCCESS.UPDATE_USER' });
+                    res.json({ message: 'SUCCESS.UPDATE_ACCOUNT' });
                 }
             } else {
                 res.status(500).send({ message: 'ERROR.INTERNAL' });
