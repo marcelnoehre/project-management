@@ -13,7 +13,8 @@ async function createProject(req, res, next) {
                 const userDoc = usersSnapshot.docs[0];
                 await userDoc.ref.update({
                     project: req.body.project,
-                    permission: 'OWNER'
+                    permission: 'OWNER',
+                    isLoggedIn: true
                 });
                 res.json({ message: "CREATE_PROJECT.SUCCESS" });
             } else {
@@ -73,7 +74,8 @@ async function handleInvite(req, res, next) {
             const userDoc = usersSnapshot.docs[0];
             if (req.body.decision) {
                 await userDoc.ref.update({
-                    permission: 'MEMBER'
+                    permission: 'MEMBER',
+                    isLoggedIn: true
                 });
                 res.json({ message: 'LOGIN.INVITE_ACCEPTED'});
             } else {

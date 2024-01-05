@@ -15,7 +15,13 @@ async function login(req, res, next) {
                 res.status(500).send({ message: 'ERROR.INTERNAL' });
             } else {
                 const user = usersSnapshot.docs[0].data();
+                if (user.project !== '') {
+                    await usersSnapshot.docs[0].ref.update({
+                        isLoggedIn: true
+                    });
+                }          
                 user.token = jwt.sign(user, 'my-secret-key', { expiresIn: '1h' });
+                user.isLoggedIn = true;
                 res.json(user);
             }
         } else {
@@ -39,7 +45,7 @@ async function register(req, res, next) {
                 project: '',
                 permission: '',
                 profilePicture: '',
-                isLoggedIn: true,
+                isLoggedIn: false,
             }
             const usersRef = db.collection('users').doc();
             await usersRef.set(user);
@@ -67,7 +73,6 @@ async function verify(req, res, next) {
         } else {
             const user = usersSnapshot.docs[0].data();
             user.token = req.body.token;
-            user.isLoggedIn = true;
             res.json(user);
         }
     } catch(err) {
