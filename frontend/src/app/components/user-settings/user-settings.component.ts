@@ -112,6 +112,23 @@ export class UserSettingsComponent implements OnInit {
     );
   }
 
+  async deleteUser() {
+    const data = {
+      headline: this.translate.instant('REGISTRATION.DELETE_USER'),
+      description: this.translate.instant('REGISTRATION.DELETE_USER_INFO'),
+      falseButton: this.translate.instant('APP.CANCEL'),
+      trueButton: this.translate.instant('APP.CONFIRM')
+    };
+    this.dialog.open(DialogComponent, { data, ...{} }).afterClosed().subscribe(
+      async (confirmed) => {
+        if (confirmed) {
+          console.log('DELETED');
+          
+        }
+      }
+    );
+  }
+
   isDisabled(attribute: string, value: string) {
 
     if (attribute === 'profilePicture') return this.initialUser[attribute] === value;

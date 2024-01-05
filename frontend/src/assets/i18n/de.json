@@ -52,7 +52,9 @@
         "SUCCESS": "Account erfolgreich erstellt!",
         "USER_UPDATE_SUCCESS" : "Account-Informationen aktualisiert!",
         "CHANGE_PASSWORD_HEADLINE": "Passwort ändern",
-        "CHANGE_PASSWORD_INFO": "Sind sie sich sicher, dass Sie ihr Passwort ändern wollen?"
+        "CHANGE_PASSWORD_INFO": "Sind Sie sich sicher, dass Sie ihr Passwort ändern wollen?",
+        "DELETE_USER": "Account löschen",
+        "DELETE_USER_INFO": "Sind Sie sicher, dass Sie ihren Account löschen möchten?"
     },
     "CREATE_PROJECT": {
         "HEADLINE": "Sie sind derzeit kein Mitglied eines Projekts",

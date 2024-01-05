@@ -103,7 +103,7 @@
             <button
                 class="submit-button"
                 type="button"
-                [ngClass]="{'submit-button': !isDisabled('fullName', fullName)}"
+                [ngClass]="{'submit-button': !isDisabled('password', password)}"
                 (click) = "updatePassword()"
                 [disabled] = "isDisabled('password', password)"
                 matSuffix
@@ -135,7 +135,7 @@
                 <mat-icon> done_all </mat-icon>
             </button>
         </div>
-        <div class="form-container center">
+        <div class="form-container center mb-5">
             <input
                 id="profile-picture-input" 
                 name="profile-picture"
@@ -164,6 +164,12 @@
                 mat-icon-button
             >
                 <mat-icon> done_all </mat-icon>
+            </button>
+        </div>
+        <div class="delete mt-5">
+            <button color="warn" mat-raised-button (click)="deleteUser()">
+                {{ 'REGISTRATION.DELETE_USER' | translate }}
+                <mat-icon> delete </mat-icon>
             </button>
         </div>
     </form>
