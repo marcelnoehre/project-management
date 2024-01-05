@@ -84,8 +84,8 @@ export class LoginComponent implements OnInit {
 					const data = {
 						headline: this.translate.instant('LOGIN.INVITE_HEADLINE'),
 						description: this.translate.instant('LOGIN.INVITE_INFO', { project: user.project}),
-						falseButton: this.translate.instant('LOGIN.INVITE_REJECT'),
-						trueButton: this.translate.instant('LOGIN.INVITE_ACCEPT')
+						falseButton: this.translate.instant('APP.REJECT'),
+						trueButton: this.translate.instant('APP.ACCEPT')
 					};
 					this.dialog.open(DialogComponent, { data, ...{} }).afterClosed().subscribe((accept) => {
 						this.api.handleInvite(this.user?.['token'] as string, user.username, accept).subscribe(

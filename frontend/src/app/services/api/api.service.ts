@@ -42,12 +42,20 @@ export class ApiService {
 		return this.adapter.login(username, password);
 	}
 
-	public register(username: string, password: string, fullName: string, language: string): Observable<Response> {
-		return this.adapter.register(username, password, fullName, language);
+	public register(username: string, password: string, fullName: string, language: string, initials: string): Observable<Response> {
+		return this.adapter.register(username, password, fullName, language, initials);
 	}
 
 	public verify(token: string, username: string): Observable<User> {
 		return this.adapter.verify(token, username);
+	}
+
+	public updateUser(token: string, username: string, attribute: string, value: string): Observable<Response> {
+		return this.adapter.updateUser(token, username, attribute, value);
+	}
+
+	public deleteUser(token: string, username: string): Observable<Response> {
+		return this.adapter.deleteUser(token, username);
 	}
 
 

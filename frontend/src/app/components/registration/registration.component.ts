@@ -106,7 +106,9 @@ export class RegistrationComponent implements OnInit {
       this.snackbar.open(this.translate.instant('REGISTRATION.PASSWORDS_DONT_MATCH'));
     } else {
       const hashedPassword = await this.sha256(this.password);
-      this.api.register(this.username, hashedPassword, this.fullName, this.language).subscribe(
+      const fullNameArr = this.fullName.split(/\s+/);
+      const initials = fullNameArr[0].charAt(0) + (fullNameArr.length > 1 ? fullNameArr[1]?.charAt(0) : '');
+      this.api.register(this.username, hashedPassword, this.fullName, this.language, initials).subscribe(
         (response) => {
           this.snackbar.open(this.translate.instant(response.message));
           this.router.navigateByUrl('/login');

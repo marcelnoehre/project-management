@@ -44,7 +44,7 @@ export class MockService extends AdapterService {
 		}
   }
 
-  public override register(username: string, password: string, fullName: string, language: string): Observable<Response> {
+  public override register(username: string, password: string, fullName: string, language: string, initials: string): Observable<Response> {
     if (this.availableMockData.register.includes(username)) {
       const url = this.basePath + this.auth + `register/${username}.json`;
       return this.http.get<Response>(url);
@@ -63,6 +63,17 @@ export class MockService extends AdapterService {
       throw new Error(this.translate.instant('ERROR.INVALID_TOKEN'));
     }
   }
+
+  public override updateUser(token: string, username: string, attribute: string, value: string): Observable<Response> {
+    const url = this.basePath + this.auth + 'updateUser/update.json';
+    return this.http.get<Response>(url);
+  }
+
+  public override deleteUser(token: string, username: string): Observable<Response> {
+    const url = this.basePath + this.auth + 'deleteUser/delete.json';
+    return this.http.get<Response>(url);
+  }
+
 
   // ### PROJECT ###
   public override createProject(token: string, username: string, project: string): Observable<Response> {

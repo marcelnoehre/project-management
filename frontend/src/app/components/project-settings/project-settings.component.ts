@@ -13,11 +13,11 @@ import { Language } from 'src/app/interfaces/language';
 import { PermissionService } from 'src/app/services/permission.service';
 
 @Component({
-  selector: 'app-settings',
-  templateUrl: './settings.component.html',
-  styleUrls: ['./settings.component.scss']
+  selector: 'app-project-settings',
+  templateUrl: './project-settings.component.html',
+  styleUrls: ['./project-settings.component.scss']
 })
-export class SettingsComponent implements OnInit {
+export class ProjectSettingsComponent implements OnInit {
   inviteForm!: FormGroup;
   members: User[] = [];
   languages: Language[] = [
@@ -98,7 +98,7 @@ export class SettingsComponent implements OnInit {
       (user) => {
         this.members.push(user);
         this.inviteForm.controls['usernameFormControl'].reset();
-        this.snackbar.open(this.translate.instant('SETTINGS.INVITE_SUCCESS'));
+        this.snackbar.open(this.translate.instant('PROJECT_SETTINGS.INVITE_SUCCESS'));
       },
       (error) => {
         if (error.status === 403) {
@@ -112,8 +112,8 @@ export class SettingsComponent implements OnInit {
 
   removeUser(username: string, index: number): void {
     const data = {
-      headline: this.translate.instant('SETTINGS.REMOVE_HEADLINE', { username: username }),
-      description: this.translate.instant('SETTINGS.REMOVE_DESCRIPTION'),
+      headline: this.translate.instant('PROJECT_SETTINGS.REMOVE_HEADLINE', { username: username }),
+      description: this.translate.instant('PROJECT_SETTINGS.REMOVE_DESCRIPTION'),
       falseButton: this.translate.instant('APP.CANCEL'),
       trueButton: this.translate.instant('APP.REMOVE')
     };

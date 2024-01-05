@@ -3,7 +3,10 @@
         "OK": "OK",
         "CANCEL": "Cancel",
         "CREATE": "Create",
-        "REMOVE": "Remove"
+        "REMOVE": "Remove",
+        "CONFIRM": "Confirm",
+        "ACCEPT": "Accept",
+        "REJECT": "Reject"
     },
     "ERROR": {
         "INVALID_CREDENTIALS": "Invalid credentials!",
@@ -26,10 +29,9 @@
         "REGISTRATION": "Register.",
         "INVITE_HEADLINE": "Invitation",
         "INVITE_INFO": "You have received an invitation to the project {{project}}",
-        "INVITE_ACCEPT": "Accept",
-        "INVITE_REJECT": "Reject",
         "INVITE_ACCEPTED": "Joining successful!",
-        "INVITE_REJECTED": "The invitation has been deleted! Create a project or ask for a new invitation."
+        "INVITE_REJECTED": "The invitation has been deleted! Create a project or ask for a new invitation.",
+        "INITIALS_UPDATED": "Initials have been updated!"
     },
     "REGISTRATION": {
         "HEADER": "Create account",
@@ -37,15 +39,23 @@
         "USERNAME_REQUIRED": "The username is required!",
         "FULLNAME": "Fullname",
         "FULLNAME_REQUIRED": "The full name is required!",
+        "INITIALS": "Initials",
         "LANGUAGE": "Language",
         "PASSWORD": "password",
         "PASSWORD_REQUIRED": "The password is required!",
         "PASSWORD_REPEAT": "Repeat password",
         "PASSWORD_REPEAT_REQUIRED": "The password repetition is required!",
         "PASSWORDS_DONT_MATCH": "The passwords don't match!",
+        "NEW_PASSWORD": "New password",
         "REGISTER": "register",
         "BACK": "Back to login",
-        "SUCCESS": "Registered successfully!"
+        "SUCCESS": "Registered successfully!",
+        "USER_UPDATE_SUCCESS" : "User has been updated!",
+        "CHANGE_PASSWORD_HEADLINE": "Change password",
+        "CHANGE_PASSWORD_INFO": "Are you sure you want to change your password?",
+        "DELETE_USER": "Delete account",
+        "DELETE_USER_INFO": "Are you sure you want to delete your account?",
+        "DELETE_SUCCESS": "Account has been successfully deleted!"
     },
     "CREATE_PROJECT": {
         "HEADLINE": "You are not currently a member of a project",
@@ -55,12 +65,13 @@
     },
     "NAV": {
         "DASHBOARD": "Dashboard",
-        "SETTINGS": "Settings",
+        "PROJECT_SETTINGS": "Project settings",
+        "USER_SETTINGS": "User settings",
         "LOGOUT": "Logout",
         "CREATE_TASK": "Create task",
         "KANBAN": "Board"
     },
-    "SETTINGS": {
+    "PROJECT_SETTINGS": {
         "FULLNAME": "Fullname",
         "USERNAME": "Username",
         "LANGUAGE": "Language",

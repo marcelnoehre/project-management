@@ -6,7 +6,8 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { RegistrationComponent } from './components/registration/registration.component';
 import { CreateTaskComponent } from './components/create-task/create-task.component';
 import { KanbanBoardComponent } from './components/kanban-board/kanban-board.component';
-import { SettingsComponent } from './components/settings/settings.component';
+import { ProjectSettingsComponent } from './components/project-settings/project-settings.component';
+import { UserSettingsComponent } from './components/user-settings/user-settings.component';
 
 const routes: Routes = [
   {
@@ -18,8 +19,13 @@ const routes: Routes = [
     component: RegistrationComponent,
   },
   {
-    path: 'settings',
-    component: SettingsComponent,
+    path: 'settings/user',
+    component: UserSettingsComponent,
+    canActivate: [authGuard]
+  },
+  {
+    path: 'settings/project',
+    component: ProjectSettingsComponent,
     canActivate: [authGuard]
   },
   {

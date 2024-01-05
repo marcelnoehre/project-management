@@ -1,0 +1,176 @@
+<div class="user-settings-component">
+    <form>
+        <div class="form-container">
+            <mat-form-field appearance="outline" class="user-settings-form-field" MatInput>
+                <mat-label> {{ 'REGISTRATION.USERNAME' | translate }}</mat-label>
+                <input
+                    id="username-input"
+                    [(ngModel)]="username"
+                    name="username"
+                    placeholder="{{'REGISTRATION.USERNAME' | translate}}"
+                    matInput
+                />
+                <mat-icon matPrefix> person </mat-icon>
+            </mat-form-field>
+            <button
+                type="button"
+                [ngClass]="{'submit-button': !isDisabled('username', username)}"
+                (click) = "updateUser('username', username)"
+                [disabled] = "isDisabled('username', username)"
+                matSuffix
+                mat-icon-button
+            >
+                <mat-icon> done_all </mat-icon>
+            </button>
+        </div>
+        <div class="form-container">
+            <mat-form-field appearance="outline" class="user-settings-form-field" MatInput>
+                <mat-label> {{ 'REGISTRATION.FULLNAME' | translate }}</mat-label>
+                <input
+                    id="fullname-input"
+                    [(ngModel)]="fullName"
+                    name="fullName"
+                    placeholder="{{'REGISTRATION.FULLNAME' | translate}}"
+                    matInput
+                />
+                <mat-icon matPrefix> badge </mat-icon>
+            </mat-form-field>
+            <button
+                type="button"
+                [ngClass]="{'submit-button': !isDisabled('fullName', fullName)}"
+                (click) = "updateUser('fullName', fullName)"
+                [disabled] = "isDisabled('fullName', fullName)"
+                matSuffix
+                mat-icon-button
+            >
+                <mat-icon> done_all </mat-icon>
+            </button>
+        </div>
+        <div class="form-container">
+            <mat-form-field appearance="outline" class="user-settings-form-field">
+                <mat-label>{{ 'REGISTRATION.LANGUAGE' | translate }}</mat-label>
+                <mat-select 
+                    id="language-select"
+                    name="language"
+                    placeholder="{{'REGISTRATION.LANGUAGE'|translate}}"
+                    [(ngModel)]="language"
+                >
+                    <mat-option
+                        *ngFor="let lang of languages"
+                        [value]="lang.key"
+                    >
+                        {{ lang.label }}
+                    </mat-option>
+                </mat-select>
+                <mat-icon matPrefix> language </mat-icon>
+            </mat-form-field>
+            <button
+                type="button"
+                [ngClass]="{'submit-button': !isDisabled('language', language)}"
+                (click) = "updateUser('language', language)"
+                [disabled] = "isDisabled('language', language)"
+                matSuffix
+                mat-icon-button
+            >
+                <mat-icon> done_all </mat-icon>
+            </button>
+        </div>
+
+        <div class="form-container">
+            <mat-form-field appearance="outline" class="user-settings-form-field" MatInput>
+                <mat-label> {{ 'REGISTRATION.NEW_PASSWORD' | translate }}</mat-label>
+                <input
+                    id="password-input"
+                    name="password"
+                    placeholder="{{'REGISTRATION.NEW_PASSWORD'|translate}}"
+                    [(ngModel)]="password"
+                    [type]="hidePassword ? 'password' : 'text'"
+                    matInput
+                />
+                <mat-icon matPrefix> lock </mat-icon>
+                <button
+                    id="hide-password-button"
+                    type="button"
+                    [attr.aria-label]="'Hide password'"
+                    [attr.aria-pressed]="hidePassword"
+                    (click)="hidePassword = !hidePassword"
+                    matSuffix
+                    mat-icon-button
+                >
+                    <mat-icon> {{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+                </button>
+            </mat-form-field>
+            <button
+                class="submit-button"
+                type="button"
+                [ngClass]="{'submit-button': !isDisabled('password', password)}"
+                (click) = "updatePassword()"
+                [disabled] = "isDisabled('password', password)"
+                matSuffix
+                mat-icon-button
+            >
+                <mat-icon> done_all </mat-icon>
+            </button>
+        </div>
+        <div class="form-container">
+            <mat-form-field appearance="outline" class="user-settings-form-field" MatInput>
+                <mat-label> {{ 'REGISTRATION.INITIALS' | translate }}</mat-label>
+                <input
+                    id="initials-input"
+                    [(ngModel)]="initials"
+                    name="initials"
+                    placeholder="{{ 'REGISTRATION.INITIALS' | translate }}"
+                    matInput
+                />
+                <mat-icon matPrefix> image </mat-icon>
+            </mat-form-field>
+            <button
+                type="button"
+                [ngClass]="{'submit-button': !isDisabled('initials', initials)}"
+                (click) = "updateUser('initials', initials)"
+                [disabled] = "isDisabled('initials', initials)"
+                matSuffix
+                mat-icon-button
+            >
+                <mat-icon> done_all </mat-icon>
+            </button>
+        </div>
+        <div class="form-container center mb-5">
+            <input
+                id="profile-picture-input" 
+                name="profile-picture"
+                *ngIf="!hasProfilePicture()"
+                type="file" 
+                (change)="onFileSelected($event)"
+                class="file-input p-5"
+            >
+            <div class="file-preview" *ngIf="hasProfilePicture()">
+                <img [src]="profilePicture">
+                <div>
+                    <button 
+                        mat-fab
+                        color="warn"
+                        (click)="removeFile()">
+                        <mat-icon>delete</mat-icon>
+                    </button>  
+                </div>
+            </div>
+            <button
+                type="button"
+                [ngClass]="{'submit-button': !isDisabled('profilePicture', profilePicture)}"
+                (click) = "updateUser('profilePicture', profilePicture)"
+                [disabled] = "isDisabled('profilePicture', profilePicture)"
+                matSuffix
+                mat-icon-button
+            >
+                <mat-icon> done_all </mat-icon>
+            </button>
+        </div>
+        <div class="delete mt-5">
+            <button color="warn" mat-raised-button (click)="deleteUser()">
+                {{ 'REGISTRATION.DELETE_USER' | translate }}
+                <mat-icon> delete </mat-icon>
+            </button>
+        </div>
+    </form>
+</div>

@@ -105,9 +105,4 @@ export class SidenavComponent implements OnInit, OnDestroy {
 	showBackground() {
 		return this.activeRoute === '/login' || this.activeRoute === '/registration';
 	}
-
-	public logout(): void {
-		this.storage.deleteSessionEntry('user');
-		this.router.navigateByUrl('/login')
-	}
 }

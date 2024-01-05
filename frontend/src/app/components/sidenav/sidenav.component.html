@@ -15,16 +15,18 @@
 						</div>
 				</div>
 				<div>
-					<mat-list-item class="p-1" [ngClass]="isActive('/settings')" [routerLink]="'/settings'">
+					<mat-divider></mat-divider>
+					<mat-list-item class="p-1" [ngClass]="isActive('/settings/project')" [routerLink]="'/settings/project'">
 						<div class="sidenav-center">
-							<mat-icon class="mat-nav-list-icon m-0">settings</mat-icon>
-							<span *ngIf="isExpanded" class="hidden-text">{{ 'NAV.SETTINGS'|translate }}</span>
+							<mat-icon class="mat-nav-list-icon m-0">group_add</mat-icon>
+							<span *ngIf="isExpanded" class="hidden-text">{{ 'NAV.PROJECT_SETTINGS'|translate }}</span>
 						</div>
 					</mat-list-item>
-					<mat-list-item (click)="logout()" class="p-1">
+					<mat-divider></mat-divider>
+					<mat-list-item class="p-1" [ngClass]="isActive('/settings/user')" [routerLink]="'/settings/user'">
 						<div class="sidenav-center">
-							<mat-icon class="mat-nav-list-icon m-0">logout</mat-icon>
-							<span *ngIf="isExpanded" class="hidden-text">{{ 'NAV.LOGOUT'|translate }}</span>
+							<mat-icon class="mat-nav-list-icon m-0">settings</mat-icon>
+							<span *ngIf="isExpanded" class="hidden-text">{{ 'NAV.USER_SETTINGS'|translate }}</span>
 						</div>
 					</mat-list-item>
 				</div>

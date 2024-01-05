@@ -35,9 +35,11 @@ async function register(req, res, next) {
                 username: req.body.username,
                 fullName: req.body.fullName,
                 language: req.body.language,
+                initials: req.body.initials,
                 project: '',
                 permission: '',
-                isLoggedIn: true
+                profilePicture: '',
+                isLoggedIn: true,
             }
             const usersRef = db.collection('users').doc();
             await usersRef.set(user);
@@ -73,8 +75,74 @@ async function verify(req, res, next) {
     }
 }
 
+async function updateUser(req, res, next) {
+    try {
+        const usersCollection = db.collection('users');
+        const usersSnapshot = await usersCollection.where('username', '==', req.body.username).get();
+        if (usersSnapshot.empty) {
+            res.status(500).send({ message: 'ERROR.INTERNAL' });
+        } else {
+            const validAttributes = ['username', 'fullName', 'language', 'initials', 'profilePicture', 'password'];
+            if (validAttributes.includes(req.body.attribute)) {
+                if (req.body.attribute === 'password') {
+                    const passwordsCollection = db.collection('passwords');
+                    const passwordsSnapshot = await passwordsCollection.where('username', '==', req.body.username).get();
+                    if (passwordsSnapshot.empty) {
+                        res.status(500).send({ message: 'ERROR.INTERNAL' });
+                    } else {
+                        await passwordsSnapshot.docs[0].ref.update({ password: req.body.value });
+                        res.json({ message: 'REGISTRATION.USER_UPDATE_SUCCESS' });
+                    }
+                } else {
+                    if (req.body.attribute === 'username') {
+                        const passwordsCollection = db.collection('passwords');
+                        const passwordsSnapshot = await passwordsCollection.where('username', '==', req.body.username).get();
+                        if (passwordsSnapshot.empty) {
+                            res.status(500).send({ message: 'ERROR.INTERNAL' });
+                        } else {
+                            await passwordsSnapshot.docs[0].ref.update({ username: req.body.value });
+                        }
+                    }
+                    await usersSnapshot.docs[0].ref.update({ [req.body.attribute]: req.body.value });
+                    res.json({ message: 'REGISTRATION.USER_UPDATE_SUCCESS' });
+                }
+            } else {
+                res.status(500).send({ message: 'ERROR.INTERNAL' });
+            }
+        }
+    } catch (err) {
+        next(err);
+    }
+}
+
+async function deleteUser(req, res, next) {
+    try {
+        const usersCollection = db.collection('users');
+        const usersSnapshot = await usersCollection.where('username', '==', req.body.username).get();
+        if (usersSnapshot.empty) {
+            res.status(500).send({ message: 'ERROR.INTERNAL' });
+        } else {
+            const passwordsCollection = db.collection('passwords');
+            const passwordsSnapshot = await passwordsCollection.where('username', '==', req.body.username).get();
+            if (passwordsSnapshot.empty) {
+                res.status(500).send({ message: 'ERROR.INTERNAL' });
+            } else {
+                const userId = usersSnapshot.docs[0].id;
+                await usersCollection.doc(userId).delete();
+                const passwordId = passwordsSnapshot.docs[0].id;
+                await passwordsCollection.doc(passwordId).delete();
+                res.json({ message: 'REGISTRATION.DELETE_SUCCESS' });
+            }
+        }
+    } catch (err) {
+        next(err);
+    }
+}
+
 module.exports = {
     login,
     register,
-    verify
+    verify,
+    updateUser,
+    deleteUser
 };

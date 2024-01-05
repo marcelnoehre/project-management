@@ -101,7 +101,7 @@ async function removeUser(req, res, next) {
                 project: '',
                 permission: ''
             });
-            res.json({message: 'SETTINGS.REMOVE_SUCCESS'});
+            res.json({message: 'PROJECT_SETTINGS.REMOVE_SUCCESS'});
         }
     } catch (err) {
         next(err);

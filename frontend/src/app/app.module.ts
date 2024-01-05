@@ -7,7 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { AppComponent } from './app.component';
@@ -19,7 +19,8 @@ import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { ToolbarProfileMenuComponent } from './components/toolbar/toolbar-profile-menu/toolbar-profile-menu.component';
 import { DialogComponent } from './components/dialog/dialog.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { SettingsComponent } from './components/settings/settings.component';
+import { UserSettingsComponent } from './components/user-settings/user-settings.component';
+import { ProjectSettingsComponent } from './components/project-settings/project-settings.component';
 import { CreateTaskComponent } from './components/create-task/create-task.component';
 import { KanbanBoardComponent } from './components/kanban-board/kanban-board.component';
 
@@ -42,7 +43,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     ToolbarProfileMenuComponent,
     DialogComponent,
     DashboardComponent,
-    SettingsComponent,
+    UserSettingsComponent,
+    ProjectSettingsComponent,
     CreateTaskComponent,
     KanbanBoardComponent
   ],
@@ -50,6 +52,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    FormsModule,
     ReactiveFormsModule,
     MaterialModule,
     HttpClientModule,
