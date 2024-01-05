@@ -29,6 +29,14 @@ export class DbService extends AdapterService {
 		return this.http.post<User>(this.basePath + this.auth + 'login', body);
 	}
 
+  public override logout(token: string, username: string): Observable<Response> {
+    const body = {
+      token: token,
+      username: username
+    };
+    return this.http.post<Response>(this.basePath + this.auth + 'logout', body);
+  }
+
   public override register(username: string, password: string, fullName: string, language: string, initials: string): Observable<Response> {
     const body = {
       username: username,

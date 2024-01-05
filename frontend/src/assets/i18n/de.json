@@ -31,7 +31,8 @@
         "INVITE_INFO": "Sie haben eine Einladung zu dem Projekt {{project}} erhalten",
         "INVITE_ACCEPTED": "Beitritt erfolgreich!",
         "INVITE_REJECTED": "Die Einladung wurde gelöscht! Erstellen Sie ein Projekt oder bitten Sie um eine erneute Einladung.",
-        "INITIALS_UPDATED": "Initialien wurden aktualisiert!"
+        "INITIALS_UPDATED": "Initialien wurden aktualisiert!",
+        "LOGOUT_SUCCESS": "Sie wurden erfolgreich abgemeldet!"
     },
     "REGISTRATION": {
         "HEADER": "Account erstellen",
