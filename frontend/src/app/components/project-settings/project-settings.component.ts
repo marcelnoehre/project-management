@@ -10,7 +10,7 @@ import { SnackbarService } from 'src/app/services/snackbar.service';
 import { StorageService } from 'src/app/services/storage.service';
 import { DialogComponent } from '../dialog/dialog.component';
 import { Language } from 'src/app/interfaces/language';
-import { PermissionService } from 'src/app/services/permission.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-project-settings',
@@ -38,13 +38,13 @@ export class ProjectSettingsComponent implements OnInit {
     private translate: TranslateService,
     private dialog: MatDialog,
     private router: Router,
-    public permission: PermissionService
+    private user: UserService
   ) {
     this.createForm();
   }
 
   ngOnInit(): void {
-    this.api.getTeamMembers(this.getUser().token, this.getUser().project).subscribe(
+    this.api.getTeamMembers(this.user.token, this.user.project).subscribe(
       (users) => {
         this.members = users.sort((a, b) => {
           if (a.permission === Permission.OWNER && b.permission !== Permission.OWNER) {
@@ -76,10 +76,6 @@ export class ProjectSettingsComponent implements OnInit {
     });
   }
 
-	private getUser(): any {
-		return this.storage.getSessionEntry('user');
-	}
-
   get username(): string {
 		return this.inviteForm.get('usernameFormControl')?.value;
 	}
@@ -94,7 +90,7 @@ export class ProjectSettingsComponent implements OnInit {
   }
 
   inviteUser(): void {
-    this.api.inviteUser(this.getUser().token, this.username, this.getUser().project).subscribe(
+    this.api.inviteUser(this.user.token, this.username, this.user.project).subscribe(
       (user) => {
         this.members.push(user);
         this.inviteForm.controls['usernameFormControl'].reset();
@@ -119,7 +115,7 @@ export class ProjectSettingsComponent implements OnInit {
     };
     this.dialog.open(DialogComponent, { data, ...{} }).afterClosed().subscribe((remove) => {
       if (remove) {
-        this.api.removeUser(this.getUser().token, username).subscribe(
+        this.api.removeUser(this.user.token, username).subscribe(
           (response) => {
             this.members.splice(index, 1);
             this.snackbar.open(this.translate.instant(response.message));
@@ -136,10 +132,10 @@ export class ProjectSettingsComponent implements OnInit {
     });
   }
 
-  disableRemove(username: string, permission: string) {
+  disableRemove(permission: string) {
     permission = permission as Permission;
     const required: Permission = permission === Permission.ADMIN ? Permission.OWNER : Permission.ADMIN;
-    return !this.permission.hasPermission(required) || permission === Permission.OWNER;
+    return !this.user.hasPermission(required) || permission === Permission.OWNER;
   }
 
 }

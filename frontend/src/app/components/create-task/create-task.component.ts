@@ -4,9 +4,9 @@ import { MatButton } from '@angular/material/button';
 import { TranslateService } from '@ngx-translate/core';
 import { TaskState } from 'src/app/enums/task-state.enum';
 import { ApiService } from 'src/app/services/api/api.service';
-import { PermissionService } from 'src/app/services/permission.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { StorageService } from 'src/app/services/storage.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-create-task',
@@ -21,11 +21,10 @@ export class CreateTaskComponent implements OnInit {
   createTaskForm!: FormGroup;
 
   constructor(
-    private storage: StorageService,
     private api: ApiService,
-    private permission: PermissionService,
     private snackbar: SnackbarService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private user: UserService
   ) {
     this.createForm();
   }
@@ -45,10 +44,6 @@ export class CreateTaskComponent implements OnInit {
     );
   }
 
-  get user(): Record<string, unknown> {
-		return this.storage.getSessionEntry('user');
-	}
-
   get title(): string {
 		return this.createTaskForm.get('titleFormControl')?.value;
 	}
@@ -61,14 +56,9 @@ export class CreateTaskComponent implements OnInit {
     return this.createTaskForm.get('stateFormControl')?.value;
   }
 
-  private getUser(): any {
-		return this.storage.getSessionEntry('user');
-	}
-
   public createTask() {
-    const user = this.getUser();
     const state = this.state === '' || this.state === null ? TaskState.NONE : this.state;
-    this.api.createTask(user.token, user.username, this.permission.getProject(), this.title, this.description, state).subscribe(
+    this.api.createTask(this.user.token, this.user.username, this.user.permission, this.title, this.description, state).subscribe(
       (response) => {
         this.createTaskForm.reset();
         setTimeout(() => this.inputTitle.nativeElement.focus());

@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { StorageService } from 'src/app/services/storage.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-toolbar',
@@ -10,17 +11,12 @@ export class ToolbarComponent {
 	@Output() sidenavClickEvent = new EventEmitter<void>();
 
 	constructor(
-		private storage: StorageService
+		private user: UserService
 	) {
 	}
 
 	public isLoggedIn(): unknown {
-		const user = this.getUser();
-		return user?.isLoggedIn && user?.project !== ''
-	}
-
-	private getUser(): any {
-		return this.storage.getSessionEntry('user');
+		return this.user.isLoggedIn && this.user.project !== '';
 	}
 
 	public toggleSidenav(): void {

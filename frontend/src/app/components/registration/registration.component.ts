@@ -7,6 +7,7 @@ import { Language } from 'src/app/interfaces/language';
 import { ApiService } from 'src/app/services/api/api.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { StorageService } from 'src/app/services/storage.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-registration',
@@ -36,13 +37,16 @@ export class RegistrationComponent implements OnInit {
     private storage: StorageService,
     private snackbar: SnackbarService,
     private translate: TranslateService,
-    private api: ApiService
+    private api: ApiService,
+    private user: UserService
     ) {
       this.createForm();
     }
 
   ngOnInit(): void {
-    if (this.user?.['isLoggedIn']) {
+    this.user.user = this.storage.getSessionEntry('user');
+    if (this.user.isLoggedIn) {
+      //TODO: verify
 			this.router.navigateByUrl('/');
 		}
 		setTimeout(() => this.inputUser.nativeElement.focus());
@@ -60,10 +64,6 @@ export class RegistrationComponent implements OnInit {
       { }
     );
   }
-
-  get user(): Record<string, unknown> {
-		return this.storage.getSessionEntry('user');
-	}
 
 	get username(): string {
 		return this.registrationForm.get('usernameFormControl')?.value;

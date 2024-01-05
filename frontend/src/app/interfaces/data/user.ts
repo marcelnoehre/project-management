@@ -1,3 +1,5 @@
+import { Permission } from "src/app/enums/permission.enum";
+
 export interface User {
     [key: string]: any,
     token: string,
@@ -6,7 +8,7 @@ export interface User {
     initials: string,
     language: string,
     project: string,
-    permission: string,
-    isLoggedIn: string,
-    profilePicture: string
+    permission: Permission,
+    profilePicture: string,
+    isLoggedIn: boolean
 }
