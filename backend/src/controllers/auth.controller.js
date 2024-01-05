@@ -115,9 +115,34 @@ async function updateUser(req, res, next) {
     }
 }
 
+async function deleteUser(req, res, next) {
+    try {
+        const usersCollection = db.collection('users');
+        const usersSnapshot = await usersCollection.where('username', '==', req.body.username).get();
+        if (usersSnapshot.empty) {
+            res.status(500).send({ message: 'ERROR.INTERNAL' });
+        } else {
+            const passwordsCollection = db.collection('passwords');
+            const passwordsSnapshot = await passwordsCollection.where('username', '==', req.body.username).get();
+            if (passwordsSnapshot.empty) {
+                res.status(500).send({ message: 'ERROR.INTERNAL' });
+            } else {
+                const userId = usersSnapshot.docs[0].id;
+                await usersCollection.doc(userId).delete();
+                const passwordId = passwordsSnapshot.docs[0].id;
+                await passwordsCollection.doc(passwordId).delete();
+                res.json({ message: 'REGISTRATION.DELETE_SUCCESS' });
+            }
+        }
+    } catch (err) {
+        next(err);
+    }
+}
+
 module.exports = {
     login,
     register,
     verify,
-    updateUser
+    updateUser,
+    deleteUser
 };
