@@ -32,6 +32,23 @@ async function login(req, res, next) {
     }
 }
 
+async function logout(req, res, next) {
+    try {
+        const usersCollection = db.collection('users');
+        const usersSnapshot = await usersCollection.where('username', '==', req.body.username).get();
+        if (usersSnapshot.empty) {
+            res.status(500).send({ message: 'ERROR.INTERNAL' });
+        } else {
+            await usersSnapshot.docs[0].ref.update({
+                isLoggedIn: false
+            });
+            res.json( { message: "LOGIN.LOGOUT_SUCCESS" } );
+        }
+    } catch(err) {
+        next(err);    
+    }
+}
+
 async function register(req, res, next) {
     try {
         const usersCollection = db.collection('users');
@@ -146,6 +163,7 @@ async function deleteUser(req, res, next) {
 
 module.exports = {
     login,
+    logout,
     register,
     verify,
     updateUser,
