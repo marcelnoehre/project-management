@@ -84,6 +84,15 @@ async function updateUser(req, res, next) {
         } else {
             const validAttributes = ['username', 'fullName', 'language', 'initials', 'profilePicture'];
             if (validAttributes.includes(req.body.attribute)) {
+                if (req.body.attribute === 'username') {
+                    const passwordsCollection = db.collection('passwords');
+                    const passwordsSnapshot = await passwordsCollection.where('username', '==', req.body.username).get();
+                    if (passwordsSnapshot.empty) {
+                        res.status(500).send({ message: 'ERROR.INTERNAL' });
+                    } else {
+                        await passwordsSnapshot.docs[0].ref.update({ username: req.body.value });
+                    }
+                }
                 await usersSnapshot.docs[0].ref.update({ [req.body.attribute]: req.body.value });
                 res.json({ message: 'LOGIN.INITIALS_UPDATED' });
             } else {
