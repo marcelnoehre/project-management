@@ -75,17 +75,20 @@ async function verify(req, res, next) {
     }
 }
 
-async function updateInitals(req, res, next) {
+async function updateUser(req, res, next) {
     try {
         const usersCollection = db.collection('users');
         const usersSnapshot = await usersCollection.where('username', '==', req.body.username).get();
         if (usersSnapshot.empty) {
-            res.status(500).send({ message: 'ERROR.INVALID_TOKEN' });
+            res.status(500).send({ message: 'ERROR.INTERNAL' });
         } else {
-            await usersSnapshot.docs[0].ref.update({
-                initials: req.body.initials
-            });
-            res.json({ message: 'LOGIN.INITIALS_UPDATED' });
+            const validAttributes = ['username', 'fullName', 'language', 'initials', 'profilePicture'];
+            if (validAttributes.includes(req.body.attribute)) {
+                await usersSnapshot.docs[0].ref.update({ [req.body.attribute]: req.body.value });
+                res.json({ message: 'LOGIN.INITIALS_UPDATED' });
+            } else {
+                res.status(500).send({ message: 'ERROR.INTERNAL' });
+            }
         }
     } catch (err) {
         next(err);
@@ -96,5 +99,5 @@ module.exports = {
     login,
     register,
     verify,
-    updateInitals
+    updateUser
 };
