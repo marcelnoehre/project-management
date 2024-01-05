@@ -90,7 +90,7 @@ export class LoginComponent implements OnInit {
 									this.user.user = user
 									this.user.permission = Permission.MEMBER;
 									this.user.project = user.project;
-									this.user.isLoggedIn = 'true';
+									this.user.isLoggedIn = true;
 									this.storage.setSessionEntry('user', this.user.user);
 									this.router.navigateByUrl('/');
 								} else {
@@ -105,7 +105,7 @@ export class LoginComponent implements OnInit {
 					});
 				} else {
 					this.user.user = user;
-					this.user.isLoggedIn = 'true';
+					this.user.isLoggedIn = true;
 					this.storage.setSessionEntry('user', this.user.user);
 					this.router.navigateByUrl('/');
 				}

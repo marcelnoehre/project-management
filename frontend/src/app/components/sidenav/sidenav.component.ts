@@ -61,7 +61,7 @@ export class SidenavComponent implements OnInit, OnDestroy {
 				(user) => {
 					this.storage.setSessionEntry('user', user);
 					this.user.user = user;
-					this.user.isLoggedIn = 'true';
+					this.user.isLoggedIn = true;
 				},
 				(error) => {
 					if (error.status === 403) {
@@ -90,7 +90,7 @@ export class SidenavComponent implements OnInit, OnDestroy {
 	}
 
 	isLoggedIn() {
-		return this.user.isLoggedIn === 'true' && this.user.project !== '';
+		return this.user.isLoggedIn && this.user.project !== '';
 	}
 
 	isActive(route: string): string {

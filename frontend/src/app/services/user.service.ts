@@ -47,7 +47,7 @@ export class UserService {
     return this.userObj.profilePicture;
   }
 
-  get isLoggedIn(): string {
+  get isLoggedIn(): boolean {
     return this.userObj.isLoggedIn;
   }
 
@@ -79,7 +79,7 @@ export class UserService {
     this.userObj.project = project;
   }
 
-  set permission(permission: string) {
+  set permission(permission: Permission) {
     this.userObj.permission = permission;
   }
 
@@ -87,7 +87,7 @@ export class UserService {
     this.userObj.profilePicture = profilePicture;
   }
 
-  set isLoggedIn(isLoggedIn: string) {
+  set isLoggedIn(isLoggedIn: boolean) {
     this.userObj.isLoggedIn = isLoggedIn;
   }
 
