@@ -82,19 +82,30 @@ async function updateUser(req, res, next) {
         if (usersSnapshot.empty) {
             res.status(500).send({ message: 'ERROR.INTERNAL' });
         } else {
-            const validAttributes = ['username', 'fullName', 'language', 'initials', 'profilePicture'];
+            const validAttributes = ['username', 'fullName', 'language', 'initials', 'profilePicture', 'password'];
             if (validAttributes.includes(req.body.attribute)) {
-                if (req.body.attribute === 'username') {
+                if (req.body.attribute === 'password') {
                     const passwordsCollection = db.collection('passwords');
                     const passwordsSnapshot = await passwordsCollection.where('username', '==', req.body.username).get();
                     if (passwordsSnapshot.empty) {
                         res.status(500).send({ message: 'ERROR.INTERNAL' });
                     } else {
-                        await passwordsSnapshot.docs[0].ref.update({ username: req.body.value });
+                        await passwordsSnapshot.docs[0].ref.update({ password: req.body.value });
+                        res.json({ message: 'REGISTRATION.USER_UPDATE_SUCCESS' });
                     }
+                } else {
+                    if (req.body.attribute === 'username') {
+                        const passwordsCollection = db.collection('passwords');
+                        const passwordsSnapshot = await passwordsCollection.where('username', '==', req.body.username).get();
+                        if (passwordsSnapshot.empty) {
+                            res.status(500).send({ message: 'ERROR.INTERNAL' });
+                        } else {
+                            await passwordsSnapshot.docs[0].ref.update({ username: req.body.value });
+                        }
+                    }
+                    await usersSnapshot.docs[0].ref.update({ [req.body.attribute]: req.body.value });
+                    res.json({ message: 'REGISTRATION.USER_UPDATE_SUCCESS' });
                 }
-                await usersSnapshot.docs[0].ref.update({ [req.body.attribute]: req.body.value });
-                res.json({ message: 'LOGIN.INITIALS_UPDATED' });
             } else {
                 res.status(500).send({ message: 'ERROR.INTERNAL' });
             }

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { User } from 'src/app/interfaces/data/user';
@@ -6,6 +7,7 @@ import { Language } from 'src/app/interfaces/language';
 import { ApiService } from 'src/app/services/api/api.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { StorageService } from 'src/app/services/storage.service';
+import { DialogComponent } from '../dialog/dialog.component';
 
 @Component({
   selector: 'app-user-settings',
@@ -37,7 +39,8 @@ export class UserSettingsComponent implements OnInit {
     private api: ApiService,
     private router: Router,
     private snackbar: SnackbarService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private dialog: MatDialog
   ) {
 
   }
@@ -90,15 +93,41 @@ export class UserSettingsComponent implements OnInit {
         this.snackbar.open(this.translate.instant(error.error.message));
       }
     );
+  }
 
-    console.log(attribute, value);
+  async updatePassword() {
+    const data = {
+      headline: this.translate.instant('REGISTRATION.CHANGE_PASSWORD_HEADLINE'),
+      description: this.translate.instant('REGISTRATION.CHANGE_PASSWORD_INFO'),
+      falseButton: this.translate.instant('APP.CANCEL'),
+      trueButton: this.translate.instant('APP.CONFIRM')
+    };
+    this.dialog.open(DialogComponent, { data, ...{} }).afterClosed().subscribe(
+      async (confirmed) => {
+        if (confirmed) {
+          const hashedPassword = await this.sha256(this.password);
+          this.updateUser('password', hashedPassword);
+        }
+      }
+    );
   }
 
   isDisabled(attribute: string, value: string) {
+
+    if (attribute === 'profilePicture') return this.initialUser[attribute] === value;
     return this.initialUser[attribute] === value || value === '' || value === null;
   }
 
   hasProfilePicture() {
     return this.profilePicture !== '';
   }
+
+  async sha256(message: string): Promise<string> {
+		const encoder = new TextEncoder();
+		const data = encoder.encode(message);
+		const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+		const hashArray = Array.from(new Uint8Array(hashBuffer));
+		const hashHex = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
+		return hashHex;
+	}
 }

@@ -3,7 +3,10 @@
         "OK": "OK",
         "CANCEL": "Abbrechen",
         "CREATE": "Erstellen",
-        "REMOVE": "Entfernen"
+        "REMOVE": "Entfernen",
+        "CONFIRM": "Bestätigen",
+        "ACCEPT": "Akzeptieren",
+        "REJECT": "Ablehnen"
     },
     "ERROR": {
         "INVALID_CREDENTIALS": "Daten ungültig!",
@@ -26,8 +29,6 @@
         "REGISTRATION": "Registrieren.",
         "INVITE_HEADLINE": "Einladung",
         "INVITE_INFO": "Sie haben eine Einladung zu dem Projekt {{project}} erhalten",
-        "INVITE_ACCEPT": "Akzeptieren",
-        "INVITE_REJECT": "Ablehnen",
         "INVITE_ACCEPTED": "Beitritt erfolgreich!",
         "INVITE_REJECTED": "Die Einladung wurde gelöscht! Erstellen Sie ein Projekt oder bitten Sie um eine erneute Einladung.",
         "INITIALS_UPDATED": "Initialien wurden aktualisiert!"
@@ -49,7 +50,9 @@
         "REGISTER": "Registrieren",
         "BACK": "Zurück zur Anmeldung",
         "SUCCESS": "Account erfolgreich erstellt!",
-        "USER_UPDATE_SUCCESS" : "Account-Informationen aktualisiert!"
+        "USER_UPDATE_SUCCESS" : "Account-Informationen aktualisiert!",
+        "CHANGE_PASSWORD_HEADLINE": "Passwort ändern",
+        "CHANGE_PASSWORD_INFO": "Sind sie sich sicher, dass Sie ihr Passwort ändern wollen?"
     },
     "CREATE_PROJECT": {
         "HEADLINE": "Sie sind derzeit kein Mitglied eines Projekts",

@@ -9,7 +9,6 @@
                     name="username"
                     placeholder="{{'REGISTRATION.USERNAME' | translate}}"
                     matInput
-                    required
                 />
                 <mat-icon matPrefix> person </mat-icon>
             </mat-form-field>
@@ -33,7 +32,6 @@
                     name="fullName"
                     placeholder="{{'REGISTRATION.FULLNAME' | translate}}"
                     matInput
-                    required
                 />
                 <mat-icon matPrefix> badge </mat-icon>
             </mat-form-field>
@@ -85,9 +83,9 @@
                     id="password-input"
                     name="password"
                     placeholder="{{'REGISTRATION.NEW_PASSWORD'|translate}}"
+                    [(ngModel)]="password"
                     [type]="hidePassword ? 'password' : 'text'"
                     matInput
-                    required
                 />
                 <mat-icon matPrefix> lock </mat-icon>
                 <button
@@ -105,6 +103,9 @@
             <button
                 class="submit-button"
                 type="button"
+                [ngClass]="{'submit-button': !isDisabled('fullName', fullName)}"
+                (click) = "updatePassword()"
+                [disabled] = "isDisabled('password', password)"
                 matSuffix
                 mat-icon-button
             >
@@ -120,7 +121,6 @@
                     name="initials"
                     placeholder="{{ 'REGISTRATION.INITIALS' | translate }}"
                     matInput
-                    required
                 />
                 <mat-icon matPrefix> image </mat-icon>
             </mat-form-field>
