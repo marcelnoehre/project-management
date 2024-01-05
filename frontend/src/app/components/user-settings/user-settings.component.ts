@@ -122,8 +122,20 @@ export class UserSettingsComponent implements OnInit {
     this.dialog.open(DialogComponent, { data, ...{} }).afterClosed().subscribe(
       async (confirmed) => {
         if (confirmed) {
-          console.log('DELETED');
-          
+          this.api.deleteUser(this.getUser().token, this.getUser().username).subscribe(
+            (response) => {
+              this.storage.clearSession();
+              this.router.navigateByUrl('/login');
+              this.snackbar.open(this.translate.instant(response.message));
+            },
+            (error) => {
+              if (error.status === 403) {
+                this.storage.clearSession();
+                this.router.navigateByUrl('/login');
+              }
+              this.snackbar.open(this.translate.instant(error.error.message));
+            }
+          );
         }
       }
     );
