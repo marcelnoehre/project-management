@@ -3,7 +3,7 @@
 		{{ fullName }}
 		<div class="user-icon">
 			<img [src]="profilePicture">
-			<p *ngIf="!profilePicture"> {{ initials }} </p>
+			<p *ngIf="!profilePicture" class="initials"> {{ initials }} </p>
 		</div>
 	</div>
 	<mat-icon class="header-profile-menu-mat-icon" [inline]="true">arrow_drop_down</mat-icon>
