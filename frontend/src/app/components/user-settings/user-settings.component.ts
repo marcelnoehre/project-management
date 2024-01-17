@@ -141,7 +141,6 @@ export class UserSettingsComponent implements OnInit {
   }
 
   isDisabled(attribute: string, value: string) {
-
     if (attribute === 'profilePicture') return this.initialUser[attribute] === value;
     return this.initialUser[attribute] === value || value === '' || value === null;
   }

@@ -22,7 +22,7 @@ async function login(req, res, next) {
                     });
                 }          
                 user.token = jwt.sign(user, 'my-secret-key', { expiresIn: '1h' });
-                user.isLoggedIn = true;
+                user.isLoggedIn = user.project !== '' && user.permission !== 'INVITED';
                 res.json(user);
             }
         } else {

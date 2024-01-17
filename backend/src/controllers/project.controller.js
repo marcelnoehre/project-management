@@ -52,12 +52,18 @@ async function inviteUser(req, res, next) {
             res.status(404).send({ message: 'ERROR.NO_ACCOUNT' });
         } else {
             const userDoc = usersSnapshot.docs[0];
-            await userDoc.ref.update({
-                project: req.body.project,
-                permission: 'INVITED'
-            });
-            usersSnapshot = await usersCollection.where('username', '==', req.body.username).get();
-            res.json(usersSnapshot.docs[0].data());
+            if (userDoc.data().permission === 'INVITED') {
+                res.status(404).send({ message: 'ERROR.PENDING_INVITE' });
+            } else if (userDoc.data().project !== '') {
+                res.status(404).send({ message: 'ERROR.HAS_PROJECT' });
+            } else {
+                await userDoc.ref.update({
+                    project: req.body.project,
+                    permission: 'INVITED'
+                });
+                usersSnapshot = await usersCollection.where('username', '==', req.body.username).get();
+                res.json(usersSnapshot.docs[0].data());
+            }
         }
     } catch (err) {
         next(err);
