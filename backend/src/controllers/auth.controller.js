@@ -120,6 +120,24 @@ async function updateUser(req, res, next) {
     }
 }
 
+async function toggleNotifications(req, res, next) {
+    try {
+        const usersCollection = db.collection('users');
+        const usersSnapshot = await usersCollection.where('username', '==', req.body.username).get();
+        if (usersSnapshot.empty) {
+            res.status(500).send({ message: 'ERROR.INTERNAL' });
+        } else {
+            await usersSnapshot.docs[0].ref.update({
+                notificationsEnabled: req.body.notificationsEnabled
+            });
+            let msg = req.body.notificationsEnabled ? 'SUCCESS.NOTIFICATIONS_ON' : 'SUCCESS.NOTIFICATIONS_OFF';
+            res.json({ message: msg });
+        }
+    } catch (err) {
+        next(err);
+    }
+}
+
 async function deleteUser(req, res, next) {
     try {
         const usersCollection = db.collection('users');
@@ -149,5 +167,6 @@ module.exports = {
     register,
     verify,
     updateUser,
+    toggleNotifications,
     deleteUser
 };

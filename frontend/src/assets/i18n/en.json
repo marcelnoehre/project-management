@@ -41,6 +41,8 @@
         "LOGOUT": "You have been successfully logged out!",
         "REGISTRATION": "Registered successfully!",
         "UPDATE_ACCOUNT" : "Account has been updated!",
+        "NOTIFICATIONS_ON": "The notifications have been activated!",
+        "NOTIFICATIONS_OFF": "The notifications have been deactivated!",
         "CREATE_PROJECT": "Project created successfully",
         "REMOVE_MEMBER": "Removed from the project!",
         "INVITE_DELIVERD": "Invitation delivered successfully!",
