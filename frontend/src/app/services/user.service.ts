@@ -51,6 +51,10 @@ export class UserService {
     return this.userObj.profilePicture;
   }
 
+  get notificationsEnabled(): boolean {
+    return this.userObj.notificationsEnabled;
+  }
+
   get isLoggedIn(): boolean {
     return this.userObj.isLoggedIn;
   }
@@ -93,6 +97,10 @@ export class UserService {
 
   set profilePicture(profilePicture: string) {
     this.userObj.profilePicture = profilePicture;
+  }
+
+  set notificationsEnabled(notificationsEnabled: boolean) {
+    this.userObj.notificationsEnabled = notificationsEnabled;
   }
 
   set isLoggedIn(isLoggedIn: boolean) {

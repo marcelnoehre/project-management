@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { StorageService } from 'src/app/services/storage.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -9,7 +8,7 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class ToolbarComponent {
 	@Output() sidenavClickEvent = new EventEmitter<void>();
-	notificationsEnabled: boolean = true;
+	notificationsEnabled: boolean = this.user.user?.notificationsEnabled;
 
 	constructor(
 		private user: UserService
@@ -17,6 +16,7 @@ export class ToolbarComponent {
 	}
 
 	public isLoggedIn(): unknown {
+		this.notificationsEnabled = this.user.user?.notificationsEnabled;
 		return this.user.isLoggedIn && this.user.project !== '';
 	}
 
@@ -25,6 +25,6 @@ export class ToolbarComponent {
 	}
 
 	public toggleNotifcations(): void {
-		this.notificationsEnabled = !this.notificationsEnabled;
+		this.user.user.notificationsEnabled = !this.notificationsEnabled;
 	}
 }
