@@ -33,6 +33,7 @@
         "CREATE_PROJECT": "The project name is already taken!",
         "PENDING_INVITE": "The user has a pending invitation!",
         "HAS_PROJECT": "The user is already a member of another project!",
+        "IN_PROJECT": "The user is already a member of your project!", 
         "CREATE_TASK": "Task could not be created!"
     },
     "SUCCESS": {

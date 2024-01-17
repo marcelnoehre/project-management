@@ -90,20 +90,24 @@ export class ProjectSettingsComponent implements OnInit {
   }
 
   inviteUser(): void {
-    this.api.inviteUser(this.user.token, this.username, this.user.project).subscribe(
-      (user) => {
-        this.members.push(user);
-        this.inviteForm.controls['usernameFormControl'].reset();
-        this.snackbar.open(this.translate.instant('SUCCESS.INVITE_DELIVERD'));
-      },
-      (error) => {
-        if (error.status === 403) {
-          this.storage.clearSession();
-          this.router.navigateByUrl('/login');
+    if (this.members.some(member => member.username === this.username)) {
+      this.snackbar.open(this.translate.instant('ERROR.IN_PROJECT'));
+    } else {
+      this.api.inviteUser(this.user.token, this.username, this.user.project).subscribe(
+        (user) => {
+          this.members.push(user);
+          this.inviteForm.controls['usernameFormControl'].reset();
+          this.snackbar.open(this.translate.instant('SUCCESS.INVITE_DELIVERD'));
+        },
+        (error) => {
+          if (error.status === 403) {
+            this.storage.clearSession();
+            this.router.navigateByUrl('/login');
+          }
+          this.snackbar.open(this.translate.instant(error.error.message));
         }
-        this.snackbar.open(this.translate.instant(error.error.message));
-      }
-    );
+      );
+    } 
   }
 
   removeUser(username: string, index: number): void {
