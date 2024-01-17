@@ -6,6 +6,7 @@ export interface User {
     username: string,
     fullName: string,
     initials: string,
+    color: string,
     language: string,
     project: string,
     permission: Permission,

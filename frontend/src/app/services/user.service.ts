@@ -31,6 +31,10 @@ export class UserService {
     return this.userObj.initials;
   }
 
+  get color(): string {
+    return this.userObj.color;
+  }
+
   get language(): string {
     return this.userObj.language;
   }
@@ -69,6 +73,10 @@ export class UserService {
 
   set initials(initials: string) {
     this.userObj.initials = initials;
+  }
+
+  set color(color: string) {
+    this.userObj.color = color;
   }
 
   set language(language: string) {
