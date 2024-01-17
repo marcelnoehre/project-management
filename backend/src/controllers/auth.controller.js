@@ -108,7 +108,7 @@ async function updateUser(req, res, next) {
         if (usersSnapshot.empty) {
             res.status(500).send({ message: 'ERROR.INTERNAL' });
         } else {
-            const validAttributes = ['username', 'fullName', 'language', 'initials', 'profilePicture', 'password'];
+            const validAttributes = ['username', 'fullName', 'language', 'initials', 'color', 'profilePicture', 'password'];
             if (validAttributes.includes(req.body.attribute)) {
                 if (req.body.attribute === 'password') {
                     const passwordsCollection = db.collection('passwords');
