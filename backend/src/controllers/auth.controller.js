@@ -15,12 +15,7 @@ async function login(req, res, next) {
             if (usersSnapshot.empty) {
                 res.status(500).send({ message: 'ERROR.INTERNAL' });
             } else {
-                const user = usersSnapshot.docs[0].data();
-                if (user.project !== '') {
-                    await usersSnapshot.docs[0].ref.update({
-                        isLoggedIn: true
-                    });
-                }          
+                const user = usersSnapshot.docs[0].data();          
                 user.token = jwt.sign(user, 'my-secret-key', { expiresIn: '1h' });
                 user.isLoggedIn = user.project !== '' && user.permission !== 'INVITED';
                 res.json(user);
@@ -30,23 +25,6 @@ async function login(req, res, next) {
         }
     } catch (err) {
         next(err);
-    }
-}
-
-async function logout(req, res, next) {
-    try {
-        const usersCollection = db.collection('users');
-        const usersSnapshot = await usersCollection.where('username', '==', req.body.username).get();
-        if (usersSnapshot.empty) {
-            res.status(500).send({ message: 'ERROR.INTERNAL' });
-        } else {
-            await usersSnapshot.docs[0].ref.update({
-                isLoggedIn: false
-            });
-            res.json( { message: "SUCCESS.LOGOUT" } );
-        }
-    } catch(err) {
-        next(err);    
     }
 }
 
@@ -65,8 +43,7 @@ async function register(req, res, next) {
                 color: color,
                 project: '',
                 permission: '',
-                profilePicture: '',
-                isLoggedIn: false,
+                profilePicture: ''
             }
             const usersRef = db.collection('users').doc();
             await usersRef.set(user);
@@ -90,10 +67,11 @@ async function verify(req, res, next) {
         const usersCollection = db.collection('users');
         const usersSnapshot = await usersCollection.where('username', '==', req.body.username).get();
         if (usersSnapshot.empty) {
-            res.status(500).send({ message: 'ERROR.INVALID_TOKEN' });
+            res.status(403).send({ message: 'ERROR.INVALID_TOKEN' });
         } else {
             const user = usersSnapshot.docs[0].data();
             user.token = req.body.token;
+            user.isLoggedIn = user.project !== '' && user.permission !== 'INVITED';
             res.json(user);
         }
     } catch(err) {
@@ -167,7 +145,6 @@ async function deleteUser(req, res, next) {
 
 module.exports = {
     login,
-    logout,
     register,
     verify,
     updateUser,
