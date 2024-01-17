@@ -69,6 +69,12 @@ export class MockService extends AdapterService {
     return this.http.get<Response>(url);
   }
 
+  public override toggleNotifications(token: string, username: string, notificationsEnabled: boolean): Observable<Response> {
+    const file = notificationsEnabled ? 'notificationsEnabled/true.json' : 'notificationsEnabled/false.json';
+    const url = this.basePath + this.auth + file;
+    return this.http.get<Response>(url);
+  }
+
   public override deleteUser(token: string, username: string): Observable<Response> {
     const url = this.basePath + this.auth + 'deleteUser/delete.json';
     return this.http.get<Response>(url);

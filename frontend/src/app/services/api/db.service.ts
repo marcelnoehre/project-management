@@ -57,6 +57,15 @@ export class DbService extends AdapterService {
     return this.http.post<Response>(this.basePath + this.auth + 'updateUser', body);
   }
 
+  public override toggleNotifications(token: string, username: string, notificationsEnabled: boolean): Observable<Response> {
+    const body = {
+      token: token,
+      username: username,
+      notificationsEnabled: notificationsEnabled
+    }
+    return this.http.post<Response>(this.basePath + this.auth + 'toggleNotifications', body);
+  }
+
   public override deleteUser(token: string, username: string): Observable<Response> {
     const body = {
       token: token,

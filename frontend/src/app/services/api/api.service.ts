@@ -54,6 +54,10 @@ export class ApiService {
 		return this.adapter.updateUser(token, username, attribute, value);
 	}
 
+	public toggleNotifications(token: string, username: string, notificationsEnabled: boolean): Observable<Response> {
+		return this.adapter.toggleNotifications(token, username, notificationsEnabled);
+	}
+
 	public deleteUser(token: string, username: string): Observable<Response> {
 		return this.adapter.deleteUser(token, username);
 	}
