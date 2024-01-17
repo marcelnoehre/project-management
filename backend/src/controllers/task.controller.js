@@ -16,6 +16,7 @@ async function createTask(req, res, next) {
             project: req.body.project,
             title: req.body.title,
             description: req.body.description,
+            assigned: req.body.assigned,
             state: req.body.state,
             order: order
         };
