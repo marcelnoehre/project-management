@@ -25,6 +25,6 @@ export class ToolbarComponent {
 	}
 
 	public toggleNotifcations(): void {
-		this.user.user.notificationsEnabled = !this.notificationsEnabled;
+		this.user.notificationsEnabled = !this.notificationsEnabled;
 	}
 }
