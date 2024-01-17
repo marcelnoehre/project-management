@@ -14,6 +14,7 @@
         "CREATE_TASK": "Create task",
         "PROJECT_SETTINGS": "Project settings",
         "ACCOUNT_SETTINGS": "Account settings",
+        "NOTIFICATIONS": "Notifications",
         "LOGOUT": "Logout"
     },
     "ERROR": {

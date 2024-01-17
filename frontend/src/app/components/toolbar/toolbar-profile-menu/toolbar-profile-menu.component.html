@@ -10,6 +10,10 @@
 </button>
 
 <mat-menu #menu="matMenu" [overlapTrigger]="false" xPosition="before">
+	<button mat-menu-item>
+		<mat-icon>inbox</mat-icon>
+		{{ 'NAV.NOTIFICATIONS' | translate }}
+	</button>
 	<button (click)="logout()" mat-menu-item>
 		<mat-icon>logout</mat-icon>
 		{{ 'NAV.LOGOUT' | translate }}
