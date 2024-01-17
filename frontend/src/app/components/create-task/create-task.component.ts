@@ -70,7 +70,7 @@ export class CreateTaskComponent implements OnInit {
 		return this.createTaskForm.get('descriptionFormControl')?.value;
 	}
 
-  get assignment(): User {
+  get assigned(): string {
     return this.createTaskForm.get('assignFormControl')?.value;
   }
 
@@ -79,8 +79,9 @@ export class CreateTaskComponent implements OnInit {
   }
 
   public createTask() {
+    const assigned = this.assigned === '' || this.assigned === null ? '' : this.assigned;
     const state = this.state === '' || this.state === null ? TaskState.NONE : this.state;
-    this.api.createTask(this.user.token, this.user.username, this.user.permission, this.title, this.description, state).subscribe(
+    this.api.createTask(this.user.token, this.user.username, this.user.permission, this.title, this.description, assigned, state).subscribe(
       (response) => {
         this.createTaskForm.reset();
         setTimeout(() => this.inputTitle.nativeElement.focus());

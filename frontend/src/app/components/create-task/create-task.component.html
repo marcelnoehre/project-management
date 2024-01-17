@@ -14,7 +14,7 @@
         <mat-form-field>
             <mat-label>{{ 'TASK.ASSIGN' | translate }}</mat-label>
             <mat-select formControlName="assignFormControl">
-                <mat-option *ngFor="let user of members" [value]="user">
+                <mat-option *ngFor="let user of members" [value]="user.username">
                     {{ user.fullName }} ({{ user.username }})
                 </mat-option>
             </mat-select>

@@ -121,13 +121,14 @@ export class DbService extends AdapterService {
 
 
   // ### TASKS ###
-  public override createTask(token: string, author: string, project: string, title: string, description: string, state: string): Observable<Response> {
+  public override createTask(token: string, author: string, project: string, title: string, description: string, assigned: string, state: string): Observable<Response> {
     const body = {
       token: token,
       author: author,
       project: project,
       title: title,
       description: description,
+      assigned: assigned,
       state: state
     };
     return this.http.post<Response>(this.basePath + this.task + 'createTask', body);
