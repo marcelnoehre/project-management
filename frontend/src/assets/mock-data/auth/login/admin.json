@@ -3,6 +3,8 @@
     "username": "admin",
     "fullName": "Mock Admin",
     "language": "de",
+    "initials": "MA",
+    "color": "#FFFFFF",
     "project": "mockProject",
     "permission": "ADMIN",
     "isLoggedIn": false

@@ -3,6 +3,8 @@
     "username": "invited",
     "fullName": "Mock Invite",
     "language": "de",
+    "initials": "MI",
+    "color": "#FFFFFF",
     "project": "mockProject",
     "permission": "INVITED",
     "isLoggedIn": false

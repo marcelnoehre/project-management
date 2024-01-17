@@ -3,6 +3,8 @@
     "username": "member",
     "fullName": "Mock Member",
     "language": "de",
+    "initials": "MM",
+    "color": "#FFFFFF",
     "project": "mockProject",
     "permission": "MEMBER",
     "isLoggedIn": false
