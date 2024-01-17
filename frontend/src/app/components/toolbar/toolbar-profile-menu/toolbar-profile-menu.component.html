@@ -9,7 +9,7 @@
 	<mat-icon class="header-profile-menu-mat-icon" [inline]="true">arrow_drop_down</mat-icon>
 </button>
 
-<mat-menu #menu="matMenu" [overlapTrigger]="false">
+<mat-menu #menu="matMenu" [overlapTrigger]="false" xPosition="before">
 	<button (click)="logout()" mat-menu-item>
 		<mat-icon>logout</mat-icon>
 		{{ 'NAV.LOGOUT' | translate }}

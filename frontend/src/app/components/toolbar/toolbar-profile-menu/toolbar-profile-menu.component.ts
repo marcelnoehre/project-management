@@ -2,8 +2,6 @@ import { Component, ViewChild } from '@angular/core';
 import { MatMenu } from '@angular/material/menu';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { ApiService } from 'src/app/services/api/api.service';
-import { EventService } from 'src/app/services/event.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { StorageService } from 'src/app/services/storage.service';
 import { UserService } from 'src/app/services/user.service';
@@ -25,7 +23,6 @@ export class ToolbarProfileMenuComponent {
     private router: Router,
 		private storage: StorageService,
 		private user: UserService,
-		private api: ApiService,
 		private snackbar: SnackbarService,
 		private translate: TranslateService
 	) {
