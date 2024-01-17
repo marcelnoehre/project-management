@@ -62,6 +62,7 @@
         "PERMISSION": "Permission",
         "INITIALS": "Initials",
         "COLOR": "Color",
+        "PROFILEPICTURE": "Profile picture",
         "DELETE": "Delete account"
     },
     "LOGIN": {
@@ -80,14 +81,14 @@
             "CREATE_PROJECT": "You are not currently a member of a project",
             "INVITE": "Invitation",
             "REMOVE_MEMBER": "Remove {{username}}?",
-            "CHANGE_PASSWORD": "Change password",
+            "CHANGE_ATTRIBUTE": "Change {{attribute}}",
             "DELETE_ACCOUNT": "Delete irrevocably!"
         },
         "INFO": {
             "CREATE_PROJECT": "Create a new project or ask your team leader to send you an invitation",
             "INVITE": "You have received an invitation to the project {{project}}",
             "REMOVE_MEMBER": "If you remove the user, he or she will no longer have access to the project. Existing tasks remain listed under this username.",
-            "CHANGE_PASSWORD": "Are you sure you want to change your password?",
+            "CHANGE_ATTRIBUTE": "Are you sure you want to change your {{attribute}}?",
             "DELETE_ACCOUNT": "Are you sure you want to delete your account?"
         }
     },
