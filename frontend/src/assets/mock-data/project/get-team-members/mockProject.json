@@ -5,7 +5,9 @@
         "language": "en",
         "project": "mockProject",
         "permission": "OWNER",
-        "isLoggedIn": false
+        "profilePicture": "",
+        "initials": "MO",
+        "color": "#6A1B9A"
     },
     {
         "username": "admin",
@@ -13,7 +15,9 @@
         "language": "de",
         "project": "mockProject",
         "permission": "ADMIN",
-        "isLoggedIn": true
+        "profilePicture": "",
+        "initials": "MA",
+        "color": "#1565C0"
     },
     {
         "username": "user1",
@@ -21,7 +25,9 @@
         "language": "de",
         "project": "mockProject",
         "permission": "MEMBER",
-        "isLoggedIn": false
+        "profilePicture": "",
+        "initials": "M1",
+        "color": "#2E7D32"
     },
     {
         "username": "user2",
@@ -29,7 +35,9 @@
         "language": "de",
         "project": "mockProject",
         "permission": "MEMBER",
-        "isLoggedIn": false
+        "profilePicture": "",
+        "initials": "M2",
+        "color": "#FBC02D"
     },
     {
         "username": "user3",
@@ -37,7 +45,9 @@
         "language": "de",
         "project": "mockProject",
         "permission": "MEMBER",
-        "isLoggedIn": false
+        "profilePicture": "",
+        "initials": "M3",
+        "color": "#795548"
     },
     {
         "username": "user4",
@@ -45,7 +55,9 @@
         "language": "de",
         "project": "mockProject",
         "permission": "MEMBER",
-        "isLoggedIn": false
+        "profilePicture": "",
+        "initials": "M4",
+        "color": "#9C27B0"
     },
     {
         "username": "user5",
@@ -53,7 +65,9 @@
         "language": "de",
         "project": "mockProject",
         "permission": "MEMBER",
-        "isLoggedIn": false
+        "profilePicture": "",
+        "initials": "M5",
+        "color": "#4CAF50"
     },
     {
         "username": "user6",
@@ -61,7 +75,9 @@
         "language": "de",
         "project": "mockProject",
         "permission": "MEMBER",
-        "isLoggedIn": false
+        "profilePicture": "",
+        "initials": "M6",
+        "color": "#03A9F4"
     },
     {
         "username": "user7",
@@ -69,7 +85,9 @@
         "language": "de",
         "project": "mockProject",
         "permission": "MEMBER",
-        "isLoggedIn": false
+        "profilePicture": "",
+        "initials": "M7",
+        "color": "#FF5722"
     },
     {
         "username": "user8",
@@ -77,7 +95,9 @@
         "language": "de",
         "project": "mockProject",
         "permission": "MEMBER",
-        "isLoggedIn": false
+        "profilePicture": "",
+        "initials": "M8",
+        "color": "#607D8B"
     },
     {
         "username": "admin2",
@@ -85,7 +105,9 @@
         "language": "en",
         "project": "mockProject",
         "permission": "ADMIN",
-        "isLoggedIn": true
+        "profilePicture": "",
+        "initials": "AA",
+        "color": "#E91E63"
     },
     {
         "username": "user9",
@@ -93,7 +115,9 @@
         "language": "de",
         "project": "mockProject",
         "permission": "MEMBER",
-        "isLoggedIn": false
+        "profilePicture": "",
+        "initials": "M9",
+        "color": "#009688"
     },
     {
         "username": "user10",
@@ -101,6 +125,8 @@
         "language": "de",
         "project": "mockProject",
         "permission": "MEMBER",
-        "isLoggedIn": false
+        "profilePicture": "",
+        "initials": "MT",
+        "color": "#FFC107"
     }
 ]

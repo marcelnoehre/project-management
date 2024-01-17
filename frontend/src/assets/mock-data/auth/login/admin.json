@@ -3,9 +3,10 @@
     "username": "admin",
     "fullName": "Mock Admin",
     "language": "de",
+    "profilePicture": "",
     "initials": "MA",
     "color": "#FFFFFF",
     "project": "mockProject",
     "permission": "ADMIN",
-    "isLoggedIn": false
+    "isLoggedIn": true
 }

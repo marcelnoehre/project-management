@@ -3,9 +3,10 @@
     "username": "owner",
     "fullName": "Mock Owner",
     "language": "en",
+    "profilePicture": "",
     "initials": "MO",
     "color": "#FFFFFF",
     "project": "mockProject",
     "permission": "OWNER",
-    "isLoggedIn": false
+    "isLoggedIn": true
 }
