@@ -99,6 +99,7 @@
     "TASK": {
         "TITLE": "Title",
         "DESCRIPTION": "Description",
+        "ASSIGN": "Assign",
         "STATE": "State",
         "CREATE": "Create",
         "STATE_ENUM": {
