@@ -36,20 +36,9 @@ export class ToolbarProfileMenuComponent {
 	}
 
 	public logout(): void {
-		this.api.logout(this.user.token, this.user.username).subscribe(
-			(response) => {
-				this.storage.deleteSessionEntry('user');
-				this.user.user = this.storage.getSessionEntry('user');
-				this.snackbar.open(this.translate.instant(response.message));
-				this.router.navigateByUrl('/login');
-			},
-			(error) => {
-				if (error.status === 403) {
-					this.storage.clearSession();
-					this.router.navigateByUrl('/login');
-				}
-				this.snackbar.open(this.translate.instant(error.error.message));
-			}
-		);
+		this.storage.deleteSessionEntry('user');
+		this.user.user = this.storage.getSessionEntry('user');
+		this.snackbar.open(this.translate.instant('SUCCESS.LOGOUT'));
+		this.router.navigateByUrl('/login');
 	}
 }
