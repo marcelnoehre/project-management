@@ -1,8 +1,10 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
+import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { TaskState } from 'src/app/enums/task-state.enum';
+import { User } from 'src/app/interfaces/data/user';
 import { ApiService } from 'src/app/services/api/api.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { StorageService } from 'src/app/services/storage.service';
@@ -19,17 +21,32 @@ export class CreateTaskComponent implements OnInit {
   
   taskStates = [TaskState.TODO, TaskState.PROGRESS, TaskState.REVIEW, TaskState.DONE];
   createTaskForm!: FormGroup;
+  members: User[] = [];
 
   constructor(
     private api: ApiService,
     private snackbar: SnackbarService,
     private translate: TranslateService,
-    private user: UserService
+    private user: UserService,
+    private storage: StorageService,
+    private router: Router
   ) {
     this.createForm();
   }
 
   ngOnInit(): void {
+    this.api.getTeamMembers(this.user.token, this.user.project).subscribe(
+      (users) => {
+        this.members = users;
+      },
+      (error) => {
+        if (error.status === 403) {
+          this.storage.clearSession();
+          this.router.navigateByUrl('/login');
+        }
+        this.snackbar.open(this.translate.instant(error.error.message));
+      }
+    );
 		setTimeout(() => this.inputTitle.nativeElement.focus());
 	}
 
@@ -38,6 +55,7 @@ export class CreateTaskComponent implements OnInit {
       {
         titleFormControl: new FormControl('', { validators: [Validators.required] }),
         descriptionFormControl: new FormControl('', { validators: [] }),
+        assignFormControl: new FormControl('', { validators: [] }),
         stateFormControl: new FormControl('', { validators: [] })
       },
       {}
@@ -51,6 +69,10 @@ export class CreateTaskComponent implements OnInit {
 	get description(): string {
 		return this.createTaskForm.get('descriptionFormControl')?.value;
 	}
+
+  get assignment(): User {
+    return this.createTaskForm.get('assignFormControl')?.value;
+  }
 
   get state(): string {
     return this.createTaskForm.get('stateFormControl')?.value;
