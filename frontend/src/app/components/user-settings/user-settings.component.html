@@ -104,7 +104,7 @@
                 class="submit-button"
                 type="button"
                 [ngClass]="{'submit-button': !isDisabled('password', password)}"
-                (click) = "updatePassword()"
+                (click) = "updateUser('password', password)"
                 [disabled] = "isDisabled('password', password)"
                 matSuffix
                 mat-icon-button

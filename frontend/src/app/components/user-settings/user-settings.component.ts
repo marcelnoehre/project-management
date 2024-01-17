@@ -77,35 +77,32 @@ export class UserSettingsComponent implements OnInit {
   }
 
   updateUser(attribute: string, value: string) {
-    this.api.updateUser(this.user.token, this.user.username, attribute, value).subscribe(
-      (response) => {
-        this.snackbar.open(this.translate.instant(response.message));
-        this.user.update(attribute, value);
-        this.initialUser = this.user.user;
-        this.storage.setSessionEntry('user', this.user.user);
-      },
-      (error) => {
-        if (error.status === 403) {
-          this.storage.clearSession();
-          this.router.navigateByUrl('/login');
-        }
-        this.snackbar.open(this.translate.instant(error.error.message));
-      }
-    );
-  }
-
-  async updatePassword() {
+    const key = this.translate.instant('USER.' + attribute.toUpperCase());
     const data = {
-      headline: this.translate.instant('DIALOG.HEADLINE.CHANGE_PASSWORD'),
-      description: this.translate.instant('DIALOG.INFO.CHANGE_PASSWORD'),
+      headline: this.translate.instant('DIALOG.HEADLINE.CHANGE_ATTRIBUTE', { attribute: key}),
+      description: this.translate.instant('DIALOG.INFO.CHANGE_ATTRIBUTE', { attribute: key}),
       falseButton: this.translate.instant('APP.CANCEL'),
       trueButton: this.translate.instant('APP.CONFIRM')
     };
     this.dialog.open(DialogComponent, { data, ...{} }).afterClosed().subscribe(
       async (confirmed) => {
         if (confirmed) {
-          const hashedPassword = await this.sha256(this.password);
-          this.updateUser('password', hashedPassword);
+          if (attribute === 'password') value = await this.sha256(value);
+          this.api.updateUser(this.user.token, this.user.username, attribute, value).subscribe(
+            (response) => {
+              this.snackbar.open(this.translate.instant(response.message));
+              this.user.update(attribute, value);
+              this.initialUser = this.user.user;
+              this.storage.setSessionEntry('user', this.user.user);
+            },
+            (error) => {
+              if (error.status === 403) {
+                this.storage.clearSession();
+                this.router.navigateByUrl('/login');
+              }
+              this.snackbar.open(this.translate.instant(error.error.message));
+            }
+          );
         }
       }
     );
