@@ -17,17 +17,22 @@ export class ToolbarProfileMenuComponent {
 	@ViewChild('menu', { static: false })	menu!: MatMenu;
 
 	public fullName;
+	public profilePicture;
+	public initials;
+	public color;
 
 	constructor(
     private router: Router,
-		private storage: StorageService, 
-		private event: EventService,
+		private storage: StorageService,
 		private user: UserService,
 		private api: ApiService,
 		private snackbar: SnackbarService,
 		private translate: TranslateService
 	) {
-		this.fullName = this.getFullName();
+		this.fullName = this.user.fullName;
+		this.profilePicture = this.user.profilePicture;
+		this.initials = this.user.initials;
+		this.color = this.user.color;
 	}
 
 	public logout(): void {
@@ -46,9 +51,5 @@ export class ToolbarProfileMenuComponent {
 				this.snackbar.open(this.translate.instant(error.error.message));
 			}
 		);
-	}
-
-	public getFullName() {
-		return this.storage.getSessionEntry('user')?.fullName || 'No User';
 	}
 }

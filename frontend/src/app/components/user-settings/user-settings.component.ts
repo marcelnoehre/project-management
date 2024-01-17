@@ -32,6 +32,7 @@ export class UserSettingsComponent implements OnInit {
   initials!: string;
   language!: string;
   password!: string;
+  color!: string;
   hidePassword = true;
   profilePicture!: string;
 
@@ -52,6 +53,7 @@ export class UserSettingsComponent implements OnInit {
     this.fullName = this.initialUser.fullName;
     this.initials = this.initialUser.initials;
     this.language = this.initialUser.language;
+    this.color = this.initialUser.color;
     this.password = '';
     this.profilePicture = this.initialUser.profilePicture;
   }

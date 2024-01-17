@@ -135,6 +135,31 @@
                 <mat-icon> done_all </mat-icon>
             </button>
         </div>
+        <div class="form-container">
+            <mat-form-field appearance="outline" class="user-settings-form-field" MatInput>
+                <mat-label> {{ 'USER.COLOR' | translate }}</mat-label>
+                <input
+                    id="color-input"
+                    [(colorPicker)]="color"
+                    [style.background]="color"
+                    cpPosition="top"
+                    name="color"
+                    readonly
+                    matInput
+                />
+                <mat-icon matPrefix> palette </mat-icon>
+            </mat-form-field>
+            <button
+                type="button"
+                [ngClass]="{'submit-button': !isDisabled('color', color)}"
+                (click) = "updateUser('color', color)"
+                [disabled] = "isDisabled('color', color)"
+                matSuffix
+                mat-icon-button
+            >
+                <mat-icon> done_all </mat-icon>
+            </button>
+        </div>
         <div class="form-container center mb-5">
             <input
                 id="profile-picture-input" 

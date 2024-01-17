@@ -55,6 +55,7 @@
         "LANGUAGE": "Language",
         "PERMISSION": "Permission",
         "INITIALS": "Initials",
+        "COLOR": "Color",
         "DELETE": "Delete account"
     },
     "LOGIN": {

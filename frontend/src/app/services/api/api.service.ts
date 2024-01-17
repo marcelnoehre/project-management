@@ -46,8 +46,8 @@ export class ApiService {
 		return this.adapter.logout(token, username);
 	}
 
-	public register(username: string, password: string, fullName: string, language: string, initials: string): Observable<Response> {
-		return this.adapter.register(username, password, fullName, language, initials);
+	public register(username: string, password: string, fullName: string, language: string): Observable<Response> {
+		return this.adapter.register(username, password, fullName, language);
 	}
 
 	public verify(token: string, username: string): Observable<User> {

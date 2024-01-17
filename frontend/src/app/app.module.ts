@@ -9,6 +9,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { ColorPickerModule } from 'ngx-color-picker';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
@@ -57,6 +58,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     MaterialModule,
     HttpClientModule,
     DragDropModule,
+    ColorPickerModule,
 		TranslateModule.forRoot({
 			loader: {
 				provide: TranslateLoader,

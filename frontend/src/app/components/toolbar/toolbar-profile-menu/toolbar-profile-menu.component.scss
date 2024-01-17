@@ -14,3 +14,29 @@
 		align-items: center;
 	}
 }
+
+.user {
+	display: flex;
+	gap: 0.25rem;
+}
+
+.user-icon {
+	position: relative;
+	height: 2rem;
+	width: 2rem;
+	border-radius: 50%;
+	background: var(--color);
+	border: 1px solid lightslategray;
+	img {
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: calc(2rem - 2px);
+		width: auto;
+		object-fit: cover;
+		object-position: center;
+	}
+	.initials {
+		color: black;
+	}
+}

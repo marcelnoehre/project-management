@@ -1,3 +1,4 @@
+const authService = require('../services/auth.service');
 const admin = require('firebase-admin');
 const jwt = require('jsonwebtoken');
 const db = admin.firestore();
@@ -54,11 +55,14 @@ async function register(req, res, next) {
         const usersCollection = db.collection('users');
         const usersSnapshot = await usersCollection.where('username', '==', req.body.username).get();
         if (usersSnapshot.empty) {
+            const initials = authService.generateInitials(req.body.fullName);
+            const color = authService.defaultColor();
             const user = {
                 username: req.body.username,
                 fullName: req.body.fullName,
                 language: req.body.language,
-                initials: req.body.initials,
+                initials: initials,
+                color: color,
                 project: '',
                 permission: '',
                 profilePicture: '',
@@ -104,7 +108,7 @@ async function updateUser(req, res, next) {
         if (usersSnapshot.empty) {
             res.status(500).send({ message: 'ERROR.INTERNAL' });
         } else {
-            const validAttributes = ['username', 'fullName', 'language', 'initials', 'profilePicture', 'password'];
+            const validAttributes = ['username', 'fullName', 'language', 'initials', 'color', 'profilePicture', 'password'];
             if (validAttributes.includes(req.body.attribute)) {
                 if (req.body.attribute === 'password') {
                     const passwordsCollection = db.collection('passwords');
