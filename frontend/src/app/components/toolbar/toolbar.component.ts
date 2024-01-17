@@ -9,6 +9,7 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class ToolbarComponent {
 	@Output() sidenavClickEvent = new EventEmitter<void>();
+	notificationsEnabled: boolean = true;
 
 	constructor(
 		private user: UserService
@@ -21,5 +22,9 @@ export class ToolbarComponent {
 
 	public toggleSidenav(): void {
 		this.sidenavClickEvent.emit();
+	}
+
+	public toggleNotifcations(): void {
+		this.notificationsEnabled = !this.notificationsEnabled;
 	}
 }
