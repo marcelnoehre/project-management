@@ -38,10 +38,15 @@ export class CreateProjectComponent {
 		return this.projectForm.get('projectFormControl')?.value;
 	}
 
+  get sessionUser(): any {
+    return this.storage.getSessionEntry('user');
+  }
+
   createProject() {
-    this.api.createProject(this.user.token, this.user.username, this.project).subscribe(
+    this.api.createProject(this.sessionUser.token, this.sessionUser.username, this.project).subscribe(
       (response) => {
         this.snackbar.open(this.translate.instant(response.message));
+        this.user.user = this.sessionUser;
         this.user.project = this.project;
         this.user.permission = Permission.OWNER;
         this.user.isLoggedIn = true;
