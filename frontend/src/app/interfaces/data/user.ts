@@ -11,5 +11,6 @@ export interface User {
     project: string,
     permission: Permission,
     profilePicture: string,
+    notificationsEnabled: boolean,
     isLoggedIn: boolean
 }

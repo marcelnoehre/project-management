@@ -8,5 +8,6 @@
     "color": "#FFFFFF",
     "project": "mockProject",
     "permission": "MEMBER",
+    "notificationsEnabled": false,
     "isLoggedIn": true
 }

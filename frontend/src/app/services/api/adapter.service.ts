@@ -18,6 +18,8 @@ export abstract class AdapterService {
 
   public abstract updateUser(token: string, username: string, attribute: string, value: string): Observable<Response>;
 
+  public abstract toggleNotifications(token: string, username: string, notificationsEnabled: boolean): Observable<Response>;
+
   public abstract deleteUser(token: string, username: string): Observable<Response>;
 
   

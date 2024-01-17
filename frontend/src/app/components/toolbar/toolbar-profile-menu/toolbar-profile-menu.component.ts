@@ -38,4 +38,8 @@ export class ToolbarProfileMenuComponent {
 		this.snackbar.open(this.translate.instant('SUCCESS.LOGOUT'));
 		this.router.navigateByUrl('/login');
 	}
+
+	public showNotifications() {
+		return this.user.notificationsEnabled;
+	}
 }
