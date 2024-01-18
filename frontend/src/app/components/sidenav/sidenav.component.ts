@@ -1,13 +1,14 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
-import { NavigationEnd, Router, Event } from '@angular/router';
+import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { Subscription, filter } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { AppIcon } from 'src/app/enums/app-icon.enum';
 import { AppItem } from 'src/app/enums/app-item.enum';
 import { AppRoute } from 'src/app/enums/app-route.enum';
 import { App } from 'src/app/interfaces/app';
 import { ApiService } from 'src/app/services/api/api.service';
+import { DeviceService } from 'src/app/services/device.service';
 import { EventService } from 'src/app/services/event.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { StorageService } from 'src/app/services/storage.service';
@@ -21,7 +22,6 @@ import { UserService } from 'src/app/services/user.service';
 export class SidenavComponent implements OnInit, OnDestroy {
 	@ViewChild('sidenav', { static: false }) sidenav!: MatSidenav;
 
-	public activeRoute!: string;
 	public isExpanded = false;
 
 	public appItems: App[] = [
@@ -50,7 +50,8 @@ export class SidenavComponent implements OnInit, OnDestroy {
 		private api: ApiService,
 		private snackbar: SnackbarService,
 		private translate: TranslateService,
-		private user: UserService
+		private user: UserService,
+		private device: DeviceService
 	) {
 	}
 
@@ -73,12 +74,6 @@ export class SidenavComponent implements OnInit, OnDestroy {
 				}
 			);
 		}
-		this.router.events
-		.pipe(
-			filter((event: Event): event is NavigationEnd => event instanceof NavigationEnd)
-		).subscribe((event: NavigationEnd) => {
-			this.activeRoute = event.urlAfterRedirects;
-		});
 		this.clickEvent$ = this.event.documentClick$.subscribe((target) => {			
 			if (this.isExpanded && !['mat-mdc-nav-list', 'mat-mdc-button-touch-target'].some(cls => target.classList.contains(cls))) this.toggleSidebar(false);
 			if (!this.isExpanded && target.classList.contains('mat-mdc-nav-list')) this.toggleSidebar(true);
@@ -94,7 +89,7 @@ export class SidenavComponent implements OnInit, OnDestroy {
 	}
 
 	isActive(route: string): string {
-		return route === this.activeRoute  ? 'active-route' : '';
+		return route === this.device.getActiveRoute()  ? 'active-route' : '';
 	}
 
 	toggleSidebar(newState?: boolean) {
@@ -102,6 +97,6 @@ export class SidenavComponent implements OnInit, OnDestroy {
 	}
 
 	showBackground() {
-		return this.activeRoute === '/login' || this.activeRoute === '/registration';
+		return this.device.getActiveRoute() === '/login' || this.device.getActiveRoute() === '/registration';
 	}
 }
