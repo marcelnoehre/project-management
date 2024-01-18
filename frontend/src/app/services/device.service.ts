@@ -10,7 +10,7 @@ export class DeviceService {
 	public height: number;
 	public resizeObservable$: Observable<Event>;
 	public resizeSubscription$: Subscription;
-	public activeRoute!: string;
+	public activeRoute: string = '/';
 
 	constructor(
 		private router: Router

@@ -2,6 +2,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { ApiService } from 'src/app/services/api/api.service';
+import { DeviceService } from 'src/app/services/device.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { StorageService } from 'src/app/services/storage.service';
 import { UserService } from 'src/app/services/user.service';
@@ -21,7 +22,8 @@ export class ToolbarComponent {
 		private storage: StorageService,
 		private router: Router,
 		private snackbar: SnackbarService,
-		private translate: TranslateService
+		private translate: TranslateService,
+		private device: DeviceService
 	) {
 	}
 
@@ -32,6 +34,10 @@ export class ToolbarComponent {
 
 	public toggleSidenav(): void {
 		this.sidenavClickEvent.emit();
+	}
+
+	hideSidenav(): boolean {
+		return this.device.activeRoute === '/';
 	}
 
 	public toggleNotifcations(): void {

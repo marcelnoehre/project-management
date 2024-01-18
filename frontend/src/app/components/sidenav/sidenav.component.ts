@@ -96,6 +96,10 @@ export class SidenavComponent implements OnInit, OnDestroy {
 		this.isExpanded = newState !== undefined ? newState : !this.isExpanded;
 	}
 
+	hideSidenav(): boolean {
+		return this.device.activeRoute === '/';
+	}
+
 	showBackground() {
 		return this.device.getActiveRoute() === '/login' || this.device.getActiveRoute() === '/registration';
 	}
