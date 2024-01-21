@@ -35,7 +35,12 @@ async function createTask(req, res, next) {
 async function getTaskList(req, res, next) {
     try {
         const tasksCollection = db.collection('tasks');
-        const tasksSnapshot = await tasksCollection.where('project', '==', req.body.project).orderBy('order').get();
+        const tasksSnapshot = await tasksCollection
+            .where('project', '==', req.body.project)
+            .where('state', '!=', 'DELETED')
+            .orderBy('state')
+            .orderBy('order')
+            .get();
         const response = [
             { state: 'NONE', tasks: [] },
             { state: 'TODO', tasks: [] },
