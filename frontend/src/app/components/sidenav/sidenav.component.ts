@@ -93,11 +93,20 @@ export class SidenavComponent implements OnInit, OnDestroy {
 	}
 
 	toggleSidebar(newState?: boolean) {
+		console.log(newState !== undefined ? newState : !this.isExpanded);
 		this.isExpanded = newState !== undefined ? newState : !this.isExpanded;
 	}
 
 	hideSidenav(): boolean {
 		return this.device.activeRoute === '/';
+	}
+
+	sidenavSize() {
+		if (this.device.isSmallScreen()) {
+			return this.isExpanded ? 'w-100' : 'hide-sidenav';
+		} else {
+			return '';
+		}	
 	}
 
 	showBackground() {

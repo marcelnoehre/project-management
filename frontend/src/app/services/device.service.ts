@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { NavigationEnd, Router, Event as RouterEvent } from '@angular/router';
 import { filter, fromEvent, Observable, Subscription } from 'rxjs';
+import { Viewport } from '../enums/viewport.enum';
 
 @Injectable({
 	providedIn: 'root'
@@ -39,7 +40,11 @@ export class DeviceService {
 		this.resizeSubscription$.unsubscribe();
 	}
 
-  public getActiveRoute() {
-    return this.activeRoute;
-  }
+  	public getActiveRoute() {
+		return this.activeRoute;
+	}
+
+	public isSmallScreen(): boolean {
+		return this.width < Viewport.MD;
+	}
 }
