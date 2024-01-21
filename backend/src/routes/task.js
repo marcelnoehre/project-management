@@ -9,5 +9,6 @@ router.post('/updatePosition', jwtAuth, taskController.updatePosition);
 router.post('/moveToTrashBin', jwtAuth, taskController.moveToTrashBin);
 router.post('/getTrashBin', jwtAuth, taskController.getTrashBin);
 router.post('/restoreTask', jwtAuth, taskController.restoreTask);
+router.post('/deleteTask', jwtAuth, taskController.deleteTask);
 
 module.exports = router;
