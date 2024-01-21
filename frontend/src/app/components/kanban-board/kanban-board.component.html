@@ -14,7 +14,7 @@
         </div>
     </div>
     <div class="tools">
-        <div class="trash-bin p-2">
+        <div class="trash-bin p-2" cdkDropList id="DELETED" [cdkDropListConnectedTo]="stateList" cdkDropListData="[]" (cdkDropListDropped)="drop($event)">
             <mat-icon>
                 delete
             </mat-icon> 
