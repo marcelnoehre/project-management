@@ -150,4 +150,9 @@ export class MockService extends AdapterService {
     return this.http.get<Task[]>(url);
   }
 
+  public override deleteTask(token: string, project: string, uid: string): Observable<Task[]> {
+    const url = this.basePath + this.task + 'delete-task/delete.json';
+    return this.http.get<Task[]>(url);
+  }
+
 }

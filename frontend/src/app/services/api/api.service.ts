@@ -106,4 +106,8 @@ export class ApiService {
 	public getTrashBin(token: string, project: string): Observable<Task[]> {
 		return this.adapter.getTrashBin(token, project);
 	}
+
+	public deleteTask(token: string, project: string, uid: string): Observable<Task[]> {
+		return this.adapter.deleteTask(token, project, uid);
+	}
 }
