@@ -98,7 +98,6 @@ export class SidenavComponent implements OnInit, OnDestroy {
 	}
 
 	toggleSidebar(newState?: boolean) {
-		console.log(newState !== undefined ? newState : !this.isExpanded);
 		this.isExpanded = newState !== undefined ? newState : !this.isExpanded;
 	}
 
