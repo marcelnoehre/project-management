@@ -138,5 +138,10 @@ export class MockService extends AdapterService {
     const url = this.basePath + this.task + 'update-position/task.json';
     return this.http.get<State[]>(url);
   }
+
+  public override moveToTrashBin(token: string, uid: string): Observable<Response> {
+    const url = this.basePath + this.task + 'move-to-trash-bin/moved.json';
+    return this.http.get<Response>(url);
+  }
   
 }

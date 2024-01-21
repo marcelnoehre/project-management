@@ -152,5 +152,13 @@ export class DbService extends AdapterService {
     }
     return this.http.post<State[]>(this.basePath + this.task + 'updatePosition', body);
   }
+
+  public override moveToTrashBin(token: string, uid: string): Observable<Response> {
+    const body = {
+      token: token,
+      uid: uid
+    }
+    return this.http.post<Response>(this.basePath + this.task + 'moveToTrashBin', body);
+  }
   
 }

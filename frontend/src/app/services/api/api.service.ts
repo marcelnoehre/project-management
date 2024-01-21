@@ -97,5 +97,9 @@ export class ApiService {
 	public updatePosition(token: string, project: string, uid: string, state: string, order: number): Observable<State[]> {
 		return this.adapter.updatePosition(token, project, uid, state, order);
 	}
+
+	public moveToTrashBin(token: string, uid: string): Observable<Response> {
+		return this.adapter.moveToTrashBin(token, uid);
+	}
 	
 }
