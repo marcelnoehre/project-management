@@ -139,9 +139,9 @@ export class MockService extends AdapterService {
     return this.http.get<State[]>(url);
   }
 
-  public override moveToTrashBin(token: string, uid: string): Observable<Response> {
+  public override moveToTrashBin(token: string, project: string, uid: string): Observable<State[]> {
     const url = this.basePath + this.task + 'move-to-trash-bin/moved.json';
-    return this.http.get<Response>(url);
+    return this.http.get<State[]>(url);
   }
   
 }

@@ -52,7 +52,19 @@ export class KanbanBoardComponent implements AfterViewInit {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else if (event.event.target.id === TaskState.DELETED) {
-      console.log('delete');
+      this.api.moveToTrashBin(this.user.token, this.user.project, event.previousContainer.data[event.previousIndex].uid).subscribe(
+        (tasklist) => {
+          this.taskList = tasklist;
+          this.snackbar.open(this.translate.instant('SUCCESS.MOVE_TO_TRASH'));
+        },
+        (error) => {
+          if (error.status === 403) {
+            this.storage.clearSession();
+            this.router.navigateByUrl('/login');
+          }
+          this.snackbar.open(this.translate.instant(error.error.message));
+        }
+      );
       return;
     } else {
       transferArrayItem(

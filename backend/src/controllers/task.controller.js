@@ -70,7 +70,12 @@ async function updatePosition(req, res, next) {
                 state: req.body.state,
                 order: req.body.order
             });
-            const taskListSnapshot = await tasksCollection.where('project', '==', req.body.project).orderBy('order').get();
+            const taskListSnapshot = await tasksCollection
+                .where('project', '==', req.body.project)
+                .where('state', '!=', 'DELETED')
+                .orderBy('state')
+                .orderBy('order')
+                .get();
             const response = [
                 { state: 'NONE', tasks: [] },
                 { state: 'TODO', tasks: [] },
@@ -100,7 +105,24 @@ async function moveToTrashBin(req, res, next) {
             await taskDoc.ref.update({
                 state: 'DELETED'
             });
-            res.json({ message: 'SUCCESS.MOVE_TO_TRASH' });
+            const taskListSnapshot = await tasksCollection
+                .where('project', '==', req.body.project)
+                .where('state', '!=', 'DELETED')
+                .orderBy('state')
+                .orderBy('order')
+                .get();
+            const response = [
+                { state: 'NONE', tasks: [] },
+                { state: 'TODO', tasks: [] },
+                { state: 'PROGRESS', tasks: [] },
+                { state: 'REVIEW', tasks: [] },
+                { state: 'DONE', tasks: [] }
+            ];
+            taskListSnapshot.forEach(doc => {
+                const task = doc.data();
+                response.find(list => list.state === task.state).tasks.push(task);
+            });
+            res.json(response);
         }
     } catch (err) {
         next(err);

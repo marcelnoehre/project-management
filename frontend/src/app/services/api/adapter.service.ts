@@ -42,6 +42,6 @@ export abstract class AdapterService {
 
   public abstract updatePosition(token: string, project: string, uid: string, state: string, order: number): Observable<State[]>;
 
-  public abstract moveToTrashBin(token: string, uid: string): Observable<Response>;
+  public abstract moveToTrashBin(token: string, project: string, uid: string): Observable<State[]>;
 
 }
