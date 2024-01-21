@@ -43,6 +43,19 @@ export class TrashBinComponent implements AfterViewInit {
   }
   
   delete(uid: string) {
+    this.api.deleteTask(this.user.token, this.user.project, uid).subscribe(
+      (taskList) => {
+        this.taskList = taskList;
+        this.snackbar.open(this.translate.instant('SUCCESS.TASK_DELETED', { uid: uid } ));
+      },
+      (error) => {
+        if (error.status === 403) {
+          this.storage.clearSession();
+          this.router.navigateByUrl('/login');
+        }
+        this.snackbar.open(this.translate.instant(error.error.message));
+      }
+    );
   }
 
   restore(uid: string) {
