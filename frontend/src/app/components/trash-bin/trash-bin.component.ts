@@ -52,7 +52,19 @@ export class TrashBinComponent implements AfterViewInit {
   }
 
   clear() {
-    console.log('clear'); 
+    this.api.clearTrashBin(this.user.token, this.user.project).subscribe(
+      (response) => {
+        this.taskList = [];
+        this.snackbar.open(this.translate.instant(response.message));
+      },
+      (error) => {
+        if (error.status === 403) {
+          this.storage.clearSession();
+          this.router.navigateByUrl('/login');
+        }
+        this.snackbar.open(this.translate.instant(error.error.message));
+      }
+    );
   }
 
   disableClear() {
