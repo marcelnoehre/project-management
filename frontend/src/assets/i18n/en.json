@@ -52,7 +52,8 @@
         "DELETE_ACCOUNT": "Account has been successfully deleted!",
         "CREATE_TASK": "Task created successfully!",
         "EDIT_TASK": "Task edited successfully!",
-        "MOVE_TO_TRASH": "Task has been moved to the Trash Bin!"
+        "MOVE_TO_TRASH": "Task has been moved to the Trash Bin!",
+        "CLEAR_TRASH_BIN": "The trash bin has been emptied"
     },
     "USER" : {
         "USERNAME": "username",

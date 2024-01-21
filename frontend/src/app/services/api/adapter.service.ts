@@ -51,4 +51,6 @@ export abstract class AdapterService {
 
   public abstract restoreTask(token: string, project: string, uid: string): Observable<Task[]>;
 
+  public abstract clearTrashBin(token: string, project: string): Observable<Response>;
+
 }

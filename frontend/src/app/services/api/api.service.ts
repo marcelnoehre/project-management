@@ -114,4 +114,8 @@ export class ApiService {
 	public restoreTask(token: string, project: string, uid: string): Observable<Task[]> {
 		return this.adapter.restoreTask(token, project, uid);
 	}
+
+	public clearTrashBin(token: string, project: string): Observable<Response> {
+		return this.adapter.clearTrashBin(token, project);
+	}
 }

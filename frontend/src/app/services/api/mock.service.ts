@@ -160,4 +160,9 @@ export class MockService extends AdapterService {
     return this.http.get<Task[]>(url);
   }
 
+  public override clearTrashBin(token: string, project: string): Observable<Response> {
+    const url = this.basePath + this.task + 'clear-trash-bin/clear.json';
+    return this.http.get<Response>(url);
+  }
+
 }
