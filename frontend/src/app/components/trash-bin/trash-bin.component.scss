@@ -5,7 +5,6 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 5%;
 }
 
 table {
@@ -30,10 +29,10 @@ table {
     tr:nth-child(odd) {
         background-color: gray;
     }
-}
 
-button {
-    scale: 0.75;
+    button {
+        scale: 0.75;
+    }
 }
 
 .header {
@@ -43,4 +42,11 @@ button {
 .content {
     height: 50vh;
     overflow: scroll;
+}
+
+.clear {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1%;
+    width: 90%;
 }

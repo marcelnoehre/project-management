@@ -41,4 +41,21 @@ export class TrashBinComponent implements AfterViewInit {
       }
     );
   }
+  
+  delete(uid: string) {
+    console.log('delete: ', uid);
+    
+  }
+
+  restore(uid: string) {
+    console.log('restore; ', uid);
+  }
+
+  clear() {
+    console.log('clear'); 
+  }
+
+  disableClear() {
+    return this.taskList.length == 0;
+  }
 }

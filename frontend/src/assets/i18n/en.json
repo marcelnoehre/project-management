@@ -6,7 +6,8 @@
         "REMOVE": "Remove",
         "CONFIRM": "Confirm",
         "ACCEPT": "Accept",
-        "REJECT": "Reject"
+        "REJECT": "Reject",
+        "CLEAR": "Clear"
     },
     "NAV": {
         "DASHBOARD": "Dashboard",
