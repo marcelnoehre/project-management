@@ -8,6 +8,7 @@ import { CreateTaskComponent } from './components/create-task/create-task.compon
 import { KanbanBoardComponent } from './components/kanban-board/kanban-board.component';
 import { ProjectSettingsComponent } from './components/project-settings/project-settings.component';
 import { UserSettingsComponent } from './components/user-settings/user-settings.component';
+import { TrashBinComponent } from './components/trash-bin/trash-bin.component';
 
 const routes: Routes = [
   {
@@ -36,6 +37,11 @@ const routes: Routes = [
   {
     path: 'tasks/board',
     component: KanbanBoardComponent,
+    canActivate: [authGuard]
+  },
+  {
+    path: 'tasks/trash-bin',
+    component: TrashBinComponent,
     canActivate: [authGuard]
   },
   {
