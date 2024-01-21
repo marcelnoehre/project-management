@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 import { User } from 'src/app/interfaces/data/user';
 import { State } from 'src/app/interfaces/data/state';
 import { Response } from 'src/app/interfaces/data/response';
+import { Task } from 'src/app/interfaces/data/task';
 
 @Injectable({
   providedIn: 'root'
@@ -97,5 +98,24 @@ export class ApiService {
 	public updatePosition(token: string, project: string, uid: string, state: string, order: number): Observable<State[]> {
 		return this.adapter.updatePosition(token, project, uid, state, order);
 	}
+
+	public moveToTrashBin(token: string, project: string, uid: string): Observable<State[]> {
+		return this.adapter.moveToTrashBin(token, project, uid);
+	}
 	
+	public getTrashBin(token: string, project: string): Observable<Task[]> {
+		return this.adapter.getTrashBin(token, project);
+	}
+
+	public deleteTask(token: string, project: string, uid: string): Observable<Task[]> {
+		return this.adapter.deleteTask(token, project, uid);
+	}
+
+	public restoreTask(token: string, project: string, uid: string): Observable<Task[]> {
+		return this.adapter.restoreTask(token, project, uid);
+	}
+
+	public clearTrashBin(token: string, project: string): Observable<Response> {
+		return this.adapter.clearTrashBin(token, project);
+	}
 }

@@ -6,12 +6,14 @@
         "REMOVE": "Remove",
         "CONFIRM": "Confirm",
         "ACCEPT": "Accept",
-        "REJECT": "Reject"
+        "REJECT": "Reject",
+        "CLEAR": "Clear"
     },
     "NAV": {
         "DASHBOARD": "Dashboard",
         "BOARD": "Board",
         "CREATE_TASK": "Create task",
+        "TRASH_BIN": "Trash bin",
         "PROJECT_SETTINGS": "Project settings",
         "ACCOUNT_SETTINGS": "Account settings",
         "NOTIFICATIONS": "Notifications",
@@ -50,7 +52,11 @@
         "INVITE_REJECTED": "The invitation has been deleted! Create a project or ask for a new invitation.",
         "DELETE_ACCOUNT": "Account has been successfully deleted!",
         "CREATE_TASK": "Task created successfully!",
-        "EDIT_TASK": "Task edited successfully!"
+        "EDIT_TASK": "Task edited successfully!",
+        "MOVE_TO_TRASH": "Task has been moved to the Trash Bin!",
+        "CLEAR_TRASH_BIN": "The trash bin has been emptied!",
+        "TASK_RESTORED": "The task {{uid}} has been restored!",
+        "TASK_DELETED": "The task {{uid}} has been permanently deleted!"
     },
     "USER" : {
         "USERNAME": "username",

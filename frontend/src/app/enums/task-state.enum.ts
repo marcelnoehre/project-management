@@ -3,5 +3,6 @@ export enum TaskState {
     TODO = 'TODO',
     PROGRESS = 'PROGRESS',
     REVIEW = 'REVIEW',
-    DONE = 'DONE'
+    DONE = 'DONE',
+    DELETED = 'DELETED'
 }

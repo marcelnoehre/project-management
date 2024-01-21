@@ -25,6 +25,11 @@ export class DashboardComponent {
 			name: AppItem.Board,
 			route: AppRoute.Board,
 			icon: AppIcon.Board
+		},
+		{
+			name: AppItem.TrashBin,
+			route: AppRoute.TrashBin,
+			icon: AppIcon.TrashBin
 		}
 	]
 }

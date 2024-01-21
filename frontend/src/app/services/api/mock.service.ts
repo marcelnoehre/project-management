@@ -7,6 +7,7 @@ import { SnackbarService } from '../snackbar.service';
 import { State } from 'src/app/interfaces/data/state';
 import { Response } from 'src/app/interfaces/data/response';
 import { TranslateService } from '@ngx-translate/core';
+import { Task } from 'src/app/interfaces/data/task';
 
 @Injectable({
   providedIn: 'root'
@@ -138,5 +139,30 @@ export class MockService extends AdapterService {
     const url = this.basePath + this.task + 'update-position/task.json';
     return this.http.get<State[]>(url);
   }
+
+  public override moveToTrashBin(token: string, project: string, uid: string): Observable<State[]> {
+    const url = this.basePath + this.task + 'move-to-trash-bin/moved.json';
+    return this.http.get<State[]>(url);
+  }
   
+  public override getTrashBin(token: string, project: string): Observable<Task[]> {
+    const url = this.basePath + this.task + 'get-trash-bin/trash-bin.json';  
+    return this.http.get<Task[]>(url);
+  }
+
+  public override deleteTask(token: string, project: string, uid: string): Observable<Task[]> {
+    const url = this.basePath + this.task + 'delete-task/delete.json';
+    return this.http.get<Task[]>(url);
+  }
+
+  public override restoreTask(token: string, project: string, uid: string): Observable<Task[]> {
+    const url = this.basePath + this.task + 'restore-task/restore.json';
+    return this.http.get<Task[]>(url);
+  }
+
+  public override clearTrashBin(token: string, project: string): Observable<Response> {
+    const url = this.basePath + this.task + 'clear-trash-bin/clear.json';
+    return this.http.get<Response>(url);
+  }
+
 }

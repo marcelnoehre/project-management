@@ -19,7 +19,7 @@ import * as YAML from 'yaml';
 })
 export class KanbanBoardComponent implements AfterViewInit {
   taskList: State[] = [];
-  stateList: string[] = [TaskState.NONE, TaskState.TODO, TaskState.PROGRESS, TaskState.REVIEW, TaskState.DONE];
+  stateList: string[] = [TaskState.NONE, TaskState.TODO, TaskState.PROGRESS, TaskState.REVIEW, TaskState.DONE, TaskState.DELETED];
 
   constructor(
     private api: ApiService,
@@ -51,15 +51,30 @@ export class KanbanBoardComponent implements AfterViewInit {
   drop(event: any) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    } else if (event.event.target.id === TaskState.DELETED) {
+      this.api.moveToTrashBin(this.user.token, this.user.project, event.previousContainer.data[event.previousIndex].uid).subscribe(
+        (tasklist) => {
+          this.taskList = tasklist;
+          this.snackbar.open(this.translate.instant('SUCCESS.MOVE_TO_TRASH'));
+        },
+        (error) => {
+          if (error.status === 403) {
+            this.storage.clearSession();
+            this.router.navigateByUrl('/login');
+          }
+          this.snackbar.open(this.translate.instant(error.error.message));
+        }
+      );
+      return;
     } else {
       transferArrayItem(
         event.previousContainer.data,
         event.container.data,
         event.previousIndex,
         event.currentIndex
-      );
+      );      
     }
-    const foundState = this.taskList.find((list) => list.state === event.event.target.id);
+    const foundState = this.taskList.find((list) => list.state === event.event.target.id);    
     const previousIndex = foundState!.tasks[event.currentIndex - 1]?.order ? foundState!.tasks[event.currentIndex - 1].order : 0;
     const nextIndex = foundState!.tasks[event.currentIndex + 1]?.order === undefined ? previousIndex + 2 : foundState!.tasks[event.currentIndex + 1].order;
     this.api.updatePosition(this.user.token, this.user.project, foundState!.tasks[event.currentIndex].uid, foundState!.state, (previousIndex + nextIndex) / 2).subscribe(

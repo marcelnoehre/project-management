@@ -6,6 +6,7 @@ import { environment } from 'src/environments/environment';
 import { User } from 'src/app/interfaces/data/user';
 import { State } from 'src/app/interfaces/data/state';
 import { Response } from 'src/app/interfaces/data/response';
+import { Task } from 'src/app/interfaces/data/task';
 
 @Injectable({
   providedIn: 'root'
@@ -152,5 +153,48 @@ export class DbService extends AdapterService {
     }
     return this.http.post<State[]>(this.basePath + this.task + 'updatePosition', body);
   }
+
+  public override moveToTrashBin(token: string, project: string, uid: string): Observable<State[]> {
+    const body = {
+      token: token,
+      project: project,
+      uid: uid
+    }
+    return this.http.post<State[]>(this.basePath + this.task + 'moveToTrashBin', body);
+  }
+
+  public override getTrashBin(token: string, project: string): Observable<Task[]> {
+    const body = {
+      token: token,
+      project: project
+    }
+    return this.http.post<Task[]>(this.basePath + this.task + 'getTrashBin', body);
+  }
+
+  public override deleteTask(token: string, project: string, uid: string): Observable<Task[]> {
+    const body = {
+      token: token,
+      project: project,
+      uid: uid
+    }
+    return this.http.post<Task[]>(this.basePath + this.task + 'deleteTask', body);
+  }
   
+  public override restoreTask(token: string, project: string, uid: string): Observable<Task[]> {
+    const body = {
+      token: token,
+      project: project,
+      uid: uid
+    }
+    return this.http.post<Task[]>(this.basePath + this.task + 'restoreTask', body);
+  }
+
+  public override clearTrashBin(token: string, project: string): Observable<Response> {
+    const body = {
+      token: token,
+      project: project
+    }
+    return this.http.post<Response>(this.basePath + this.task + 'clearTrashBin', body);
+  }
+
 }

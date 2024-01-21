@@ -39,6 +39,11 @@ export class SidenavComponent implements OnInit, OnDestroy {
 			name: AppItem.Board,
 			route: AppRoute.Board,
 			icon: AppIcon.Board
+		},
+		{
+			name: AppItem.TrashBin,
+			route: AppRoute.TrashBin,
+			icon: AppIcon.TrashBin
 		}
 	]
 	clickEvent$!: Subscription;
@@ -93,7 +98,6 @@ export class SidenavComponent implements OnInit, OnDestroy {
 	}
 
 	toggleSidebar(newState?: boolean) {
-		console.log(newState !== undefined ? newState : !this.isExpanded);
 		this.isExpanded = newState !== undefined ? newState : !this.isExpanded;
 	}
 
