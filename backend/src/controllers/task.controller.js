@@ -84,8 +84,27 @@ async function updatePosition(req, res, next) {
     }
 }
 
+async function moveToTrashBin(req, res, next) {
+    try {
+        const tasksCollection = db.collection('tasks');
+        const tasksSnapshot = await tasksCollection.where('uid', '==', req.body.uid).get();
+        if (tasksSnapshot.empty) {
+            res.status(500).send({ message: 'ERROR.INTERNAL' });
+        } else {
+            const taskDoc = tasksSnapshot.docs[0];
+            await taskDoc.ref.update({
+                state: 'DELETED'
+            });
+            res.json({ message: 'SUCCESS.MOVE_TO_TRASH' });
+        }
+    } catch (err) {
+        next(err);
+    }
+}
+
 module.exports = {
     createTask,
     getTaskList,
-    updatePosition
+    updatePosition,
+    moveToTrashBin
 };
