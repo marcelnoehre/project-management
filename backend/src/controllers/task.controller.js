@@ -201,6 +201,28 @@ async function deleteTask(req, res, next) {
     }
 }
 
+async function clearTrashBin(req, res, next) {
+    try {
+        const tasksCollection = db.collection('tasks');
+        const tasksSnapshot = await tasksCollection
+                .where('project', '==', req.body.project)
+                .where('state', '==', 'DELETED')
+                .get();
+        if (tasksSnapshot.empty) {
+            res.status(500).send({ message: 'ERROR.INTERNAL' });
+        } else {
+            const deletePromises = [];
+            tasksSnapshot.forEach(doc => {
+                deletePromises.push(doc.ref.delete());
+            });
+            await Promise.all(deletePromises);
+            res.json({'message': 'SUCCESS.CLEAR_TRASH_BIN'});
+        }
+    } catch (err) {
+        next(err);
+    }
+}
+
 module.exports = {
     createTask,
     getTaskList,
@@ -208,5 +230,6 @@ module.exports = {
     moveToTrashBin,
     getTrashBin,
     restoreTask,
-    deleteTask
+    deleteTask,
+    clearTrashBin
 };
