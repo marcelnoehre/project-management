@@ -12,6 +12,7 @@
         "DASHBOARD": "Dashboard",
         "BOARD": "Board",
         "CREATE_TASK": "Create task",
+        "TRASH_BIN": "Trash bin",
         "PROJECT_SETTINGS": "Project settings",
         "ACCOUNT_SETTINGS": "Account settings",
         "NOTIFICATIONS": "Notifications",
