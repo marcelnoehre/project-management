@@ -27,12 +27,12 @@ export class DeviceService {
 	public init() {
 		this.width = window.innerWidth;
 		this.height = window.innerHeight;
-    this.router.events
-    this.router.events.pipe(
-      filter((event: RouterEvent): event is NavigationEnd => event instanceof NavigationEnd)
-    ).subscribe((event: NavigationEnd) => {
-      this.activeRoute = event.urlAfterRedirects;
-    });
+		this.router.events
+		this.router.events.pipe(
+		filter((event: RouterEvent): event is NavigationEnd => event instanceof NavigationEnd)
+		).subscribe((event: NavigationEnd) => {
+		this.activeRoute = event.urlAfterRedirects;
+		});
 	}
 
 	public destroy() {
