@@ -148,10 +148,39 @@ async function getTrashBin(req, res, next) {
     }
 }
 
+async function restoreTask(req, res, next) {
+    try {
+        const tasksCollection = db.collection('tasks');
+        const tasksSnapshot = await tasksCollection.where('uid', '==', req.body.uid).get();
+        if (tasksSnapshot.empty) {
+            res.status(500).send({ message: 'ERROR.INTERNAL' });
+        } else {
+            const taskDoc = tasksSnapshot.docs[0];
+            await taskDoc.ref.update({
+                state: 'NONE'
+            });
+            const taskListSnapshot = await tasksCollection
+                .where('project', '==', req.body.project)
+                .where('state', '==', 'DELETED')
+                .orderBy('state')
+                .orderBy('order')
+                .get();
+            const tasks = [];
+            taskListSnapshot.forEach(doc => {
+                tasks.push(doc.data());
+            });
+            res.json(tasks);
+        }
+    } catch (err) {
+        next(err);
+    }
+}
+
 module.exports = {
     createTask,
     getTaskList,
     updatePosition,
     moveToTrashBin,
-    getTrashBin
+    getTrashBin,
+    restoreTask
 };
