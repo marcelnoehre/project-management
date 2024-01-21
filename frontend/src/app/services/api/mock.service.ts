@@ -7,6 +7,7 @@ import { SnackbarService } from '../snackbar.service';
 import { State } from 'src/app/interfaces/data/state';
 import { Response } from 'src/app/interfaces/data/response';
 import { TranslateService } from '@ngx-translate/core';
+import { Task } from 'src/app/interfaces/data/task';
 
 @Injectable({
   providedIn: 'root'
@@ -144,4 +145,9 @@ export class MockService extends AdapterService {
     return this.http.get<State[]>(url);
   }
   
+  public override getTrashBin(token: string, project: string): Observable<Task[]> {
+    const url = this.basePath + this.task + 'get-trash-bin/trash-bin.json';  
+    return this.http.get<Task[]>(url);
+  }
+
 }

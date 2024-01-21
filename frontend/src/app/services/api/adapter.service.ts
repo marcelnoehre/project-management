@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { State } from 'src/app/interfaces/data/state';
 import { User } from 'src/app/interfaces/data/user';
 import { Response } from 'src/app/interfaces/data/response';
+import { Task } from 'src/app/interfaces/data/task';
 
 @Injectable({
   providedIn: 'root'
@@ -43,5 +44,7 @@ export abstract class AdapterService {
   public abstract updatePosition(token: string, project: string, uid: string, state: string, order: number): Observable<State[]>;
 
   public abstract moveToTrashBin(token: string, project: string, uid: string): Observable<State[]>;
+
+  public abstract getTrashBin(token: string, project: string): Observable<Task[]>;
 
 }
