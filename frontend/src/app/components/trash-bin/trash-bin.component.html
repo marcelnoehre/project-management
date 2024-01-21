@@ -1,3 +1,25 @@
 <div class="trash-bin-container">
-    
+    <table>
+        <tr class="header py-2">
+            <th>{{ 'TASK.TITLE' | translate }}</th>
+            <th>{{ 'TASK.DESCRIPTION' | translate }}</th>
+            <th>{{ 'PROJECT.ACTIONS' | translate }}</th>
+        </tr>
+        <div class="content">
+            <tr *ngFor="let task of taskList">
+                <td>{{ task.title }}</td>
+                <td>{{ task.description }}</td>
+                <td>
+                    <div>
+                        <button mat-fab color="primary">
+                            <mat-icon>undo</mat-icon>
+                        </button>
+                        <button mat-fab color="warn">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        </div>
+    </table>
 </div>
