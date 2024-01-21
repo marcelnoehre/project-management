@@ -155,4 +155,9 @@ export class MockService extends AdapterService {
     return this.http.get<Task[]>(url);
   }
 
+  public override restoreTask(token: string, project: string, uid: string): Observable<Task[]> {
+    const url = this.basePath + this.task + 'restore-task/restore.json';
+    return this.http.get<Task[]>(url);
+  }
+
 }

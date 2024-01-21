@@ -180,4 +180,13 @@ export class DbService extends AdapterService {
     return this.http.post<Task[]>(this.basePath + this.task + 'deleteTask', body);
   }
   
+  public override restoreTask(token: string, project: string, uid: string): Observable<Task[]> {
+    const body = {
+      token: token,
+      project: project,
+      uid: uid
+    }
+    return this.http.post<Task[]>(this.basePath + this.task + 'restoreTask', body);
+  }
+
 }

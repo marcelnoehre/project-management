@@ -110,4 +110,8 @@ export class ApiService {
 	public deleteTask(token: string, project: string, uid: string): Observable<Task[]> {
 		return this.adapter.deleteTask(token, project, uid);
 	}
+
+	public restoreTask(token: string, project: string, uid: string): Observable<Task[]> {
+		return this.adapter.restoreTask(token, project, uid);
+	}
 }
