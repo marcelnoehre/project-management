@@ -29,4 +29,26 @@ export class ParserService {
     return new Blob([YAML.stringify(this.readStates(taskList))], { type: 'text/yaml' });
   }
 
+  encodeFileInput(fileInput: string, fileExtension: string) {
+    let taskList;
+    const rawInput = atob(fileInput.split(',')[1]);
+    switch (fileExtension) {
+      case 'json':
+        taskList = JSON.parse(rawInput);
+        break;
+      case 'xml':
+        const parser = new DOMParser();
+        taskList = parser.parseFromString(rawInput, 'application/xml');
+        break;
+      case 'yml':
+      case 'yaml':
+        taskList = YAML.parse(rawInput);
+        break;
+      default:
+        taskList = null;
+        break;
+    }
+    return taskList;
+  }
+
 }

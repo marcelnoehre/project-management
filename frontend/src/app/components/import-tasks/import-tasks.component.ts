@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ParserService } from 'src/app/services/parser.service';
 
 @Component({
   selector: 'app-import-tasks',
@@ -8,16 +9,19 @@ import { Component } from '@angular/core';
 export class ImportTasksComponent {
   taskList: any
 
+  constructor(private parser: ParserService) {
+
+  }
+
   onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length) {
       const file = input.files[0];
-      const fileExtension = file.name.split('.').pop()?.toLowerCase();
-      if(['json', 'xml', 'yaml'].includes(fileExtension || '')) {
+      const fileExtension: string = file.name.split('.').pop()?.toLowerCase() || '';
+      if(['json', 'xml', 'yaml', 'yml'].includes(fileExtension)) {
         const reader = new FileReader;
         reader.onload = (e) => {
-            const result = e.target?.result as string;
-            this.taskList = JSON.parse(atob(result.split(',')[1]));
+          this.taskList = this.parser.encodeFileInput(e.target?.result as string, fileExtension);
         };
         reader.readAsDataURL(file);
       }
