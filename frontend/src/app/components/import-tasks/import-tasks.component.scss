@@ -45,6 +45,27 @@ form {
     align-items: center;
 }
 
-pre {
-    white-space: pre-wrap
+.import-preview {
+    width: 100%;
+    height: 40vh;
+    
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px; /* Adjust as needed */
+    }
+    
+    td, th {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: left;
+    }
+    
+    th {
+        background-color: #f2f2f2;
+    }
+
+    tr:nth-child(even) {
+        background-color: lightgray;
+    }
 }

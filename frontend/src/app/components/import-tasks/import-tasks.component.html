@@ -7,12 +7,27 @@
             <input
                 id="task-list-input"
                 name="task-list-input"
-                *ngIf="!taskList"
+                *ngIf="!hasTaskList()"
                 type="file"
                 class="file-input p-5"
                 (change)="onFileSelected($event)"
             >
-            <pre *ngIf="taskList">{{taskList | json}}</pre>
+            <div *ngIf="hasTaskList()" class="import-preview">
+                <table>
+                    <tr>
+                        <th>title</th>
+                        <th>description</th>
+                        <th>state</th>
+                        <th>author</th>
+                    </tr>
+                    <tr *ngFor="let task of taskList">
+                        <td>{{ task.title }}</td>
+                        <td>{{ task.description }}</td>
+                        <td>{{ task.state }}</td>
+                        <td>{{ task.author }}</td>
+                    </tr>
+                </table>
+            </div>
         </div>
     </form>
 </div>

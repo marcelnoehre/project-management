@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Task } from 'src/app/interfaces/data/task';
 import { ParserService } from 'src/app/services/parser.service';
 
 @Component({
@@ -7,7 +8,7 @@ import { ParserService } from 'src/app/services/parser.service';
   styleUrls: ['./import-tasks.component.scss']
 })
 export class ImportTasksComponent {
-  taskList: any;
+  taskList: Task[] = [];
   fileInput: string = '';
 
   constructor(private parser: ParserService) {
@@ -27,5 +28,9 @@ export class ImportTasksComponent {
         reader.readAsDataURL(file);
       }
     }
+  }
+
+  hasTaskList() {
+    return this.taskList?.length > 0;
   }
 }
