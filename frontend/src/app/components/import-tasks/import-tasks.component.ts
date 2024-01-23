@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { Progress } from 'src/app/interfaces/data/progress';
 import { Task } from 'src/app/interfaces/data/task';
 import { ApiService } from 'src/app/services/api/api.service';
 import { ParserService } from 'src/app/services/parser.service';
@@ -16,6 +17,7 @@ import { UserService } from 'src/app/services/user.service';
 export class ImportTasksComponent {
   taskList: Task[] = [];
   fileInput: string = '';
+  result!: Progress;
 
   constructor(
     private parser: ParserService,
@@ -51,7 +53,8 @@ export class ImportTasksComponent {
   importTasks() {
     this.api.importTasks(this.user.token, this.user.username, this.user.project, this.taskList).subscribe(
       (response) => {
-        console.log(response);
+        this.result = response;
+        this.snackbar.open(this.translate.instant('SUCCESS.IMPORT_TASKS'));
       },
       (error) => {
         if (error.status === 403) {

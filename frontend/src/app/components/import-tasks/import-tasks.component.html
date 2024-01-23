@@ -29,6 +29,10 @@
                 </table>
                 <div class="import-submission p-2">
                     <p>INVALID_COUNTER: {{ 0 }}</p>
+                    <ng-container *ngIf="result">
+                        <p>Success: {{ result.success }}</p>
+                        <p>Failed: {{ result.fail }}</p>
+                    </ng-container>
                     <button mat-raised-button color="accent" (click)="importTasks()">{{ 'APP.IMPORT' | translate }}</button>
                 </div>
             </div>

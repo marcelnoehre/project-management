@@ -54,6 +54,7 @@
         "INVITE_REJECTED": "The invitation has been deleted! Create a project or ask for a new invitation.",
         "DELETE_ACCOUNT": "Account has been successfully deleted!",
         "CREATE_TASK": "Task created successfully!",
+        "IMPORT_TASKS": "Importing the tasks has been completed!",
         "EDIT_TASK": "Task edited successfully!",
         "MOVE_TO_TRASH": "Task has been moved to the Trash Bin!",
         "CLEAR_TRASH_BIN": "The trash bin has been emptied!",
