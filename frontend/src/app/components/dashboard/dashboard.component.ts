@@ -10,26 +10,24 @@ import { App } from 'src/app/interfaces/app';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent {
-	public appItems: App[] = [
-		{
-			name: AppItem.Dashboard,
-			route: AppRoute.Dashboard,
-			icon: AppIcon.Dashboard
-		},
-		{
+	public appItems: App[][] = [
+		[{
 			name: AppItem.CreateTask,
 			route: AppRoute.CreateTask,
-			icon: AppIcon.CreateTask
+			icon: AppIcon.CreateTask,
+			color: 'cadetblue'
 		},
 		{
 			name: AppItem.Board,
 			route: AppRoute.Board,
-			icon: AppIcon.Board
-		},
-		{
+			icon: AppIcon.Board,
+			color: 'mediumslateblue'
+		}],
+		[{
 			name: AppItem.TrashBin,
 			route: AppRoute.TrashBin,
-			icon: AppIcon.TrashBin
-		}
-	]
+			icon: AppIcon.TrashBin,
+			color: 'salmon'
+		}]
+	];
 }

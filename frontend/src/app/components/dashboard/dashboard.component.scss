@@ -1,0 +1,45 @@
+.dashboard-container {
+    display: flex;
+	flex-direction: column;
+	justify-content: left;
+    align-items: center;
+	width: 100vw;
+    padding: 1.5rem;
+    gap: 2rem;
+}
+
+.row {
+    display: flex;
+	width: calc(100vw - 3rem);
+    gap: 1.5rem;
+	border-radius: 25px;
+    padding: 1rem;
+	background-color: lightgray;
+}
+
+.item {
+    display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+	text-align: center;
+	width: 8rem;
+	mat-icon {
+        display: flex;
+        justify-content: center;
+		width: 8rem;
+		height: 8rem;
+		border-radius: 25px;
+		margin-bottom: 0.5rem;
+		padding: 1rem;
+		font-size: 5rem;
+		background-color: var(--item-bg, mediumslateblue);
+		color: white;
+		cursor: pointer;
+	}
+
+	.label {
+		font-weight: bold;
+		font-size: 1rem;
+	}
+}
