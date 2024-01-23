@@ -32,6 +32,15 @@ async function createTask(req, res, next) {
     }
 }
 
+async function importTasks(req, res, next) {
+    try {
+        const tasksCollection = db.collection('tasks');
+        console.log(req.body.tasks);
+    } catch (err) {
+        next(err);
+    }
+}
+
 async function getTaskList(req, res, next) {
     try {
         const tasksCollection = db.collection('tasks');
@@ -225,6 +234,7 @@ async function clearTrashBin(req, res, next) {
 
 module.exports = {
     createTask,
+    importTasks,
     getTaskList,
     updatePosition,
     moveToTrashBin,
