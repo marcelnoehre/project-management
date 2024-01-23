@@ -32,7 +32,7 @@ export class DeviceService {
 		this.router.events.pipe(
 		filter((event: RouterEvent): event is NavigationEnd => event instanceof NavigationEnd)
 		).subscribe((event: NavigationEnd) => {
-		this.activeRoute = event.urlAfterRedirects;
+			this.activeRoute = event.urlAfterRedirects;
 		});
 	}
 

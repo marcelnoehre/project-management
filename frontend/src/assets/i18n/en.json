@@ -13,6 +13,7 @@
         "DASHBOARD": "Dashboard",
         "BOARD": "Board",
         "CREATE_TASK": "Create task",
+        "IMPORT_TASKS": "Import tasks",
         "TRASH_BIN": "Trash bin",
         "PROJECT_SETTINGS": "Project settings",
         "ACCOUNT_SETTINGS": "Account settings",

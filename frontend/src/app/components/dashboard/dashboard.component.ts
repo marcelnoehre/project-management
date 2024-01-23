@@ -28,6 +28,12 @@ export class DashboardComponent {
 			route: AppRoute.TrashBin,
 			icon: AppIcon.TrashBin,
 			color: 'salmon'
+		},
+		{
+			name: AppItem.ImportTasks,
+			route: AppRoute.ImportTasks,
+			icon: AppIcon.ImportTasks,
+			color: 'goldenrod'
 		}]
 	];
 }
