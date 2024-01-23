@@ -4,6 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Progress } from 'src/app/interfaces/data/progress';
 import { Task } from 'src/app/interfaces/data/task';
 import { ApiService } from 'src/app/services/api/api.service';
+import { EventService } from 'src/app/services/event.service';
 import { ParserService } from 'src/app/services/parser.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { StorageService } from 'src/app/services/storage.service';
@@ -26,7 +27,8 @@ export class ImportTasksComponent {
     private storage: StorageService,
     private router: Router,
     private translate: TranslateService,
-    private snackbar: SnackbarService
+    private snackbar: SnackbarService,
+    private event: EventService
   ) {
 
   }
@@ -51,12 +53,15 @@ export class ImportTasksComponent {
   }
 
   importTasks() {
+    this.event.startLoading();
     this.api.importTasks(this.user.token, this.user.username, this.user.project, this.taskList).subscribe(
       (response) => {
+        this.event.stopLoading();
         this.result = response;
         this.snackbar.open(this.translate.instant('SUCCESS.IMPORT_TASKS'));
       },
       (error) => {
+        this.event.stopLoading();
         if (error.status === 403) {
           this.storage.clearSession();
           this.router.navigateByUrl('/login');
