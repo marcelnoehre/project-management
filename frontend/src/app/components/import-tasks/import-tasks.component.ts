@@ -19,6 +19,7 @@ export class ImportTasksComponent {
   taskList: Task[] = [];
   fileInput: string = '';
   result!: Progress;
+  loading: boolean = false;
 
   constructor(
     private parser: ParserService,
@@ -27,8 +28,7 @@ export class ImportTasksComponent {
     private storage: StorageService,
     private router: Router,
     private translate: TranslateService,
-    private snackbar: SnackbarService,
-    private event: EventService
+    private snackbar: SnackbarService
   ) {
 
   }
@@ -53,15 +53,15 @@ export class ImportTasksComponent {
   }
 
   importTasks() {
-    this.event.startLoading();
+    this.loading = true;
     this.api.importTasks(this.user.token, this.user.username, this.user.project, this.taskList).subscribe(
       (response) => {
-        this.event.stopLoading();
+        this.loading = false;
         this.result = response;
         this.snackbar.open(this.translate.instant('SUCCESS.IMPORT_TASKS'));
       },
       (error) => {
-        this.event.stopLoading();
+        this.loading = false;
         if (error.status === 403) {
           this.storage.clearSession();
           this.router.navigateByUrl('/login');

@@ -26,6 +26,7 @@ import { CreateTaskComponent } from './components/create-task/create-task.compon
 import { KanbanBoardComponent } from './components/kanban-board/kanban-board.component';
 import { ImportTasksComponent } from './components/import-tasks/import-tasks.component';
 import { TrashBinComponent } from './components/trash-bin/trash-bin.component';
+import { RequestButtonComponent } from './components/request-button/request-button.component';
 
 import { UserService } from './services/user.service';
 
@@ -51,7 +52,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     CreateTaskComponent,
     KanbanBoardComponent,
     ImportTasksComponent,
-    TrashBinComponent
+    TrashBinComponent,
+    RequestButtonComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,23 @@
+<button
+	*ngIf="!matFab"
+    type="button"
+	(click)="onClick()" 
+	[disabled]="disabled"
+	[color]="color"
+    mat-raised-button
+>
+	<mat-icon *ngIf="!spinning">{{icon}}</mat-icon>
+	<mat-spinner class="material-icons" *ngIf="spinning" class="spinner" color="primary" diameter="24"></mat-spinner>
+	<span>&nbsp;<ng-content></ng-content></span>
+</button>
+
+<button
+	*ngIf="matFab"
+    type="button"
+	(click)="onClick()" 
+	[disabled]="disabled"
+    mat-fab
+>
+	<mat-icon *ngIf="!spinning">{{icon}}</mat-icon>
+	<mat-spinner class="material-icons" *ngIf="spinning" class="spinner" color="primary" diameter="24"></mat-spinner>
+</button>
