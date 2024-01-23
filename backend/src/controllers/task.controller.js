@@ -35,11 +35,41 @@ async function createTask(req, res, next) {
 async function importTasks(req, res, next) {
     try {
         const tasksCollection = db.collection('tasks');
-        console.log(req.body.tasks);
+        let [success, fail] = [0, 0];
+        for (const task of req.body.tasks) {
+            try {
+                const orderSnapshot = await tasksCollection
+                    .where('project', '==', req.body.project)
+                    .where('state', '==', task.state === '' ? 'NONE' : task.state)
+                    .orderBy('order', 'desc').limit(1).get();
+                const order = orderSnapshot.empty ? 1 : (Math.ceil(orderSnapshot.docs[0].data().order) + 1);
+                const newDocRef = tasksCollection.doc();
+                const taskData = {
+                    uid: newDocRef.id,
+                    author: task.author === '' ? req.body.author : task.author,
+                    project: req.body.project,
+                    title: task.title,
+                    description: task.description,
+                    assigned: '',
+                    state: task.state === '' ? 'NONE' : task.state,
+                    order: order
+                };
+                await tasksCollection.doc(newDocRef.id).set(taskData);
+                success++;
+            } catch (err) {
+                fail++;
+            }
+        }
+        res.json({
+            amount: req.body.tasks.length,
+            success: success,
+            fail: fail
+        });
     } catch (err) {
         next(err);
     }
 }
+
 
 async function getTaskList(req, res, next) {
     try {
