@@ -7,6 +7,7 @@ import { User } from 'src/app/interfaces/data/user';
 import { State } from 'src/app/interfaces/data/state';
 import { Response } from 'src/app/interfaces/data/response';
 import { Task } from 'src/app/interfaces/data/task';
+import { Progress } from 'src/app/interfaces/data/progress';
 
 @Injectable({
   providedIn: 'root'
@@ -133,6 +134,16 @@ export class DbService extends AdapterService {
       state: state
     };
     return this.http.post<Response>(this.basePath + this.task + 'createTask', body);
+  }
+  
+  public override importTasks(token: string, author: string, project: string, tasks: Task[]): Observable<Progress> {
+    const body = {
+      token: token,
+      author: author,
+      project: project,
+      tasks: tasks
+    }
+    return this.http.post<Progress>(this.basePath + this.task + 'importTasks', body);
   }
   
   public override getTaskList(token: string, project: string): Observable<State[]> {
