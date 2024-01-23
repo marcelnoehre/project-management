@@ -1,10 +1,8 @@
-<div style="display: flex; flex-direction: column; gap: 2rem;" class="m-4">
-    <ng-container *ngFor="let app of appItems">
-        <a [href]="app.route">
-            <mat-icon>
-                {{app.icon}}
-            </mat-icon>
-            {{app.name}}
-        </a>
-    </ng-container>
+<div class="dashboard-container">
+	<div class="row" *ngFor="let row of appItems">
+		<div class="item m-4" *ngFor="let item of row" >
+			<mat-icon style="--item-bg: {{item.color}}" [routerLink]="item.route">{{item.icon}}</mat-icon>
+			<div class="label">{{'NAV.' + item.name|translate}}</div>
+		</div>
+	</div>
 </div>
