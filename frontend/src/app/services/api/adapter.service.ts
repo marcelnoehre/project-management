@@ -4,6 +4,7 @@ import { State } from 'src/app/interfaces/data/state';
 import { User } from 'src/app/interfaces/data/user';
 import { Response } from 'src/app/interfaces/data/response';
 import { Task } from 'src/app/interfaces/data/task';
+import { Progress } from 'src/app/interfaces/data/progress';
 
 @Injectable({
   providedIn: 'root'
@@ -38,6 +39,8 @@ export abstract class AdapterService {
 
   // ### TASKS ###
   public abstract createTask(token: string, author: string, project: string, title: string, description: string, assigned: string, state: string): Observable<Response>;
+
+  public abstract importTasks(token: string, author: string, project: string, tasks: Task[]): Observable<Progress>;
   
   public abstract getTaskList(token: string, project: string): Observable<State[]>;
 

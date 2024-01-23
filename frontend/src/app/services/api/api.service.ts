@@ -9,6 +9,7 @@ import { User } from 'src/app/interfaces/data/user';
 import { State } from 'src/app/interfaces/data/state';
 import { Response } from 'src/app/interfaces/data/response';
 import { Task } from 'src/app/interfaces/data/task';
+import { Progress } from 'src/app/interfaces/data/progress';
 
 @Injectable({
   providedIn: 'root'
@@ -89,6 +90,10 @@ export class ApiService {
 	// ### TASKS ###
 	public createTask(token: string, author: string, project: string, title: string, description: string, assigned: string, state: string): Observable<Response> {
 		return this.adapter.createTask(token, author, project, title, description, assigned, state);
+	}
+
+	public importTasks(token: string, author: string, project: string, tasks: Task[]): Observable<Progress> {
+		return this.adapter.importTasks(token, author, project, tasks);
 	}
 
 	public getTaskList(token: string, project: string): Observable<State[]> {

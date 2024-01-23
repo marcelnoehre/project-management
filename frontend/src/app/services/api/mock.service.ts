@@ -8,6 +8,7 @@ import { State } from 'src/app/interfaces/data/state';
 import { Response } from 'src/app/interfaces/data/response';
 import { TranslateService } from '@ngx-translate/core';
 import { Task } from 'src/app/interfaces/data/task';
+import { Progress } from 'src/app/interfaces/data/progress';
 
 @Injectable({
   providedIn: 'root'
@@ -128,6 +129,11 @@ export class MockService extends AdapterService {
   public override createTask(token: string, author: string, project: string, title: string, description: string, assigned: string, state: string): Observable<Response> {
     const url = this.basePath + this.task + 'create-task/mockTask.json';
     return this.http.get<Response>(url);
+  }
+
+  public override importTasks(token: string, author: string, project: string, tasks: Task[]): Observable<Progress> {
+    const url = this.basePath + this.task + 'import-tasks/progress.json';
+    return this.http.get<Progress>(url);
   }
 
   public override getTaskList(token: string, project: string): Observable<State[]> {

@@ -41,6 +41,11 @@ export class SidenavComponent implements OnInit, OnDestroy {
 			icon: AppIcon.Board
 		},
 		{
+			name: AppItem.ImportTasks,
+			route: AppRoute.ImportTasks,
+			icon: AppIcon.ImportTasks
+		},
+		{
 			name: AppItem.TrashBin,
 			route: AppRoute.TrashBin,
 			icon: AppIcon.TrashBin
