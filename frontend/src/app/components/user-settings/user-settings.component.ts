@@ -35,6 +35,16 @@ export class UserSettingsComponent implements OnInit {
   color!: string;
   hidePassword = true;
   profilePicture!: string;
+  loadingDelete: boolean = false;
+  loadingAttribute = {
+    username: false,
+    fullName: false,
+    language: false,
+    password: false,
+    initials: false,
+    color: false,
+    profilePicture: false
+  }
 
   constructor(
     private storage: StorageService,
@@ -88,14 +98,20 @@ export class UserSettingsComponent implements OnInit {
       async (confirmed) => {
         if (confirmed) {
           if (attribute === 'password') value = await this.sha256(value);
+          (this.loadingAttribute as any)[attribute] = true;          
           this.api.updateUser(this.user.token, this.user.username, attribute, value).subscribe(
             (response) => {
+              (this.loadingAttribute as any)[attribute] = false;
               this.snackbar.open(this.translate.instant(response.message));
               this.user.update(attribute, value);
               this.initialUser = this.user.user;
               this.storage.setSessionEntry('user', this.user.user);
+              if (attribute === 'password') {
+                this.password = '';
+              }
             },
             (error) => {
+              (this.loadingAttribute as any)[attribute] = false;
               if (error.status === 403) {
                 this.storage.clearSession();
                 this.router.navigateByUrl('/login');
@@ -118,13 +134,16 @@ export class UserSettingsComponent implements OnInit {
     this.dialog.open(DialogComponent, { data, ...{} }).afterClosed().subscribe(
       async (confirmed) => {
         if (confirmed) {
+          this.loadingDelete = true;
           this.api.deleteUser(this.user.token, this.user.username).subscribe(
             (response) => {
+              this.loadingDelete = false;
               this.storage.clearSession();
               this.router.navigateByUrl('/login');
               this.snackbar.open(this.translate.instant(response.message));
             },
             (error) => {
+              this.loadingDelete = false;
               if (error.status === 403) {
                 this.storage.clearSession();
                 this.router.navigateByUrl('/login');
@@ -154,4 +173,8 @@ export class UserSettingsComponent implements OnInit {
 		const hashHex = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
 		return hashHex;
 	}
+
+  isLoading(attribute: string): boolean {
+    return (this.loadingAttribute as any)[attribute]
+  }
 }

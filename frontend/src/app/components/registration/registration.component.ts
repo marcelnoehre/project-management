@@ -20,6 +20,7 @@ export class RegistrationComponent implements OnInit {
 
   hidePassword = true;
   hidePasswordRepeat = true;
+  loading: boolean = false;
   registrationForm!: FormGroup;
   languages: Language[] = [
     {
@@ -105,13 +106,16 @@ export class RegistrationComponent implements OnInit {
     if (this.password !== this.passwordRepeat) {
       this.snackbar.open(this.translate.instant('ERROR.PASSWORDS_MATCH'));
     } else {
+      this.loading = true;
       const hashedPassword = await this.sha256(this.password);
       this.api.register(this.username, hashedPassword, this.fullName, this.language).subscribe(
         (response) => {
+          this.loading = false;
           this.snackbar.open(this.translate.instant(response.message));
           this.router.navigateByUrl('/login');
         },
         (error) => {
+          this.loading = false;
           this.snackbar.open(this.translate.instant(error.error.message));
         }
       );

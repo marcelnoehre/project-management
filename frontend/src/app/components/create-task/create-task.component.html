@@ -36,6 +36,8 @@
             tabindex="0"
             mat-raised-button
         >
+            <app-spinner-icon class="material-icons" icon="add" [spinning]="loading"></app-spinner-icon>
+            <ng-container *ngIf="loading">&nbsp;</ng-container>
             {{ 'TASK.CREATE' | translate }}
         </button>
     </form>

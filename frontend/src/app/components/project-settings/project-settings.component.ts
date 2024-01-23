@@ -18,6 +18,8 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./project-settings.component.scss']
 })
 export class ProjectSettingsComponent implements OnInit {
+  loadingInvite: boolean = false;
+  loadingDelete: string = '';
   inviteForm!: FormGroup;
   members: User[] = [];
   languages: Language[] = [
@@ -93,13 +95,16 @@ export class ProjectSettingsComponent implements OnInit {
     if (this.members.some(member => member.username === this.username)) {
       this.snackbar.open(this.translate.instant('ERROR.IN_PROJECT'));
     } else {
+      this.loadingInvite = true;
       this.api.inviteUser(this.user.token, this.username, this.user.project).subscribe(
         (user) => {
+          this.loadingInvite = false;
           this.members.push(user);
           this.inviteForm.controls['usernameFormControl'].reset();
           this.snackbar.open(this.translate.instant('SUCCESS.INVITE_DELIVERD'));
         },
         (error) => {
+          this.loadingInvite = false;
           if (error.status === 403) {
             this.storage.clearSession();
             this.router.navigateByUrl('/login');
@@ -119,12 +124,15 @@ export class ProjectSettingsComponent implements OnInit {
     };
     this.dialog.open(DialogComponent, { data, ...{} }).afterClosed().subscribe((remove) => {
       if (remove) {
+        this.loadingDelete = username;
         this.api.removeUser(this.user.token, username).subscribe(
           (response) => {
+            this.loadingDelete = '';
             this.members.splice(index, 1);
             this.snackbar.open(this.translate.instant(response.message));
           },
           (error) => {
+            this.loadingDelete = '';
             if (error.status === 403) {
               this.storage.clearSession();
               this.router.navigateByUrl('/login');
@@ -142,4 +150,7 @@ export class ProjectSettingsComponent implements OnInit {
     return !this.user.hasPermission(required) || permission === Permission.OWNER;
   }
 
+  deleteLoading(username: string) {
+    return username === this.loadingDelete;
+  }
 }

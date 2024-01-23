@@ -19,6 +19,7 @@ import { ParserService } from 'src/app/services/parser.service';
 export class KanbanBoardComponent implements AfterViewInit {
   taskList: State[] = [];
   stateList: string[] = [TaskState.NONE, TaskState.TODO, TaskState.PROGRESS, TaskState.REVIEW, TaskState.DONE, TaskState.DELETED];
+  loadingDelete: boolean = false;
 
   constructor(
     private api: ApiService,
@@ -52,12 +53,15 @@ export class KanbanBoardComponent implements AfterViewInit {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else if (event.event.target.id === TaskState.DELETED) {
+      this.loadingDelete = true;
       this.api.moveToTrashBin(this.user.token, this.user.project, event.previousContainer.data[event.previousIndex].uid).subscribe(
         (tasklist) => {
+          this.loadingDelete = false;
           this.taskList = tasklist;
           this.snackbar.open(this.translate.instant('SUCCESS.MOVE_TO_TRASH'));
         },
         (error) => {
+          this.loadingDelete = false;
           if (error.status === 403) {
             this.storage.clearSession();
             this.router.navigateByUrl('/login');
