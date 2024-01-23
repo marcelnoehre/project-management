@@ -12,9 +12,7 @@
                 class="file-input p-5"
                 (change)="onFileSelected($event)"
             >
-            <div *ngIf="taskList">
-                {{taskList}}
-            </div>
+            <pre *ngIf="taskList">{{taskList | json}}</pre>
         </div>
     </form>
 </div>

@@ -7,7 +7,8 @@ import { ParserService } from 'src/app/services/parser.service';
   styleUrls: ['./import-tasks.component.scss']
 })
 export class ImportTasksComponent {
-  taskList: any
+  taskList: any;
+  fileInput: string = '';
 
   constructor(private parser: ParserService) {
 
