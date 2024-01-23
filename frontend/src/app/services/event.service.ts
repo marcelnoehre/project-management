@@ -7,4 +7,5 @@ import { Subject } from 'rxjs';
 export class EventService {
 
   public documentClick$ = new Subject<Element>();
+
 }

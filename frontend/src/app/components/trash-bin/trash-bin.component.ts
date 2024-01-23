@@ -14,6 +14,9 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class TrashBinComponent implements AfterViewInit {
   taskList: Task[] = [];
+  loadingRestore: string = '';
+  loadingDelete: string = '';
+  loadingClear: boolean = false;
 
   constructor(
     private user: UserService,
@@ -43,12 +46,15 @@ export class TrashBinComponent implements AfterViewInit {
   }
   
   delete(uid: string) {
+    this.loadingDelete = uid;
     this.api.deleteTask(this.user.token, this.user.project, uid).subscribe(
       (taskList) => {
+        this.loadingDelete = '';
         this.taskList = taskList;
         this.snackbar.open(this.translate.instant('SUCCESS.TASK_DELETED', { uid: uid } ));
       },
       (error) => {
+        this.loadingDelete = '';
         if (error.status === 403) {
           this.storage.clearSession();
           this.router.navigateByUrl('/login');
@@ -59,12 +65,15 @@ export class TrashBinComponent implements AfterViewInit {
   }
 
   restore(uid: string) {
+    this.loadingRestore = uid;
     this.api.restoreTask(this.user.token, this.user.project, uid).subscribe(
       (taskList) => {
+        this.loadingRestore = '';
         this.taskList = taskList;
         this.snackbar.open(this.translate.instant('SUCCESS.TASK_RESTORED', { uid: uid } ));
       },
       (error) => {
+        this.loadingRestore = '';
         if (error.status === 403) {
           this.storage.clearSession();
           this.router.navigateByUrl('/login');
@@ -75,12 +84,15 @@ export class TrashBinComponent implements AfterViewInit {
   }
 
   clear() {
+    this.loadingClear = true;
     this.api.clearTrashBin(this.user.token, this.user.project).subscribe(
       (response) => {
+        this.loadingClear = false;
         this.taskList = [];
         this.snackbar.open(this.translate.instant(response.message));
       },
       (error) => {
+        this.loadingClear = false;
         if (error.status === 403) {
           this.storage.clearSession();
           this.router.navigateByUrl('/login');
@@ -92,5 +104,13 @@ export class TrashBinComponent implements AfterViewInit {
 
   disableClear() {
     return this.taskList.length == 0;
+  }
+
+  restoreLoading(uid: string) {
+    return uid === this.loadingRestore;
+  }
+
+  deleteLoading(uid: string) {
+    return uid === this.loadingDelete;
   }
 }

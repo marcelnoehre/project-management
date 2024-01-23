@@ -30,6 +30,7 @@ import { TrashBinComponent } from './components/trash-bin/trash-bin.component';
 import { UserService } from './services/user.service';
 
 import { MaterialModule } from './modules/material.module';
+import { SpinnerIconComponent } from './components/spinner-icon/spinner-icon.component';
 
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
 	return new TranslateHttpLoader(http);
@@ -51,7 +52,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     CreateTaskComponent,
     KanbanBoardComponent,
     ImportTasksComponent,
-    TrashBinComponent
+    TrashBinComponent,
+    SpinnerIconComponent
   ],
   imports: [
     BrowserModule,

@@ -20,7 +20,7 @@
                 matSuffix
                 mat-icon-button
             >
-                <mat-icon> done_all </mat-icon>
+                <app-spinner-icon class="material-icons" icon="done_all" [spinning]="isLoading('username')"></app-spinner-icon>
             </button>
         </div>
         <div class="form-container">
@@ -43,7 +43,7 @@
                 matSuffix
                 mat-icon-button
             >
-                <mat-icon> done_all </mat-icon>
+                <app-spinner-icon class="material-icons" icon="done_all" [spinning]="isLoading('fullName')"></app-spinner-icon>
             </button>
         </div>
         <div class="form-container">
@@ -72,7 +72,7 @@
                 matSuffix
                 mat-icon-button
             >
-                <mat-icon> done_all </mat-icon>
+                <app-spinner-icon class="material-icons" icon="done_all" [spinning]="isLoading('language')"></app-spinner-icon>
             </button>
         </div>
 
@@ -109,7 +109,7 @@
                 matSuffix
                 mat-icon-button
             >
-                <mat-icon> done_all </mat-icon>
+                <app-spinner-icon class="material-icons" icon="done_all" [spinning]="isLoading('password')"></app-spinner-icon>
             </button>
         </div>
         <div class="form-container">
@@ -132,7 +132,7 @@
                 matSuffix
                 mat-icon-button
             >
-                <mat-icon> done_all </mat-icon>
+                <app-spinner-icon class="material-icons" icon="done_all" [spinning]="isLoading('initials')"></app-spinner-icon>
             </button>
         </div>
         <div class="form-container">
@@ -157,7 +157,7 @@
                 matSuffix
                 mat-icon-button
             >
-                <mat-icon> done_all </mat-icon>
+                <app-spinner-icon class="material-icons" icon="done_all" [spinning]="isLoading('color')"></app-spinner-icon>
             </button>
         </div>
         <div class="form-container center mb-5">
@@ -188,13 +188,13 @@
                 matSuffix
                 mat-icon-button
             >
-                <mat-icon> done_all </mat-icon>
+                <app-spinner-icon class="material-icons" icon="done_all" [spinning]="isLoading('profilePicture')"></app-spinner-icon>
             </button>
         </div>
         <div class="delete mt-5">
             <button color="warn" mat-raised-button (click)="deleteUser()">
                 {{ 'USER.DELETE' | translate }}
-                <mat-icon> delete </mat-icon>
+                <app-spinner-icon class="material-icons" icon="delete" [spinning]="loadingDelete"></app-spinner-icon>
             </button>
         </div>
     </form>

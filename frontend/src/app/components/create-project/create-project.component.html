@@ -26,6 +26,7 @@
 			color="dark" 
 			mat-raised-button
 		>
+			<mat-icon>clear</mat-icon>
 			{{ 'APP.CANCEL' | translate }}
 		</button>
 		<button
@@ -34,6 +35,8 @@
 			[disabled]="!projectValid()"
 			mat-raised-button
 		>
+			<app-spinner-icon class="material-icons" icon="add" [spinning]="loading"></app-spinner-icon>
+			<ng-container *ngIf="loading">&nbsp;</ng-container>
 			{{ 'APP.CREATE' | translate }}
 		</button>
 	</mat-dialog-actions>

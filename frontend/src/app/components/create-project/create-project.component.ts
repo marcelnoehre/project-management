@@ -17,6 +17,7 @@ import { UserService } from 'src/app/services/user.service';
 export class CreateProjectComponent {
   projectForm!: FormGroup;
   created: boolean = false;
+  loading: boolean = false;
 
   constructor(
     private dialogRef: MatDialogRef<CreateProjectComponent>,
@@ -43,8 +44,10 @@ export class CreateProjectComponent {
   }
 
   createProject() {
+    this.loading = true;
     this.api.createProject(this.sessionUser.token, this.sessionUser.username, this.project).subscribe(
       (response) => {
+        this.loading = false;
         this.snackbar.open(this.translate.instant(response.message));
         this.user.user = this.sessionUser;
         this.user.project = this.project;
@@ -54,6 +57,7 @@ export class CreateProjectComponent {
         this.dialogRef.close(true);
       },
       (error) => {
+        this.loading = false;
         if (error.status === 403) {
           this.storage.clearSession();
           this.router.navigateByUrl('/login');

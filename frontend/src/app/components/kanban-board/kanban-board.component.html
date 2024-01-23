@@ -15,9 +15,7 @@
     </div>
     <div class="tools">
         <div class="trash-bin p-2" cdkDropList id="DELETED" [cdkDropListConnectedTo]="stateList" cdkDropListData="[]" (cdkDropListDropped)="drop($event)">
-            <mat-icon>
-                delete
-            </mat-icon> 
+            <app-spinner-icon class="material-icons" icon="delete" [spinning]="loadingDelete"></app-spinner-icon> 
         </div>
         <div class="actions">
             <button mat-raised-button (click)="json()">

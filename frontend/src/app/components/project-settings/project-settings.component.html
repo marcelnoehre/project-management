@@ -16,7 +16,7 @@
                 <td>
                     <div>
                         <button mat-fab color="warn" (click)="removeUser(member.username, i)" [disabled]="disableRemove(member.permission)">
-                            <mat-icon>delete</mat-icon>
+                            <app-spinner-icon class="material-icons" icon="delete" [spinning]="deleteLoading(member.username)"></app-spinner-icon>
                         </button>
                     </div>
                 </td>
@@ -39,7 +39,7 @@
                 <mat-icon matPrefix> group_add </mat-icon>
             </mat-form-field>
             <button mat-fab color="primary" (click)="inviteUser()" [disabled]="!usernameValid()">
-                <mat-icon>add</mat-icon>
+                <app-spinner-icon class="material-icons" icon="add" [spinning]="loadingInvite"></app-spinner-icon>
             </button>
         </div>
     </form>

@@ -58,7 +58,8 @@
 						(click)="login()"
 						mat-raised-button
 					>
-						<mat-icon> login </mat-icon>
+						<app-spinner-icon class="material-icons" icon="login" [spinning]="loading"></app-spinner-icon>
+						<ng-container *ngIf="loading">&nbsp;</ng-container>
 						{{ 'LOGIN.LOGIN' | translate }}
 					</button>
 				</div>

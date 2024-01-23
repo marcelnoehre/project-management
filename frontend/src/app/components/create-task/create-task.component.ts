@@ -21,6 +21,7 @@ export class CreateTaskComponent implements OnInit {
   
   taskStates = [TaskState.TODO, TaskState.PROGRESS, TaskState.REVIEW, TaskState.DONE];
   createTaskForm!: FormGroup;
+  loading: boolean = false;
   members: User[] = [];
 
   constructor(
@@ -79,15 +80,18 @@ export class CreateTaskComponent implements OnInit {
   }
 
   public createTask() {
+    this.loading = true;
     const assigned = this.assigned === '' || this.assigned === null ? '' : this.assigned;
     const state = this.state === '' || this.state === null ? TaskState.NONE : this.state;
     this.api.createTask(this.user.token, this.user.username, this.user.project, this.title, this.description, assigned, state).subscribe(
       (response) => {
+        this.loading = false;
         this.createTaskForm.reset();
         setTimeout(() => this.inputTitle.nativeElement.focus());
         this.snackbar.open(this.translate.instant(response.message));
       },
       (error) => {
+        this.loading = false;
         this.snackbar.open(this.translate.instant(error.error.message));
       }
     );

@@ -23,6 +23,7 @@ export class LoginComponent implements OnInit {
 
 	public loginForm!: FormGroup;
 	public hidePassword = true;
+	public loading: boolean = false;
 
 	constructor(
 		private snackbar: SnackbarService,
@@ -63,8 +64,10 @@ export class LoginComponent implements OnInit {
 
 	public async login(): Promise<void> {
 		const hashedPassword = await this.sha256(this.password);
+		this.loading = true;
 		this.api.login(this.username, hashedPassword).subscribe(
 			(user) => {
+				this.loading = false;
 				this.storage.setSessionEntry('user', user);
 				if (user.project === '') {
 					this.dialog.open(CreateProjectComponent).afterClosed().subscribe((created) => {
@@ -111,6 +114,7 @@ export class LoginComponent implements OnInit {
 				}
 			},
 			(error) => {
+				this.loading = false;
 				this.snackbar.open(this.translate.instant(error.error.message));
 			}
 		);
