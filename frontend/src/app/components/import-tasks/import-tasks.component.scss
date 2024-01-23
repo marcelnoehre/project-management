@@ -1,0 +1,46 @@
+.import-tasks-container {
+    top: 7.5vh;
+    height: 92.5vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.import-tasks-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 80%;
+}
+
+.header {
+    text-align: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 90%;
+    width: 75%;
+    gap: 2.5%;
+    margin-top: 5%;
+}
+
+.form-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.file-input {
+    width: 90%;
+    border: 1px dashed darkgrey;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.center {
+    align-items: center;
+}

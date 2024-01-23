@@ -1,1 +1,20 @@
-<p>import-tasks works!</p>
+<div class="import-tasks-container">
+    <form class="import-tasks-form">
+        <h1 class="header">
+            {{ 'NAV.IMPORT_TASKS' | translate }}
+        </h1>
+        <div class="form-container center mb-5">
+            <input
+                id="task-list-input"
+                name="task-list-input"
+                *ngIf="!taskList"
+                type="file"
+                class="file-input p-5"
+                (change)="onFileSelected($event)"
+            >
+            <div *ngIf="taskList">
+                {{taskList}}
+            </div>
+        </div>
+    </form>
+</div>
