@@ -68,4 +68,16 @@ form {
     tr:nth-child(even) {
         background-color: lightgray;
     }
+
+    .import-submission {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        border: 1px solid black;
+        border-top: none;
+        p {
+            margin: 0;
+        }
+    }
 }
