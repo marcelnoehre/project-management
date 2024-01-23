@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { State } from '../interfaces/data/state';
 import * as JsonToXML from "js2xmlparser";
+import * as XML from 'xml-js';
 import * as YAML from 'yaml';
 
 @Injectable({
@@ -37,8 +38,17 @@ export class ParserService {
         taskList = JSON.parse(rawInput);
         break;
       case 'xml':
-        const parser = new DOMParser();
-        taskList = parser.parseFromString(rawInput, 'application/xml');
+        taskList = JSON.parse(XML.xml2json(rawInput, {compact: true, spaces: 2})).root.row.map((row: any) => ({
+          state: row.state._text,
+          tasks: row.tasks.map((task: any) => ({
+            uid: task.uid._text,
+            author: task.author._text,
+            project: task.project._text,
+            state: task.state._text,
+            title: task.title._text,
+            description: task.description._text
+          }))
+        }));
         break;
       case 'yml':
       case 'yaml':
