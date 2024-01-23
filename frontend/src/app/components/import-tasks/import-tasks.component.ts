@@ -4,7 +4,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { Progress } from 'src/app/interfaces/data/progress';
 import { Task } from 'src/app/interfaces/data/task';
 import { ApiService } from 'src/app/services/api/api.service';
-import { EventService } from 'src/app/services/event.service';
 import { ParserService } from 'src/app/services/parser.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { StorageService } from 'src/app/services/storage.service';

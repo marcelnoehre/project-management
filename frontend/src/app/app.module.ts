@@ -26,11 +26,11 @@ import { CreateTaskComponent } from './components/create-task/create-task.compon
 import { KanbanBoardComponent } from './components/kanban-board/kanban-board.component';
 import { ImportTasksComponent } from './components/import-tasks/import-tasks.component';
 import { TrashBinComponent } from './components/trash-bin/trash-bin.component';
-import { RequestButtonComponent } from './components/request-button/request-button.component';
 
 import { UserService } from './services/user.service';
 
 import { MaterialModule } from './modules/material.module';
+import { SpinnerIconComponent } from './components/spinner-icon/spinner-icon.component';
 
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
 	return new TranslateHttpLoader(http);
@@ -53,7 +53,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     KanbanBoardComponent,
     ImportTasksComponent,
     TrashBinComponent,
-    RequestButtonComponent
+    SpinnerIconComponent
   ],
   imports: [
     BrowserModule,

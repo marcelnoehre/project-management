@@ -33,7 +33,11 @@
                         <p>Success: {{ result.success }}</p>
                         <p>Failed: {{ result.fail }}</p>
                     </ng-container>
-                    <app-request-button (click)="importTasks()" icon="upload" [spinning]="loading" color="accent" mat-raised-button>{{ 'APP.IMPORT' | translate }}</app-request-button>
+                    <button mat-raised-button color="accent" (click)="importTasks()">
+                        <app-spinner-icon class="material-icons" icon="upload" [spinning]="loading"></app-spinner-icon>
+                        <ng-container *ngIf="loading">&nbsp;</ng-container>
+                        {{ 'APP.IMPORT' | translate }}
+                    </button>
                 </div>
             </div>
         </div>
