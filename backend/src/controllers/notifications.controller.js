@@ -72,6 +72,13 @@ async function updateNotifications(req, res, next) {
                 await notificationsCollection.doc(notificationDoc.id).update(notificationData);
             }
         }
+        const cleanUp = await notificationsCollection.where('project', '==', req.body.project).get();
+        cleanUp.forEach(async doc => {
+            const data = doc.data();
+            if (data.seen.length === 0 && data.unseen.length === 0) {
+                await doc.ref.delete();
+            }
+        });
         const unseenQuery = await notificationsCollection
             .where('project', '==', req.body.project)
             .where('unseen', 'array-contains', req.body.username)
