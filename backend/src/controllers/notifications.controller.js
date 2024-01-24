@@ -8,10 +8,12 @@ async function getNotifications(req, res, next) {
         const unseenQuery = await notificationsCollection
             .where('project', '==', req.body.project)
             .where('unseen', 'array-contains', req.body.username)
+            .orderBy('timestamp', 'desc')
             .get();
         const seenQuery = await notificationsCollection
             .where('project', '==', req.body.project)
             .where('seen', 'array-contains', req.body.username)
+            .orderBy('timestamp', 'desc')
             .get();
         const notifiactions = [];
         unseenQuery.forEach(doc => {
