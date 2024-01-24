@@ -129,4 +129,9 @@ export class ApiService {
 	public getNotifications(token: string, project: string, username: string): Observable<Notification[]> {
 		return this.adapter.getNotifications(token, project, username);
 	}
+
+	public updateNotifications(token: string, username: string, seen: string[], removed: string[]): Observable<Response> {
+		return this.adapter.updateNotifications(token, username, seen, removed);
+	}
+
 }

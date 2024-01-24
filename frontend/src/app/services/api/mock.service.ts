@@ -19,6 +19,7 @@ export class MockService extends AdapterService {
   private auth = 'auth/';
   private project = 'project/';
   private task = 'task/';
+  private notification = 'notifications/';
 
   constructor(
     private http: HttpClient,
@@ -174,8 +175,13 @@ export class MockService extends AdapterService {
 
   // ### NOTIFICATIONS ###
   public override getNotifications(token: string, project: string, username: string): Observable<Notification[]> {
-    const url = this.basePath + this.task + 'get-notifications/notifications.json';
+    const url = this.basePath + this.notification + 'get-notifications/notifications.json';
     return this.http.get<Notification[]>(url);
+  }
+
+  public override updateNotifications(token: string, username: string, seen: string[], removed: string[]): Observable<Response> {
+    const url = this.basePath + this.notification + 'update-notifications/success.json';
+    return this.http.get<Response>(url);
   }
 
 }
