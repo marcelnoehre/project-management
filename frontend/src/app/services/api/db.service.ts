@@ -220,10 +220,11 @@ export class DbService extends AdapterService {
     return this.http.post<Notification[]>(this.basePath + this.notification + 'getNotifications', body);
   }
 
-  public override updateNotifications(token: string, username: string, seen: string[], removed: string[]): Observable<Notification[]> {
+  public override updateNotifications(token: string, username: string, project: string, seen: string[], removed: string[]): Observable<Notification[]> {
     const body = {
       token: token,
       username: username,
+      project: project,
       seen: seen,
       removed: removed
     }

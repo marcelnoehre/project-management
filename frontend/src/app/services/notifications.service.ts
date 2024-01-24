@@ -48,7 +48,7 @@ export class NotificationsService {
   }
 
   update(seen: string[], removed: string[]): void {
-    this.api.updateNotifications(this.user.token, this.user.username, seen, removed).subscribe(
+    this.api.updateNotifications(this.user.token, this.user.username, this.user.project, seen, removed).subscribe(
       (response) => {
         this.notifications = response;
       },
