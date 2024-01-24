@@ -19,6 +19,7 @@ async function getNotifications(req, res, next) {
         unseenQuery.forEach(doc => {
             const data = doc.data();
             notifiactions.push({
+                uid: data.uid,
                 message: data.message,
                 timestamp: data.timestamp,
                 seen: false
@@ -27,6 +28,7 @@ async function getNotifications(req, res, next) {
         seenQuery.forEach(doc => {
             const data = doc.data();
             notifiactions.push({
+                uid: data.uid,
                 message: data.message,
                 timestamp: data.timestamp,
                 seen: true

@@ -47,6 +47,10 @@ export class NotificationsService {
     );
   }
 
+  update(seen: string[], removed: string[]): void {
+    //TODO: send uids to backend to update the datastorage
+  }
+
   isLoading(): boolean {
     return this.loading;
   }
