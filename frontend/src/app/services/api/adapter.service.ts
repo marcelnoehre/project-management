@@ -60,6 +60,6 @@ export abstract class AdapterService {
   // ### NOTIFICATIONS ###
   public abstract getNotifications(token: string, project: string, username: string): Observable<Notification[]>;
 
-  public abstract updateNotifications(token: string, username: string, seen: string[], removed: string[]): Observable<Response>;
+  public abstract updateNotifications(token: string, username: string, seen: string[], removed: string[]): Observable<Notification[]>;
 
 }

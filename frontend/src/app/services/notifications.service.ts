@@ -48,7 +48,18 @@ export class NotificationsService {
   }
 
   update(seen: string[], removed: string[]): void {
-    //TODO: send uids to backend to update the datastorage
+    this.api.updateNotifications(this.user.token, this.user.username, seen, removed).subscribe(
+      (response) => {
+        this.notifications = response;
+      },
+      (error) => {
+        if (error.status === 403) {
+          this.storage.clearSession();
+          this.router.navigateByUrl('/login');
+        }
+        this.snackbar.open(this.translate.instant(error.error.message));
+      }
+    );
   }
 
   isLoading(): boolean {
