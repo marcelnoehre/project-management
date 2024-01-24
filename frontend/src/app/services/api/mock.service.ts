@@ -171,4 +171,10 @@ export class MockService extends AdapterService {
     return this.http.get<Response>(url);
   }
 
+  // ### NOTIFICATIONS ###
+  public override getNotifications(token: string, project: string, username: string): Observable<Notification[]> {
+    const url = this.basePath + this.task + 'get-notifications/notifications.json';
+    return this.http.get<Notification[]>(url);
+  }
+
 }

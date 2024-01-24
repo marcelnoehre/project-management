@@ -123,4 +123,9 @@ export class ApiService {
 	public clearTrashBin(token: string, project: string): Observable<Response> {
 		return this.adapter.clearTrashBin(token, project);
 	}
+
+	// ### NOTIFICATIONS ###
+	public getNotifications(token: string, project: string, username: string): Observable<Notification[]> {
+		return this.adapter.getNotifications(token, project, username);
+	}
 }

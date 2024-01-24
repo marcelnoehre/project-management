@@ -56,4 +56,7 @@ export abstract class AdapterService {
 
   public abstract clearTrashBin(token: string, project: string): Observable<Response>;
 
+  // ### NOTIFICATIONS ###
+  public abstract getNotifications(token: string, project: string, username: string): Observable<Notification[]>;
+
 }

@@ -17,6 +17,7 @@ export class DbService extends AdapterService {
   private auth = 'auth/';
   private project = 'project/';
   private task = 'task/';
+  private notification = 'notification/';
 
   constructor(private http: HttpClient) {
     super();
@@ -206,6 +207,16 @@ export class DbService extends AdapterService {
       project: project
     }
     return this.http.post<Response>(this.basePath + this.task + 'clearTrashBin', body);
+  }
+
+  // ### NOTIFICATIONS ###
+  public override getNotifications(token: string, project: string, username: string): Observable<Notification[]> {
+    const body = {
+      token: token,
+      project: project,
+      username: username
+    }
+    return this.http.post<Notification[]>(this.basePath + this.notification + 'getNotifications', body);
   }
 
 }
