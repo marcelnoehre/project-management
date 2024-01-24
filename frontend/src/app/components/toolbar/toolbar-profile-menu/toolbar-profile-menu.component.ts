@@ -7,6 +7,7 @@ import { SnackbarService } from 'src/app/services/snackbar.service';
 import { StorageService } from 'src/app/services/storage.service';
 import { UserService } from 'src/app/services/user.service';
 import { NotificationsFeedComponent } from '../../notifications-feed/notifications-feed.component';
+import { NotificationsService } from 'src/app/services/notifications.service';
 
 @Component({
 	selector: 'app-toolbar-profile-menu',
@@ -27,7 +28,8 @@ export class ToolbarProfileMenuComponent {
 		private user: UserService,
 		private dialog: MatDialog,
 		private snackbar: SnackbarService,
-		private translate: TranslateService
+		private translate: TranslateService,
+		private notifications: NotificationsService
 	) {
 		this.fullName = this.user.fullName;
 		this.profilePicture = this.user.profilePicture;
@@ -48,5 +50,9 @@ export class ToolbarProfileMenuComponent {
 
 	public showNotifications() {
 		return this.user.notificationsEnabled;
+	}
+
+	public unseenNotifications() {
+		return this.notifications.unseenNotifications >= 10 ? '+' : this.notifications.unseenNotifications;
 	}
 }

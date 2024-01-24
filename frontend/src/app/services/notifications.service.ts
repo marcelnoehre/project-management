@@ -51,6 +51,11 @@ export class NotificationsService {
     this.api.updateNotifications(this.user.token, this.user.username, this.user.project, seen, removed).subscribe(
       (response) => {
         this.notifications = response;
+        this.notifications.forEach((notification) => {
+          if (!notification.seen) {
+            this.unseen++;
+          }
+        });
       },
       (error) => {
         if (error.status === 403) {

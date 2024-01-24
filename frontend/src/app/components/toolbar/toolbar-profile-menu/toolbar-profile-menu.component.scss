@@ -42,3 +42,26 @@
 		color: black;
 	}
 }
+
+.notifications-counter {
+	position: absolute;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	top: 0;
+	right: 2px;
+	height: 18px;
+	width: 18px;
+	border-radius: 50%;
+	font-size: 12px;
+	font-weight: bold;
+	padding: 2px 6px;
+	background-color: red;
+	color: white;
+	p {
+		padding: 0;
+		margin: 0;
+		transform: translateX(0.5px);
+	}
+}
