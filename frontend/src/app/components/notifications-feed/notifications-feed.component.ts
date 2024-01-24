@@ -18,4 +18,8 @@ export class NotificationsFeedComponent implements OnInit {
   ngOnInit(): void {
     this.notifications = this.notification.getNotifications;
   }
+
+  isNew(seen: boolean)  {
+    return seen ? '' : 'new';
+  }
 }

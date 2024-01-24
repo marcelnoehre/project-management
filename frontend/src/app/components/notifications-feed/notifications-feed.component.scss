@@ -23,9 +23,10 @@ mat-dialog-content {
     th {
         background-color: #f2f2f2;
     }
-      
-    tr:nth-child(even) {
-        background-color: #f9f9f9;
+
+    .new {
+        border: 2px solid lightskyblue;
+        background-color: lightcyan;
     }
 }
 

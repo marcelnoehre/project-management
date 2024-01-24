@@ -7,7 +7,7 @@
                 <th>{{ 'NOTIFICATIONS.MESSAGE' | translate }}</th>
                 <th>{{ 'APP.REMOVE' | translate }}</th>
             </tr>
-            <tr *ngFor="let notification of notifications">
+            <tr *ngFor="let notification of notifications" [ngClass]="isNew(notification.seen)">
                 <td>{{ notification.timestamp._seconds * 1000 | date:'YYYY-MM-dd HH:mm:ss' }}</td>
                 <td>{{ notification.message }}</td>
                 <td>
