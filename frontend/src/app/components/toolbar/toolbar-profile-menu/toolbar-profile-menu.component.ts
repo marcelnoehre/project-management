@@ -1,10 +1,12 @@
 import { Component, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatMenu } from '@angular/material/menu';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { StorageService } from 'src/app/services/storage.service';
 import { UserService } from 'src/app/services/user.service';
+import { NotificationsFeedComponent } from '../../notifications-feed/notifications-feed.component';
 
 @Component({
 	selector: 'app-toolbar-profile-menu',
@@ -23,6 +25,7 @@ export class ToolbarProfileMenuComponent {
     private router: Router,
 		private storage: StorageService,
 		private user: UserService,
+		private dialog: MatDialog,
 		private snackbar: SnackbarService,
 		private translate: TranslateService
 	) {
@@ -37,6 +40,10 @@ export class ToolbarProfileMenuComponent {
 		this.user.user = this.storage.getSessionEntry('user');
 		this.snackbar.open(this.translate.instant('SUCCESS.LOGOUT'));
 		this.router.navigateByUrl('/login');
+	}
+
+	public showNotificationsFeed() {
+		this.dialog.open(NotificationsFeedComponent);
 	}
 
 	public showNotifications() {

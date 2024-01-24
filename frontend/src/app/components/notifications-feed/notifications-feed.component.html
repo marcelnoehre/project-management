@@ -1,0 +1,15 @@
+<div class="notifications-feed-container" mat-dialog-container>
+	<h1 class="header" mat-dialog-title>{{ 'asdfaslkdjaslfkj' | translate }}</h1>
+	<mat-dialog-content class="mat-typography"></mat-dialog-content>
+	<mat-dialog-actions class="actions">
+		<button
+			(click)="closeDialog(false)"
+			[mat-dialog-close]="false"
+			color="dark"
+			mat-raised-button
+		>
+			<mat-icon>clear</mat-icon>
+			{{ 'APP.CANCEL' | translate }}
+		</button>
+	</mat-dialog-actions>
+</div>
