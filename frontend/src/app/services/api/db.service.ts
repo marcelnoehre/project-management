@@ -8,6 +8,7 @@ import { State } from 'src/app/interfaces/data/state';
 import { Response } from 'src/app/interfaces/data/response';
 import { Task } from 'src/app/interfaces/data/task';
 import { Progress } from 'src/app/interfaces/data/progress';
+import { Notification } from 'src/app/interfaces/data/notification';
 
 @Injectable({
   providedIn: 'root'

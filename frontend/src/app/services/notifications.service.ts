@@ -5,12 +5,15 @@ import { StorageService } from './storage.service';
 import { SnackbarService } from './snackbar.service';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { Notification } from '../interfaces/data/notification';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NotificationsService {
   private loading: boolean = false;
+  private notifications: Notification[] = [];
+  private unseen: number = 0;
 
   constructor(
     private router: Router,
@@ -26,7 +29,12 @@ export class NotificationsService {
     this.api.getNotifications(this.user.token, this.user.project, this.user.username).subscribe(
       (response) => {
         this.loading = false;
-        console.log(response);
+        this.notifications = response;
+        this.notifications.forEach((notification) => {
+          if (!notification.seen) {
+            this.unseen++;
+          }
+        });
       },
       (error) => {
         this.loading = false;
@@ -41,6 +49,14 @@ export class NotificationsService {
 
   isLoading(): boolean {
     return this.loading;
+  }
+
+  get getNotifications(): Notification[] {
+    return this.notifications;
+  }
+
+  get unseenNotifications(): number {
+    return this.unseen;
   }
   
 }

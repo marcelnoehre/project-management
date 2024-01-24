@@ -9,6 +9,7 @@ import { Response } from 'src/app/interfaces/data/response';
 import { TranslateService } from '@ngx-translate/core';
 import { Task } from 'src/app/interfaces/data/task';
 import { Progress } from 'src/app/interfaces/data/progress';
+import { Notification } from 'src/app/interfaces/data/notification';
 
 @Injectable({
   providedIn: 'root'
