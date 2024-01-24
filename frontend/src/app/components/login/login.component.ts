@@ -11,6 +11,7 @@ import { CreateProjectComponent } from '../create-project/create-project.compone
 import { Permission } from 'src/app/enums/permission.enum';
 import { DialogComponent } from '../dialog/dialog.component';
 import { UserService } from 'src/app/services/user.service';
+import { NotificationsService } from 'src/app/services/notifications.service';
 
 @Component({
 	selector: 'app-login',
@@ -32,7 +33,8 @@ export class LoginComponent implements OnInit {
 		private translate: TranslateService,
 		private api: ApiService,
 		private dialog: MatDialog,
-		private user: UserService
+		private user: UserService,
+		private notifications: NotificationsService
 	) {
 		this.createForm();
 	}
@@ -72,8 +74,11 @@ export class LoginComponent implements OnInit {
 				if (user.project === '') {
 					this.dialog.open(CreateProjectComponent).afterClosed().subscribe((created) => {
 						if (created) {
+							this.user.user = user
 							this.user.permission = Permission.OWNER;
 							this.user.project = user.project;
+							this.user.isLoggedIn = true;
+							this.notifications.init();
 							this.router.navigateByUrl('/');
 						} else {
 							this.storage.deleteSessionEntry('user');
@@ -94,6 +99,7 @@ export class LoginComponent implements OnInit {
 									this.user.permission = Permission.MEMBER;
 									this.user.project = user.project;
 									this.user.isLoggedIn = true;
+									this.notifications.init();
 									this.storage.setSessionEntry('user', this.user.user);
 									this.router.navigateByUrl('/');
 								} else {
@@ -109,6 +115,7 @@ export class LoginComponent implements OnInit {
 				} else {
 					this.user.user = user;
 					this.user.isLoggedIn = true;
+					this.notifications.init();
 					this.storage.setSessionEntry('user', this.user.user);
 					this.router.navigateByUrl('/');
 				}

@@ -17,7 +17,7 @@ export class DbService extends AdapterService {
   private auth = 'auth/';
   private project = 'project/';
   private task = 'task/';
-  private notification = 'notification/';
+  private notification = 'notifications/';
 
   constructor(private http: HttpClient) {
     super();
