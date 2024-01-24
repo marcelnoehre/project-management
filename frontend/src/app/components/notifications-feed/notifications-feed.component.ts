@@ -23,7 +23,10 @@ export class NotificationsFeedComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.notification.update(this.updateSeen, this.updateRemove);
+    if (this.updateSeen.length || this.updateRemove.length) {
+      this.updateSeen = this.updateSeen.filter(item => !this.updateRemove.includes(item));
+      this.notification.update(this.updateSeen, this.updateRemove);
+    }
   }
 
   viewed(index: number, uid: string): void {
