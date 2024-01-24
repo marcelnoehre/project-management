@@ -1,20 +1,21 @@
-import { Component } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { Component, OnInit } from '@angular/core';
+import { Notification } from 'src/app/interfaces/data/notification';
+import { NotificationsService } from 'src/app/services/notifications.service';
 
 @Component({
   selector: 'app-notifications-feed',
   templateUrl: './notifications-feed.component.html',
   styleUrls: ['./notifications-feed.component.scss']
 })
-export class NotificationsFeedComponent {
+export class NotificationsFeedComponent implements OnInit {
+  notifications: Notification[] = [];
   
   constructor(
-    private dialogRef: MatDialogRef<NotificationsFeedComponent>
+    private notification: NotificationsService
   ) {
 
   }
-
-  closeDialog(res: boolean): void {
-		this.dialogRef.close(res);
-	}
+  ngOnInit(): void {
+    this.notifications = this.notification.getNotifications;
+  }
 }

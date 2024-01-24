@@ -1,5 +1,7 @@
+import { Timestamp } from "./timestamp";
+
 export interface Notification {
     message: string,
-    timestamp: Date,
+    timestamp: Timestamp,
     seen: boolean
 }

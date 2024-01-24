@@ -1,15 +1,21 @@
 <div class="notifications-feed-container" mat-dialog-container>
-	<h1 class="header" mat-dialog-title>{{ 'asdfaslkdjaslfkj' | translate }}</h1>
-	<mat-dialog-content class="mat-typography"></mat-dialog-content>
-	<mat-dialog-actions class="actions">
-		<button
-			(click)="closeDialog(false)"
-			[mat-dialog-close]="false"
-			color="dark"
-			mat-raised-button
-		>
-			<mat-icon>clear</mat-icon>
-			{{ 'APP.CANCEL' | translate }}
-		</button>
-	</mat-dialog-actions>
+	<h1 class="header" mat-dialog-title>{{ 'NOTIFICATIONS.FEED' | translate }}</h1>
+	<mat-dialog-content class="mat-typography">
+        <table>
+            <tr>
+                <th>{{ 'NOTIFICATIONS.TIMESTAMP' | translate }}</th>
+                <th>{{ 'NOTIFICATIONS.MESSAGE' | translate }}</th>
+                <th>{{ 'APP.REMOVE' | translate }}</th>
+            </tr>
+            <tr *ngFor="let notification of notifications">
+                <td>{{ notification.timestamp._seconds * 1000 | date:'YYYY-MM-dd HH:mm:ss' }}</td>
+                <td>{{ notification.message }}</td>
+                <td>
+                    <button mat-mini-fab color="warn">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </mat-dialog-content>
 </div>
