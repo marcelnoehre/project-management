@@ -26,11 +26,13 @@ import { CreateTaskComponent } from './components/create-task/create-task.compon
 import { KanbanBoardComponent } from './components/kanban-board/kanban-board.component';
 import { ImportTasksComponent } from './components/import-tasks/import-tasks.component';
 import { TrashBinComponent } from './components/trash-bin/trash-bin.component';
+import { SpinnerIconComponent } from './components/spinner-icon/spinner-icon.component';
+import { NotificationsFeedComponent } from './components/notifications-feed/notifications-feed.component';
 
 import { UserService } from './services/user.service';
+import { NotificationsService } from './services/notifications.service';
 
 import { MaterialModule } from './modules/material.module';
-import { SpinnerIconComponent } from './components/spinner-icon/spinner-icon.component';
 
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
 	return new TranslateHttpLoader(http);
@@ -53,7 +55,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     KanbanBoardComponent,
     ImportTasksComponent,
     TrashBinComponent,
-    SpinnerIconComponent
+    SpinnerIconComponent,
+    NotificationsFeedComponent
   ],
   imports: [
     BrowserModule,
@@ -73,7 +76,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
 			}
 		})
   ],
-  providers: [UserService],
+  providers: [UserService, NotificationsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

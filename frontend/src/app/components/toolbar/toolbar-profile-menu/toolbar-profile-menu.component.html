@@ -10,8 +10,11 @@
 </button>
 
 <mat-menu #menu="matMenu" [overlapTrigger]="false" xPosition="before">
-	<button *ngIf="showNotifications()" mat-menu-item>
+	<button *ngIf="showNotifications()" (click)="showNotificationsFeed()" mat-menu-item>
 		<mat-icon>inbox</mat-icon>
+		<span class="notifications-counter">
+			<p>{{unseenNotifications()}}</p>
+		</span>
 		{{ 'NAV.NOTIFICATIONS' | translate }}
 	</button>
 	<button (click)="logout()" mat-menu-item>

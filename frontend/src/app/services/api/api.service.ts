@@ -10,6 +10,7 @@ import { State } from 'src/app/interfaces/data/state';
 import { Response } from 'src/app/interfaces/data/response';
 import { Task } from 'src/app/interfaces/data/task';
 import { Progress } from 'src/app/interfaces/data/progress';
+import { Notification } from 'src/app/interfaces/data/notification';
 
 @Injectable({
   providedIn: 'root'
@@ -123,4 +124,14 @@ export class ApiService {
 	public clearTrashBin(token: string, project: string): Observable<Response> {
 		return this.adapter.clearTrashBin(token, project);
 	}
+
+	// ### NOTIFICATIONS ###
+	public getNotifications(token: string, project: string, username: string): Observable<Notification[]> {
+		return this.adapter.getNotifications(token, project, username);
+	}
+
+	public updateNotifications(token: string, username: string, project: string, seen: string[], removed: string[]): Observable<Notification[]> {
+		return this.adapter.updateNotifications(token, username, project, seen, removed);
+	}
+
 }

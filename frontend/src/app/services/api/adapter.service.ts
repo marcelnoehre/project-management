@@ -5,6 +5,7 @@ import { User } from 'src/app/interfaces/data/user';
 import { Response } from 'src/app/interfaces/data/response';
 import { Task } from 'src/app/interfaces/data/task';
 import { Progress } from 'src/app/interfaces/data/progress';
+import { Notification } from 'src/app/interfaces/data/notification';
 
 @Injectable({
   providedIn: 'root'
@@ -55,5 +56,10 @@ export abstract class AdapterService {
   public abstract restoreTask(token: string, project: string, uid: string): Observable<Task[]>;
 
   public abstract clearTrashBin(token: string, project: string): Observable<Response>;
+
+  // ### NOTIFICATIONS ###
+  public abstract getNotifications(token: string, project: string, username: string): Observable<Notification[]>;
+
+  public abstract updateNotifications(token: string, username: string, project: string, seen: string[], removed: string[]): Observable<Notification[]>;
 
 }

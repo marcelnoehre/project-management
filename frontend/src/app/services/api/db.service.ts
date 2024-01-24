@@ -8,6 +8,7 @@ import { State } from 'src/app/interfaces/data/state';
 import { Response } from 'src/app/interfaces/data/response';
 import { Task } from 'src/app/interfaces/data/task';
 import { Progress } from 'src/app/interfaces/data/progress';
+import { Notification } from 'src/app/interfaces/data/notification';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,7 @@ export class DbService extends AdapterService {
   private auth = 'auth/';
   private project = 'project/';
   private task = 'task/';
+  private notification = 'notifications/';
 
   constructor(private http: HttpClient) {
     super();
@@ -206,6 +208,27 @@ export class DbService extends AdapterService {
       project: project
     }
     return this.http.post<Response>(this.basePath + this.task + 'clearTrashBin', body);
+  }
+
+  // ### NOTIFICATIONS ###
+  public override getNotifications(token: string, project: string, username: string): Observable<Notification[]> {
+    const body = {
+      token: token,
+      project: project,
+      username: username
+    }
+    return this.http.post<Notification[]>(this.basePath + this.notification + 'getNotifications', body);
+  }
+
+  public override updateNotifications(token: string, username: string, project: string, seen: string[], removed: string[]): Observable<Notification[]> {
+    const body = {
+      token: token,
+      username: username,
+      project: project,
+      seen: seen,
+      removed: removed
+    }
+    return this.http.post<Notification[]>(this.basePath + this.notification + 'updateNotifications', body);
   }
 
 }

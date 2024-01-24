@@ -119,5 +119,10 @@
             "REVIEW": "In Review",
             "DONE": "Done"
         }
+    },
+    "NOTIFICATIONS": {
+        "FEED": "Notifications",
+        "TIMESTAMP": "Timestamp",
+        "MESSAGE": "Message"
     }
 }

@@ -10,6 +10,7 @@ import { App } from 'src/app/interfaces/app';
 import { ApiService } from 'src/app/services/api/api.service';
 import { DeviceService } from 'src/app/services/device.service';
 import { EventService } from 'src/app/services/event.service';
+import { NotificationsService } from 'src/app/services/notifications.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { StorageService } from 'src/app/services/storage.service';
 import { UserService } from 'src/app/services/user.service';
@@ -61,7 +62,8 @@ export class SidenavComponent implements OnInit, OnDestroy {
 		private snackbar: SnackbarService,
 		private translate: TranslateService,
 		private user: UserService,
-		private device: DeviceService
+		private device: DeviceService,
+		private notifications: NotificationsService
 	) {
 	}
 
@@ -73,6 +75,7 @@ export class SidenavComponent implements OnInit, OnDestroy {
 					this.storage.setSessionEntry('user', user);
 					this.user.user = user;
 					this.user.isLoggedIn = true;
+					this.notifications.init();
 				},
 				(error) => {
 					if (error.status === 403) {

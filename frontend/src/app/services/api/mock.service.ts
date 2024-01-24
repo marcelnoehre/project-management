@@ -9,6 +9,7 @@ import { Response } from 'src/app/interfaces/data/response';
 import { TranslateService } from '@ngx-translate/core';
 import { Task } from 'src/app/interfaces/data/task';
 import { Progress } from 'src/app/interfaces/data/progress';
+import { Notification } from 'src/app/interfaces/data/notification';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,7 @@ export class MockService extends AdapterService {
   private auth = 'auth/';
   private project = 'project/';
   private task = 'task/';
+  private notification = 'notifications/';
 
   constructor(
     private http: HttpClient,
@@ -169,6 +171,17 @@ export class MockService extends AdapterService {
   public override clearTrashBin(token: string, project: string): Observable<Response> {
     const url = this.basePath + this.task + 'clear-trash-bin/clear.json';
     return this.http.get<Response>(url);
+  }
+
+  // ### NOTIFICATIONS ###
+  public override getNotifications(token: string, project: string, username: string): Observable<Notification[]> {
+    const url = this.basePath + this.notification + 'get-notifications/notifications.json';
+    return this.http.get<Notification[]>(url);
+  }
+
+  public override updateNotifications(token: string, username: string, project: string, seen: string[], removed: string[]): Observable<Notification[]> {
+    const url = this.basePath + this.notification + 'update-notifications/success.json';
+    return this.http.get<Notification[]>(url);
   }
 
 }

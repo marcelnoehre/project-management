@@ -1,0 +1,21 @@
+<div class="notifications-feed-container" mat-dialog-container>
+	<h1 class="header" mat-dialog-title>{{ 'NOTIFICATIONS.FEED' | translate }}</h1>
+	<mat-dialog-content class="mat-typography">
+        <table>
+            <tr>
+                <th>{{ 'NOTIFICATIONS.TIMESTAMP' | translate }}</th>
+                <th>{{ 'NOTIFICATIONS.MESSAGE' | translate }}</th>
+                <th>{{ 'APP.REMOVE' | translate }}</th>
+            </tr>
+            <tr *ngFor="let notification of notifications; index as i" [ngClass]="isNew(notification.seen)" (click)="viewed(i, notification.uid)">
+                <td>{{ notification.timestamp._seconds * 1000 | date:'YYYY-MM-dd HH:mm:ss' }}</td>
+                <td>{{ notification.message }}</td>
+                <td>
+                    <button mat-mini-fab color="warn" (click)="remove(i, notification.uid)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </mat-dialog-content>
+</div>

@@ -1,0 +1,44 @@
+.notifications-feed-container {
+	padding: 1rem;
+}
+
+mat-dialog-content {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	text-align: center;
+    width: 75vw;
+    height: 75vh;
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+      
+    th, td {
+        text-align: center;
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+      
+    th {
+        background-color: #f2f2f2;
+    }
+
+    .new {
+        border: 2px solid lightskyblue;
+        background-color: lightcyan;
+        cursor: pointer;
+    }
+}
+
+.header {
+	text-align: center;
+	font-size: 2rem;
+}
+
+.actions {
+	justify-content: center;
+	& > button {
+		padding-block: 1rem;
+	}
+}
