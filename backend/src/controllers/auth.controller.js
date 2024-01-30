@@ -15,7 +15,7 @@ async function login(req, res, next) {
             if (usersSnapshot.empty) {
                 res.status(500).send({ message: 'ERROR.INTERNAL' });
             } else {
-                const user = usersSnapshot.docs[0].data();          
+                const user = usersSnapshot.docs[0].data();
                 user.token = jwt.sign(user, 'my-secret-key', { expiresIn: '1h' });
                 user.isLoggedIn = user.project !== '' && user.permission !== 'INVITED';
                 res.json(user);
