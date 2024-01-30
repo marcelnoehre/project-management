@@ -118,7 +118,8 @@
             "PROGRESS": "In Progress",
             "REVIEW": "In Review",
             "DONE": "Done"
-        }
+        },
+        "DETAIL_VIEW": "Detail View"
     },
     "NOTIFICATIONS": {
         "FEED": "Notifications",

@@ -1,6 +1,6 @@
 <div class="dialog-container" mat-dialog-container>
-	<h1 class="header" mat-dialog-title>HEADER PLACEHOLDER</h1>
-	<mat-dialog-content class="mat-typography">
+	<h1 class="header" mat-dialog-title>{{ 'TASK.DETAIL_VIEW' | translate }}</h1>
+	<mat-dialog-content class="mat-typography pt-2">
 		<form>
             <mat-form-field appearance="outline" class="task-detail-view-form-field" MatInput>
                 <mat-label> {{ 'TASK.TITLE' | translate }}</mat-label>
@@ -62,5 +62,24 @@
 		</form>
 	</mat-dialog-content>
 	<mat-dialog-actions class="actions">
+		<button
+		(click)="closeDialog(false)"
+		[mat-dialog-close]="false"
+		color="dark" 
+		mat-raised-button
+	>
+		{{ 'APP.CANCEL' | translate }}
+		<mat-icon>clear</mat-icon>
+	</button>
+	<button
+		(click)="updateTaskDetails()"
+		color="dark"
+		mat-raised-button
+		[disabled]="disableSubmit()"
+	>		
+		<app-spinner-icon class="material-icons" icon="done_all" [spinning]="loading"></app-spinner-icon>
+		<ng-container *ngIf="loading">&nbsp;</ng-container>
+		{{ 'APP.CONFIRM' | translate }}
+	</button>
 	</mat-dialog-actions>
 </div>

@@ -16,6 +16,7 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./task-detail-view.component.scss']
 })
 export class TaskDetailViewComponent implements OnInit {
+  loading: boolean = false;
   initialTask!: Task;
   task!: Task;
   members: User[] = [];
@@ -35,8 +36,8 @@ export class TaskDetailViewComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.task = this.data;
-    this.initialTask = this.data;
+    this.task = { ...this.data };
+    this.initialTask = { ...this.data };
     this.api.getTeamMembers(this.user.token, this.user.project).subscribe(
       (users) => {
         this.members = users;
@@ -50,4 +51,22 @@ export class TaskDetailViewComponent implements OnInit {
       }
     );
   }
+
+  disableSubmit(): boolean {
+    return this.task.title === this.initialTask.title
+      && this.task.description === this.initialTask.description
+      && this.task.assigned === this.initialTask.assigned
+      && this.task.state === this.initialTask.state;
+  }
+
+  updateTaskDetails(): void {
+    this.loading = true;
+    console.dir(this.task);
+    this.loading = false;
+  }
+
+  closeDialog(res: boolean): void {
+		this.dialogRef.close(res);
+	}
+
 }
