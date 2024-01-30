@@ -11,6 +11,7 @@ import { Response } from 'src/app/interfaces/data/response';
 import { Task } from 'src/app/interfaces/data/task';
 import { Progress } from 'src/app/interfaces/data/progress';
 import { Notification } from 'src/app/interfaces/data/notification';
+import { Permission } from 'src/app/enums/permission.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -81,6 +82,10 @@ export class ApiService {
 
 	public handleInvite(token: string, username: string, decision: boolean): Observable<Response> {
 		return this.adapter.handleInvite(token, username, decision);
+	}
+
+	public updatePermission(token: string, username: string, permission: Permission): Observable<User[]> {
+		return this.adapter.updatePermission(token, username, permission);
 	}
 
 	public removeUser(token: string, username: string): Observable<Response> {

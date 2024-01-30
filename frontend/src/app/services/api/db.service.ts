@@ -9,6 +9,7 @@ import { Response } from 'src/app/interfaces/data/response';
 import { Task } from 'src/app/interfaces/data/task';
 import { Progress } from 'src/app/interfaces/data/progress';
 import { Notification } from 'src/app/interfaces/data/notification';
+import { Permission } from 'src/app/enums/permission.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -113,6 +114,15 @@ export class DbService extends AdapterService {
       decision: decision
     };
     return this.http.post<Response>(this.basePath + this.project + 'handleInvite', body);
+  }
+
+  public override updatePermission(token: string, username: string, permission: Permission): Observable<User[]> {
+    const body = {
+      token: token,
+      username: username,
+      permission: permission
+    }
+    return this.http.post<User[]>(this.basePath + this.project + 'updatePermission', body);
   }
 
   public override removeUser(token: string, username: string): Observable<Response> {

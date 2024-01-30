@@ -10,6 +10,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Task } from 'src/app/interfaces/data/task';
 import { Progress } from 'src/app/interfaces/data/progress';
 import { Notification } from 'src/app/interfaces/data/notification';
+import { Permission } from 'src/app/enums/permission.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -119,6 +120,11 @@ export class MockService extends AdapterService {
   public override handleInvite(token: string, username: string, decision: boolean): Observable<Response> {
     const url = this.basePath + this.project + `handleInvite/${decision}.json`;
     return this.http.get<Response>(url);
+  }
+
+  public override updatePermission(token: string, username: string, permission: Permission): Observable<User[]> {
+    const url = this.basePath + this.project + 'update-permission/mockProject.json';
+    return this.http.get<User[]>(url);
   }
 
   public override removeUser(token: string, username: string): Observable<Response> {
