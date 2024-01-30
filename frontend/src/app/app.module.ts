@@ -28,6 +28,7 @@ import { ImportTasksComponent } from './components/import-tasks/import-tasks.com
 import { TrashBinComponent } from './components/trash-bin/trash-bin.component';
 import { SpinnerIconComponent } from './components/spinner-icon/spinner-icon.component';
 import { NotificationsFeedComponent } from './components/notifications-feed/notifications-feed.component';
+import { TaskDetailViewComponent } from './components/task-detail-view/task-detail-view.component';
 
 import { UserService } from './services/user.service';
 import { NotificationsService } from './services/notifications.service';
@@ -56,7 +57,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     ImportTasksComponent,
     TrashBinComponent,
     SpinnerIconComponent,
-    NotificationsFeedComponent
+    NotificationsFeedComponent,
+    TaskDetailViewComponent
   ],
   imports: [
     BrowserModule,
