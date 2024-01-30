@@ -131,7 +131,9 @@
         "TIMESTAMP": "Timestamp",
         "MESSAGE": "Message",
         "NEW": {
-            "CREATE_TASK": "{{data_0}} has created a new task '{{data_1}}'"
+            "CREATE_TASK": "{{data_0}} has created a new task '{{data_1}}'",
+            "LEAVE_PROJECT": "{{data_0}} has left the team",
+            "REMOVED": "{{data_0}} has been removed from the team by {{data_1}}"
         }
     }
 }

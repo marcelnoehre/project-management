@@ -1,7 +1,7 @@
-async function createNotification(db, req, project, author, message, data, icon) {
+async function createNotification(db, project, author, message, data, icon) {
     try {
         const usersCollection = db.collection('users');
-        const usersSnapshot = await usersCollection.where('project', '==', req.body.project).where('username', '!=', author).get();
+        const usersSnapshot = await usersCollection.where('project', '==', project).where('username', '!=', author).get();
         if (!usersSnapshot.empty) {
             const unseen = [];
             usersSnapshot.forEach(doc => {

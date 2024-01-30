@@ -1,4 +1,6 @@
+const notificationsService = require('../services/notifications.service');
 const admin = require('firebase-admin');
+const jwt = require('jsonwebtoken');
 const db = admin.firestore();
 
 async function createProject(req, res, next) {
@@ -131,6 +133,7 @@ async function removeUser(req, res, next) {
                 project: '',
                 permission: ''
             });
+            await notificationsService.createNotification(db, jwt.decode(req.body.token).project, jwt.decode(req.body.token).username, 'NOTIFICATIONS.NEW.REMOVED', [req.body.username, jwt.decode(req.body.token).username], 'person_remove');
             res.json({message: 'SUCCESS.REMOVE_MEMBER'});
         }
     } catch (err) {
@@ -150,6 +153,7 @@ async function leaveProject(req, res, next) {
                 project: '',
                 permission: ''
             });
+            await notificationsService.createNotification(db, jwt.decode(req.body.token).project, req.body.username, 'NOTIFICATIONS.NEW.LEAVE_PROJECT', [req.body.username], 'exit_to_app');
             res.json({message: 'SUCCESS.LEAVE_PROJECT'});
         }
     } catch (err) {
