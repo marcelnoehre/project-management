@@ -61,7 +61,19 @@ export class TaskDetailViewComponent implements OnInit {
 
   updateTaskDetails(): void {
     this.loading = true;
-    console.dir(this.task);
+    this.api.updateTask(this.user.token, this.task).subscribe(
+      (response) => {
+        this.snackbar.open(this.translate.instant('SUCCESS.EDIT_TASK'));
+        this.dialogRef.close(response);
+      },
+      (error) => {
+        if (error.status === 403) {
+          this.storage.clearSession();
+          this.router.navigateByUrl('/login');
+        }
+        this.snackbar.open(this.translate.instant(error.error.message));
+      }
+    );
     this.loading = false;
   }
 
