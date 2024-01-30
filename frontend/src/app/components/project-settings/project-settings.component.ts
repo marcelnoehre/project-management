@@ -146,24 +146,35 @@ export class ProjectSettingsComponent implements OnInit {
   }
 
   leaveProject() {
-    this.loadingLeave = true;
-    this.api.leaveProject(this.user.token, this.user.username).subscribe(
-      (response) => {
-        this.loadingLeave = false;
-        this.storage.deleteSessionEntry('user');
-        this.user.user = this.storage.getSessionEntry('user');
-        this.snackbar.open(this.translate.instant(response.message));
-        this.router.navigateByUrl('/login');
-      },
-      (error) => {
-        this.loadingLeave = false;
-        if (error.status === 403) {
-          this.storage.clearSession();
-          this.router.navigateByUrl('/login');
+    const data = {
+      headline: this.translate.instant('DIALOG.HEADLINE.LEAVE_PROJECT'),
+      description: this.translate.instant('DIALOG.INFO.LEAVE_PROJECT'),
+      falseButton: this.translate.instant('APP.CANCEL'),
+      trueButton: this.translate.instant('APP.CONFIRM')
+    };
+    this.dialog.open(DialogComponent, { data, ...{} }).afterClosed().subscribe(
+      async (confirmed) => {
+        if (confirmed) {
+          this.loadingLeave = true;
+          this.api.leaveProject(this.user.token, this.user.username).subscribe(
+            (response) => {
+              this.loadingLeave = false;
+              this.storage.deleteSessionEntry('user');
+              this.user.user = this.storage.getSessionEntry('user');
+              this.snackbar.open(this.translate.instant(response.message));
+              this.router.navigateByUrl('/login');
+            },
+            (error) => {
+              this.loadingLeave = false;
+              if (error.status === 403) {
+                this.storage.clearSession();
+                this.router.navigateByUrl('/login');
+              }
+              this.snackbar.open(this.translate.instant(error.error.message));
+            }
+          );
         }
-        this.snackbar.open(this.translate.instant(error.error.message));
-      }
-    );
+      });
   }
 
   disableRemove(permission: string) {

@@ -92,6 +92,7 @@
             "INVITE": "Invitation",
             "REMOVE_MEMBER": "Remove {{username}}?",
             "CHANGE_ATTRIBUTE": "Change {{attribute}}",
+            "LEAVE_PROJECT": "Leave project",
             "DELETE_ACCOUNT": "Delete irrevocably!"
         },
         "INFO": {
@@ -99,6 +100,7 @@
             "INVITE": "You have received an invitation to the project {{project}}",
             "REMOVE_MEMBER": "If you remove the user, he or she will no longer have access to the project. Existing tasks remain listed under this username.",
             "CHANGE_ATTRIBUTE": "Are you sure you want to change your {{attribute}}?",
+            "LEAVE_PROJECT": "Are you sure you want to leave the project?",
             "DELETE_ACCOUNT": "Are you sure you want to delete your account?"
         }
     },
