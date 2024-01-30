@@ -129,6 +129,9 @@
     "NOTIFICATIONS": {
         "FEED": "Notifications",
         "TIMESTAMP": "Timestamp",
-        "MESSAGE": "Message"
+        "MESSAGE": "Message",
+        "NEW": {
+            "CREATE_TASK": "{{data_0}} has created a new task '{{data_1}}'"
+        }
     }
 }

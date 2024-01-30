@@ -1,3 +1,4 @@
+const notificationsService = require('../services/notifications.service');
 const admin = require('firebase-admin');
 const db = admin.firestore();
 
@@ -20,11 +21,10 @@ async function createTask(req, res, next) {
             state: req.body.state,
             order: order
         };
-        tasksCollection.doc(newDocRef.id).set(task)
-        .then(() => {
+        tasksCollection.doc(newDocRef.id).set(task).then(async () => {
+            await notificationsService.createNotification(db, req, req.body.project, req.body.author, '', [req.body.author, req.body.title], 'note_add');
             res.json({ message: 'SUCCESS.CREATE_TASK' });
-        })
-        .catch((err) => {
+        }).catch((err) => {
             res.status(402).send({ message: 'ERROR.CREATE_TASK' });
         });
     } catch (err) {
