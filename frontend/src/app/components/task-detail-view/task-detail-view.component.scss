@@ -1,0 +1,10 @@
+mat-dialog-content {
+    width: 75vw;
+    height: 75vh;
+    form {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        text-align: center;
+    }
+}
