@@ -178,6 +178,22 @@ export class ProjectSettingsComponent implements OnInit {
       });
   }
 
+  updatePermission(username: string, event: any) {
+    this.api.updatePermission(this.user.token, username, event.value).subscribe(
+      (response) => {
+        this.snackbar.open(this.translate.instant('SUCCESS.PERMISSION_UPDATED'));
+        this.members = response;
+      },
+      (error) => {
+        if (error.status === 403) {
+          this.storage.clearSession();
+          this.router.navigateByUrl('/login');
+        }
+        this.snackbar.open(this.translate.instant(error.error.message));
+      }
+    );
+  }
+
   editable(permission: Permission) {
     if (permission === Permission.ADMIN) {
       return this.user.hasPermission(Permission.OWNER);

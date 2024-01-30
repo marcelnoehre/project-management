@@ -19,6 +19,7 @@
                         name="permission"
                         placeholder="{{'USER.PERMISSION'|translate}}"
                         [(ngModel)]="member.permission"
+                        (selectionChange)="updatePermission(member.username, $event)"
                         appearance="outline"
                         matInput
                     >
