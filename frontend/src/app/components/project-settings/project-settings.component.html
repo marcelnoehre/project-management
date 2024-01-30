@@ -23,24 +23,31 @@
             </tr>
         </div>
     </table>
-    <form [formGroup]="inviteForm" class="invite">
-        <p>{{ 'PROJECT.INVITE' | translate }}</p>
-        <div style="display: flex;">
-            <mat-form-field appearance="outline" class="username-form-field" MatInput>
-                <mat-label> {{ 'USER.USERNAME' | translate }} </mat-label>
-                <input
-                    id="username-input"
-                    name="username"
-                    class="username-form-field"
-                    formControlName="usernameFormControl"
-                    placeholder="{{'USER.USERNAME'|translate}}"
-                    matInput
-                />
-                <mat-icon matPrefix> group_add </mat-icon>
-            </mat-form-field>
-            <button mat-fab color="primary" (click)="inviteUser()" [disabled]="!usernameValid()">
-                <app-spinner-icon class="material-icons" icon="add" [spinning]="loadingInvite"></app-spinner-icon>
-            </button>
-        </div>
-    </form>
+    <div class="actions">
+        <form [formGroup]="inviteForm">
+            <p>{{ 'PROJECT.INVITE' | translate }}</p>
+            <div class="invite">
+                <mat-form-field appearance="outline" class="username-form-field" MatInput>
+                    <mat-label> {{ 'USER.USERNAME' | translate }} </mat-label>
+                    <input
+                        id="username-input"
+                        name="username"
+                        class="username-form-field"
+                        formControlName="usernameFormControl"
+                        placeholder="{{'USER.USERNAME'|translate}}"
+                        matInput
+                    />
+                    <mat-icon matPrefix> group_add </mat-icon>
+                </mat-form-field>
+                <button mat-fab color="primary" (click)="inviteUser()" [disabled]="!usernameValid()">
+                    <app-spinner-icon class="material-icons" icon="add" [spinning]="loadingInvite"></app-spinner-icon>
+                </button>
+            </div>
+        </form>
+        <button (click)="leaveProject()" [disabled]="leavable()" color="warn" mat-raised-button>
+            <app-spinner-icon class="material-icons" icon="exit_to_app" [spinning]="loadingLeave"></app-spinner-icon>
+            <ng-container *ngIf="loadingLeave">&nbsp;</ng-container>
+            {{ 'PROJECT.LEAVE' | translate }}
+        </button>
+    </div>
 </div>

@@ -104,7 +104,8 @@
     "PROJECT": {
         "NAME": "Project name",
         "ACTIONS": "Actions",
-        "INVITE": "Invite a user to the project"
+        "INVITE": "Invite a user to the project",
+        "LEAVE": "Leave project"
     },
     "TASK": {
         "TITLE": "Title",

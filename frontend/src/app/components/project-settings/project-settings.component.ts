@@ -19,6 +19,7 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class ProjectSettingsComponent implements OnInit {
   loadingInvite: boolean = false;
+  loadingLeave: boolean = false;
   loadingDelete: string = '';
   inviteForm!: FormGroup;
   members: User[] = [];
@@ -144,6 +145,10 @@ export class ProjectSettingsComponent implements OnInit {
     });
   }
 
+  leaveProject() {
+    
+  }
+
   disableRemove(permission: string) {
     permission = permission as Permission;
     const required: Permission = permission === Permission.ADMIN ? Permission.OWNER : Permission.ADMIN;
@@ -152,5 +157,9 @@ export class ProjectSettingsComponent implements OnInit {
 
   deleteLoading(username: string) {
     return username === this.loadingDelete;
+  }
+
+  leavable(): boolean {
+    return this.user.hasPermission(Permission.OWNER);
   }
 }
