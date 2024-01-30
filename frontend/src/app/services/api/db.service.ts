@@ -123,6 +123,14 @@ export class DbService extends AdapterService {
     return this.http.post<Response>(this.basePath + this.project + 'remove', body);
   }
 
+  public override leaveProject(token: string, username: string): Observable<Response> {
+    const body = {
+      token: token,
+      username: username
+    };
+    return this.http.post<Response>(this.basePath + this.project + 'leave', body);
+  }
+
 
   // ### TASKS ###
   public override createTask(token: string, author: string, project: string, title: string, description: string, assigned: string, state: string): Observable<Response> {

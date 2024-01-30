@@ -37,6 +37,8 @@ export abstract class AdapterService {
 
   public abstract removeUser(token: string, username: string): Observable<Response>;
 
+  public abstract leaveProject(token: string, username: string): Observable<Response>;
+
 
   // ### TASKS ###
   public abstract createTask(token: string, author: string, project: string, title: string, description: string, assigned: string, state: string): Observable<Response>;

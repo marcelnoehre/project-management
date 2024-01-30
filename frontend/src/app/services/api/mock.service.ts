@@ -126,6 +126,11 @@ export class MockService extends AdapterService {
     return this.http.get<Response>(url);
   }
 
+  public override leaveProject(token: string, username: string): Observable<Response> {
+    const url = this.basePath + this.project + 'leave/success.json';
+    return this.http.get<Response>(url);
+  }
+
 
   // ### TASKS ###
   public override createTask(token: string, author: string, project: string, title: string, description: string, assigned: string, state: string): Observable<Response> {

@@ -87,6 +87,10 @@ export class ApiService {
 		return this.adapter.removeUser(token, username);
 	}
 
+	public leaveProject(token: string, username: string): Observable<Response> {
+		return this.adapter.leaveProject(token, username);
+	}
+
 
 	// ### TASKS ###
 	public createTask(token: string, author: string, project: string, title: string, description: string, assigned: string, state: string): Observable<Response> {
