@@ -135,7 +135,9 @@ export class KanbanBoardComponent implements AfterViewInit {
     };
     this.dialog.open(TaskDetailViewComponent, { data, ...{} }).afterClosed().subscribe(
       async (updated) => {
-
+        if (updated) {
+          this.taskList = [...updated];
+        }
       }
     );
   }
