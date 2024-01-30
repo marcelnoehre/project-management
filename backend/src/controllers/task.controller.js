@@ -60,6 +60,9 @@ async function importTasks(req, res, next) {
                 fail++;
             }
         }
+        if (success > 0) {
+            await notificationsService.createNotification(db, req.body.project, req.body.author, 'NOTIFICATIONS.NEW.IMPORTED_TASKS', [req.body.author], 'upload_file');
+        }
         res.json({
             amount: req.body.tasks.length,
             success: success,

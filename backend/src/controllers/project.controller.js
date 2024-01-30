@@ -85,6 +85,7 @@ async function handleInvite(req, res, next) {
                     permission: 'MEMBER',
                     isLoggedIn: true
                 });
+                await notificationsService.createNotification(db, userDoc.data().project, req.body.username, 'NOTIFICATIONS.NEW.JOINED', [req.body.username], 'person_add');
                 res.json({ message: 'SUCCESS.INVITE_ACCEPTED'});
             } else {
                 await userDoc.ref.update({
