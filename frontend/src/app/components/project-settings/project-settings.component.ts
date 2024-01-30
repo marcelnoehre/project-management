@@ -18,6 +18,7 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./project-settings.component.scss']
 })
 export class ProjectSettingsComponent implements OnInit {
+  permissions: Permission[] = [Permission.MEMBER, Permission.ADMIN];
   loadingInvite: boolean = false;
   loadingLeave: boolean = false;
   loadingDelete: string = '';
@@ -175,6 +176,16 @@ export class ProjectSettingsComponent implements OnInit {
           );
         }
       });
+  }
+
+  editable(permission: Permission) {
+    if (permission === Permission.ADMIN) {
+      return this.user.hasPermission(Permission.OWNER);
+    } else if (permission === Permission.MEMBER) {
+      return this.user.hasPermission(Permission.ADMIN);
+    } else {
+      return false;
+    }
   }
 
   disableRemove(permission: string) {

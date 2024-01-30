@@ -12,7 +12,24 @@
                 <td>{{ member.fullName }}</td>
                 <td>{{ member.username }}</td>
                 <td>{{ getLanguage(member.language) }}</td>
-                <td>{{ member.permission }}</td>
+                <td *ngIf="!editable(member.permission)">{{ member.permission }}</td>
+                <td *ngIf="editable(member.permission)">
+                    <mat-select 
+                        id="permission-select"
+                        name="permission"
+                        placeholder="{{'USER.PERMISSION'|translate}}"
+                        [(ngModel)]="member.permission"
+                        appearance="outline"
+                        matInput
+                    >
+                        <mat-option
+                            *ngFor="let permission of permissions"
+                            [value]="permission"
+                        >
+                            {{ permission }}
+                        </mat-option>
+                    </mat-select>
+                </td>
                 <td>
                     <div>
                         <button mat-fab color="warn" (click)="removeUser(member.username, i)" [disabled]="disableRemove(member.permission)">
