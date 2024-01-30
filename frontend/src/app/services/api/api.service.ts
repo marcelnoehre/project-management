@@ -101,6 +101,10 @@ export class ApiService {
 		return this.adapter.getTaskList(token, project);
 	}
 
+	public updateTask(token: string, task: Task): Observable<State[]> {
+		return this.adapter.updateTask(token, task);
+	}
+
 	public updatePosition(token: string, project: string, uid: string, state: string, order: number): Observable<State[]> {
 		return this.adapter.updatePosition(token, project, uid, state, order);
 	}

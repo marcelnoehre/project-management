@@ -5,7 +5,7 @@
                 {{ 'TASK.STATE_ENUM.' + state.state | translate }}
             </div>
             <div cdkDropList class="tasks" [id]="state.state" [cdkDropListConnectedTo]="stateList" [cdkDropListData]="state.tasks" (cdkDropListDropped)="drop($event)">
-                <div cdkDrag class="task mt-3" *ngFor="let task of state.tasks">
+                <div cdkDrag class="task mt-3" *ngFor="let task of state.tasks" (click)="showDetails(task)">
                     <div [id]="task.uid">
                         {{ task.title }}
                     </div>

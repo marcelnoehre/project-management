@@ -1,0 +1,22 @@
+.header {
+	text-align: center;
+	font-size: 2rem;
+}
+
+mat-dialog-content {
+    width: 75vw;
+    height: 75vh;
+    form {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        text-align: center;
+    }
+}
+
+.actions {
+	justify-content: center;
+	& > button {
+		padding-block: 1rem;
+	}
+}

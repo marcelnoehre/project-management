@@ -6,6 +6,7 @@ const { jwtAuth } = require('../auth/jwtAuth');
 router.post('/createTask', jwtAuth, taskController.createTask);
 router.post('/importTasks', jwtAuth, taskController.importTasks);
 router.post('/getTaskList', jwtAuth, taskController.getTaskList);
+router.post('/updateTask', jwtAuth, taskController.updateTask);
 router.post('/updatePosition', jwtAuth, taskController.updatePosition);
 router.post('/moveToTrashBin', jwtAuth, taskController.moveToTrashBin);
 router.post('/getTrashBin', jwtAuth, taskController.getTrashBin);

@@ -1,0 +1,85 @@
+<div class="dialog-container" mat-dialog-container>
+	<h1 class="header" mat-dialog-title>{{ 'TASK.DETAIL_VIEW' | translate }}</h1>
+	<mat-dialog-content class="mat-typography pt-2">
+		<form>
+            <mat-form-field appearance="outline" class="task-detail-view-form-field" MatInput>
+                <mat-label> {{ 'TASK.TITLE' | translate }}</mat-label>
+                <input
+                    id="title-input"
+                    [(ngModel)]="task.title"
+                    name="title"
+                    placeholder="{{'TASK.TITLE' | translate}}"
+                    matInput
+                />
+                <mat-icon matPrefix> person </mat-icon>
+            </mat-form-field>
+			<mat-form-field appearance="outline" class="task-detail-view-form-field" MatInput>
+                <mat-label> {{ 'TASK.DESCRIPTION' | translate }}</mat-label>
+				<textarea 
+					id="description-input"
+                    [(ngModel)]="task.description"
+                    name="description"
+                    placeholder="{{'TASK.DESCRIPTION' | translate}}"
+					type="text" 
+					rows="10" 
+					matInput 
+				></textarea>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="task-detail-view-form-field">
+                <mat-label>{{ 'TASK.ASSIGN' | translate }}</mat-label>
+                <mat-select 
+                    id="assigned-select"
+                    name="assigned"
+                    placeholder="{{'TASK.ASSIGN'|translate}}"
+                    [(ngModel)]="task.assigned"
+                >
+                    <mat-option
+                        *ngFor="let member of members"
+                        [value]="member.username"
+                    >
+                        {{ member.username }}
+                    </mat-option>
+                </mat-select>
+                <mat-icon matPrefix> person </mat-icon>
+            </mat-form-field>            
+			<mat-form-field appearance="outline" class="task-detail-view-form-field">
+                <mat-label>{{ 'TASK.STATE' | translate }}</mat-label>
+                <mat-select 
+                    id="state-select"
+                    name="state"
+                    placeholder="{{'TASK.STATE'|translate}}"
+                    [(ngModel)]="task.state"
+                >
+                    <mat-option
+                        *ngFor="let state of taskStates"
+                        [value]="state"
+                    >
+                        {{ state }}
+                    </mat-option>
+                </mat-select>
+                <mat-icon matPrefix> person </mat-icon>
+            </mat-form-field>
+		</form>
+	</mat-dialog-content>
+	<mat-dialog-actions class="actions">
+		<button
+		(click)="closeDialog(false)"
+		[mat-dialog-close]="false"
+		color="dark" 
+		mat-raised-button
+	>
+		{{ 'APP.CANCEL' | translate }}
+		<mat-icon>clear</mat-icon>
+	</button>
+	<button
+		(click)="updateTaskDetails()"
+		color="dark"
+		mat-raised-button
+		[disabled]="disableSubmit()"
+	>		
+		<app-spinner-icon class="material-icons" icon="done_all" [spinning]="loading"></app-spinner-icon>
+		<ng-container *ngIf="loading">&nbsp;</ng-container>
+		{{ 'APP.CONFIRM' | translate }}
+	</button>
+	</mat-dialog-actions>
+</div>
