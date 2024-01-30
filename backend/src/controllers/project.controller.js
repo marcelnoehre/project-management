@@ -116,10 +116,30 @@ async function removeUser(req, res, next) {
     }
 }
 
+async function leaveProject(req, res, next) {
+    try {
+        const usersCollection = db.collection('users');
+        const usersSnapshot = await usersCollection.where('username', '==', req.body.username).get();
+        if (usersSnapshot.empty) {
+            res.status(500).send({ message: 'ERROR.INTERNAL' });
+        } else {
+            const userDoc = usersSnapshot.docs[0];
+            await userDoc.ref.update({
+                project: '',
+                permission: ''
+            });
+            res.json({message: 'SUCCESS.LEAVE_PROJECT'});
+        }
+    } catch (err) {
+        next(err);
+    }
+}
+
 module.exports = {
     createProject,
     getTeamMembers,
     inviteUser,
     handleInvite,
-    removeUser
+    removeUser,
+    leaveProject
 };
