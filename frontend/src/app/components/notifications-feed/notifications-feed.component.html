@@ -8,8 +8,8 @@
                 <th>{{ 'APP.REMOVE' | translate }}</th>
             </tr>
             <tr *ngFor="let notification of notifications; index as i" [ngClass]="isNew(notification.seen)" (click)="viewed(i, notification.uid)">
-                <td>{{ notification.timestamp._seconds * 1000 | date:'YYYY-MM-dd HH:mm:ss' }}</td>
-                <td>{{ notification.message }}</td>
+                <td>{{ notification.timestamp | date:'YYYY-MM-dd HH:mm:ss' }}</td>
+                <td>{{ encryptMessage(notification.message, notification.data) }}</td>
                 <td>
                     <button mat-mini-fab color="warn" (click)="remove(i, notification.uid)">
                         <mat-icon>delete</mat-icon>

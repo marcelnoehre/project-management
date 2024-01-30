@@ -1,8 +1,7 @@
-import { Timestamp } from "./timestamp";
-
 export interface Notification {
     uid: string,
     message: string,
-    timestamp: Timestamp,
+    data: string[],
+    timestamp: number,
     seen: boolean
 }

@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { Notification } from 'src/app/interfaces/data/notification';
 import { NotificationsService } from 'src/app/services/notifications.service';
 
@@ -13,14 +14,15 @@ export class NotificationsFeedComponent implements OnInit, OnDestroy {
   updateRemove: string[] = [];
   
   constructor(
-    private notification: NotificationsService
+    private notification: NotificationsService,
+    private translate: TranslateService
   ) {
 
   }
 
   ngOnInit(): void {
     this.notifications = this.notification.getNotifications;
-  }
+5  }
 
   ngOnDestroy(): void {
     if (this.updateSeen.length || this.updateRemove.length) {
@@ -39,6 +41,10 @@ export class NotificationsFeedComponent implements OnInit, OnDestroy {
   remove(index: number, uid: string): void {
     this.notifications.splice(index, 1);
     this.updateRemove.push(uid);
+  }
+
+  encryptMessage(message: string, data: string[]) {
+    return this.translate.instant(message, {data_0: data[0], data_1: data[1]});
   }
 
   isNew(seen: boolean)  {

@@ -21,6 +21,7 @@ async function getNotifications(req, res, next) {
             notifiactions.push({
                 uid: data.uid,
                 message: data.message,
+                data: data.data,
                 timestamp: data.timestamp,
                 seen: false
             });
