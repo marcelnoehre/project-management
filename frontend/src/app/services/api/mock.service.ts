@@ -122,8 +122,8 @@ export class MockService extends AdapterService {
     return this.http.get<Response>(url);
   }
 
-  public override updatePermission(token: string, username: string, permission: Permission): Observable<User[]> {
-    const url = this.basePath + this.project + 'update-permission/mockProject.json';
+  public override updatePermission(token: string, username: string, project: string, permission: Permission): Observable<User[]> {
+    const url = this.basePath + this.project + `update-permission/${project}.json`;
     return this.http.get<User[]>(url);
   }
 

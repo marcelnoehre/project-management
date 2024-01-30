@@ -36,7 +36,7 @@ export abstract class AdapterService {
 
   public abstract handleInvite(token: string, username: string, decision: boolean): Observable<Response>;
 
-  public abstract updatePermission(token: string, username: string, permission: Permission): Observable<User[]>;
+  public abstract updatePermission(token: string, username: string, project: string, permission: Permission): Observable<User[]>;
 
   public abstract removeUser(token: string, username: string): Observable<Response>;
 

@@ -84,8 +84,8 @@ export class ApiService {
 		return this.adapter.handleInvite(token, username, decision);
 	}
 
-	public updatePermission(token: string, username: string, permission: Permission): Observable<User[]> {
-		return this.adapter.updatePermission(token, username, permission);
+	public updatePermission(token: string, username: string, project: string, permission: Permission): Observable<User[]> {
+		return this.adapter.updatePermission(token, username, project, permission);
 	}
 
 	public removeUser(token: string, username: string): Observable<Response> {

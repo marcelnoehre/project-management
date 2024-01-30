@@ -179,7 +179,7 @@ export class ProjectSettingsComponent implements OnInit {
   }
 
   updatePermission(username: string, event: any) {
-    this.api.updatePermission(this.user.token, username, event.value).subscribe(
+    this.api.updatePermission(this.user.token, username, this.user.project, event.value).subscribe(
       (response) => {
         this.snackbar.open(this.translate.instant('SUCCESS.PERMISSION_UPDATED'));
         this.members = response;

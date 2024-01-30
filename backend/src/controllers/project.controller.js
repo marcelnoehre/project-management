@@ -97,6 +97,28 @@ async function handleInvite(req, res, next) {
     }
 }
 
+async function updatePermission(req, res, next) {
+    try {
+        const usersCollection = db.collection('users');
+        const userSnapshot = await usersCollection.where('username', '==', req.body.username).get();
+        if (userSnapshot.empty) {
+            res.status(500).send({ message: 'ERROR.INTERNAL' });
+        } else {
+            await userSnapshot.docs[0].ref.update({
+                permission: req.body.permission
+            });
+            const usersSnapshot = await usersCollection.where('project', '==', req.body.project).get();
+            const users = [];
+            usersSnapshot.forEach(doc => {
+                users.push(doc.data());
+            });
+            res.json(users);
+        }
+    } catch (err) {
+        next(err);
+    }
+}
+
 async function removeUser(req, res, next) {
     try {
         const usersCollection = db.collection('users');
@@ -140,6 +162,7 @@ module.exports = {
     getTeamMembers,
     inviteUser,
     handleInvite,
+    updatePermission,
     removeUser,
     leaveProject
 };

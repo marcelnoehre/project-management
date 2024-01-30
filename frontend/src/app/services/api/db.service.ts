@@ -116,10 +116,11 @@ export class DbService extends AdapterService {
     return this.http.post<Response>(this.basePath + this.project + 'handleInvite', body);
   }
 
-  public override updatePermission(token: string, username: string, permission: Permission): Observable<User[]> {
+  public override updatePermission(token: string, username: string, project: string, permission: Permission): Observable<User[]> {
     const body = {
       token: token,
       username: username,
+      project: project,
       permission: permission
     }
     return this.http.post<User[]>(this.basePath + this.project + 'updatePermission', body);
