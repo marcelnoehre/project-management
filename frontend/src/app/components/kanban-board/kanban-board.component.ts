@@ -10,6 +10,9 @@ import { Router } from '@angular/router';
 import { TaskStateColor } from 'src/app/enums/task-state-color.enum';
 import { UserService } from 'src/app/services/user.service';
 import { ParserService } from 'src/app/services/parser.service';
+import { MatDialog } from '@angular/material/dialog';
+import { TaskDetailViewComponent } from '../task-detail-view/task-detail-view.component';
+import { Task } from 'src/app/interfaces/data/task';
 
 @Component({
   selector: 'app-kanban-board',
@@ -28,7 +31,8 @@ export class KanbanBoardComponent implements AfterViewInit {
     private snackbar: SnackbarService,
     private translate: TranslateService,
     private user: UserService,
-    private parser: ParserService
+    private parser: ParserService,
+    private dialog: MatDialog
   ) {
 
   }
@@ -116,5 +120,23 @@ export class KanbanBoardComponent implements AfterViewInit {
     link.href = URL.createObjectURL(blob);
     link.download = 'export-' + this.user.project + '-tasks' + fileExtension;
     link.click();
+  }
+
+  showDetails(task: Task) {
+    const data = {
+      uid: task.uid,
+      author: task.author,
+      project: task.project,
+      title: task.title,
+      description: task.description,
+      assigned: task.assigned,
+      state: task.state,
+      order: task.order
+    };
+    this.dialog.open(TaskDetailViewComponent, { data, ...{} }).afterClosed().subscribe(
+      async (updated) => {
+
+      }
+    );
   }
 }
