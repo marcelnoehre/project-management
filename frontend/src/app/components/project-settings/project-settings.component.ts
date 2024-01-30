@@ -146,7 +146,24 @@ export class ProjectSettingsComponent implements OnInit {
   }
 
   leaveProject() {
-    
+    this.loadingLeave = true;
+    this.api.leaveProject(this.user.token, this.user.username).subscribe(
+      (response) => {
+        this.loadingLeave = false;
+        this.storage.deleteSessionEntry('user');
+        this.user.user = this.storage.getSessionEntry('user');
+        this.snackbar.open(this.translate.instant(response.message));
+        this.router.navigateByUrl('/login');
+      },
+      (error) => {
+        this.loadingLeave = false;
+        if (error.status === 403) {
+          this.storage.clearSession();
+          this.router.navigateByUrl('/login');
+        }
+        this.snackbar.open(this.translate.instant(error.error.message));
+      }
+    );
   }
 
   disableRemove(permission: string) {
