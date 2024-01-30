@@ -156,6 +156,14 @@ export class DbService extends AdapterService {
     return this.http.post<State[]>(this.basePath + this.task + 'getTaskList', body);
   }
 
+  public override updateTask(token: string, task: Task): Observable<State[]> {
+    const body = {
+      token: token,
+      task: task
+    }
+    return this.http.post<State[]>(this.basePath + this.task + 'updateTask', body);
+  }
+
   public override updatePosition(token: string, project: string, uid: string, state: string, order: number): Observable<State[]> {
     const body = {
       token: token,

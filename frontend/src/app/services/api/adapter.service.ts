@@ -45,6 +45,8 @@ export abstract class AdapterService {
   
   public abstract getTaskList(token: string, project: string): Observable<State[]>;
 
+  public abstract updateTask(token: string, task: Task): Observable<State[]>;
+
   public abstract updatePosition(token: string, project: string, uid: string, state: string, order: number): Observable<State[]>;
 
   public abstract moveToTrashBin(token: string, project: string, uid: string): Observable<State[]>;
