@@ -121,7 +121,14 @@ async function updateTask(req, res, next) {
             res.status(500).send({ message: 'ERROR.INTERNAL' });
         } else {
             const taskDoc = tasksSnapshot.docs[0];
-            taskDoc.ref.update(req.body.task);
+            const task = req.body.task;
+            task.history.push({
+                timestamp: new Date().getTime(),
+                username: jwt.decode(req.body.token).username,
+                state: req.body.task.state,
+                type: 'EDITED'
+            });
+            taskDoc.ref.update(task);
             await notificationsService.createRelatedNotification(db, req.body.task.project, jwt.decode(req.body.token).username, req.body.task.author, req.body.task.assigned, 'NOTIFICATIONS.NEW.EDITED_TASK', [jwt.decode(req.body.token).username, req.body.task.title], 'edit_square');
             const taskListSnapshot = await tasksCollection
                 .where('project', '==', req.body.task.project)
@@ -155,9 +162,17 @@ async function updatePosition(req, res, next) {
             res.status(500).send({ message: 'ERROR.INTERNAL' });
         } else {
             const taskDoc = tasksSnapshot.docs[0];
+            const history = taskDoc.data().history;
+            history.push({
+                timestamp: new Date().getTime(),
+                username: jwt.decode(req.body.token).username,
+                state: req.body.state,
+                type: 'POSITION'
+            });
             await taskDoc.ref.update({
                 state: req.body.state,
-                order: req.body.order
+                order: req.body.order,
+                history: history
             });
             await notificationsService.createRelatedNotification(db, taskDoc.data().project, jwt.decode(req.body.token).username, taskDoc.data().author, taskDoc.data().assigned, 'NOTIFICATIONS.NEW.UPDATE_TASK_POSITION', [jwt.decode(req.body.token).username, taskDoc.data().title], 'edit_square');
             const taskListSnapshot = await tasksCollection
@@ -192,8 +207,16 @@ async function moveToTrashBin(req, res, next) {
             res.status(500).send({ message: 'ERROR.INTERNAL' });
         } else {
             const taskDoc = tasksSnapshot.docs[0];
+            const history = taskDoc.data().history;
+            history.push({
+                timestamp: new Date().getTime(),
+                username: jwt.decode(req.body.token).username,
+                state: 'DELETED',
+                type: 'TRASHED'
+            });
             await taskDoc.ref.update({
-                state: 'DELETED'
+                state: 'DELETED',
+                history: history
             });
             await notificationsService.createRelatedNotification(db, taskDoc.data().project, jwt.decode(req.body.token).username, taskDoc.data().author, taskDoc.data().assigned, 'NOTIFICATIONS.NEW.TRASHED_TASK', [jwt.decode(req.body.token).username, taskDoc.data().title], 'delete');
             const taskListSnapshot = await tasksCollection
@@ -247,8 +270,17 @@ async function restoreTask(req, res, next) {
             res.status(500).send({ message: 'ERROR.INTERNAL' });
         } else {
             const taskDoc = tasksSnapshot.docs[0];
+            const history = taskDoc.data().history;
+            const previousState = history[history.length - 2].state
+            history.push({
+                timestamp: new Date().getTime(),
+                username: jwt.decode(req.body.token).username,
+                state: previousState,
+                type: 'RESTORED'
+            });
             await taskDoc.ref.update({
-                state: 'NONE'
+                state: previousState,
+                history: history
             });
             await notificationsService.createRelatedNotification(db, taskDoc.data().project, jwt.decode(req.body.token).username, taskDoc.data().author, taskDoc.data().assigned, 'NOTIFICATIONS.NEW.RESTORED_TASK', [jwt.decode(req.body.token).username, taskDoc.data().title], 'undo');
             const taskListSnapshot = await tasksCollection
