@@ -59,7 +59,7 @@ async function getTeamMembers(req, res, next) {
 async function inviteUser(req, res, next) {
     try {
         const usersCollection = db.collection('users');
-        let usersSnapshot = await usersCollection.where('username', '==', req.body.username).get();
+        const usersSnapshot = await usersCollection.where('username', '==', req.body.username).get();
         if (usersSnapshot.empty) {
             res.status(404).send({ message: 'ERROR.NO_ACCOUNT' });
         } else {
@@ -73,9 +73,29 @@ async function inviteUser(req, res, next) {
                     project: req.body.project,
                     permission: 'INVITED'
                 });
+                const projectsCollection = db.collection('projects');
+                const historySnapshot = await projectsCollection.where('name', '==', req.body.project).get();
+                if (historySnapshot.empty) {
+                    res.status(500).send({ message: 'ERROR.INTERNAL' });
+                } else {
+                    const event = {
+                        timestamp: new Date().getTime(),
+                        type: 'INVITED',
+                        username: jwt.decode(req.body.token).username
+                    }
+                    const historyDoc = historySnapshot.docs[0];
+                    const history = historyDoc.data().history;
+                    history.push(event);
+                    await historyDoc.ref.update({
+                        history: history
+                    });
+                }
                 await notificationsService.createAdminNotification(db, req.body.project, jwt.decode(req.body.token).username, 'NOTIFICATIONS.NEW.INVITED', [jwt.decode(req.body.token).username, req.body.username], 'cancel');
-                usersSnapshot = await usersCollection.where('username', '==', req.body.username).get();
-                res.json(usersSnapshot.docs[0].data());
+                const user = userDoc.data();
+                user.project = req.body.project;
+                user.permission = 'INVITED';
+                //TODO: return sorted list of all users
+                res.json(user);
             }
         }
     } catch (err) {
