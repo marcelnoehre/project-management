@@ -129,6 +129,7 @@
     },
     "NOTIFICATIONS": {
         "FEED": "Notifications",
+        "TYPE": "Type",
         "TIMESTAMP": "Timestamp",
         "MESSAGE": "Message",
         "NEW": {

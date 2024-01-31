@@ -3,11 +3,13 @@
 	<mat-dialog-content class="mat-typography">
         <table>
             <tr>
+                <th>{{ 'NOTIFICATIONS.TYPE' | translate }}</th>
                 <th>{{ 'NOTIFICATIONS.TIMESTAMP' | translate }}</th>
                 <th>{{ 'NOTIFICATIONS.MESSAGE' | translate }}</th>
                 <th>{{ 'APP.REMOVE' | translate }}</th>
             </tr>
             <tr *ngFor="let notification of notifications; index as i" [ngClass]="isNew(notification.seen)" (click)="viewed(i, notification.uid)">
+                <td><mat-icon>{{ notification.icon }}</mat-icon></td>
                 <td>{{ notification.timestamp | date:'YYYY-MM-dd HH:mm:ss' }}</td>
                 <td>{{ encryptMessage(notification.message, notification.data) }}</td>
                 <td>

@@ -298,7 +298,7 @@ async function clearTrashBin(req, res, next) {
                 deletePromises.push(doc.ref.delete());
             });
             await Promise.all(deletePromises);
-            notificationsService.createAdminNotification(db, req.body.project, jwt.decode(req.body.token).username, 'CLEARED_TRASH_BIN', [jwt.decode(req.body.token).username], 'delete_forever');
+            notificationsService.createAdminNotification(db, req.body.project, jwt.decode(req.body.token).username, 'NOTIFICATIONS.NEW.CLEARED_TRASH_BIN', [jwt.decode(req.body.token).username], 'delete_forever');
             res.json({'message': 'SUCCESS.CLEAR_TRASH_BIN'});
         }
     } catch (err) {

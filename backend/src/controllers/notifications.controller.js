@@ -22,6 +22,7 @@ async function getNotifications(req, res, next) {
                 uid: data.uid,
                 message: data.message,
                 data: data.data,
+                icon: data.icon,
                 timestamp: data.timestamp,
                 seen: false
             });
@@ -32,6 +33,7 @@ async function getNotifications(req, res, next) {
                 uid: data.uid,
                 message: data.message,
                 data: data.data,
+                icon: data.icon,
                 timestamp: data.timestamp,
                 seen: true
             });
@@ -98,6 +100,7 @@ async function updateNotifications(req, res, next) {
                 uid: data.uid,
                 message: data.message,
                 data: data.data,
+                icon: data.icon,
                 timestamp: data.timestamp,
                 seen: false
             });
@@ -108,6 +111,7 @@ async function updateNotifications(req, res, next) {
                 uid: data.uid,
                 message: data.message,
                 data: data.data,
+                icon: data.icon,
                 timestamp: data.timestamp,
                 seen: true
             });
