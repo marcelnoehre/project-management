@@ -19,7 +19,17 @@ async function createProject(req, res, next) {
                         timestamp: new Date().getTime(),
                         type: 'CREATED',
                         username: req.body.username
-                    }]
+                    }],
+                    stats: {
+                        created: 0,
+                        imported: 0,
+                        updated: 0,
+                        edited: 0,
+                        trashed: 0,
+                        restored: 0,
+                        deleted: 0,
+                        cleared: 0
+                    }
                 };
                 await projectsRef.set(project);
                 const userDoc = usersSnapshot.docs[0];

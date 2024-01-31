@@ -54,17 +54,9 @@ async function projectStats(req, res, next) {
     }
 }
 
-async function memberAmount(req, res, next) {
-    try {
-
-    } catch (err) {
-        next(err);
-    }
-}
-
 async function userActivity(req, res, next) {
     try {
-
+        // user history
     } catch (err) {
         next(err);
     }
@@ -108,7 +100,7 @@ async function statLeaders(req, res, next) {
 
 async function taskProgress(req, res, next) {
     try {
-
+        // diagramm wie bei agiles Projektmanagement steigender Graph für alle Kategorien
     } catch (err) {
         next(err);
     }
@@ -116,7 +108,7 @@ async function taskProgress(req, res, next) {
 
 async function averageTime(req, res, next) {
     try {
-
+        // average time a task stays in a category
     } catch (err) {
         next(err);
     }
@@ -148,7 +140,7 @@ async function taskAmount(req, res, next) {
 
 async function trashStats(req, res, next) {
     try {
-
+        // amount of trashed, restored and deleted tasks
     } catch (err) {
         next(err);
     }
@@ -156,7 +148,7 @@ async function trashStats(req, res, next) {
 
 async function wip(req, res, next) {
     try {
-
+        // active tasks progress
     } catch (err) {
         next(err);
     }
@@ -165,7 +157,6 @@ async function wip(req, res, next) {
 module.exports = {
     optimizeOrder,
     projectStats,
-    memberAmount,
     userActivity,
     statLeaders,
     taskProgress,

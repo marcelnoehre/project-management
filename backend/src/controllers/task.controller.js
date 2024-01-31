@@ -181,8 +181,8 @@ async function updatePosition(req, res, next) {
                 order: req.body.order,
                 history: history
             });
-            await authService.updateUserStats(db, jwt.decode(req.body.token).username, 'edited', 1);
-            await authService.updateProjectStats(db, jwt.decode(req.body.token).project, 'edited', 1);
+            await authService.updateUserStats(db, jwt.decode(req.body.token).username, 'updated', 1);
+            await authService.updateProjectStats(db, jwt.decode(req.body.token).project, 'updated', 1);
             await notificationsService.createRelatedNotification(db, taskDoc.data().project, jwt.decode(req.body.token).username, taskDoc.data().author, taskDoc.data().assigned, 'NOTIFICATIONS.NEW.UPDATE_TASK_POSITION', [jwt.decode(req.body.token).username, taskDoc.data().title], 'edit_square');
             const taskListSnapshot = await tasksCollection
                 .where('project', '==', req.body.project)
