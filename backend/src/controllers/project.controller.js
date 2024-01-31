@@ -116,6 +116,23 @@ async function handleInvite(req, res, next) {
                     permission: 'MEMBER',
                     isLoggedIn: true
                 });
+                const projectsCollection = db.collection('projects');
+                const historySnapshot = await projectsCollection.where('name', '==', userDoc.data().project).get();
+                if (historySnapshot.empty) {
+                    res.status(500).send({ message: 'ERROR.INTERNAL' });
+                } else {
+                    const event = {
+                        timestamp: new Date().getTime(),
+                        type: 'JOINED',
+                        username: req.body.username
+                    }
+                    const historyDoc = historySnapshot.docs[0];
+                    const history = historyDoc.data().history;
+                    history.push(event);
+                    await historyDoc.ref.update({
+                        history: history
+                    });
+                }
                 await notificationsService.createTeamNotification(db, userDoc.data().project, req.body.username, 'NOTIFICATIONS.NEW.JOINED', [req.body.username], 'person_add');
                 res.json({ message: 'SUCCESS.INVITE_ACCEPTED'});
             } else {
@@ -123,6 +140,23 @@ async function handleInvite(req, res, next) {
                     project: '',
                     permission: ''
                 });
+                const projectsCollection = db.collection('projects');
+                const historySnapshot = await projectsCollection.where('name', '==', userDoc.data().project).get();
+                if (historySnapshot.empty) {
+                    res.status(500).send({ message: 'ERROR.INTERNAL' });
+                } else {
+                    const event = {
+                        timestamp: new Date().getTime(),
+                        type: 'REJECTED',
+                        username: req.body.username
+                    }
+                    const historyDoc = historySnapshot.docs[0];
+                    const history = historyDoc.data().history;
+                    history.push(event);
+                    await historyDoc.ref.update({
+                        history: history
+                    });
+                }
                 await notificationsService.createAdminNotification(db, userDoc.data().project, req.body.username, 'NOTIFICATIONS.NEW.REJECTED', [req.body.username], 'cancel');
                 res.json({ message: 'SUCCESS.INVITE_REJECTED'});
             }
