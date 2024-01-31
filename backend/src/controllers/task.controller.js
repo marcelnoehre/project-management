@@ -20,7 +20,13 @@ async function createTask(req, res, next) {
             description: req.body.description,
             assigned: req.body.assigned,
             state: req.body.state,
-            order: order
+            order: order,
+            history: [{
+                timestamp: new Date().getTime(),
+                username: jwt.decode(req.body.token).username,
+                state: req.body.state,
+                type: 'CREATED'
+            }]
         };
         tasksCollection.doc(newDocRef.id).set(task).then(async () => {
             await notificationsService.createTeamNotification(db, req.body.project, req.body.author, 'NOTIFICATIONS.NEW.CREATE_TASK', [req.body.author, req.body.title], 'note_add');
@@ -53,7 +59,13 @@ async function importTasks(req, res, next) {
                     description: task.description,
                     assigned: '',
                     state: task.state === '' ? 'NONE' : task.state,
-                    order: order
+                    order: order,
+                    history: [{
+                        timestamp: new Date().getTime(),
+                        username: jwt.decode(req.body.token).username,
+                        state: req.body.state,
+                        type: 'IMPORTED'
+                    }]
                 };
                 await tasksCollection.doc(newDocRef.id).set(taskData);
                 success++;
