@@ -2,6 +2,7 @@ const admin = require('firebase-admin');
 const db = admin.firestore();
 
 async function optimizeOrder(req, res, next) {
+    // token, project
     try {
         const tasksCollection = db.collection('tasks');
         const tasksSnapshot = await tasksCollection
@@ -10,25 +11,27 @@ async function optimizeOrder(req, res, next) {
             .orderBy('state')
             .orderBy('order')
             .get();
-        const sort = {
-            NONE: [],
-            TODO: [],
-            PROGRESS: [],
-            REVIEW: [],
-            DONE: []
-        };
-        tasksSnapshot.forEach(doc => {
-            const task = doc.data();
-            sort[task.state].push(doc);
-        });
-        const states = [sort.NONE, sort.TODO, sort.PROGRESS, sort.REVIEW, sort.DONE];
-        states.forEach(async (state) => {
-            for (let i = 0; i < state.length; i++) {
-                await state[i].ref.update({
-                    order: i + 1
-                });
-            }
-        });
+        if (!tasksSnapshot.empty) {
+            const sort = {
+                NONE: [],
+                TODO: [],
+                PROGRESS: [],
+                REVIEW: [],
+                DONE: []
+            };
+            tasksSnapshot.forEach(doc => {
+                const task = doc.data();
+                sort[task.state].push(doc);
+            });
+            const states = [sort.NONE, sort.TODO, sort.PROGRESS, sort.REVIEW, sort.DONE];
+            states.forEach(async (state) => {
+                for (let i = 0; i < state.length; i++) {
+                    await state[i].ref.update({
+                        order: i + 1
+                    });
+                }
+            });
+        }
         res.json({'message': 'SUCCESS.STATS.OPTIMIZE'});
     } catch (err) {
         next(err);
@@ -36,8 +39,16 @@ async function optimizeOrder(req, res, next) {
 }
 
 async function projectStats(req, res, next) {
+    // token, project
     try {
-
+        const projectsCollection = db.collection('projects');
+        const projectsSnapshot = await projectsCollection.where('name', '==', req.body.project).get();
+        if (!projectsSnapshot.empty) {
+            const projectDoc = projectsSnapshot.docs[0];
+            res.json(projectDoc.data().history);
+        } else {
+            res.status(500).send({ message: 'ERROR.INTERNAL' });
+        }
     } catch (err) {
         next(err);
     }
