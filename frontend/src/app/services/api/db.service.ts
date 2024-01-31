@@ -9,6 +9,7 @@ import { Response } from 'src/app/interfaces/data/response';
 import { Task } from 'src/app/interfaces/data/task';
 import { Progress } from 'src/app/interfaces/data/progress';
 import { Notification } from 'src/app/interfaces/data/notification';
+import { Permission } from 'src/app/enums/permission.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -115,12 +116,30 @@ export class DbService extends AdapterService {
     return this.http.post<Response>(this.basePath + this.project + 'handleInvite', body);
   }
 
+  public override updatePermission(token: string, username: string, project: string, permission: Permission): Observable<User[]> {
+    const body = {
+      token: token,
+      username: username,
+      project: project,
+      permission: permission
+    }
+    return this.http.post<User[]>(this.basePath + this.project + 'updatePermission', body);
+  }
+
   public override removeUser(token: string, username: string): Observable<Response> {
     const body = {
       token: token,
       username: username
     };
     return this.http.post<Response>(this.basePath + this.project + 'remove', body);
+  }
+
+  public override leaveProject(token: string, username: string): Observable<Response> {
+    const body = {
+      token: token,
+      username: username
+    };
+    return this.http.post<Response>(this.basePath + this.project + 'leave', body);
   }
 
 

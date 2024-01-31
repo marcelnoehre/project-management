@@ -30,10 +30,9 @@ table {
     tr:nth-child(odd) {
         background-color: gray;
     }
-}
-
-button {
-    scale: 0.75;
+    button {
+        scale: 0.75;
+    }    
 }
 
 .header {
@@ -45,10 +44,21 @@ button {
     overflow: scroll;
 }
 
-.invite {
+.actions {
     width: 90%;
-    justify-content: left;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     p {
         font-size: medium;
     }
+    
+    .invite {
+        display: flex;
+        gap: 1rem;
+    }
+
+    & > button {
+		padding-block: 1rem;
+	}
 }

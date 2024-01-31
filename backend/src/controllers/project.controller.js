@@ -1,4 +1,6 @@
+const notificationsService = require('../services/notifications.service');
 const admin = require('firebase-admin');
+const jwt = require('jsonwebtoken');
 const db = admin.firestore();
 
 async function createProject(req, res, next) {
@@ -61,6 +63,7 @@ async function inviteUser(req, res, next) {
                     project: req.body.project,
                     permission: 'INVITED'
                 });
+                await notificationsService.createAdminNotification(db, req.body.project, jwt.decode(req.body.token).username, 'NOTIFICATIONS.NEW.INVITED', [jwt.decode(req.body.token).username, req.body.username], 'cancel');
                 usersSnapshot = await usersCollection.where('username', '==', req.body.username).get();
                 res.json(usersSnapshot.docs[0].data());
             }
@@ -83,14 +86,38 @@ async function handleInvite(req, res, next) {
                     permission: 'MEMBER',
                     isLoggedIn: true
                 });
+                await notificationsService.createTeamNotification(db, userDoc.data().project, req.body.username, 'NOTIFICATIONS.NEW.JOINED', [req.body.username], 'person_add');
                 res.json({ message: 'SUCCESS.INVITE_ACCEPTED'});
             } else {
                 await userDoc.ref.update({
                     project: '',
                     permission: ''
                 });
+                await notificationsService.createAdminNotification(db, userDoc.data().project, req.body.username, 'NOTIFICATIONS.NEW.REJECTED', [req.body.username], 'cancel');
                 res.json({ message: 'SUCCESS.INVITE_REJECTED'});
             }
+        }
+    } catch (err) {
+        next(err);
+    }
+}
+
+async function updatePermission(req, res, next) {
+    try {
+        const usersCollection = db.collection('users');
+        const userSnapshot = await usersCollection.where('username', '==', req.body.username).get();
+        if (userSnapshot.empty) {
+            res.status(500).send({ message: 'ERROR.INTERNAL' });
+        } else {
+            await userSnapshot.docs[0].ref.update({
+                permission: req.body.permission
+            });
+            const usersSnapshot = await usersCollection.where('project', '==', req.body.project).get();
+            const users = [];
+            usersSnapshot.forEach(doc => {
+                users.push(doc.data());
+            });
+            res.json(users);
         }
     } catch (err) {
         next(err);
@@ -109,7 +136,28 @@ async function removeUser(req, res, next) {
                 project: '',
                 permission: ''
             });
+            await notificationsService.createTeamNotification(db, jwt.decode(req.body.token).project, jwt.decode(req.body.token).username, 'NOTIFICATIONS.NEW.REMOVED', [req.body.username, jwt.decode(req.body.token).username], 'person_remove');
             res.json({message: 'SUCCESS.REMOVE_MEMBER'});
+        }
+    } catch (err) {
+        next(err);
+    }
+}
+
+async function leaveProject(req, res, next) {
+    try {
+        const usersCollection = db.collection('users');
+        const usersSnapshot = await usersCollection.where('username', '==', req.body.username).get();
+        if (usersSnapshot.empty) {
+            res.status(500).send({ message: 'ERROR.INTERNAL' });
+        } else {
+            const userDoc = usersSnapshot.docs[0];
+            await userDoc.ref.update({
+                project: '',
+                permission: ''
+            });
+            await notificationsService.createTeamNotification(db, jwt.decode(req.body.token).project, req.body.username, 'NOTIFICATIONS.NEW.LEAVE_PROJECT', [req.body.username], 'exit_to_app');
+            res.json({message: 'SUCCESS.LEAVE_PROJECT'});
         }
     } catch (err) {
         next(err);
@@ -121,5 +169,7 @@ module.exports = {
     getTeamMembers,
     inviteUser,
     handleInvite,
-    removeUser
+    updatePermission,
+    removeUser,
+    leaveProject
 };

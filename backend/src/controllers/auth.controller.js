@@ -1,4 +1,5 @@
 const authService = require('../services/auth.service');
+const notificationsService = require('../services/notifications.service');
 const admin = require('firebase-admin');
 const jwt = require('jsonwebtoken');
 const db = admin.firestore();
@@ -15,7 +16,7 @@ async function login(req, res, next) {
             if (usersSnapshot.empty) {
                 res.status(500).send({ message: 'ERROR.INTERNAL' });
             } else {
-                const user = usersSnapshot.docs[0].data();          
+                const user = usersSnapshot.docs[0].data();
                 user.token = jwt.sign(user, 'my-secret-key', { expiresIn: '1h' });
                 user.isLoggedIn = user.project !== '' && user.permission !== 'INVITED';
                 res.json(user);
@@ -154,6 +155,7 @@ async function deleteUser(req, res, next) {
                 await usersCollection.doc(userId).delete();
                 const passwordId = passwordsSnapshot.docs[0].id;
                 await passwordsCollection.doc(passwordId).delete();
+                await notificationsService.createTeamNotification(db, jwt.decode(req.body.token).project, req.body.username, 'NOTIFICATIONS.NEW.LEAVE_PROJECT', [req.body.username], 'exit_to_app');
                 res.json({ message: 'SUCCESS.DELETE_ACCOUNT' });
             }
         }

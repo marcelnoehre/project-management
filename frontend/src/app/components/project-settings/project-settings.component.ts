@@ -18,7 +18,9 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./project-settings.component.scss']
 })
 export class ProjectSettingsComponent implements OnInit {
+  permissions: Permission[] = [Permission.MEMBER, Permission.ADMIN];
   loadingInvite: boolean = false;
+  loadingLeave: boolean = false;
   loadingDelete: string = '';
   inviteForm!: FormGroup;
   members: User[] = [];
@@ -144,6 +146,64 @@ export class ProjectSettingsComponent implements OnInit {
     });
   }
 
+  leaveProject() {
+    const data = {
+      headline: this.translate.instant('DIALOG.HEADLINE.LEAVE_PROJECT'),
+      description: this.translate.instant('DIALOG.INFO.LEAVE_PROJECT'),
+      falseButton: this.translate.instant('APP.CANCEL'),
+      trueButton: this.translate.instant('APP.CONFIRM')
+    };
+    this.dialog.open(DialogComponent, { data, ...{} }).afterClosed().subscribe(
+      async (confirmed) => {
+        if (confirmed) {
+          this.loadingLeave = true;
+          this.api.leaveProject(this.user.token, this.user.username).subscribe(
+            (response) => {
+              this.loadingLeave = false;
+              this.storage.deleteSessionEntry('user');
+              this.user.user = this.storage.getSessionEntry('user');
+              this.snackbar.open(this.translate.instant(response.message));
+              this.router.navigateByUrl('/login');
+            },
+            (error) => {
+              this.loadingLeave = false;
+              if (error.status === 403) {
+                this.storage.clearSession();
+                this.router.navigateByUrl('/login');
+              }
+              this.snackbar.open(this.translate.instant(error.error.message));
+            }
+          );
+        }
+      });
+  }
+
+  updatePermission(username: string, event: any) {
+    this.api.updatePermission(this.user.token, username, this.user.project, event.value).subscribe(
+      (response) => {
+        this.snackbar.open(this.translate.instant('SUCCESS.PERMISSION_UPDATED'));
+        this.members = response;
+      },
+      (error) => {
+        if (error.status === 403) {
+          this.storage.clearSession();
+          this.router.navigateByUrl('/login');
+        }
+        this.snackbar.open(this.translate.instant(error.error.message));
+      }
+    );
+  }
+
+  editable(permission: Permission) {
+    if (permission === Permission.ADMIN) {
+      return this.user.hasPermission(Permission.OWNER);
+    } else if (permission === Permission.MEMBER) {
+      return this.user.hasPermission(Permission.ADMIN);
+    } else {
+      return false;
+    }
+  }
+
   disableRemove(permission: string) {
     permission = permission as Permission;
     const required: Permission = permission === Permission.ADMIN ? Permission.OWNER : Permission.ADMIN;
@@ -152,5 +212,9 @@ export class ProjectSettingsComponent implements OnInit {
 
   deleteLoading(username: string) {
     return username === this.loadingDelete;
+  }
+
+  leavable(): boolean {
+    return this.user.hasPermission(Permission.OWNER);
   }
 }

@@ -39,7 +39,8 @@
         "PENDING_INVITE": "The user has a pending invitation!",
         "HAS_PROJECT": "The user is already a member of another project!",
         "IN_PROJECT": "The user is already a member of your project!", 
-        "CREATE_TASK": "Task could not be created!"
+        "CREATE_TASK": "Task could not be created!",
+        "NO_VALID_SECTION": "Please place the task in a category or the trash bin!"
     },
     "SUCCESS": {
         "LOGOUT": "You have been successfully logged out!",
@@ -47,8 +48,10 @@
         "UPDATE_ACCOUNT" : "Account has been updated!",
         "NOTIFICATIONS_ON": "The notifications have been activated!",
         "NOTIFICATIONS_OFF": "The notifications have been deactivated!",
-        "CREATE_PROJECT": "Project created successfully",
+        "CREATE_PROJECT": "Project created successfully!",
+        "PERMISSION_UPDATED": "The permissions have been updated!",
         "REMOVE_MEMBER": "Removed from the project!",
+        "LEAVE_PROJECT": "You have left the project!",
         "INVITE_DELIVERD": "Invitation delivered successfully!",
         "INVITE_ACCEPTED": "Joining successful!",
         "INVITE_REJECTED": "The invitation has been deleted! Create a project or ask for a new invitation.",
@@ -91,6 +94,7 @@
             "INVITE": "Invitation",
             "REMOVE_MEMBER": "Remove {{username}}?",
             "CHANGE_ATTRIBUTE": "Change {{attribute}}",
+            "LEAVE_PROJECT": "Leave project",
             "DELETE_ACCOUNT": "Delete irrevocably!"
         },
         "INFO": {
@@ -98,13 +102,15 @@
             "INVITE": "You have received an invitation to the project {{project}}",
             "REMOVE_MEMBER": "If you remove the user, he or she will no longer have access to the project. Existing tasks remain listed under this username.",
             "CHANGE_ATTRIBUTE": "Are you sure you want to change your {{attribute}}?",
+            "LEAVE_PROJECT": "Are you sure you want to leave the project?",
             "DELETE_ACCOUNT": "Are you sure you want to delete your account?"
         }
     },
     "PROJECT": {
         "NAME": "Project name",
         "ACTIONS": "Actions",
-        "INVITE": "Invite a user to the project"
+        "INVITE": "Invite a user to the project",
+        "LEAVE": "Leave project"
     },
     "TASK": {
         "TITLE": "Title",
@@ -123,7 +129,23 @@
     },
     "NOTIFICATIONS": {
         "FEED": "Notifications",
+        "TYPE": "Type",
         "TIMESTAMP": "Timestamp",
-        "MESSAGE": "Message"
+        "MESSAGE": "Message",
+        "NEW": {
+            "INVITED": "{{data_0}} has invited {{data_1}} to the project",
+            "JOINED": "{{data_0}} joined the team",
+            "REJECTED": "{{data_0}} has declined the invitation",
+            "LEAVE_PROJECT": "{{data_0}} has left the team",
+            "REMOVED": "{{data_0}} has been removed from the team by {{data_1}}",
+            "CREATE_TASK": "{{data_0}} has created a new task '{{data_1}}'",
+            "IMPORTED_TASKS": "{{data_0}} has imported new tasks",
+            "EDITED_TASK": "{{data_0}} has edited the task '{{data_1}}'",
+            "UPDATE_TASK_POSITION": "{{data_0}} has updated the status of task '{{data_1}}'",
+            "TRASHED_TASK": "{{data_0}} has moved the task '{{data_1}}' to the trash bin",
+            "RESTORED_TASK": "{{data_0}} has restored the task '{{data_1}}'",
+            "DELETED_TASK": "{{data_0}} has deleted the task '{{data_1}}' irrevocably",
+            "CLEARED_TRASH_BIN": "{{data_0}} has emptied the trash bin"
+        }
     }
 }

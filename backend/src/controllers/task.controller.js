@@ -1,4 +1,6 @@
+const notificationsService = require('../services/notifications.service');
 const admin = require('firebase-admin');
+const jwt = require('jsonwebtoken');
 const db = admin.firestore();
 
 async function createTask(req, res, next) {
@@ -20,11 +22,10 @@ async function createTask(req, res, next) {
             state: req.body.state,
             order: order
         };
-        tasksCollection.doc(newDocRef.id).set(task)
-        .then(() => {
+        tasksCollection.doc(newDocRef.id).set(task).then(async () => {
+            await notificationsService.createTeamNotification(db, req.body.project, req.body.author, 'NOTIFICATIONS.NEW.CREATE_TASK', [req.body.author, req.body.title], 'note_add');
             res.json({ message: 'SUCCESS.CREATE_TASK' });
-        })
-        .catch((err) => {
+        }).catch((err) => {
             res.status(402).send({ message: 'ERROR.CREATE_TASK' });
         });
     } catch (err) {
@@ -59,6 +60,9 @@ async function importTasks(req, res, next) {
             } catch (err) {
                 fail++;
             }
+        }
+        if (success > 0) {
+            await notificationsService.createTeamNotification(db, req.body.project, req.body.author, 'NOTIFICATIONS.NEW.IMPORTED_TASKS', [req.body.author], 'upload_file');
         }
         res.json({
             amount: req.body.tasks.length,
@@ -106,6 +110,7 @@ async function updateTask(req, res, next) {
         } else {
             const taskDoc = tasksSnapshot.docs[0];
             taskDoc.ref.update(req.body.task);
+            await notificationsService.createRelatedNotification(db, req.body.task.project, jwt.decode(req.body.token).username, req.body.task.author, req.body.task.assigned, 'NOTIFICATIONS.NEW.EDITED_TASK', [jwt.decode(req.body.token).username, req.body.task.title], 'edit_square');
             const taskListSnapshot = await tasksCollection
                 .where('project', '==', req.body.task.project)
                 .where('state', '!=', 'DELETED')
@@ -142,6 +147,7 @@ async function updatePosition(req, res, next) {
                 state: req.body.state,
                 order: req.body.order
             });
+            await notificationsService.createRelatedNotification(db, taskDoc.data().project, jwt.decode(req.body.token).username, taskDoc.data().author, taskDoc.data().assigned, 'NOTIFICATIONS.NEW.UPDATE_TASK_POSITION', [jwt.decode(req.body.token).username, taskDoc.data().title], 'edit_square');
             const taskListSnapshot = await tasksCollection
                 .where('project', '==', req.body.project)
                 .where('state', '!=', 'DELETED')
@@ -177,6 +183,7 @@ async function moveToTrashBin(req, res, next) {
             await taskDoc.ref.update({
                 state: 'DELETED'
             });
+            await notificationsService.createRelatedNotification(db, taskDoc.data().project, jwt.decode(req.body.token).username, taskDoc.data().author, taskDoc.data().assigned, 'NOTIFICATIONS.NEW.TRASHED_TASK', [jwt.decode(req.body.token).username, taskDoc.data().title], 'delete');
             const taskListSnapshot = await tasksCollection
                 .where('project', '==', req.body.project)
                 .where('state', '!=', 'DELETED')
@@ -231,6 +238,7 @@ async function restoreTask(req, res, next) {
             await taskDoc.ref.update({
                 state: 'NONE'
             });
+            await notificationsService.createRelatedNotification(db, taskDoc.data().project, jwt.decode(req.body.token).username, taskDoc.data().author, taskDoc.data().assigned, 'NOTIFICATIONS.NEW.RESTORED_TASK', [jwt.decode(req.body.token).username, taskDoc.data().title], 'undo');
             const taskListSnapshot = await tasksCollection
                 .where('project', '==', req.body.project)
                 .where('state', '==', 'DELETED')
@@ -255,7 +263,9 @@ async function deleteTask(req, res, next) {
         if (tasksSnapshot.empty) {
             res.status(500).send({ message: 'ERROR.INTERNAL' });
         } else {
-            await tasksSnapshot.docs[0].ref.delete();
+            const taskDoc = tasksSnapshot.docs[0];
+            await taskDoc.ref.delete();
+            await notificationsService.createRelatedNotification(db, taskDoc.data().project, jwt.decode(req.body.token).username, taskDoc.data().author, taskDoc.data().assigned, 'NOTIFICATIONS.NEW.DELETED_TASK', [jwt.decode(req.body.token).username, taskDoc.data().title], 'delete');
             const taskListSnapshot = await tasksCollection
                 .where('project', '==', req.body.project)
                 .where('state', '==', 'DELETED')
@@ -288,6 +298,7 @@ async function clearTrashBin(req, res, next) {
                 deletePromises.push(doc.ref.delete());
             });
             await Promise.all(deletePromises);
+            notificationsService.createAdminNotification(db, req.body.project, jwt.decode(req.body.token).username, 'NOTIFICATIONS.NEW.CLEARED_TRASH_BIN', [jwt.decode(req.body.token).username], 'delete_forever');
             res.json({'message': 'SUCCESS.CLEAR_TRASH_BIN'});
         }
     } catch (err) {
