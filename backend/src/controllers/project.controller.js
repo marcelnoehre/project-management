@@ -200,6 +200,23 @@ async function removeUser(req, res, next) {
                 project: '',
                 permission: ''
             });
+            const projectsCollection = db.collection('projects');
+            const historySnapshot = await projectsCollection.where('name', '==', userDoc.data().project).get();
+            if (historySnapshot.empty) {
+                res.status(500).send({ message: 'ERROR.INTERNAL' });
+            } else {
+                const event = {
+                    timestamp: new Date().getTime(),
+                    type: 'REMOVED',
+                    username: jwt.decode(req.body.token).username
+                }
+                const historyDoc = historySnapshot.docs[0];
+                const history = historyDoc.data().history;
+                history.push(event);
+                await historyDoc.ref.update({
+                    history: history
+                });
+            }
             await notificationsService.createTeamNotification(db, jwt.decode(req.body.token).project, jwt.decode(req.body.token).username, 'NOTIFICATIONS.NEW.REMOVED', [req.body.username, jwt.decode(req.body.token).username], 'person_remove');
             res.json({message: 'SUCCESS.REMOVE_MEMBER'});
         }
@@ -220,6 +237,23 @@ async function leaveProject(req, res, next) {
                 project: '',
                 permission: ''
             });
+            const projectsCollection = db.collection('projects');
+            const historySnapshot = await projectsCollection.where('name', '==', userDoc.data().project).get();
+            if (historySnapshot.empty) {
+                res.status(500).send({ message: 'ERROR.INTERNAL' });
+            } else {
+                const event = {
+                    timestamp: new Date().getTime(),
+                    type: 'LEFT',
+                    username: req.body.username
+                }
+                const historyDoc = historySnapshot.docs[0];
+                const history = historyDoc.data().history;
+                history.push(event);
+                await historyDoc.ref.update({
+                    history: history
+                });
+            }
             await notificationsService.createTeamNotification(db, jwt.decode(req.body.token).project, req.body.username, 'NOTIFICATIONS.NEW.LEAVE_PROJECT', [req.body.username], 'exit_to_app');
             res.json({message: 'SUCCESS.LEAVE_PROJECT'});
         }
