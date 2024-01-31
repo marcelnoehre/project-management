@@ -173,9 +173,27 @@ async function updatePermission(req, res, next) {
         if (userSnapshot.empty) {
             res.status(500).send({ message: 'ERROR.INTERNAL' });
         } else {
-            await userSnapshot.docs[0].ref.update({
+            const userDoc = userSnapshot.docs[0];
+            await userDoc.ref.update({
                 permission: req.body.permission
             });
+            const projectsCollection = db.collection('projects');
+            const historySnapshot = await projectsCollection.where('name', '==', userDoc.data().project).get();
+            if (historySnapshot.empty) {
+                res.status(500).send({ message: 'ERROR.INTERNAL' });
+            } else {
+                const event = {
+                    timestamp: new Date().getTime(),
+                    type: req.body.permission,
+                    username: jwt.decode(req.body.token).username
+                }
+                const historyDoc = historySnapshot.docs[0];
+                const history = historyDoc.data().history;
+                history.push(event);
+                await historyDoc.ref.update({
+                    history: history
+                });
+            }
             const usersSnapshot = await usersCollection.where('project', '==', req.body.project).get();
             const users = [];
             usersSnapshot.forEach(doc => {
