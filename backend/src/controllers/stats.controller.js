@@ -71,6 +71,7 @@ async function userActivity(req, res, next) {
 }
 
 async function statLeaders(req, res, next) {
+    // token, project
     try {
         const usersCollection = db.collection('users');
         const usersSnapshot = await usersCollection.where('project', '==', req.body.project).get();
@@ -124,8 +125,24 @@ async function averageTime(req, res, next) {
 }
 
 async function taskAmount(req, res, next) {
+    // token, project
     try {
-
+        const tasksCollection = db.collection('tasks');
+        const tasksSnapshot = await tasksCollection.where('project', '==', req.body.project).get();
+        const states = {
+            NONE: 0,
+            TODO: 0,
+            PROGRESS: 0,
+            REVIEW: 0,
+            DONE: 0,
+            DELETED: 0
+        };
+        if (!tasksSnapshot.empty) {
+            tasksSnapshot.forEach(doc => {
+                states[doc.data().state]++;
+            });
+        }
+        res.json(states);
     } catch (err) {
         next(err);
     }
