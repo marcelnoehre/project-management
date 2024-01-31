@@ -72,7 +72,36 @@ async function userActivity(req, res, next) {
 
 async function statLeaders(req, res, next) {
     try {
-
+        const usersCollection = db.collection('users');
+        const usersSnapshot = await usersCollection.where('project', '==', req.body.project).get();
+        if (!usersSnapshot.empty) {
+            const stats = ['created', 'imported', 'edited', 'trashed', 'restored', 'deleted', 'cleared'];
+            const leader = {
+                created: { username: [], value: -Infinity },
+                imported: { username: [], value: -Infinity },
+                edited: { username: [], value: -Infinity },
+                trashed: { username: [], value: -Infinity },
+                restored: { username: [], value: -Infinity },
+                deleted: { username: [], value: -Infinity },
+                cleared: { username: [], value: -Infinity }
+            };
+            usersSnapshot.forEach(doc => {
+                const user = doc.data();
+                stats.forEach((stat) => {
+                    if (user.stats[stat] > leader[stat]) {
+                        leader[stat] = {
+                            username: [user.username],
+                            value: user.stats[stat]
+                        };
+                    } else if (user.stats[stat] === leader[stat]) {
+                        leader[stat].push(user.username);
+                    }
+                });
+            });
+            res.json(leader);
+        } else {
+            res.status(500).send({ message: 'ERROR.INTERNAL' });
+        }
     } catch (err) {
         next(err);
     }
