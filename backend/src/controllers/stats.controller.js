@@ -1,9 +1,35 @@
 const admin = require('firebase-admin');
 const db = admin.firestore();
 
-async function optimize(req, res, next) {
+async function optimizeOrder(req, res, next) {
     try {
-
+        const tasksCollection = db.collection('tasks');
+        const tasksSnapshot = await tasksCollection
+            .where('project', '==', req.body.project)
+            .where('state', '!=', 'DELETED')
+            .orderBy('state')
+            .orderBy('order')
+            .get();
+        const sort = {
+            NONE: [],
+            TODO: [],
+            PROGRESS: [],
+            REVIEW: [],
+            DONE: []
+        };
+        tasksSnapshot.forEach(doc => {
+            const task = doc.data();
+            sort[task.state].push(doc);
+        });
+        const states = [sort.NONE, sort.TODO, sort.PROGRESS, sort.REVIEW, sort.DONE];
+        states.forEach(async (state) => {
+            for (let i = 0; i < state.length; i++) {
+                await state[i].ref.update({
+                    order: i + 1
+                });
+            }
+        });
+        res.json({'message': 'SUCCESS.STATS.OPTIMIZE'});
     } catch (err) {
         next(err);
     }
@@ -82,7 +108,7 @@ async function wip(req, res, next) {
 }
 
 module.exports = {
-    optimize,
+    optimizeOrder,
     projectStats,
     memberAmount,
     userActivity,

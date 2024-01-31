@@ -3,7 +3,7 @@ const router = express.Router();
 const statsController = require('../controllers/stats.controller');
 const { jwtAuth } = require('../auth/jwtAuth');
 
-router.post('/optimize', jwtAuth, statsController.optimize);
+router.post('/optimizeOrder', jwtAuth, statsController.optimizeOrder);
 router.post('/projectStats', jwtAuth, statsController.projectStats);
 router.post('/memberAmount', jwtAuth, statsController.memberAmount);
 router.post('/userActivity', jwtAuth, statsController.userActivity);
