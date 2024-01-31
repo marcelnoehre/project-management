@@ -1,4 +1,5 @@
 import { Permission } from "src/app/enums/permission.enum";
+import { UserStats } from "./user-stats";
 
 export interface User {
     [key: string]: any,
@@ -12,5 +13,6 @@ export interface User {
     permission: Permission,
     profilePicture: string,
     notificationsEnabled: boolean,
-    isLoggedIn: boolean
+    isLoggedIn: boolean,
+    stats: UserStats
 }

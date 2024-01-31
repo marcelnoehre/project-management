@@ -11,7 +11,21 @@ function generateInitials(fullName) {
     return first + second;
 }
 
+async function updateUserStats(db, username, attribute, counter) {
+    const usersCollection = db.collection('users');
+    const usersSnapshot = await usersCollection.where('username', '==', username).get();
+    if (!usersSnapshot.empty) {
+        const userDoc = usersSnapshot.docs[0];
+        const stats = userDoc.data().stats;
+        stats[attribute] = stats[attribute] + counter;
+        await userDoc.ref.update({
+            stats: stats
+        });
+    }
+}
+
 module.exports = { 
     generateInitials,
-    defaultColor
+    defaultColor,
+    updateUserStats
 };

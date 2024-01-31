@@ -135,7 +135,8 @@ export class KanbanBoardComponent implements AfterViewInit {
       description: task.description,
       assigned: task.assigned,
       state: task.state,
-      order: task.order
+      order: task.order,
+      history: task.history
     };
     this.dialog.open(TaskDetailViewComponent, { data, ...{} }).afterClosed().subscribe(
       async (updated) => {

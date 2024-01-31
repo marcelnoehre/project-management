@@ -45,7 +45,16 @@ async function register(req, res, next) {
                 project: '',
                 permission: '',
                 profilePicture: '',
-                notificationsEnabled: true
+                notificationsEnabled: true,
+                stats: {
+                    created: 0,
+                    imported: 0,
+                    edited: 0,
+                    trashed: 0,
+                    restored: 0,
+                    deleted: 0,
+                    cleared: 0
+                }
             }
             const usersRef = db.collection('users').doc();
             await usersRef.set(user);
