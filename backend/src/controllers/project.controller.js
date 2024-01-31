@@ -12,6 +12,16 @@ async function createProject(req, res, next) {
         } else {
             const projectSnapshot = await usersCollection.where('project', '==', req.body.project).get();
             if (projectSnapshot.empty) {
+                const projectsRef = db.collection('projects').doc();
+                const project = {
+                    name: req.body.project,
+                    history: [{
+                        timestamp: new Date().getTime(),
+                        type: 'CREATED',
+                        username: req.body.username
+                    }]
+                };
+                await projectsRef.set(project);
                 const userDoc = usersSnapshot.docs[0];
                 await userDoc.ref.update({
                     project: req.body.project,
