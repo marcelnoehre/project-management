@@ -85,7 +85,7 @@ async function handleInvite(req, res, next) {
                     permission: 'MEMBER',
                     isLoggedIn: true
                 });
-                await notificationsService.createNotification(db, userDoc.data().project, req.body.username, 'NOTIFICATIONS.NEW.JOINED', [req.body.username], 'person_add');
+                await notificationsService.createTeamNotification(db, userDoc.data().project, req.body.username, 'NOTIFICATIONS.NEW.JOINED', [req.body.username], 'person_add');
                 res.json({ message: 'SUCCESS.INVITE_ACCEPTED'});
             } else {
                 await userDoc.ref.update({
@@ -134,7 +134,7 @@ async function removeUser(req, res, next) {
                 project: '',
                 permission: ''
             });
-            await notificationsService.createNotification(db, jwt.decode(req.body.token).project, jwt.decode(req.body.token).username, 'NOTIFICATIONS.NEW.REMOVED', [req.body.username, jwt.decode(req.body.token).username], 'person_remove');
+            await notificationsService.createTeamNotification(db, jwt.decode(req.body.token).project, jwt.decode(req.body.token).username, 'NOTIFICATIONS.NEW.REMOVED', [req.body.username, jwt.decode(req.body.token).username], 'person_remove');
             res.json({message: 'SUCCESS.REMOVE_MEMBER'});
         }
     } catch (err) {
@@ -154,7 +154,7 @@ async function leaveProject(req, res, next) {
                 project: '',
                 permission: ''
             });
-            await notificationsService.createNotification(db, jwt.decode(req.body.token).project, req.body.username, 'NOTIFICATIONS.NEW.LEAVE_PROJECT', [req.body.username], 'exit_to_app');
+            await notificationsService.createTeamNotification(db, jwt.decode(req.body.token).project, req.body.username, 'NOTIFICATIONS.NEW.LEAVE_PROJECT', [req.body.username], 'exit_to_app');
             res.json({message: 'SUCCESS.LEAVE_PROJECT'});
         }
     } catch (err) {

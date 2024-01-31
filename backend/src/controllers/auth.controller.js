@@ -155,7 +155,7 @@ async function deleteUser(req, res, next) {
                 await usersCollection.doc(userId).delete();
                 const passwordId = passwordsSnapshot.docs[0].id;
                 await passwordsCollection.doc(passwordId).delete();
-                await notificationsService.createNotification(db, jwt.decode(req.body.token).project, req.body.username, 'NOTIFICATIONS.NEW.LEAVE_PROJECT', [req.body.username], 'exit_to_app');
+                await notificationsService.createTeamNotification(db, jwt.decode(req.body.token).project, req.body.username, 'NOTIFICATIONS.NEW.LEAVE_PROJECT', [req.body.username], 'exit_to_app');
                 res.json({ message: 'SUCCESS.DELETE_ACCOUNT' });
             }
         }
