@@ -147,6 +147,7 @@ async function updatePosition(req, res, next) {
                 state: req.body.state,
                 order: req.body.order
             });
+            await notificationsService.createRelatedNotification(db, taskDoc.data().project, jwt.decode(req.body.token).username, taskDoc.data().author, taskDoc.data().assigned, 'NOTIFICATIONS.NEW.UPDATE_TASK_POSITION', [jwt.decode(req.body.token).username, taskDoc.data().title], 'edit_square');
             const taskListSnapshot = await tasksCollection
                 .where('project', '==', req.body.project)
                 .where('state', '!=', 'DELETED')
@@ -182,6 +183,7 @@ async function moveToTrashBin(req, res, next) {
             await taskDoc.ref.update({
                 state: 'DELETED'
             });
+            await notificationsService.createRelatedNotification(db, taskDoc.data().project, jwt.decode(req.body.token).username, taskDoc.data().author, taskDoc.data().assigned, 'NOTIFICATIONS.NEW.TRASHED_TASK', [jwt.decode(req.body.token).username, taskDoc.data().title], 'delete');
             const taskListSnapshot = await tasksCollection
                 .where('project', '==', req.body.project)
                 .where('state', '!=', 'DELETED')
@@ -236,6 +238,7 @@ async function restoreTask(req, res, next) {
             await taskDoc.ref.update({
                 state: 'NONE'
             });
+            await notificationsService.createRelatedNotification(db, taskDoc.data().project, jwt.decode(req.body.token).username, taskDoc.data().author, taskDoc.data().assigned, 'NOTIFICATIONS.NEW.RESTORED_TASK', [jwt.decode(req.body.token).username, taskDoc.data().title], 'undo');
             const taskListSnapshot = await tasksCollection
                 .where('project', '==', req.body.project)
                 .where('state', '==', 'DELETED')
@@ -260,7 +263,9 @@ async function deleteTask(req, res, next) {
         if (tasksSnapshot.empty) {
             res.status(500).send({ message: 'ERROR.INTERNAL' });
         } else {
-            await tasksSnapshot.docs[0].ref.delete();
+            const taskDoc = tasksSnapshot.docs[0];
+            await taskDoc.ref.delete();
+            await notificationsService.createRelatedNotification(db, taskDoc.data().project, jwt.decode(req.body.token).username, taskDoc.data().author, taskDoc.data().assigned, 'NOTIFICATIONS.NEW.DELETED_TASK', [jwt.decode(req.body.token).username, taskDoc.data().title], 'delete');
             const taskListSnapshot = await tasksCollection
                 .where('project', '==', req.body.project)
                 .where('state', '==', 'DELETED')
@@ -293,6 +298,7 @@ async function clearTrashBin(req, res, next) {
                 deletePromises.push(doc.ref.delete());
             });
             await Promise.all(deletePromises);
+            notificationsService.createAdminNotification(db, req.body.project, jwt.decode(req.body.token).username, 'CLEARED_TRASH_BIN', [jwt.decode(req.body.token).username], 'delete_forever');
             res.json({'message': 'SUCCESS.CLEAR_TRASH_BIN'});
         }
     } catch (err) {
