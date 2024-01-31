@@ -1,5 +1,6 @@
 const notificationsService = require('../services/notifications.service');
 const admin = require('firebase-admin');
+const jwt = require('jsonwebtoken');
 const db = admin.firestore();
 
 async function createTask(req, res, next) {
@@ -109,6 +110,7 @@ async function updateTask(req, res, next) {
         } else {
             const taskDoc = tasksSnapshot.docs[0];
             taskDoc.ref.update(req.body.task);
+            await notificationsService.createRelatedNotification(db, req.body.task.project, jwt.decode(req.body.token).username, req.body.task.author, req.body.task.assigned, 'NOTIFICATIONS.NEW.EDITED_TASK', [jwt.decode(req.body.token).username, req.body.task.title], 'edit_square');
             const taskListSnapshot = await tasksCollection
                 .where('project', '==', req.body.task.project)
                 .where('state', '!=', 'DELETED')
