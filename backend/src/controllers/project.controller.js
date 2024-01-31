@@ -63,6 +63,7 @@ async function inviteUser(req, res, next) {
                     project: req.body.project,
                     permission: 'INVITED'
                 });
+                await notificationsService.createAdminNotification(db, req.body.project, jwt.decode(req.body.token).username, 'NOTIFICATIONS.NEW.INVITED', [jwt.decode(req.body.token).username, req.body.username], 'cancel');
                 usersSnapshot = await usersCollection.where('username', '==', req.body.username).get();
                 res.json(usersSnapshot.docs[0].data());
             }
@@ -92,6 +93,7 @@ async function handleInvite(req, res, next) {
                     project: '',
                     permission: ''
                 });
+                await notificationsService.createAdminNotification(db, userDoc.data().project, req.body.username, 'NOTIFICATIONS.NEW.REJECTED', [req.body.username], 'cancel');
                 res.json({ message: 'SUCCESS.INVITE_REJECTED'});
             }
         }

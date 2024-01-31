@@ -135,7 +135,9 @@
             "REMOVED": "{{data_0}} has been removed from the team by {{data_1}}",
             "JOINED": "{{data_0}} joined the team",
             "CREATE_TASK": "{{data_0}} has created a new task '{{data_1}}'",
-            "IMPORTED_TASKS": "{{data_0}} has imported new tasks"
+            "IMPORTED_TASKS": "{{data_0}} has imported new tasks",
+            "REJECTED": "{{data_0}} has declined the invitation",
+            "INVITED": "{{data_0}} has invited {{data_1}} to the project"
         }
     }
 }
