@@ -20,7 +20,7 @@ export class StatsService {
       this.calculated = true;
     }
     if (!this.calculated) {
-      this.api.optimizeOrder(this.user.token, this.user.project).subscribe(
+      this.api.optimizeOrder(this.user.token).subscribe(
         (response) => {
 
         },

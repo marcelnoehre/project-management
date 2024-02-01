@@ -2,11 +2,10 @@ const admin = require('firebase-admin');
 const db = admin.firestore();
 
 async function optimizeOrder(req, res, next) {
-    // token, project
     try {
         const tasksCollection = db.collection('tasks');
         const tasksSnapshot = await tasksCollection
-            .where('project', '==', req.body.project)
+            .where('project', '==', jwt.decode(req.body.token).project)
             .where('state', '!=', 'DELETED')
             .orderBy('state')
             .orderBy('order')
@@ -39,10 +38,11 @@ async function optimizeOrder(req, res, next) {
 }
 
 async function stats(req, res, next) {
-    // token, project
     try {
         const projectsCollection = db.collection('projects');
-        const projectsSnapshot = await projectsCollection.where('name', '==', req.body.project).get();
+        const projectsSnapshot = await projectsCollection
+            .where('name', '==', jwt.decode(req.body.token).project)
+            .get();
         const stats = []
         const [project, others] = [{
             id: 'project',

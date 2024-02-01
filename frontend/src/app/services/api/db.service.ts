@@ -10,6 +10,7 @@ import { Task } from 'src/app/interfaces/data/task';
 import { Progress } from 'src/app/interfaces/data/progress';
 import { Notification } from 'src/app/interfaces/data/notification';
 import { Permission } from 'src/app/enums/permission.enum';
+import { AssignedStats } from 'src/app/interfaces/data/assigned-stats';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,7 @@ export class DbService extends AdapterService {
   private project = 'project/';
   private task = 'task/';
   private notification = 'notifications/';
-  private stats = 'stats/';
+  private statsRoute = 'stats/';
 
   constructor(private http: HttpClient) {
     super();
@@ -261,11 +262,17 @@ export class DbService extends AdapterService {
 
 
   // ### STATS ###
-  public override optimizeOrder(token: string, project: string): Observable<Response> {
+  public override optimizeOrder(token: string): Observable<Response> {
     const body = {
-      token: token,
-      project: project
+      token: token
     }
-    return this.http.post<Response>(this.basePath + this.stats + 'optimizeOrder', body);
+    return this.http.post<Response>(this.basePath + this.statsRoute + 'optimizeOrder', body);
+  }
+
+  public override stats(token: string): Observable<AssignedStats[]> {
+    const body = {
+      token: token
+    }
+    return this.http.post<AssignedStats[]>(this.basePath + this.statsRoute + 'stats', body);
   }
 }

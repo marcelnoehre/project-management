@@ -12,6 +12,7 @@ import { Task } from 'src/app/interfaces/data/task';
 import { Progress } from 'src/app/interfaces/data/progress';
 import { Notification } from 'src/app/interfaces/data/notification';
 import { Permission } from 'src/app/enums/permission.enum';
+import { AssignedStats } from 'src/app/interfaces/data/assigned-stats';
 
 @Injectable({
   providedIn: 'root'
@@ -149,7 +150,11 @@ export class ApiService {
 
 
   	// ### STATS ###
-  	public optimizeOrder(token: string, project: string): Observable<Response> {
-		return this.adapter.optimizeOrder(token, project);
+  	public optimizeOrder(token: string): Observable<Response> {
+		return this.adapter.optimizeOrder(token);
+	}
+
+	public stats(token: string): Observable<AssignedStats[]> {
+		return this.adapter.stats(token);
 	}
 }

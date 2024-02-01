@@ -7,6 +7,7 @@ import { Task } from 'src/app/interfaces/data/task';
 import { Progress } from 'src/app/interfaces/data/progress';
 import { Notification } from 'src/app/interfaces/data/notification';
 import { Permission } from 'src/app/enums/permission.enum';
+import { AssignedStats } from 'src/app/interfaces/data/assigned-stats';
 
 @Injectable({
   providedIn: 'root'
@@ -71,5 +72,7 @@ export abstract class AdapterService {
 
 
   // ### STATS ###
-  public abstract optimizeOrder(token: string, project: string): Observable<Response>;
+  public abstract optimizeOrder(token: string): Observable<Response>;
+
+  public abstract stats(token: string): Observable<AssignedStats[]>;
 }
