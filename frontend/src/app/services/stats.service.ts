@@ -27,7 +27,14 @@ export class StatsService {
         //   (response) => {
           // this.api.statLeaders(token).subscribe(
           //   (response) => {
-              
+            // this.api.taskAmount(token).subscribe(
+            //   (response) => {
+                
+            //   },
+            //   (error) => {
+          
+            //   }
+            // );
           //   },
           //   (error) => {
     
