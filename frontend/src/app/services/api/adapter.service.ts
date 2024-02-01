@@ -9,7 +9,7 @@ import { Notification } from 'src/app/interfaces/data/notification';
 import { Permission } from 'src/app/enums/permission.enum';
 import { AssignedStats } from 'src/app/interfaces/data/assigned-stats';
 import { StatLeaders } from 'src/app/interfaces/data/stat-leaders';
-import { TaskAmount } from 'src/app/interfaces/data/task-amount';
+import { CategoryStats } from 'src/app/interfaces/data/category-stats';
 
 @Injectable({
   providedIn: 'root'
@@ -80,5 +80,8 @@ export abstract class AdapterService {
 
   public abstract statLeaders(token: string): Observable<StatLeaders>;
 
-  public abstract taskAmount(token: string): Observable<TaskAmount>;
+  public abstract taskAmount(token: string): Observable<CategoryStats>;
+
+  public abstract averageTime(token: string): Observable<CategoryStats>;
+  
 }

@@ -13,7 +13,7 @@ import { Notification } from 'src/app/interfaces/data/notification';
 import { Permission } from 'src/app/enums/permission.enum';
 import { AssignedStats } from 'src/app/interfaces/data/assigned-stats';
 import { StatLeaders } from 'src/app/interfaces/data/stat-leaders';
-import { TaskAmount } from 'src/app/interfaces/data/task-amount';
+import { CategoryStats } from 'src/app/interfaces/data/category-stats';
 
 @Injectable({
   providedIn: 'root'
@@ -220,9 +220,14 @@ export class MockService extends AdapterService {
     return this.http.get<StatLeaders>(url);
   }
 
-  public override taskAmount(token: string): Observable<TaskAmount> {
+  public override taskAmount(token: string): Observable<CategoryStats> {
     const url = this.basePath + this.statsRoute + 'task-amount/stats.json';
-    return this.http.get<TaskAmount>(url);
+    return this.http.get<CategoryStats>(url);
+  }
+
+  public override averageTime(token: string): Observable<CategoryStats> {
+    const url = this.basePath + this.statsRoute + 'average-time/stats.json';
+    return this.http.get<CategoryStats>(url);
   }
 
 }

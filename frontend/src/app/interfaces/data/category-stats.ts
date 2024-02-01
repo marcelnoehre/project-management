@@ -1,4 +1,4 @@
-export interface TaskAmount {
+export interface CategoryStats {
     NONE: number,
     TODO: number,
     PROGRESS: number,

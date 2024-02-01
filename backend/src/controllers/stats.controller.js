@@ -139,10 +139,42 @@ async function taskAmount(req, res, next) {
     }
 }
 
+async function averageTime(req, res, next) {
+    try {
+        // average time a task stays in a category
+        const states = {
+            NONE: 0,
+            TODO: 0,
+            PROGRESS: 0,
+            REVIEW: 0,
+            DONE: 0,
+            DELETED: 0
+        };
+        res.json(states);
+    } catch (err) {
+        next(err);
+    }
+}
 
+async function wip(req, res, next) {
+    // token, project
+    try {
+        const tasksCollection = db.collection('tasks');
+        const tasksSnapshot = await tasksCollection.where('project', '==', req.body.project).where('state', '==', 'PROGRESS').get();
+        res.json(tasksSnapshot.empty ? 0 : tasksSnapshot.length);
+    } catch (err) {
+        next(err);
+    }
+}
 
+async function taskProgress(req, res, next) {
+    try {
+        // diagramm wie bei agiles Projektmanagement steigender Graph für alle Kategorien
 
-
+    } catch (err) {
+        next(err);
+    }
+}
 
 async function projectRoadmap(req, res, next) {
     // token, project
@@ -160,41 +192,13 @@ async function projectRoadmap(req, res, next) {
     }
 }
 
-async function taskProgress(req, res, next) {
-    try {
-        // diagramm wie bei agiles Projektmanagement steigender Graph für alle Kategorien
-
-    } catch (err) {
-        next(err);
-    }
-}
-
-async function averageTime(req, res, next) {
-    try {
-        // average time a task stays in a category
-    } catch (err) {
-        next(err);
-    }
-}
-
-async function wip(req, res, next) {
-    // token, project
-    try {
-        const tasksCollection = db.collection('tasks');
-        const tasksSnapshot = await tasksCollection.where('project', '==', req.body.project).where('state', '==', 'PROGRESS').get();
-        res.json(tasksSnapshot.empty ? 0 : tasksSnapshot.length);
-    } catch (err) {
-        next(err);
-    }
-}
-
 module.exports = {
     optimizeOrder,
     stats,
-    projectRoadmap,
     statLeaders,
-    taskProgress,
-    averageTime,
     taskAmount,
-    wip
+    averageTime,
+    wip,
+    taskProgress,
+    projectRoadmap
 };
