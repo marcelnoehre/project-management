@@ -1,4 +1,5 @@
 const admin = require('firebase-admin');
+const jwt = require('jsonwebtoken');
 const db = admin.firestore();
 
 async function optimizeOrder(req, res, next) {
@@ -58,7 +59,7 @@ async function stats(req, res, next) {
         }
         stats.push(project);
         const usersCollection = db.collection('users');
-        const usersSnapshot = await usersCollection.where('project', '==', req.body.project).get();
+        const usersSnapshot = await usersCollection.where('project', '==', jwt.decode(req.body.token).project).get();
         if (!usersSnapshot.empty) {
             const statLabels = ['created', 'imported', 'updated', 'edited', 'trashed', 'restored', 'deleted', 'cleared'];
             usersSnapshot.forEach(doc => {

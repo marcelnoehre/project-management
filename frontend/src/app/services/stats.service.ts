@@ -20,14 +20,22 @@ export class StatsService {
       this.calculated = true;
     }
     if (!this.calculated) {
-      this.api.optimizeOrder(this.user.token).subscribe(
-        (response) => {
-
-        },
-        (error) => {
+      const token = this.user.token;
+      // this.api.optimizeOrder(token).subscribe(
+      //   (response) => {
+        // this.api.stats(token).subscribe(
+        //   (response) => {
+        //     console.log(response);
+        //   },
+        //   (error) => {
   
-        }
-      );
+        //   }
+        // );
+      //   },
+      //   (error) => {
+  
+      //   }
+      // );
       this.calculated = true;
       this.storage.setSessionEntry('stats', this.calculated);
     }
