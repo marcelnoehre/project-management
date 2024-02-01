@@ -43,12 +43,12 @@ async function projectStats(req, res, next) {
     try {
         const projectsCollection = db.collection('projects');
         const projectsSnapshot = await projectsCollection.where('name', '==', req.body.project).get();
+        let history = [];
         if (!projectsSnapshot.empty) {
             const projectDoc = projectsSnapshot.docs[0];
-            res.json(projectDoc.data().history);
-        } else {
-            res.status(500).send({ message: 'ERROR.INTERNAL' });
+            history = projectDoc.data().history;
         }
+        res.json(history);
     } catch (err) {
         next(err);
     }
@@ -138,17 +138,40 @@ async function taskAmount(req, res, next) {
     }
 }
 
-async function trashStats(req, res, next) {
+async function stats(req, res, next) {
+    // token, project
     try {
-        // amount of trashed, restored and deleted tasks
+        const projectsCollection = db.collection('projects');
+        const projectsSnapshot = await projectsCollection.where('name', '==', req.body.project).get();
+        const stats = {}
+        if (!projectsSnapshot.empty) {
+            stats['project'] = projectsSnapshot.docs[0].data().stats;
+            stats['others'] = projectsSnapshot.docs[0].data().stats;
+        }
+        const usersCollection = db.collection('users');
+        const usersSnapshot = await usersCollection.where('project', '==', req.body.project).get();
+        if (!usersSnapshot.empty) {
+            const statLabels = ['created', 'imported', 'edited', 'trashed', 'restored', 'deleted', 'cleared'];
+            usersSnapshot.forEach(doc => {
+                const user = doc.data();
+                stats[user.username] = user.stats;
+                statLabels.forEach((stat) => {
+                    stats['others'][stat] -= user.stats[stat];
+                });
+            });
+        }
+        res.json(stats);
     } catch (err) {
         next(err);
     }
 }
 
 async function wip(req, res, next) {
+    // token, project
     try {
-        // active tasks progress
+        const tasksCollection = db.collection('tasks');
+        const tasksSnapshot = await tasksCollection.where('project', '==', req.body.project).where('state', '==', 'PROGRESS').get();
+        res.json(tasksSnapshot.empty ? 0 : tasksSnapshot.length);
     } catch (err) {
         next(err);
     }
@@ -162,6 +185,6 @@ module.exports = {
     taskProgress,
     averageTime,
     taskAmount,
-    trashStats,
+    stats,
     wip
 };
