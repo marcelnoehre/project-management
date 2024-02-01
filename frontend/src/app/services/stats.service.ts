@@ -31,7 +31,13 @@ export class StatsService {
             //   (response) => {
                 // this.api.averageTime(token).subscribe(
                 //   (response) => {
+                  // this.api.wip(token).subscribe(
+                  //   (response) => {
+                  //   },
+                  //   (error) => {
 
+                  //   }
+                  // );
                 //   },
                 //   (error) => {
 

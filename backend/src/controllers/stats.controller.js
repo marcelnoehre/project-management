@@ -185,11 +185,19 @@ async function averageTime(req, res, next) {
 }
 
 async function wip(req, res, next) {
-    // token, project
     try {
         const tasksCollection = db.collection('tasks');
-        const tasksSnapshot = await tasksCollection.where('project', '==', req.body.project).where('state', '==', 'PROGRESS').get();
-        res.json(tasksSnapshot.empty ? 0 : tasksSnapshot.length);
+        const tasksSnapshot = await tasksCollection
+            .where('project', '==', jwt.decode(req.body.token).project)
+            .where('state', '==', 'PROGRESS')
+            .get();
+        let amount = 0;
+        if (!tasksSnapshot.empty) {
+            tasksSnapshot.forEach(doc => {
+                amount++;
+            });
+        }
+        res.json(amount);
     } catch (err) {
         next(err);
     }
