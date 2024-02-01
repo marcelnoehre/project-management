@@ -141,7 +141,8 @@ async function taskAmount(req, res, next) {
 
 async function averageTime(req, res, next) {
     try {
-        // average time a task stays in a category
+        const tasksCollection = db.collection('tasks');
+        const tasksSnapshot = await tasksCollection.where('project', '==', jwt.decode(req.body.token).project).get();
         const states = {
             NONE: 0,
             TODO: 0,
@@ -150,6 +151,33 @@ async function averageTime(req, res, next) {
             DONE: 0,
             DELETED: 0
         };
+        if (!tasksSnapshot.empty) {
+            const averageCategoryTime = {
+                NONE: { amount: 0, sum: 0 },
+                TODO: { amount: 0, sum: 0 },
+                PROGRESS: { amount: 0, sum: 0 },
+                REVIEW: { amount: 0, sum: 0 },
+                DONE: { amount: 0, sum: 0 },
+                DELETED: { amount: 0, sum: 0 }
+            };
+            tasksSnapshot.forEach(doc => {
+                const history = doc.data().history;
+                for (let i = 0; i < history - 1; i++) {
+                    averageCategoryTime[history[i].state].amount++;
+                    const duration = history[i + 1].timestamp - history[i].timestamp;
+                    averageCategoryTime[history[i].state].sum += duration;
+                }
+                averageCategoryTime[history[history.length - 1].state].amount++;
+                const duration = new Date().getTime() - history[history.length - 1].timestamp;
+                averageCategoryTime[history[history.length - 1].state].sum += duration;
+            });
+            const categories = ['NONE', 'TODO', 'PROGRESS', 'REVIEW', 'DONE', 'DELETED'];
+            categories.forEach((category) => {
+                if (averageCategoryTime[category].amount > 0) {
+                    states[category] = averageCategoryTime[category].sum / averageCategoryTime[category].amount;
+                }
+            });
+        }
         res.json(states);
     } catch (err) {
         next(err);

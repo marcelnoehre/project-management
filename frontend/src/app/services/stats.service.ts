@@ -29,7 +29,14 @@ export class StatsService {
           //   (response) => {
             // this.api.taskAmount(token).subscribe(
             //   (response) => {
-                
+                // this.api.averageTime(token).subscribe(
+                //   (response) => {
+
+                //   },
+                //   (error) => {
+
+                //   }
+                // );
             //   },
             //   (error) => {
           
