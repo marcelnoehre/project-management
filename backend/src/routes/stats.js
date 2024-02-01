@@ -4,6 +4,7 @@ const statsController = require('../controllers/stats.controller');
 const { jwtAuth } = require('../auth/jwtAuth');
 
 router.post('/optimizeOrder', jwtAuth, statsController.optimizeOrder);
+router.post('/personalStats', jwtAuth, statsController.personalStats);
 router.post('/stats', jwtAuth, statsController.stats);
 router.post('/statLeaders', jwtAuth, statsController.statLeaders);
 router.post('/taskAmount', jwtAuth, statsController.taskAmount);

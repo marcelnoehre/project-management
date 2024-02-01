@@ -38,6 +38,29 @@ async function optimizeOrder(req, res, next) {
     }
 }
 
+async function personalStats(req, res, next) {
+    try {
+        const usersCollection = db.collection('users');
+        const usersSnapshot = await usersCollection.where('username', '==', jwt.decode(req.body.token).username).get();
+        let stats = {
+            created: 0,
+            imported: 0,
+            updated: 0,
+            edited: 0,
+            trashed: 0,
+            restored: 0,
+            deleted: 0,
+            cleared: 0
+        };
+        if (!usersSnapshot.empty) {
+            stats = usersSnapshot.docs[0].data().stats;
+        }
+        res.json(stats);
+    } catch (err) {
+        next(err)
+    }
+}
+
 async function stats(req, res, next) {
     try {
         const projectsCollection = db.collection('projects');
@@ -236,6 +259,7 @@ async function projectRoadmap(req, res, next) {
 
 module.exports = {
     optimizeOrder,
+    personalStats,
     stats,
     statLeaders,
     taskAmount,
