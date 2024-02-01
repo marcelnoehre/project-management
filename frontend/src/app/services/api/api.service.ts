@@ -147,4 +147,9 @@ export class ApiService {
 		return this.adapter.updateNotifications(token, username, project, seen, removed);
 	}
 
+
+  	// ### STATS ###
+  	public optimizeOrder(token: string, project: string): Observable<Response> {
+		return this.adapter.optimizeOrder(token, project);
+	}
 }

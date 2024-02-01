@@ -20,6 +20,7 @@ export class DbService extends AdapterService {
   private project = 'project/';
   private task = 'task/';
   private notification = 'notifications/';
+  private stats = 'stats/';
 
   constructor(private http: HttpClient) {
     super();
@@ -258,4 +259,13 @@ export class DbService extends AdapterService {
     return this.http.post<Notification[]>(this.basePath + this.notification + 'updateNotifications', body);
   }
 
+
+  // ### STATS ###
+  public override optimizeOrder(token: string, project: string): Observable<Response> {
+    const body = {
+      token: token,
+      project: project
+    }
+    return this.http.post<Response>(this.basePath + this.stats + 'optimizeOrder', body);
+  }
 }

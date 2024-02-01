@@ -32,7 +32,7 @@ async function optimizeOrder(req, res, next) {
                 }
             });
         }
-        res.json({'message': 'SUCCESS.STATS.OPTIMIZE'});
+        res.json({message: 'SUCCESS.STATS.OPTIMIZE'});
     } catch (err) {
         next(err);
     }

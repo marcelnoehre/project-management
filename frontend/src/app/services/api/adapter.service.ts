@@ -69,4 +69,7 @@ export abstract class AdapterService {
 
   public abstract updateNotifications(token: string, username: string, project: string, seen: string[], removed: string[]): Observable<Notification[]>;
 
+
+  // ### STATS ###
+  public abstract optimizeOrder(token: string, project: string): Observable<Response>;
 }
