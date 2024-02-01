@@ -7,7 +7,6 @@ import { StatsService } from 'src/app/services/stats.service';
   styleUrls: ['./stats.component.scss']
 })
 export class StatsComponent implements OnInit {
-
   constructor(
     private stats: StatsService
   ) {
@@ -16,6 +15,9 @@ export class StatsComponent implements OnInit {
 
   ngOnInit(): void {
     this.stats.init();
+    this.stats.getUpdateSubject().subscribe((res) => {
+      console.dir(res);
+    });
   }
 
 }
