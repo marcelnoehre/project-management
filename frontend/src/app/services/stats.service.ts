@@ -25,10 +25,17 @@ export class StatsService {
       //   (response) => {
         // this.api.stats(token).subscribe(
         //   (response) => {
-        //     console.log(response);
+          // this.api.statLeaders(token).subscribe(
+          //   (response) => {
+              
+          //   },
+          //   (error) => {
+    
+          //   }
+          // );
         //   },
         //   (error) => {
-  
+        //
         //   }
         // );
       //   },
