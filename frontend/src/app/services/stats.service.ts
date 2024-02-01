@@ -23,6 +23,14 @@ export class StatsService {
       const token = this.user.token;
       // this.api.optimizeOrder(token).subscribe(
       //   (response) => {
+          this.api.personalStats(token).subscribe(
+            (response) => {
+              console.log(response);
+            },
+            (error) => {
+
+            }
+          );
         // this.api.stats(token).subscribe(
         //   (response) => {
           // this.api.statLeaders(token).subscribe(

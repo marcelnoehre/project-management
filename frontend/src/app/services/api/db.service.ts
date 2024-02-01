@@ -13,6 +13,7 @@ import { Permission } from 'src/app/enums/permission.enum';
 import { AssignedStats } from 'src/app/interfaces/data/assigned-stats';
 import { StatLeaders } from 'src/app/interfaces/data/stat-leaders';
 import { CategoryStats } from 'src/app/interfaces/data/category-stats';
+import { Stats } from 'src/app/interfaces/data/stats';
 
 @Injectable({
   providedIn: 'root'
@@ -269,6 +270,13 @@ export class DbService extends AdapterService {
       token: token
     }
     return this.http.post<Response>(this.basePath + this.statsRoute + 'optimizeOrder', body);
+  }
+
+  public override personalStats(token: string): Observable<Stats> {
+    const body = {
+      token: token
+    }
+    return this.http.post<Stats>(this.basePath + this.statsRoute + 'personalStats', body);
   }
 
   public override stats(token: string): Observable<AssignedStats[]> {

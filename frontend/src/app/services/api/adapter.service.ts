@@ -10,6 +10,7 @@ import { Permission } from 'src/app/enums/permission.enum';
 import { AssignedStats } from 'src/app/interfaces/data/assigned-stats';
 import { StatLeaders } from 'src/app/interfaces/data/stat-leaders';
 import { CategoryStats } from 'src/app/interfaces/data/category-stats';
+import { Stats } from 'src/app/interfaces/data/stats';
 
 @Injectable({
   providedIn: 'root'
@@ -75,6 +76,8 @@ export abstract class AdapterService {
 
   // ### STATS ###
   public abstract optimizeOrder(token: string): Observable<Response>;
+
+  public abstract personalStats(token: string): Observable<Stats>;
 
   public abstract stats(token: string): Observable<AssignedStats[]>;
 

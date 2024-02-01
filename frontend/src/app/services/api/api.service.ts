@@ -15,6 +15,7 @@ import { Permission } from 'src/app/enums/permission.enum';
 import { AssignedStats } from 'src/app/interfaces/data/assigned-stats';
 import { StatLeaders } from 'src/app/interfaces/data/stat-leaders';
 import { CategoryStats } from 'src/app/interfaces/data/category-stats';
+import { Stats } from 'src/app/interfaces/data/stats';
 
 @Injectable({
   providedIn: 'root'
@@ -154,6 +155,10 @@ export class ApiService {
   	// ### STATS ###
   	public optimizeOrder(token: string): Observable<Response> {
 		return this.adapter.optimizeOrder(token);
+	}
+
+	public personalStats(token: string): Observable<Stats> {
+		return this.adapter.personalStats(token);
 	}
 
 	public stats(token: string): Observable<AssignedStats[]> {

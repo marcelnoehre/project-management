@@ -14,6 +14,7 @@ import { Permission } from 'src/app/enums/permission.enum';
 import { AssignedStats } from 'src/app/interfaces/data/assigned-stats';
 import { StatLeaders } from 'src/app/interfaces/data/stat-leaders';
 import { CategoryStats } from 'src/app/interfaces/data/category-stats';
+import { Stats } from 'src/app/interfaces/data/stats';
 
 @Injectable({
   providedIn: 'root'
@@ -208,6 +209,11 @@ export class MockService extends AdapterService {
   public override optimizeOrder(token: string): Observable<Response> {
     const url = this.basePath + this.statsRoute + 'optimize-order/success.json';
     return this.http.get<Response>(url);
+  }
+
+  public override personalStats(token: string): Observable<Stats> {
+    const url = this.basePath + this.statsRoute + 'personal-stats/stats.json';
+    return this.http.get<Stats>(url);
   }
 
   public override stats(token: string): Observable<AssignedStats[]> {
