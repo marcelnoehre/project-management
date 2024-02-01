@@ -21,71 +21,50 @@ export class StatsService {
     }
     if (!this.calculated) {
       const token = this.user.token;
-      // this.api.optimizeOrder(token).subscribe(
-      //   (response) => {
+      this.api.optimizeOrder(token).subscribe(
+        (response) => {
           this.api.personalStats(token).subscribe(
             (response) => {
-              console.log(response);
+              this.api.stats(token).subscribe(
+                (response) => {
+                  this.api.statLeaders(token).subscribe(
+                    (response) => {
+                      this.api.taskAmount(token).subscribe(
+                        (response) => {
+                          this.api.averageTime(token).subscribe(
+                            (response) => {
+                              this.api.wip(token).subscribe(
+                                (response) => {
+                                  this.api.taskProgress(token).subscribe(
+                                    (response) => {
+                                      this.api.projectRoadmap(token).subscribe(
+                                        (response) => { },
+                                        (error) => { }
+                                      );
+                                    },
+                                    (error) => { }
+                                  );
+                                },
+                                (error) => { }
+                              );
+                            },
+                            (error) => { }
+                          );
+                        },
+                        (error) => { }
+                      );
+                    },
+                    (error) => { }
+                  );
+                },
+                (error) => { }
+              );
             },
-            (error) => {
-
-            }
+            (error) => { }
           );
-        // this.api.stats(token).subscribe(
-        //   (response) => {
-          // this.api.statLeaders(token).subscribe(
-          //   (response) => {
-            // this.api.taskAmount(token).subscribe(
-            //   (response) => {
-                // this.api.averageTime(token).subscribe(
-                //   (response) => {
-                  // this.api.wip(token).subscribe(
-                  //   (response) => {
-                    // this.api.taskProgress(token).subscribe(
-                    //   (response) => {
-                      // this.api.projectRoadmap(token).subscribe(
-                      //   (response) => {
-                      //     console.log(response);
-                      //   },
-                      //   (error) => {
-
-                      //   }
-                      // )
-                    //   },
-                    //   (error) => {
-
-                    //   }
-                    // );
-                  //   },
-                  //   (error) => {
-
-                  //   }
-                  // );
-                //   },
-                //   (error) => {
-
-                //   }
-                // );
-            //   },
-            //   (error) => {
-          
-            //   }
-            // );
-          //   },
-          //   (error) => {
-    
-          //   }
-          // );
-        //   },
-        //   (error) => {
-        //
-        //   }
-        // );
-      //   },
-      //   (error) => {
-  
-      //   }
-      // );
+        },
+        (error) => { }
+      );
       this.calculated = true;
       this.storage.setSessionEntry('stats', this.calculated);
     }
