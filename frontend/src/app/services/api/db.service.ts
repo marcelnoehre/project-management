@@ -313,4 +313,11 @@ export class DbService extends AdapterService {
     return this.http.post<any>(this.basePath + this.statsRoute + 'taskProgress', body);
   }
 
+  public override projectRoadmap(token: string): Observable<any> {
+    const body = {
+      token: token
+    }
+    return this.http.post<any>(this.basePath + this.statsRoute + 'projectRoadmap', body);
+  }
+
 }

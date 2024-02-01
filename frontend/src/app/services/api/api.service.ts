@@ -180,4 +180,8 @@ export class ApiService {
 		return this.adapter.taskProgress(token);
 	}
 
+	public projectRoadmap(token: string): Observable<any> {
+		return this.adapter.projectRoadmap(token);
+	}
+
 }

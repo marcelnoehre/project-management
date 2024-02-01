@@ -88,4 +88,7 @@ export abstract class AdapterService {
   
   // TODO: refactor the response
   public abstract taskProgress(token: string): Observable<any>;
+
+  public abstract projectRoadmap(token: string): Observable<any>;
+
 }

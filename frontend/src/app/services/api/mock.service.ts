@@ -240,4 +240,9 @@ export class MockService extends AdapterService {
     return this.http.get<any>(url);
   }
 
+  public override projectRoadmap(token: string): Observable<any> {
+    const url = this.basePath + this.statsRoute + 'projectRoadmap/stats.json';
+    return this.http.get<any>(url);
+  }
+
 }
