@@ -222,7 +222,7 @@ async function taskProgress(req, res, next) {
 async function projectRoadmap(req, res, next) {
     try {
         const projectsCollection = db.collection('projects');
-        const projectsSnapshot = await projectsCollection.where('name', '==', req.body.project).get();
+        const projectsSnapshot = await projectsCollection.where('name', '==', jwt.decode(req.body.token).project).get();
         let history = [];
         if (!projectsSnapshot.empty) {
             const projectDoc = projectsSnapshot.docs[0];

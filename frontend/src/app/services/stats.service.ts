@@ -33,6 +33,21 @@ export class StatsService {
                 //   (response) => {
                   // this.api.wip(token).subscribe(
                   //   (response) => {
+                    // this.api.taskProgress(token).subscribe(
+                    //   (response) => {
+                      // this.api.projectRoadmap(token).subscribe(
+                      //   (response) => {
+                      //     console.log(response);
+                      //   },
+                      //   (error) => {
+
+                      //   }
+                      // )
+                    //   },
+                    //   (error) => {
+
+                    //   }
+                    // );
                   //   },
                   //   (error) => {
 
