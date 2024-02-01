@@ -1,0 +1,25 @@
+.stats-container {
+    top: 7.5vh;
+    min-height: 92.5vh;
+    width: 100%;
+    background-color: lightgray;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 2rem;
+    padding-top: 2rem;
+}
+
+.row {
+    display: flex;
+    justify-content: center;
+    gap: 4rem;
+    width: 100%;
+}
+
+.stats-module {
+    height: 40vh;
+    width: 40%;
+    background-color: white;
+    border-radius: 5px;
+}
