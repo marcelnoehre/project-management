@@ -12,6 +12,7 @@ import { Notification } from 'src/app/interfaces/data/notification';
 import { Permission } from 'src/app/enums/permission.enum';
 import { AssignedStats } from 'src/app/interfaces/data/assigned-stats';
 import { StatLeaders } from 'src/app/interfaces/data/stat-leaders';
+import { TaskAmount } from 'src/app/interfaces/data/task-amount';
 
 @Injectable({
   providedIn: 'root'
@@ -282,5 +283,12 @@ export class DbService extends AdapterService {
       token: token
     }
     return this.http.post<StatLeaders>(this.basePath + this.statsRoute + 'statLeaders', body);
+  }
+
+  public override taskAmount(token: string): Observable<TaskAmount> {
+    const body = {
+      token: token
+    }
+    return this.http.post<TaskAmount>(this.basePath + this.statsRoute + 'taskAmount', body);
   }
 }

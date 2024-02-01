@@ -116,6 +116,28 @@ async function statLeaders(req, res, next) {
     }
 }
 
+async function taskAmount(req, res, next) {
+    try {
+        const tasksCollection = db.collection('tasks');
+        const tasksSnapshot = await tasksCollection.where('project', '==', jwt.decode(req.body.token).project).get();
+        const states = {
+            NONE: 0,
+            TODO: 0,
+            PROGRESS: 0,
+            REVIEW: 0,
+            DONE: 0,
+            DELETED: 0
+        };
+        if (!tasksSnapshot.empty) {
+            tasksSnapshot.forEach(doc => {
+                states[doc.data().state]++;
+            });
+        }
+        res.json(states);
+    } catch (err) {
+        next(err);
+    }
+}
 
 
 
@@ -150,30 +172,6 @@ async function taskProgress(req, res, next) {
 async function averageTime(req, res, next) {
     try {
         // average time a task stays in a category
-    } catch (err) {
-        next(err);
-    }
-}
-
-async function taskAmount(req, res, next) {
-    // token, project
-    try {
-        const tasksCollection = db.collection('tasks');
-        const tasksSnapshot = await tasksCollection.where('project', '==', req.body.project).get();
-        const states = {
-            NONE: 0,
-            TODO: 0,
-            PROGRESS: 0,
-            REVIEW: 0,
-            DONE: 0,
-            DELETED: 0
-        };
-        if (!tasksSnapshot.empty) {
-            tasksSnapshot.forEach(doc => {
-                states[doc.data().state]++;
-            });
-        }
-        res.json(states);
     } catch (err) {
         next(err);
     }
