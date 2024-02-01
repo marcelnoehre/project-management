@@ -38,7 +38,54 @@ async function optimizeOrder(req, res, next) {
     }
 }
 
-async function projectStats(req, res, next) {
+async function stats(req, res, next) {
+    // token, project
+    try {
+        const projectsCollection = db.collection('projects');
+        const projectsSnapshot = await projectsCollection.where('name', '==', req.body.project).get();
+        const stats = []
+        const [project, others] = [{
+            id: 'project',
+            stats: {}
+        },
+        {
+            id: 'others',
+            stats: {}
+        }];
+        if (!projectsSnapshot.empty) {
+            project.stats = projectsSnapshot.docs[0].data().stats;
+            others.stats = projectsSnapshot.docs[0].data().stats;
+        }
+        stats.push(project);
+        const usersCollection = db.collection('users');
+        const usersSnapshot = await usersCollection.where('project', '==', req.body.project).get();
+        if (!usersSnapshot.empty) {
+            const statLabels = ['created', 'imported', 'updated', 'edited', 'trashed', 'restored', 'deleted', 'cleared'];
+            usersSnapshot.forEach(doc => {
+                const user = doc.data();
+                stats.push({
+                    id: user.username,
+                    stats: user.stats
+                });
+                statLabels.forEach((stat) => {
+                    others.stats[stat] -= user.stats[stat];
+                });
+            });
+        }
+        stats.push(others);
+        res.json(stats);
+    } catch (err) {
+        next(err);
+    }
+}
+
+
+
+
+
+
+
+async function projectRoadmap(req, res, next) {
     // token, project
     try {
         const projectsCollection = db.collection('projects');
@@ -69,7 +116,7 @@ async function statLeaders(req, res, next) {
             cleared: { username: [], value: 0 }
         };
         if (!usersSnapshot.empty) {
-            const stats = ['created', 'imported', 'edited', 'trashed', 'restored', 'deleted', 'cleared'];
+            const stats = ['created', 'imported', 'updated', 'edited', 'trashed', 'restored', 'deleted', 'cleared'];
             usersSnapshot.forEach(doc => {
                 const user = doc.data();
                 stats.forEach((stat) => {
@@ -131,34 +178,6 @@ async function taskAmount(req, res, next) {
     }
 }
 
-async function stats(req, res, next) {
-    // token, project
-    try {
-        const projectsCollection = db.collection('projects');
-        const projectsSnapshot = await projectsCollection.where('name', '==', req.body.project).get();
-        const stats = {}
-        if (!projectsSnapshot.empty) {
-            stats['project'] = projectsSnapshot.docs[0].data().stats;
-            stats['others'] = projectsSnapshot.docs[0].data().stats;
-        }
-        const usersCollection = db.collection('users');
-        const usersSnapshot = await usersCollection.where('project', '==', req.body.project).get();
-        if (!usersSnapshot.empty) {
-            const statLabels = ['created', 'imported', 'edited', 'trashed', 'restored', 'deleted', 'cleared'];
-            usersSnapshot.forEach(doc => {
-                const user = doc.data();
-                stats[user.username] = user.stats;
-                statLabels.forEach((stat) => {
-                    stats['others'][stat] -= user.stats[stat];
-                });
-            });
-        }
-        res.json(stats);
-    } catch (err) {
-        next(err);
-    }
-}
-
 async function wip(req, res, next) {
     // token, project
     try {
@@ -172,11 +191,11 @@ async function wip(req, res, next) {
 
 module.exports = {
     optimizeOrder,
-    projectStats,
+    stats,
+    projectRoadmap,
     statLeaders,
     taskProgress,
     averageTime,
     taskAmount,
-    stats,
     wip
 };
