@@ -205,15 +205,21 @@ async function wip(req, res, next) {
 
 async function taskProgress(req, res, next) {
     try {
-        // diagramm wie bei agiles Projektmanagement steigender Graph für alle Kategorien
-
+        const tasksCollection = db.collection('tasks');
+        const tasksSnapshot = await tasksCollection.where('project', '==', jwt.decode(req.body.token).project).get();
+        const histories = [];
+        if (!tasksSnapshot.empty) {
+            tasksSnapshot.forEach(doc => {
+                histories.push(doc.data().history);
+            });
+        }
+        res.json(histories);
     } catch (err) {
         next(err);
     }
 }
 
 async function projectRoadmap(req, res, next) {
-    // token, project
     try {
         const projectsCollection = db.collection('projects');
         const projectsSnapshot = await projectsCollection.where('name', '==', req.body.project).get();
