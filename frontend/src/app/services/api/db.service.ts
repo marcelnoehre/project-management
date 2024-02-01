@@ -306,4 +306,11 @@ export class DbService extends AdapterService {
     return this.http.post<number>(this.basePath + this.statsRoute + 'wip', body);
   }
 
+  public override taskProgress(token: string): Observable<any> {
+    const body = {
+      token: token
+    }
+    return this.http.post<any>(this.basePath + this.statsRoute + 'taskProgress', body);
+  }
+
 }

@@ -176,4 +176,8 @@ export class ApiService {
 		return this.adapter.wip(token);
 	}
 
+	public taskProgress(token: string): Observable<any> {
+		return this.adapter.taskProgress(token);
+	}
+
 }

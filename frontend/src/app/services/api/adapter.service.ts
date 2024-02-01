@@ -86,4 +86,6 @@ export abstract class AdapterService {
 
   public abstract wip(token: string): Observable<number>;
   
+  // TODO: refactor the response
+  public abstract taskProgress(token: string): Observable<any>;
 }

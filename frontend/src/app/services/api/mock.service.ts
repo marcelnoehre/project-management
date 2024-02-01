@@ -235,4 +235,9 @@ export class MockService extends AdapterService {
     return this.http.get<number>(url);
   }
 
+  public override taskProgress(token: string): Observable<any> {
+    const url = this.basePath + this.statsRoute + 'taskProgress/stats.json';
+    return this.http.get<any>(url);
+  }
+
 }
