@@ -11,6 +11,7 @@ import { Progress } from 'src/app/interfaces/data/progress';
 import { Notification } from 'src/app/interfaces/data/notification';
 import { Permission } from 'src/app/enums/permission.enum';
 import { AssignedStats } from 'src/app/interfaces/data/assigned-stats';
+import { StatLeaders } from 'src/app/interfaces/data/stat-leaders';
 
 @Injectable({
   providedIn: 'root'
@@ -274,5 +275,12 @@ export class DbService extends AdapterService {
       token: token
     }
     return this.http.post<AssignedStats[]>(this.basePath + this.statsRoute + 'stats', body);
+  }
+
+  public override statLeaders(token: string): Observable<StatLeaders> {
+    const body = {
+      token: token
+    }
+    return this.http.post<StatLeaders>(this.basePath + this.statsRoute + 'statLeaders', body);
   }
 }

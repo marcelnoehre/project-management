@@ -80,30 +80,7 @@ async function stats(req, res, next) {
     }
 }
 
-
-
-
-
-
-
-async function projectRoadmap(req, res, next) {
-    // token, project
-    try {
-        const projectsCollection = db.collection('projects');
-        const projectsSnapshot = await projectsCollection.where('name', '==', req.body.project).get();
-        let history = [];
-        if (!projectsSnapshot.empty) {
-            const projectDoc = projectsSnapshot.docs[0];
-            history = projectDoc.data().history;
-        }
-        res.json(history);
-    } catch (err) {
-        next(err);
-    }
-}
-
 async function statLeaders(req, res, next) {
-    // token, project
     try {
         const usersCollection = db.collection('users');
         const usersSnapshot = await usersCollection.where('project', '==', req.body.project).get();
@@ -133,6 +110,28 @@ async function statLeaders(req, res, next) {
             });
         }
         res.json(leader);
+    } catch (err) {
+        next(err);
+    }
+}
+
+
+
+
+
+
+
+async function projectRoadmap(req, res, next) {
+    // token, project
+    try {
+        const projectsCollection = db.collection('projects');
+        const projectsSnapshot = await projectsCollection.where('name', '==', req.body.project).get();
+        let history = [];
+        if (!projectsSnapshot.empty) {
+            const projectDoc = projectsSnapshot.docs[0];
+            history = projectDoc.data().history;
+        }
+        res.json(history);
     } catch (err) {
         next(err);
     }

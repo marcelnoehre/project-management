@@ -12,6 +12,7 @@ import { Progress } from 'src/app/interfaces/data/progress';
 import { Notification } from 'src/app/interfaces/data/notification';
 import { Permission } from 'src/app/enums/permission.enum';
 import { AssignedStats } from 'src/app/interfaces/data/assigned-stats';
+import { StatLeaders } from 'src/app/interfaces/data/stat-leaders';
 
 @Injectable({
   providedIn: 'root'
@@ -211,6 +212,11 @@ export class MockService extends AdapterService {
   public override stats(token: string): Observable<AssignedStats[]> {
     const url = this.basePath + this.statsRoute + 'stats/stats.json';
     return this.http.get<AssignedStats[]>(url);
+  }
+
+  public override statLeaders(token: string): Observable<StatLeaders> {
+    const url = this.basePath + this.statsRoute + 'stat-leaders/leaders.json';
+    return this.http.get<StatLeaders>(url);
   }
 
 }
