@@ -3,5 +3,6 @@ export enum AppItem {
 	CreateTask = 'CREATE_TASK',
 	Board = 'BOARD',
 	TrashBin = 'TRASH_BIN',
-	ImportTasks = 'IMPORT_TASKS'
+	ImportTasks = 'IMPORT_TASKS',
+	Stats = 'STATS'
 }

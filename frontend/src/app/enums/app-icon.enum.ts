@@ -3,5 +3,6 @@ export enum AppIcon {
 	CreateTask = 'note_add',
 	Board = 'view_kanban',
 	TrashBin = 'delete',
-	ImportTasks = 'upload_file'
+	ImportTasks = 'upload_file',
+	Stats = 'pie_chart'
 }

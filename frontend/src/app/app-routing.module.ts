@@ -10,6 +10,7 @@ import { ProjectSettingsComponent } from './components/project-settings/project-
 import { UserSettingsComponent } from './components/user-settings/user-settings.component';
 import { ImportTasksComponent } from './components/import-tasks/import-tasks.component';
 import { TrashBinComponent } from './components/trash-bin/trash-bin.component';
+import { StatsComponent } from './components/stats/stats.component';
 
 const routes: Routes = [
   {
@@ -48,6 +49,11 @@ const routes: Routes = [
   {
     path: 'tasks/trash-bin',
     component: TrashBinComponent,
+    canActivate: [authGuard]
+  },
+  {
+    path: 'stats',
+    component: StatsComponent,
     canActivate: [authGuard]
   },
   {

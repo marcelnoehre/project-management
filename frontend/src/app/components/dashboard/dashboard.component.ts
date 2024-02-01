@@ -12,28 +12,34 @@ import { App } from 'src/app/interfaces/app';
 export class DashboardComponent {
 	public appItems: App[][] = [
 		[{
+			name: AppItem.Board,
+			route: AppRoute.Board,
+			icon: AppIcon.Board,
+			color: 'mediumslateblue'
+		},
+		{
+			name: AppItem.Stats,
+			route: AppRoute.Stats,
+			icon: AppIcon.Stats,
+			color: 'mediumturquoise'
+		}],
+		[{
 			name: AppItem.CreateTask,
 			route: AppRoute.CreateTask,
 			icon: AppIcon.CreateTask,
 			color: 'cadetblue'
 		},
 		{
-			name: AppItem.Board,
-			route: AppRoute.Board,
-			icon: AppIcon.Board,
-			color: 'mediumslateblue'
-		}],
-		[{
-			name: AppItem.TrashBin,
-			route: AppRoute.TrashBin,
-			icon: AppIcon.TrashBin,
-			color: 'salmon'
-		},
-		{
 			name: AppItem.ImportTasks,
 			route: AppRoute.ImportTasks,
 			icon: AppIcon.ImportTasks,
 			color: 'goldenrod'
+		},
+		{
+			name: AppItem.TrashBin,
+			route: AppRoute.TrashBin,
+			icon: AppIcon.TrashBin,
+			color: 'salmon'
 		}]
 	];
 }

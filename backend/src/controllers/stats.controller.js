@@ -54,14 +54,6 @@ async function projectStats(req, res, next) {
     }
 }
 
-async function userActivity(req, res, next) {
-    try {
-        // user history
-    } catch (err) {
-        next(err);
-    }
-}
-
 async function statLeaders(req, res, next) {
     // token, project
     try {
@@ -101,6 +93,7 @@ async function statLeaders(req, res, next) {
 async function taskProgress(req, res, next) {
     try {
         // diagramm wie bei agiles Projektmanagement steigender Graph für alle Kategorien
+
     } catch (err) {
         next(err);
     }
@@ -180,7 +173,6 @@ async function wip(req, res, next) {
 module.exports = {
     optimizeOrder,
     projectStats,
-    userActivity,
     statLeaders,
     taskProgress,
     averageTime,

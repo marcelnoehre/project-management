@@ -50,6 +50,11 @@ export class SidenavComponent implements OnInit, OnDestroy {
 			name: AppItem.TrashBin,
 			route: AppRoute.TrashBin,
 			icon: AppIcon.TrashBin
+		},
+		{
+			name: AppItem.Stats,
+			route: AppRoute.Stats,
+			icon: AppIcon.Stats
 		}
 	]
 	clickEvent$!: Subscription;
