@@ -49,6 +49,7 @@ async function register(req, res, next) {
                 stats: {
                     created: 0,
                     imported: 0,
+                    updated: 0,
                     edited: 0,
                     trashed: 0,
                     restored: 0,

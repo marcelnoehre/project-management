@@ -27,6 +27,9 @@ app.use('/task', taskRouter);
 const notificationsRouter = require('./src/routes/notifications');
 app.use('/notifications', notificationsRouter);
 
+const statsRouter = require('./src/routes/stats');
+app.use('/stats', statsRouter);
+
 app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
 });

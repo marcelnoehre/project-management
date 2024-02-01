@@ -16,6 +16,7 @@
         "CREATE_TASK": "Create task",
         "IMPORT_TASKS": "Import tasks",
         "TRASH_BIN": "Trash bin",
+        "STATS": "Statistics",
         "PROJECT_SETTINGS": "Project settings",
         "ACCOUNT_SETTINGS": "Account settings",
         "NOTIFICATIONS": "Notifications",

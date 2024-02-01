@@ -10,6 +10,10 @@ import { Task } from 'src/app/interfaces/data/task';
 import { Progress } from 'src/app/interfaces/data/progress';
 import { Notification } from 'src/app/interfaces/data/notification';
 import { Permission } from 'src/app/enums/permission.enum';
+import { AssignedStats } from 'src/app/interfaces/data/assigned-stats';
+import { StatLeaders } from 'src/app/interfaces/data/stat-leaders';
+import { CategoryStats } from 'src/app/interfaces/data/category-stats';
+import { Stats } from 'src/app/interfaces/data/stats';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +24,7 @@ export class DbService extends AdapterService {
   private project = 'project/';
   private task = 'task/';
   private notification = 'notifications/';
+  private statsRoute = 'stats/';
 
   constructor(private http: HttpClient) {
     super();
@@ -256,6 +261,71 @@ export class DbService extends AdapterService {
       removed: removed
     }
     return this.http.post<Notification[]>(this.basePath + this.notification + 'updateNotifications', body);
+  }
+
+
+  // ### STATS ###
+  public override optimizeOrder(token: string): Observable<Response> {
+    const body = {
+      token: token
+    }
+    return this.http.post<Response>(this.basePath + this.statsRoute + 'optimizeOrder', body);
+  }
+
+  public override personalStats(token: string): Observable<Stats> {
+    const body = {
+      token: token
+    }
+    return this.http.post<Stats>(this.basePath + this.statsRoute + 'personalStats', body);
+  }
+
+  public override stats(token: string): Observable<AssignedStats[]> {
+    const body = {
+      token: token
+    }
+    return this.http.post<AssignedStats[]>(this.basePath + this.statsRoute + 'stats', body);
+  }
+
+  public override statLeaders(token: string): Observable<StatLeaders> {
+    const body = {
+      token: token
+    }
+    return this.http.post<StatLeaders>(this.basePath + this.statsRoute + 'statLeaders', body);
+  }
+
+  public override taskAmount(token: string): Observable<CategoryStats> {
+    const body = {
+      token: token
+    }
+    return this.http.post<CategoryStats>(this.basePath + this.statsRoute + 'taskAmount', body);
+  }
+
+  public override averageTime(token: string): Observable<CategoryStats> {
+    const body = {
+      token: token
+    }
+    return this.http.post<CategoryStats>(this.basePath + this.statsRoute + 'averageTime', body);
+  }
+
+  public override wip(token: string): Observable<number> {
+    const body = {
+      token: token
+    }
+    return this.http.post<number>(this.basePath + this.statsRoute + 'wip', body);
+  }
+
+  public override taskProgress(token: string): Observable<any> {
+    const body = {
+      token: token
+    }
+    return this.http.post<any>(this.basePath + this.statsRoute + 'taskProgress', body);
+  }
+
+  public override projectRoadmap(token: string): Observable<any> {
+    const body = {
+      token: token
+    }
+    return this.http.post<any>(this.basePath + this.statsRoute + 'projectRoadmap', body);
   }
 
 }

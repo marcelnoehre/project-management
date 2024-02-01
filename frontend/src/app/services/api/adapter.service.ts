@@ -7,6 +7,10 @@ import { Task } from 'src/app/interfaces/data/task';
 import { Progress } from 'src/app/interfaces/data/progress';
 import { Notification } from 'src/app/interfaces/data/notification';
 import { Permission } from 'src/app/enums/permission.enum';
+import { AssignedStats } from 'src/app/interfaces/data/assigned-stats';
+import { StatLeaders } from 'src/app/interfaces/data/stat-leaders';
+import { CategoryStats } from 'src/app/interfaces/data/category-stats';
+import { Stats } from 'src/app/interfaces/data/stats';
 
 @Injectable({
   providedIn: 'root'
@@ -68,5 +72,26 @@ export abstract class AdapterService {
   public abstract getNotifications(token: string, project: string, username: string): Observable<Notification[]>;
 
   public abstract updateNotifications(token: string, username: string, project: string, seen: string[], removed: string[]): Observable<Notification[]>;
+
+
+  // ### STATS ###
+  public abstract optimizeOrder(token: string): Observable<Response>;
+
+  public abstract personalStats(token: string): Observable<Stats>;
+
+  public abstract stats(token: string): Observable<AssignedStats[]>;
+
+  public abstract statLeaders(token: string): Observable<StatLeaders>;
+
+  public abstract taskAmount(token: string): Observable<CategoryStats>;
+
+  public abstract averageTime(token: string): Observable<CategoryStats>;
+
+  public abstract wip(token: string): Observable<number>;
+  
+  // TODO: refactor the response
+  public abstract taskProgress(token: string): Observable<any>;
+
+  public abstract projectRoadmap(token: string): Observable<any>;
 
 }

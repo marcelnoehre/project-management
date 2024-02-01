@@ -11,6 +11,10 @@ import { Task } from 'src/app/interfaces/data/task';
 import { Progress } from 'src/app/interfaces/data/progress';
 import { Notification } from 'src/app/interfaces/data/notification';
 import { Permission } from 'src/app/enums/permission.enum';
+import { AssignedStats } from 'src/app/interfaces/data/assigned-stats';
+import { StatLeaders } from 'src/app/interfaces/data/stat-leaders';
+import { CategoryStats } from 'src/app/interfaces/data/category-stats';
+import { Stats } from 'src/app/interfaces/data/stats';
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +25,7 @@ export class MockService extends AdapterService {
   private project = 'project/';
   private task = 'task/';
   private notification = 'notifications/';
+  private statsRoute = 'stats/';
 
   constructor(
     private http: HttpClient,
@@ -198,6 +203,52 @@ export class MockService extends AdapterService {
   public override updateNotifications(token: string, username: string, project: string, seen: string[], removed: string[]): Observable<Notification[]> {
     const url = this.basePath + this.notification + 'update-notifications/success.json';
     return this.http.get<Notification[]>(url);
+  }
+
+  // ### STATS ###
+  public override optimizeOrder(token: string): Observable<Response> {
+    const url = this.basePath + this.statsRoute + 'optimize-order/success.json';
+    return this.http.get<Response>(url);
+  }
+
+  public override personalStats(token: string): Observable<Stats> {
+    const url = this.basePath + this.statsRoute + 'personal-stats/stats.json';
+    return this.http.get<Stats>(url);
+  }
+
+  public override stats(token: string): Observable<AssignedStats[]> {
+    const url = this.basePath + this.statsRoute + 'stats/stats.json';
+    return this.http.get<AssignedStats[]>(url);
+  }
+
+  public override statLeaders(token: string): Observable<StatLeaders> {
+    const url = this.basePath + this.statsRoute + 'stat-leaders/stats.json';
+    return this.http.get<StatLeaders>(url);
+  }
+
+  public override taskAmount(token: string): Observable<CategoryStats> {
+    const url = this.basePath + this.statsRoute + 'task-amount/stats.json';
+    return this.http.get<CategoryStats>(url);
+  }
+
+  public override averageTime(token: string): Observable<CategoryStats> {
+    const url = this.basePath + this.statsRoute + 'average-time/stats.json';
+    return this.http.get<CategoryStats>(url);
+  }
+
+  public override wip(token: string): Observable<number> {
+    const url = this.basePath + this.statsRoute + 'wip/stats.json';
+    return this.http.get<number>(url);
+  }
+
+  public override taskProgress(token: string): Observable<any> {
+    const url = this.basePath + this.statsRoute + 'taskProgress/stats.json';
+    return this.http.get<any>(url);
+  }
+
+  public override projectRoadmap(token: string): Observable<any> {
+    const url = this.basePath + this.statsRoute + 'projectRoadmap/stats.json';
+    return this.http.get<any>(url);
   }
 
 }

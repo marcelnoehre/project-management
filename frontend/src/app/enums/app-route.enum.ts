@@ -3,5 +3,6 @@ export enum AppRoute {
     CreateTask = '/task/create',
     Board = '/tasks/board',
     TrashBin = '/tasks/trash-bin',
-    ImportTasks = '/tasks/import'
+    ImportTasks = '/tasks/import',
+    Stats = '/stats'
 }
