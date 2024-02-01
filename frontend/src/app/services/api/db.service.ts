@@ -299,4 +299,11 @@ export class DbService extends AdapterService {
     return this.http.post<CategoryStats>(this.basePath + this.statsRoute + 'averageTime', body);
   }
 
+  public override wip(token: string): Observable<number> {
+    const body = {
+      token: token
+    }
+    return this.http.post<number>(this.basePath + this.statsRoute + 'wip', body);
+  }
+
 }

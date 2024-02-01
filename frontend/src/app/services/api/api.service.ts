@@ -172,4 +172,8 @@ export class ApiService {
 		return this.adapter.averageTime(token);
 	}
 
+	public wip(token: string): Observable<number> {
+		return this.adapter.wip(token);
+	}
+
 }

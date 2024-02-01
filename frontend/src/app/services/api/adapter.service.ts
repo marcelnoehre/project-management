@@ -83,5 +83,7 @@ export abstract class AdapterService {
   public abstract taskAmount(token: string): Observable<CategoryStats>;
 
   public abstract averageTime(token: string): Observable<CategoryStats>;
+
+  public abstract wip(token: string): Observable<number>;
   
 }

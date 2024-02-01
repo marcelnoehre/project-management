@@ -230,4 +230,9 @@ export class MockService extends AdapterService {
     return this.http.get<CategoryStats>(url);
   }
 
+  public override wip(token: string): Observable<number> {
+    const url = this.basePath + this.statsRoute + 'wip/stats.json';
+    return this.http.get<number>(url);
+  }
+
 }
