@@ -33,6 +33,6 @@
     </div>
 </div>
 <div class="loading-container" *ngIf="!loaded()">
-    <p class="information">{{ information | translate }}...</p>
+    <p class="information">{{ 'STATS.LOADING.' + information | translate }}...</p>
     <mat-progress-bar mode="determinate" [value]="loading"></mat-progress-bar>
 </div>

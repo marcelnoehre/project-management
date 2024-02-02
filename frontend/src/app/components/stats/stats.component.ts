@@ -7,7 +7,7 @@ import { StatsService } from 'src/app/services/stats.service';
   styleUrls: ['./stats.component.scss']
 })
 export class StatsComponent implements OnInit {
-  information = 'initialize';
+  information = 'INIT';
   loading = 0;
 
   constructor(
@@ -17,12 +17,12 @@ export class StatsComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    await new Promise<void>(done => setTimeout(() => done(), 250));
+    await new Promise<void>(done => setTimeout(() => done(), 500));
     this.stats.init();
     this.stats.getUpdateSubject().subscribe(async (res) => {
       await new Promise<void>(done => setTimeout(() => done(), 500));
       this.loading = res.percentage * 100;
-      this.information = res.step;
+      this.information = res.information;
       console.dir(res);
     });
   }
