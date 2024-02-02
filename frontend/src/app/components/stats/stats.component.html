@@ -1,43 +1,50 @@
 <div class="stats-container" *ngIf="loaded()">
     <div class="stats-row">
-        <div class="stats-module">
+        <mat-card class="stats-module">
             <h2 class="pb-4">Personal Stats</h2>
-            <div class="row">
+            <mat-card-content class="row">
                 <div *ngFor="let stat of statLabels" class="col w-100 stat">
                     <mat-icon>
                         {{ icons[stat] }}
                     </mat-icon>
                     <p class="label">{{ stat + ': ' + data.personalStats[stat] }}</p>
                 </div>
-            </div>
-        </div>
-        <div class="stats-module">
+            </mat-card-content>
+        </mat-card>
+        <mat-card class="stats-module">
             
-        </div>
+        </mat-card>
     </div>
     <div class="stats-row">
-        <div class="stats-module">
+        <mat-card class="stats-module">
             
-        </div>
-        <div class="stats-module">
-            
-        </div>
+        </mat-card>
+        <mat-card class="stats-module">
+            <h2 class="pb-4">Task Amount</h2>
+            <mat-card-content class="row">
+                <div style="display: block;">
+                    <canvas baseChart [datasets]="taskAmountData().data" [labels]="taskAmountData().labels" [options]="barChartOptions"
+                            [legend]="false" chartType="bar">
+                    </canvas>
+                </div>
+            </mat-card-content>
+        </mat-card>
     </div>
     <div class="stats-row">
-        <div class="stats-module">
+        <mat-card class="stats-module">
 
-        </div>
-        <div class="stats-module">
+        </mat-card>
+        <mat-card class="stats-module">
             
-        </div>
+        </mat-card>
     </div>
     <div class="stats-row">
-        <div class="stats-module">
+        <mat-card class="stats-module">
             
-        </div>
-        <div class="stats-module">
+        </mat-card>
+        <mat-card class="stats-module">
             
-        </div>
+        </mat-card>
     </div>
 </div>
 <div class="loading-container" *ngIf="!loaded()">

@@ -161,7 +161,8 @@
             "WIP": "Retrieving work in progress (WIP)...",
             "TASK_PROGRESS": "Retrieving task progress...",
             "PROJECT_ROADMAP": "Retrieving project roadmap...",
-            "DONE": "Retrieval of the statistics completed!"
+            "DONE": "Retrieval of the statistics completed!",
+            "STORAGE": "The data calculated after the last login is being loaded..."
         }
     }
 }
