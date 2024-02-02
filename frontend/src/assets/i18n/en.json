@@ -148,5 +148,20 @@
             "DELETED_TASK": "{{data_0}} has deleted the task '{{data_1}}' irrevocably",
             "CLEARED_TRASH_BIN": "{{data_0}} has emptied the trash bin"
         }
+    },
+    "STATS": {
+        "LOADING": {
+            "INIT": "Initializing the stats retrieval...",
+            "OPTIMIZE_ORDER": "Optimizing the task storage...",
+            "PERSONAL_STATS": "Retrieving personal statistics...",
+            "STATS": "Retrieving general statistics...",
+            "STAT_LEADERS": "Retrieving statistics leaders...",
+            "TASK_AMOUNT": "Retrieving task amounts...",
+            "AVERAGE_TIME": "Retrieving average time of states...",
+            "WIP": "Retrieving work in progress (WIP)...",
+            "TASK_PROGRESS": "Retrieving task progress...",
+            "PROJECT_ROADMAP": "Retrieving project roadmap...",
+            "DONE": "Retrieval of the statistics completed!"
+        }
     }
 }

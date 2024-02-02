@@ -1,4 +1,4 @@
-<div class="stats-container">
+<div class="stats-container" *ngIf="loaded()">
     <div class="row">
         <div class="stats-module">
 
@@ -31,4 +31,8 @@
             
         </div>
     </div>
+</div>
+<div class="loading-container" *ngIf="!loaded()">
+    <p class="information">{{ 'STATS.LOADING.' + information | translate }}...</p>
+    <mat-progress-bar mode="determinate" [value]="loading"></mat-progress-bar>
 </div>
