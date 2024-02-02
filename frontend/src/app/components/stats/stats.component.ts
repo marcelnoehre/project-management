@@ -9,6 +9,17 @@ import { StatsService } from 'src/app/services/stats.service';
 export class StatsComponent implements OnInit {
   information = 'INIT';
   loading = 0;
+  data: any = {
+    optimizeOrder: null,
+    personalStats: null,
+    stats: null,
+    statLeaders: null,
+    taskAmount: null,
+    averageTime: null,
+    wip: null,
+    taskProgress: null,
+    projectRoadmap: null
+  }
 
   constructor(
     private stats: StatsService
@@ -23,7 +34,7 @@ export class StatsComponent implements OnInit {
       await new Promise<void>(done => setTimeout(() => done(), 500));
       this.loading = res.percentage * 100;
       this.information = res.information;
-      console.dir(res);
+      this.data[res.step] = res.data;
     });
   }
 
