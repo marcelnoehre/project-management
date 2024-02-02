@@ -1,7 +1,13 @@
 <div class="stats-container" *ngIf="loaded()">
     <div class="row">
         <div class="stats-module">
-
+            <h2>Personal Stats</h2>
+            <div *ngFor="let stat of statLabels">
+                <mat-icon>
+                    {{ icons[stat] }}
+                </mat-icon>
+                <p>{{ data.personalStats[stat] }}</p>
+            </div>
         </div>
         <div class="stats-module">
             
@@ -34,5 +40,5 @@
 </div>
 <div class="loading-container" *ngIf="!loaded()">
     <p class="information">{{ 'STATS.LOADING.' + information | translate }}...</p>
-    <mat-progress-bar mode="determinate" [value]="loading"></mat-progress-bar>
+    <mat-progress-bar [mode]="mode" [value]="loading"></mat-progress-bar>
 </div>
