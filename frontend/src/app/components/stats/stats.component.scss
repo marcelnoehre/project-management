@@ -1,3 +1,24 @@
+.loading-container {
+    top: 7.5vh;
+    min-height: 92.5vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.information {
+    font-size: large;
+}
+
+mat-progress-bar {
+    width: 75vw;
+    height: 3rem;
+    transform: scaleY(3);
+    transform-origin: center;
+}
+
 .stats-container {
     top: 7.5vh;
     min-height: 92.5vh;
