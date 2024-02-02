@@ -1,3 +1,5 @@
+@import 'bootstrap';
+
 .loading-container {
     top: 7.5vh;
     min-height: 92.5vh;
@@ -31,7 +33,7 @@ mat-progress-bar {
     padding: 2rem 0;
 }
 
-.row {
+.stats-row {
     display: flex;
     justify-content: center;
     gap: 4rem;
@@ -43,4 +45,17 @@ mat-progress-bar {
     width: 40%;
     background-color: white;
     border-radius: 5px;
+    padding: 2rem;
+    overflow-y: scroll;
+}
+
+.stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.label {
+    display: flex;
+    white-space: nowrap;
 }

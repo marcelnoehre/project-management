@@ -1,19 +1,21 @@
 <div class="stats-container" *ngIf="loaded()">
-    <div class="row">
+    <div class="stats-row">
         <div class="stats-module">
-            <h2>Personal Stats</h2>
-            <div *ngFor="let stat of statLabels">
-                <mat-icon>
-                    {{ icons[stat] }}
-                </mat-icon>
-                <p>{{ data.personalStats[stat] }}</p>
+            <h2 class="pb-4">Personal Stats</h2>
+            <div class="row">
+                <div *ngFor="let stat of statLabels" class="col w-100 stat">
+                    <mat-icon>
+                        {{ icons[stat] }}
+                    </mat-icon>
+                    <p class="label">{{ stat + ': ' + data.personalStats[stat] }}</p>
+                </div>
             </div>
         </div>
         <div class="stats-module">
             
         </div>
     </div>
-    <div class="row">
+    <div class="stats-row">
         <div class="stats-module">
             
         </div>
@@ -21,7 +23,7 @@
             
         </div>
     </div>
-    <div class="row">
+    <div class="stats-row">
         <div class="stats-module">
 
         </div>
@@ -29,7 +31,7 @@
             
         </div>
     </div>
-    <div class="row">
+    <div class="stats-row">
         <div class="stats-module">
             
         </div>
