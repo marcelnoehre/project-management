@@ -45,6 +45,7 @@ mat-progress-bar {
     width: 40%;
     background-color: white;
     padding: 2rem;
+    overflow-x: hidden;
     overflow-y: scroll;
 }
 

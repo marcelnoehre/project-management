@@ -12,12 +12,18 @@
             </mat-card-content>
         </mat-card>
         <mat-card class="stats-module">
-            
+            <h2 class="pb-4">Stats</h2>
+            <mat-card-content class="row">
+                {{ data.stats | json }}
+            </mat-card-content>
         </mat-card>
     </div>
     <div class="stats-row">
         <mat-card class="stats-module">
-            
+            <h2 class="pb-4">Stat Leaders</h2>
+            <mat-card-content class="row">
+                {{ data.statLeaders | json }}
+            </mat-card-content>
         </mat-card>
         <mat-card class="stats-module">
             <h2 class="pb-4">Task Amount</h2>
@@ -32,18 +38,28 @@
     </div>
     <div class="stats-row">
         <mat-card class="stats-module">
-
+            <h2 class="pb-4">Average Time</h2>
+            <mat-card-content class="row">
+                {{ data.averageTime | json }}
+            </mat-card-content>
         </mat-card>
         <mat-card class="stats-module">
-            
+            <h2 class="pb-4">Work In Progress</h2>
+            <div class="fs-5">{{ getWipInfo() }}</div>
         </mat-card>
     </div>
     <div class="stats-row">
         <mat-card class="stats-module">
-            
+            <h2 class="pb-4">Task Progress</h2>
+            <mat-card-content class="row">
+                {{ data.taskProgress | json }}
+            </mat-card-content>
         </mat-card>
         <mat-card class="stats-module">
-            
+            <h2 class="pb-4">Project Roadmap</h2>
+            <mat-card-content class="row">
+                {{ data.projectRoadmap | json }}
+            </mat-card-content>
         </mat-card>
     </div>
 </div>

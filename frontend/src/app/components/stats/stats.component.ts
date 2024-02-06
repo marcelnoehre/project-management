@@ -3,6 +3,7 @@ import { ProgressBarMode } from '@angular/material/progress-bar';
 import { StatsService } from 'src/app/services/stats.service';
 import { TaskState } from 'src/app/enums/task-state.enum';
 import { TaskStateColor } from 'src/app/enums/task-state-color.enum';
+import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({
@@ -42,7 +43,8 @@ export class StatsComponent implements OnInit {
   };
 
   constructor(
-    private stats: StatsService
+    private stats: StatsService,
+    private translate: TranslateService
   ) {
 
   }
@@ -103,5 +105,15 @@ export class StatsComponent implements OnInit {
       TaskState.DELETED
       ]
    }
+  }
+
+  getWipInfo() {
+    if (this.data.wip > 1) {
+      return this.translate.instant('STATS.WIP_INFO', { wip: this.data.wip });
+    } else if (this.data.wip == 1) {
+      return this.translate.instant('STATS.WIP_INFO_SINGLE');
+    } else {
+      return this.translate.instant('STATS.WIP_INFO_NONE');
+    }
   }
 }
