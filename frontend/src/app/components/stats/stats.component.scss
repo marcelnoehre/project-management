@@ -1,3 +1,5 @@
+@import 'bootstrap';
+
 .loading-container {
     top: 7.5vh;
     min-height: 92.5vh;
@@ -31,7 +33,7 @@ mat-progress-bar {
     padding: 2rem 0;
 }
 
-.row {
+.stats-row {
     display: flex;
     justify-content: center;
     gap: 4rem;
@@ -39,8 +41,32 @@ mat-progress-bar {
 }
 
 .stats-module {
-    height: 40vh;
-    width: 40%;
+    width: 90%;
     background-color: white;
-    border-radius: 5px;
+    padding: 2rem;
+    overflow-x: hidden;
+}
+
+.stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid black;
+    background-color: lightcyan;
+}
+
+.label {
+    display: flex;
+    white-space: nowrap;
+}
+
+.user-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    background-color: lightblue;
+    div {
+        text-align: center;
+        border: 1px dotted white;
+    }
 }

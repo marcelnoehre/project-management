@@ -1,38 +1,132 @@
 <div class="stats-container" *ngIf="loaded()">
-    <div class="row">
-        <div class="stats-module">
-
-        </div>
-        <div class="stats-module">
-            
-        </div>
+    <div class="stats-row">
+        <mat-card class="stats-module">
+            <h2 class="pb-4">Personal Stats</h2>
+            <mat-card-content class="row">
+                <div *ngFor="let stat of statLabels" class="col w-100 stat m-2">
+                    <mat-icon>
+                        {{ icons[stat] }}
+                    </mat-icon>
+                    <p class="label m-0">{{ stat + ': ' + data.personalStats[stat] }}</p>
+                </div>
+            </mat-card-content>
+        </mat-card>
     </div>
-    <div class="row">
-        <div class="stats-module">
-            
-        </div>
-        <div class="stats-module">
-            
-        </div>
+    <div class="stats-row">
+        <mat-card class="stats-module">
+            <h2 class="pb-4">Stat Leaders</h2>
+            <mat-card-content class="row">
+                <div *ngFor="let stat of statLabels" class="col w-100 stat m-2">
+                    <mat-icon>
+                        {{ icons[stat] }}
+                    </mat-icon>
+                    <p class="label m-0">{{ stat + ': ' + data.statLeaders[stat].value }}</p>
+                    <div class="user-list my-2">
+                        <div *ngFor="let username of data.statLeaders[stat].username" class="px-2">
+                            {{ username }}
+                        </div>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
     </div>
-    <div class="row">
-        <div class="stats-module">
-
-        </div>
-        <div class="stats-module">
-            
-        </div>
+    <div class="stats-row">
+        <mat-card class="stats-module">
+            <h2 class="pb-4">Stats</h2>
+            <mat-card-content class="row">
+                <div *ngFor="let user of data.stats">
+                    <h4>{{ user.id | translate }}</h4>
+                    <div class="row mb-4">
+                        <div *ngFor="let stat of statLabels" class="col w-100 stat m-2">
+                            <mat-icon>
+                                {{ icons[stat] }}
+                            </mat-icon>
+                            <p class="label m-0">{{ stat + ': ' + user.stats[stat] }}</p>
+                        </div>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
     </div>
-    <div class="row">
-        <div class="stats-module">
-            
-        </div>
-        <div class="stats-module">
-            
-        </div>
+    <div class="stats-row">
+        <mat-card class="stats-module">
+            <h2 class="pb-4">Task Amount</h2>
+            <mat-card-content class="row">
+                <div style="display: block;">
+                    <canvas baseChart 
+                            [datasets]="taskAmountData().data" 
+                            [labels]="taskAmountData().labels" 
+                            [options]="barChartOptions"
+                            [legend]="false" 
+                            chartType="bar"
+                    >
+                    </canvas>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <div class="stats-row">
+        <mat-card class="stats-module">
+            <h2 class="pb-4">Average Time</h2>
+            <mat-card-content class="row">
+                <div class="mb-2">
+                    <canvas baseChart
+                            [datasets]="averageTimeData().data"
+                            [labels]="averageTimeData().labels"
+                            [options]="barChartOptions"
+                            [legend]="false"
+                            chartType="bar"
+                    >
+                    </canvas>
+                  </div>
+                <div>
+                    <ng-container *ngFor="let unit of units">
+                        <button class="col-2" mat-stroked-button (click)="setUnit(unit)">{{unit}}</button>
+                    </ng-container>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <div class="stats-row">
+        <mat-card class="stats-module">
+            <h2 class="pb-4">Work In Progress</h2>
+            <div class="fs-5">{{ getWipInfo() }}</div>
+        </mat-card>
+    </div>
+    <div class="stats-row">
+        <mat-card class="stats-module">
+            <h2 class="pb-4">Task Progress</h2>
+            <mat-card-content class="row">
+                <div id="chart">
+                    <apx-chart
+                        [series]="chartOptions.series"
+                        [chart]="chartOptions.chart"
+                        [xaxis]="chartOptions.xaxis"
+                        [stroke]="chartOptions.stroke"
+                        [tooltip]="chartOptions.tooltip"
+                        [dataLabels]="chartOptions.dataLabels"
+                    ></apx-chart>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <div class="stats-row">
+        <mat-card class="stats-module">
+            <h2 class="pb-4">Project Roadmap</h2>
+            <mat-card-content class="row">
+                <p-timeline [value]="data.projectRoadmap">
+                    <ng-template pTemplate="content" let-event>
+                        <small class="p-text-secondary">{{ event.timestamp | date:'YYYY-MM-dd HH:mm:ss' }}</small>
+                    </ng-template>
+                    <ng-template pTemplate="opposite" let-event>
+                        {{ event.type | translate:{username: event.username, target: event.target} }}
+                    </ng-template>
+                </p-timeline>
+            </mat-card-content>
+        </mat-card>
     </div>
 </div>
 <div class="loading-container" *ngIf="!loaded()">
     <p class="information">{{ 'STATS.LOADING.' + information | translate }}...</p>
-    <mat-progress-bar mode="determinate" [value]="loading"></mat-progress-bar>
+    <mat-progress-bar [mode]="mode" [value]="loading"></mat-progress-bar>
 </div>

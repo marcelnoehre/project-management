@@ -3,5 +3,6 @@ export enum TaskStateColor {
     TODO = 'blue',
     PROGRESS = 'green',
     REVIEW = 'orange',
-    DONE = 'magenta'
+    DONE = 'magenta',
+    DELETED = 'black'
 }

@@ -18,7 +18,8 @@ async function createProject(req, res, next) {
                     history: [{
                         timestamp: new Date().getTime(),
                         type: 'CREATED',
-                        username: req.body.username
+                        username: req.body.username,
+                        target: null
                     }],
                     stats: {
                         created: 0,
@@ -91,7 +92,8 @@ async function inviteUser(req, res, next) {
                     const event = {
                         timestamp: new Date().getTime(),
                         type: 'INVITED',
-                        username: jwt.decode(req.body.token).username
+                        username: jwt.decode(req.body.token).username,
+                        target: req.body.username
                     }
                     const historyDoc = historySnapshot.docs[0];
                     const history = historyDoc.data().history;
@@ -134,7 +136,8 @@ async function handleInvite(req, res, next) {
                     const event = {
                         timestamp: new Date().getTime(),
                         type: 'JOINED',
-                        username: req.body.username
+                        username: req.body.username,
+                        target: null
                     }
                     const historyDoc = historySnapshot.docs[0];
                     const history = historyDoc.data().history;
@@ -158,7 +161,8 @@ async function handleInvite(req, res, next) {
                     const event = {
                         timestamp: new Date().getTime(),
                         type: 'REJECTED',
-                        username: req.body.username
+                        username: req.body.username,
+                        target: null
                     }
                     const historyDoc = historySnapshot.docs[0];
                     const history = historyDoc.data().history;
@@ -195,7 +199,8 @@ async function updatePermission(req, res, next) {
                 const event = {
                     timestamp: new Date().getTime(),
                     type: req.body.permission,
-                    username: jwt.decode(req.body.token).username
+                    username: jwt.decode(req.body.token).username,
+                    target: req.body.username
                 }
                 const historyDoc = historySnapshot.docs[0];
                 const history = historyDoc.data().history;
@@ -236,7 +241,8 @@ async function removeUser(req, res, next) {
                 const event = {
                     timestamp: new Date().getTime(),
                     type: 'REMOVED',
-                    username: jwt.decode(req.body.token).username
+                    username: jwt.decode(req.body.token).username,
+                    target: req.body.username
                 }
                 const historyDoc = historySnapshot.docs[0];
                 const history = historyDoc.data().history;
@@ -273,7 +279,8 @@ async function leaveProject(req, res, next) {
                 const event = {
                     timestamp: new Date().getTime(),
                     type: 'LEFT',
-                    username: req.body.username
+                    username: req.body.username,
+                    target: null
                 }
                 const historyDoc = historySnapshot.docs[0];
                 const history = historyDoc.data().history;

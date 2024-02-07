@@ -69,11 +69,11 @@ async function stats(req, res, next) {
             .get();
         const stats = []
         const [project, others] = [{
-            id: 'project',
+            id: 'STATS.PROJECT',
             stats: {}
         },
         {
-            id: 'others',
+            id: 'STATS.OTHERS',
             stats: {}
         }];
         if (!projectsSnapshot.empty) {
@@ -230,13 +230,55 @@ async function taskProgress(req, res, next) {
     try {
         const tasksCollection = db.collection('tasks');
         const tasksSnapshot = await tasksCollection.where('project', '==', jwt.decode(req.body.token).project).get();
-        const histories = [];
+        const charData = {
+            timestamps: [],
+            NONE: [],
+            TODO: [],
+            PROGRESS: [],
+            REVIEW: [],
+            DONE: []
+        }
         if (!tasksSnapshot.empty) {
+            const historyEvents = [];
             tasksSnapshot.forEach(doc => {
-                histories.push(doc.data().history);
+                if (doc.data().state !== 'DELETED') {
+                    doc.data().history.forEach((event) => {
+                        historyEvents.push(event);
+                    });
+                }
+            });
+            historyEvents.sort((a, b) => a.timestamp - b.timestamp);
+            const states = ['NONE', 'TODO', 'PROGRESS', 'REVIEW', 'DONE'];
+            const counters = {
+                NONE: 0,
+                TODO: 0,
+                PROGRESS: 0,
+                REVIEW: 0,
+                DONE: 0
+            };
+            historyEvents.forEach((event) => {
+                if (states.indexOf(event.state) !== -1) {
+                    if (event.previous === null) {
+                        counters[event.state]++;
+                    } else {
+                        if (states.indexOf(event.state) > states.indexOf(event.previous)) {
+                            for (let i = states.indexOf(event.state); i > states.indexOf(event.previous); i--) {
+                                counters[states[i]]++;
+                            }
+                        } else if (states.indexOf(event.state) < states.indexOf(event.previous)) {
+                            for (let i = states.indexOf(event.previous); i > states.indexOf(event.state); i--) {
+                                counters[states[i]]--;
+                            }
+                        }
+                    }
+                    charData.timestamps.push(event.timestamp);
+                    states.forEach((state) => {
+                        charData[state].push(counters[state]);
+                    });
+                }
             });
         }
-        res.json(histories);
+        res.json(charData);
     } catch (err) {
         next(err);
     }
@@ -246,10 +288,16 @@ async function projectRoadmap(req, res, next) {
     try {
         const projectsCollection = db.collection('projects');
         const projectsSnapshot = await projectsCollection.where('name', '==', jwt.decode(req.body.token).project).get();
-        let history = [];
+        const history = [];
         if (!projectsSnapshot.empty) {
-            const projectDoc = projectsSnapshot.docs[0];
-            history = projectDoc.data().history;
+            projectsSnapshot.docs[0].data().history.forEach((event) => {
+                history.push({
+                    timestamp: event.timestamp,
+                    type: 'STATS.PROJECT_ROADMAP.' + event.type,
+                    username: event.username,
+                    target: event.target,
+                });
+            });
         }
         res.json(history);
     } catch (err) {

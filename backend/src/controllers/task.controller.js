@@ -26,7 +26,7 @@ async function createTask(req, res, next) {
                 timestamp: new Date().getTime(),
                 username: jwt.decode(req.body.token).username,
                 state: req.body.state,
-                type: 'CREATED'
+                previous: null
             }]
         };
         tasksCollection.doc(newDocRef.id).set(task).then(async () => {
@@ -67,7 +67,7 @@ async function importTasks(req, res, next) {
                         timestamp: new Date().getTime(),
                         username: jwt.decode(req.body.token).username,
                         state: task.state === '' ? 'NONE' : task.state,
-                        type: 'IMPORTED'
+                        previous: null
                     }]
                 };
                 await tasksCollection.doc(newDocRef.id).set(taskData);
@@ -127,12 +127,6 @@ async function updateTask(req, res, next) {
         } else {
             const taskDoc = tasksSnapshot.docs[0];
             const task = req.body.task;
-            task.history.push({
-                timestamp: new Date().getTime(),
-                username: jwt.decode(req.body.token).username,
-                state: req.body.task.state,
-                type: 'EDITED'
-            });
             taskDoc.ref.update(task);
             await authService.updateUserStats(db, jwt.decode(req.body.token).username, 'edited', 1);
             await authService.updateProjectStats(db, jwt.decode(req.body.token).project, 'edited', 1);
@@ -174,7 +168,7 @@ async function updatePosition(req, res, next) {
                 timestamp: new Date().getTime(),
                 username: jwt.decode(req.body.token).username,
                 state: req.body.state,
-                type: 'POSITION'
+                previous: taskDoc.data().state
             });
             await taskDoc.ref.update({
                 state: req.body.state,
@@ -217,12 +211,6 @@ async function moveToTrashBin(req, res, next) {
         } else {
             const taskDoc = tasksSnapshot.docs[0];
             const history = taskDoc.data().history;
-            history.push({
-                timestamp: new Date().getTime(),
-                username: jwt.decode(req.body.token).username,
-                state: 'DELETED',
-                type: 'TRASHED'
-            });
             await taskDoc.ref.update({
                 state: 'DELETED',
                 history: history
@@ -283,12 +271,6 @@ async function restoreTask(req, res, next) {
             const taskDoc = tasksSnapshot.docs[0];
             const history = taskDoc.data().history;
             const previousState = history[history.length - 2].state
-            history.push({
-                timestamp: new Date().getTime(),
-                username: jwt.decode(req.body.token).username,
-                state: previousState,
-                type: 'RESTORED'
-            });
             await taskDoc.ref.update({
                 state: previousState,
                 history: history
