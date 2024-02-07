@@ -246,10 +246,16 @@ async function projectRoadmap(req, res, next) {
     try {
         const projectsCollection = db.collection('projects');
         const projectsSnapshot = await projectsCollection.where('name', '==', jwt.decode(req.body.token).project).get();
-        let history = [];
+        const history = [];
         if (!projectsSnapshot.empty) {
-            const projectDoc = projectsSnapshot.docs[0];
-            history = projectDoc.data().history;
+            projectsSnapshot.docs[0].data().history.forEach((event) => {
+                history.push({
+                    timestamp: event.timestamp,
+                    type: 'STATS.PROJECT_ROADMAP.' + event.type,
+                    username: event.username,
+                    target: event.target,
+                });
+            });
         }
         res.json(history);
     } catch (err) {

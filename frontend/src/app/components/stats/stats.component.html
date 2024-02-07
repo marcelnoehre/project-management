@@ -107,10 +107,10 @@
             <mat-card-content class="row">
                 <p-timeline [value]="data.projectRoadmap">
                     <ng-template pTemplate="content" let-event>
-                        <small class="p-text-secondary">{{ event.timestamp }}</small>
+                        <small class="p-text-secondary">{{ event.timestamp | date:'YYYY-MM-dd HH:mm:ss' }}</small>
                     </ng-template>
                     <ng-template pTemplate="opposite" let-event>
-                        {{ event.type | translate:{username: event.username} }}
+                        {{ event.type | translate:{username: event.username, target: event.target} }}
                     </ng-template>
                 </p-timeline>
             </mat-card-content>

@@ -166,6 +166,16 @@
         },
         "WIP_INFO": "There are currently {{wip}} tasks in progress",
         "WIP_INFO_SINGLE": "There is currently 1 task in progress",
-        "WIP_INFO_NONE": "No task is currently in progress"
+        "WIP_INFO_NONE": "No task is currently in progress",
+        "PROJECT_ROADMAP": {
+            "CREATED": "{{username}} created the project",
+            "INVITED": "{{username}} has invited {{target}} to the project",
+            "REJECTED": "{{username}} has declined the invitation",
+            "JOINED": "{{username}} has joined the project",
+            "REMOVED": "{{username}} has removed {{target}} from the project",
+            "LEFT": "{{username}} has left the project",
+            "ADMIN": "{{username}} has given {{target}} the permission 'ADMIN'",
+            "MEMBER": "{{username}} has given {{target}} the permission 'MEMBER'"
+        }
     }
 }
