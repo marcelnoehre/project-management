@@ -12,6 +12,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { TimelineModule } from 'primeng/timeline';
+import { NgApexchartsModule } from "ng-apexcharts";
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
@@ -76,6 +77,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     DragDropModule,
     ColorPickerModule,
     TimelineModule,
+    NgApexchartsModule,
 		TranslateModule.forRoot({
 			loader: {
 				provide: TranslateLoader,

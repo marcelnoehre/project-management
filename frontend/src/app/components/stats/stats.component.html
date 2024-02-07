@@ -97,6 +97,16 @@
         <mat-card class="stats-module">
             <h2 class="pb-4">Task Progress</h2>
             <mat-card-content class="row">
+                <div id="chart">
+                    <apx-chart
+                        [series]="chartOptions.series"
+                        [chart]="chartOptions.chart"
+                        [xaxis]="chartOptions.xaxis"
+                        [stroke]="chartOptions.stroke"
+                        [tooltip]="chartOptions.tooltip"
+                        [dataLabels]="chartOptions.dataLabels"
+                    ></apx-chart>
+                </div>
                 {{ data.taskProgress | json }}
             </mat-card-content>
         </mat-card>
