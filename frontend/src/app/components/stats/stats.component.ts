@@ -37,6 +37,15 @@ export class StatsComponent implements OnInit {
     deleted: 'delete_forever',
     cleared: 'clear'
   }
+  activeUnit = 'h';
+  units = ['ms', 's', 'min', 'h', 'day'];
+  unitFactor: any = {
+    ms: 1,
+    s: 0.001,
+    min: 0.001 / 60,
+    h: 0.001 / 3600,
+    day: 0.001 / (3600 * 24)
+  };  
   barChartOptions = {
     scaleShowVerticalLines: false,
     responsive: true,
@@ -103,6 +112,39 @@ export class StatsComponent implements OnInit {
       TaskState.REVIEW,
       TaskState.DONE,
       TaskState.DELETED
+      ]
+   }
+  }
+
+  setUnit(unit: string) {
+    this.activeUnit = unit;
+  }
+
+  averageTimeData() {
+    return {
+      data: [
+        {
+          data: [
+            this.data.averageTime.NONE * this.unitFactor[this.activeUnit],
+            this.data.averageTime.TODO * this.unitFactor[this.activeUnit],
+            this.data.averageTime.PROGRESS * this.unitFactor[this.activeUnit],
+            this.data.averageTime.REVIEW * this.unitFactor[this.activeUnit]
+          ],
+          label: 'Task Amount',
+          backgroundColor: [
+            TaskStateColor.NONE,
+            TaskStateColor.TODO,
+            TaskStateColor.PROGRESS,
+            TaskStateColor.REVIEW
+          ]
+        }
+      
+      ],
+      labels: [
+        TaskState.NONE,
+        TaskState.TODO,
+        TaskState.PROGRESS,
+        TaskState.REVIEW
       ]
    }
   }

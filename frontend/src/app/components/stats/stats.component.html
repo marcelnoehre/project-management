@@ -50,7 +50,16 @@
         <mat-card class="stats-module">
             <h2 class="pb-4">Average Time</h2>
             <mat-card-content class="row">
-                {{ data.averageTime | json }}
+                <div style="display: block;" class="mb-2">
+                    <canvas baseChart [datasets]="averageTimeData().data" [labels]="averageTimeData().labels" [options]="barChartOptions"
+                            [legend]="false" chartType="bar">
+                    </canvas>
+                </div>
+                <div>
+                    <ng-container *ngFor="let unit of units">
+                        <button class="col-2" mat-stroked-button (click)="setUnit(unit)">{{unit}}</button>
+                    </ng-container>
+                </div>
             </mat-card-content>
         </mat-card>
     </div>
