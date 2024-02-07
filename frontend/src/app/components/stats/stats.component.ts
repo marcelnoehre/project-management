@@ -48,7 +48,7 @@ export class StatsComponent implements OnInit {
   };  
   barChartOptions = {
     scaleShowVerticalLines: false,
-    responsive: true,
+    responsive: true
   };
 
   constructor(

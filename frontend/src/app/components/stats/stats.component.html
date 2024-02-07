@@ -11,6 +11,8 @@
                 </div>
             </mat-card-content>
         </mat-card>
+    </div>
+    <div class="stats-row">
         <mat-card class="stats-module">
             <h2 class="pb-4">Stat Leaders</h2>
             <mat-card-content class="row">
@@ -29,7 +31,7 @@
         </mat-card>
     </div>
     <div class="stats-row">
-        <mat-card class="stats-module-fullscreen">
+        <mat-card class="stats-module">
             <h2 class="pb-4">Stats</h2>
             <mat-card-content class="row">
                 {{ data.stats | json }}
@@ -41,20 +43,32 @@
             <h2 class="pb-4">Task Amount</h2>
             <mat-card-content class="row">
                 <div style="display: block;">
-                    <canvas baseChart [datasets]="taskAmountData().data" [labels]="taskAmountData().labels" [options]="barChartOptions"
-                            [legend]="false" chartType="bar">
+                    <canvas baseChart 
+                            [datasets]="taskAmountData().data" 
+                            [labels]="taskAmountData().labels" 
+                            [options]="barChartOptions"
+                            [legend]="false" 
+                            chartType="bar"
+                    >
                     </canvas>
                 </div>
             </mat-card-content>
         </mat-card>
+    </div>
+    <div class="stats-row">
         <mat-card class="stats-module">
             <h2 class="pb-4">Average Time</h2>
             <mat-card-content class="row">
-                <div style="display: block;" class="mb-2">
-                    <canvas baseChart [datasets]="averageTimeData().data" [labels]="averageTimeData().labels" [options]="barChartOptions"
-                            [legend]="false" chartType="bar">
+                <div class="mb-2">
+                    <canvas baseChart
+                            [datasets]="averageTimeData().data"
+                            [labels]="averageTimeData().labels"
+                            [options]="barChartOptions"
+                            [legend]="false"
+                            chartType="bar"
+                    >
                     </canvas>
-                </div>
+                  </div>
                 <div>
                     <ng-container *ngFor="let unit of units">
                         <button class="col-2" mat-stroked-button (click)="setUnit(unit)">{{unit}}</button>
@@ -64,7 +78,7 @@
         </mat-card>
     </div>
     <div class="stats-row">
-        <mat-card class="stats-module-row">
+        <mat-card class="stats-module">
             <h2 class="pb-4">Work In Progress</h2>
             <div class="fs-5">{{ getWipInfo() }}</div>
         </mat-card>
@@ -76,6 +90,8 @@
                 {{ data.taskProgress | json }}
             </mat-card-content>
         </mat-card>
+    </div>
+    <div class="stats-row">
         <mat-card class="stats-module">
             <h2 class="pb-4">Project Roadmap</h2>
             <mat-card-content class="row">

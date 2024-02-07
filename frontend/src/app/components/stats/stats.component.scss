@@ -41,29 +41,10 @@ mat-progress-bar {
 }
 
 .stats-module {
-    height: 40vh;
-    width: 40%;
+    width: 90%;
     background-color: white;
     padding: 2rem;
     overflow-x: hidden;
-    overflow-y: scroll;
-}
-
-.stats-module-fullscreen {
-    height: 40vh;
-    width: calc(80% + 4rem);
-    background-color: white;
-    padding: 2rem;
-    overflow-x: hidden;
-    overflow-y: scroll;
-}
-
-.stats-module-row {
-    width: calc(80% + 4rem);
-    background-color: white;
-    padding: 2rem;
-    overflow-x: hidden;
-    overflow-y: scroll;
 }
 
 .stat {
