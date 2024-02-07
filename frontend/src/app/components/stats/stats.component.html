@@ -105,7 +105,14 @@
         <mat-card class="stats-module">
             <h2 class="pb-4">Project Roadmap</h2>
             <mat-card-content class="row">
-                {{ data.projectRoadmap | json }}
+                <p-timeline [value]="data.projectRoadmap">
+                    <ng-template pTemplate="content" let-event>
+                        <small class="p-text-secondary">{{ event.timestamp }}</small>
+                    </ng-template>
+                    <ng-template pTemplate="opposite" let-event>
+                        {{ event.type | translate:{username: event.username} }}
+                    </ng-template>
+                </p-timeline>
             </mat-card-content>
         </mat-card>
     </div>

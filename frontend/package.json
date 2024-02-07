@@ -26,6 +26,7 @@
     "js2xmlparser": "^5.0.0",
     "ng2-charts": "^5.0.4",
     "ngx-color-picker": "^16.0.0",
+    "primeng": "^16.9.1",
     "rxjs": "^7.4.0",
     "tslib": "^2.3.0",
     "xml-js": "^1.6.11",
