@@ -1,28 +1,10 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ProgressBarMode } from '@angular/material/progress-bar';
 import { StatsService } from 'src/app/services/stats.service';
 import { TaskState } from 'src/app/enums/task-state.enum';
 import { TaskStateColor } from 'src/app/enums/task-state-color.enum';
 import { TranslateService } from '@ngx-translate/core';
-import {
-  ChartComponent,
-  ApexAxisChartSeries,
-  ApexChart,
-  ApexXAxis,
-  ApexDataLabels,
-  ApexTooltip,
-  ApexStroke
-} from "ng-apexcharts";
-
-export type ChartOptions = {
-  series: ApexAxisChartSeries;
-  chart: ApexChart;
-  xaxis: ApexXAxis;
-  stroke: ApexStroke;
-  tooltip: ApexTooltip;
-  dataLabels: ApexDataLabels;
-};
-
+import { ChartOptions } from 'src/app/interfaces/chart-options';
 
 @Component({
   selector: 'app-stats',
@@ -30,9 +12,6 @@ export type ChartOptions = {
   styleUrls: ['./stats.component.scss']
 })
 export class StatsComponent implements OnInit {
-  @ViewChild("chart") chart!: ChartComponent;
-  public chartOptions!: ChartOptions;
-
   information = 'INIT';
   mode: ProgressBarMode = 'determinate';
   loading = 0;
@@ -71,50 +50,34 @@ export class StatsComponent implements OnInit {
     scaleShowVerticalLines: false,
     responsive: true
   };
+  chartOptions: ChartOptions = {
+    series: [],
+    chart: {
+      height: 350,
+      type: "area"
+    },
+    dataLabels: {
+      enabled: false
+    },
+    stroke: {
+      curve: "smooth"
+    },
+    xaxis: {
+      type: "datetime",
+      categories: []
+    },
+    tooltip: {
+      x: {
+        format: 'yyyy-MM-dd HH:mm:ss'
+      }
+    }
+  };
 
   constructor(
     private stats: StatsService,
     private translate: TranslateService
   ) {
-    this.chartOptions = {
-      series: [
-        {
-          name: "series1",
-          data: [31, 40, 28, 51, 42, 109, 100]
-        },
-        {
-          name: "series2",
-          data: [11, 32, 45, 32, 34, 52, 41]
-        }
-      ],
-      chart: {
-        height: 350,
-        type: "area"
-      },
-      dataLabels: {
-        enabled: false
-      },
-      stroke: {
-        curve: "smooth"
-      },
-      xaxis: {
-        type: "datetime",
-        categories: [
-          "2018-09-19T00:00:00.000Z",
-          "2018-09-19T01:30:00.000Z",
-          "2018-09-19T02:30:00.000Z",
-          "2018-09-19T03:30:00.000Z",
-          "2018-09-19T04:30:00.000Z",
-          "2018-09-19T05:30:00.000Z",
-          "2018-09-19T06:30:00.000Z"
-        ]
-      },
-      tooltip: {
-        x: {
-          format: "dd/MM/yy HH:mm"
-        }
-      }
-    };
+    
   }
 
   async ngOnInit(): Promise<void> {
