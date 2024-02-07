@@ -86,6 +86,7 @@ export class StatsComponent implements OnInit {
     this.stats.getUpdateSubject().subscribe(async (res) => {
       if (res.step === 'storage') {
         this.data = res.data;
+        this.setupTaskProgress();
         this.information = res.information;
         this.mode = 'indeterminate';
         await new Promise<void>(done => setTimeout(() => done(), 2000));
@@ -95,6 +96,9 @@ export class StatsComponent implements OnInit {
         this.loading = res.percentage * 100;
         this.information = res.information;
         this.data[res.step] = res.data;
+        if (res.step === 'taskProgress') {
+          this.setupTaskProgress();
+        }
       }
     });
   }
@@ -181,20 +185,15 @@ export class StatsComponent implements OnInit {
     }
   }
 
-  public generateData(baseval: any, count: any, yrange: any) {
-    var i = 0;
-    var series = [];
-    while (i < count) {
-      var x = Math.floor(Math.random() * (750 - 1 + 1)) + 1;
-      var y =
-        Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
-      var z = Math.floor(Math.random() * (75 - 15 + 1)) + 15;
-
-      series.push([x, y, z]);
-      baseval += 86400000;
-      i++;
-    }
-    return series;
+  setupTaskProgress() {
+    const states = [TaskState.NONE, TaskState.TODO, TaskState.PROGRESS, TaskState.REVIEW, TaskState.DONE];
+    states.forEach((state) => {
+      this.chartOptions.series.push({
+        name: state,
+        data: this.data.taskProgress[state]
+      });
+    });
+    this.chartOptions.xaxis = this.data.taskProgress.timestamp;
   }
 
 }
