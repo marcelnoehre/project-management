@@ -3,26 +3,36 @@
         <mat-card class="stats-module">
             <h2 class="pb-4">Personal Stats</h2>
             <mat-card-content class="row">
-                <div *ngFor="let stat of statLabels" class="col w-100 stat">
+                <div *ngFor="let stat of statLabels" class="col w-100 stat m-2">
                     <mat-icon>
                         {{ icons[stat] }}
                     </mat-icon>
-                    <p class="label">{{ stat + ': ' + data.personalStats[stat] }}</p>
+                    <p class="label m-0">{{ stat + ': ' + data.personalStats[stat] }}</p>
                 </div>
             </mat-card-content>
         </mat-card>
         <mat-card class="stats-module">
-            <h2 class="pb-4">Stats</h2>
+            <h2 class="pb-4">Stat Leaders</h2>
             <mat-card-content class="row">
-                {{ data.stats | json }}
+                <div *ngFor="let stat of statLabels" class="col w-100 stat m-2">
+                    <mat-icon>
+                        {{ icons[stat] }}
+                    </mat-icon>
+                    <p class="label m-0">{{ stat + ': ' + data.statLeaders[stat].value }}</p>
+                    <div class="user-list my-2">
+                        <div *ngFor="let username of data.statLeaders[stat].username" class="px-2">
+                            {{ username }}
+                        </div>
+                    </div>
+                </div>
             </mat-card-content>
         </mat-card>
     </div>
     <div class="stats-row">
         <mat-card class="stats-module">
-            <h2 class="pb-4">Stat Leaders</h2>
+            <h2 class="pb-4">Stats</h2>
             <mat-card-content class="row">
-                {{ data.statLeaders | json }}
+                {{ data.stats | json }}
             </mat-card-content>
         </mat-card>
         <mat-card class="stats-module">
