@@ -69,11 +69,11 @@ async function stats(req, res, next) {
             .get();
         const stats = []
         const [project, others] = [{
-            id: 'project',
+            id: 'STATS.PROJECT',
             stats: {}
         },
         {
-            id: 'others',
+            id: 'STATS.OTHERS',
             stats: {}
         }];
         if (!projectsSnapshot.empty) {
