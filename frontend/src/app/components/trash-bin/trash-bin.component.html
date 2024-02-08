@@ -14,7 +14,7 @@
                         <button mat-fab color="primary" (click)="restore(task.uid, task.title)">
                             <app-spinner-icon class="material-icons" icon="undo" [spinning]="restoreLoading(task.uid)"></app-spinner-icon>
                         </button>
-                        <button mat-fab color="warn" (click)="delete(task.uid, task.title)">
+                        <button mat-fab color="warn" [disabled]="disableDelete()" (click)="delete(task.uid, task.title)">
                             <app-spinner-icon class="material-icons" icon="delete" [spinning]="deleteLoading(task.uid)"></app-spinner-icon>
                         </button>
                     </div>

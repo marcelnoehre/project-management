@@ -89,6 +89,10 @@ export class TrashBinComponent implements AfterViewInit {
     );
   }
 
+  disableDelete() {
+    return !this.user.hasPermission(Permission.ADMIN);
+  }
+
   showClear() {
     return this.user.hasPermission(Permission.ADMIN);
   }
