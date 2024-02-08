@@ -62,8 +62,8 @@
         "EDIT_TASK": "Task edited successfully!",
         "MOVE_TO_TRASH": "Task has been moved to the Trash Bin!",
         "CLEAR_TRASH_BIN": "The trash bin has been emptied!",
-        "TASK_RESTORED": "The task {{uid}} has been restored!",
-        "TASK_DELETED": "The task {{uid}} has been permanently deleted!"
+        "TASK_RESTORED": "The task {{title}} has been restored!",
+        "TASK_DELETED": "The task {{title}} has been permanently deleted!"
     },
     "USER" : {
         "USERNAME": "username",

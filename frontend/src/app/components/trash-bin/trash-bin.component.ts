@@ -43,13 +43,13 @@ export class TrashBinComponent implements AfterViewInit {
     );
   }
   
-  delete(uid: string) {
+  delete(uid: string, title: string) {
     this.loadingDelete = uid;
     this.api.deleteTask(this.user.token, this.user.project, uid).subscribe(
       (taskList) => {
         this.loadingDelete = '';
         this.taskList = taskList;
-        this.snackbar.open(this.translate.instant('SUCCESS.TASK_DELETED', { uid: uid } ));
+        this.snackbar.open(this.translate.instant('SUCCESS.TASK_DELETED', { title: title } ));
       },
       (error) => {
         this.loadingDelete = '';
@@ -58,13 +58,13 @@ export class TrashBinComponent implements AfterViewInit {
     );
   }
 
-  restore(uid: string) {
+  restore(uid: string, title: string) {
     this.loadingRestore = uid;
     this.api.restoreTask(this.user.token, this.user.project, uid).subscribe(
       (taskList) => {
         this.loadingRestore = '';
         this.taskList = taskList;
-        this.snackbar.open(this.translate.instant('SUCCESS.TASK_RESTORED', { uid: uid } ));
+        this.snackbar.open(this.translate.instant('SUCCESS.TASK_RESTORED', { title: title } ));
       },
       (error) => {
         this.loadingRestore = '';
