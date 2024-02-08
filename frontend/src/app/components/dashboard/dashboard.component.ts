@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AppColor } from 'src/app/enums/app-color.enum';
 import { AppIcon } from 'src/app/enums/app-icon.enum';
 import { AppItem } from 'src/app/enums/app-item.enum';
 import { AppRoute } from 'src/app/enums/app-route.enum';
@@ -15,31 +16,43 @@ export class DashboardComponent {
 			name: AppItem.Board,
 			route: AppRoute.Board,
 			icon: AppIcon.Board,
-			color: 'mediumslateblue'
+			color: AppColor.Board
 		},
 		{
 			name: AppItem.Stats,
 			route: AppRoute.Stats,
 			icon: AppIcon.Stats,
-			color: 'mediumturquoise'
+			color: AppColor.Stats
 		}],
 		[{
 			name: AppItem.CreateTask,
 			route: AppRoute.CreateTask,
 			icon: AppIcon.CreateTask,
-			color: 'cadetblue'
+			color: AppColor.CreateTask
 		},
 		{
 			name: AppItem.ImportTasks,
 			route: AppRoute.ImportTasks,
 			icon: AppIcon.ImportTasks,
-			color: 'goldenrod'
+			color: AppColor.ImportTasks
 		},
 		{
 			name: AppItem.TrashBin,
 			route: AppRoute.TrashBin,
 			icon: AppIcon.TrashBin,
-			color: 'salmon'
+			color: AppColor.TrashBin
+		}],
+		[{
+			name: AppItem.ProjectSettings,
+			route: AppRoute.ProjectSettings,
+			icon: AppIcon.ProjectSettings,
+			color: AppColor.ProjectSettings
+		},
+		{
+			name: AppItem.UserSettings,
+			route: AppRoute.UserSettings,
+			icon: AppIcon.UserSettings,
+			color: AppColor.UserSettings
 		}]
 	];
 }
