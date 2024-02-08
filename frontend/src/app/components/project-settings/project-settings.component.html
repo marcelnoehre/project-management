@@ -42,7 +42,7 @@
         </div>
     </table>
     <div class="actions">
-        <form [formGroup]="inviteForm">
+        <form [formGroup]="inviteForm" *ngIf="showInvite()">
             <p>{{ 'PROJECT.INVITE' | translate }}</p>
             <div class="invite">
                 <mat-form-field appearance="outline" class="username-form-field" MatInput>

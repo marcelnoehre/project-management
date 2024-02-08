@@ -174,6 +174,10 @@ export class ProjectSettingsComponent implements OnInit {
     }
   }
 
+  showInvite() {
+    return this.user.hasPermission(Permission.ADMIN);
+  }
+
   disableRemove(permission: string) {
     permission = permission as Permission;
     const required: Permission = permission === Permission.ADMIN ? Permission.OWNER : Permission.ADMIN;

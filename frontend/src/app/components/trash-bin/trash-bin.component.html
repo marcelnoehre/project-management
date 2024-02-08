@@ -14,7 +14,7 @@
                         <button mat-fab color="primary" (click)="restore(task.uid, task.title)">
                             <app-spinner-icon class="material-icons" icon="undo" [spinning]="restoreLoading(task.uid)"></app-spinner-icon>
                         </button>
-                        <button mat-fab color="warn" (click)="delete(task.uid, task.title)">
+                        <button mat-fab color="warn" [disabled]="disableDelete()" (click)="delete(task.uid, task.title)">
                             <app-spinner-icon class="material-icons" icon="delete" [spinning]="deleteLoading(task.uid)"></app-spinner-icon>
                         </button>
                     </div>
@@ -22,7 +22,7 @@
             </tr>
         </div>
     </table>
-    <div class="clear">
+    <div class="clear" *ngIf="showClear()">
         <button color="warn" mat-raised-button (click)="clear()" [disabled]="disableClear()">
             <app-spinner-icon class="material-icons" icon="delete_forever" [spinning]="loadingClear"></app-spinner-icon>
             <ng-container *ngIf="loadingClear"></ng-container>
