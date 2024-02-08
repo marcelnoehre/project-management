@@ -110,6 +110,8 @@ export class UserSettingsComponent implements OnInit {
               this.storage.setSessionEntry('user', this.user.user);
               if (attribute === 'password') {
                 this.password = '';
+              } else if (attribute === 'language') {
+                this.translate.use(value);
               }
             },
             (error) => {

@@ -78,6 +78,7 @@ export class LoginComponent implements OnInit {
 					this.dialog.open(CreateProjectComponent).afterClosed().subscribe((created) => {
 						if (created) {
 							this.notifications.init();
+							this.updateLanguage();
 							this.router.navigateByUrl('/');
 						} else {
 							this.storage.deleteSessionEntry('user');
@@ -100,6 +101,7 @@ export class LoginComponent implements OnInit {
 									this.user.isLoggedIn = true;
 									this.notifications.init();
 									this.storage.setSessionEntry('user', this.user.user);
+									this.updateLanguage();
 									this.router.navigateByUrl('/');
 								} else {
 									this.storage.deleteSessionEntry('user');
@@ -116,6 +118,7 @@ export class LoginComponent implements OnInit {
 					this.user.isLoggedIn = true;
 					this.notifications.init();
 					this.storage.setSessionEntry('user', this.user.user);
+					this.updateLanguage();
 					this.router.navigateByUrl('/');
 				}
 			},
@@ -132,6 +135,12 @@ export class LoginComponent implements OnInit {
 
 	public passwordValid(): boolean {
 		return this.loginForm.controls['passwordFormControl'].valid;
+	}
+
+	public updateLanguage(): void {
+		if (this.user.language) {
+			this.translate.use(this.user.language);
+		}
 	}
 
 	public registration(): void {
