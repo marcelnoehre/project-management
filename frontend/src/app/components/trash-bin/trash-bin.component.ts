@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Task } from 'src/app/interfaces/data/task';
 import { ApiService } from 'src/app/services/api/api.service';
+import { ErrorService } from 'src/app/services/error.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { StorageService } from 'src/app/services/storage.service';
 import { UserService } from 'src/app/services/user.service';
@@ -24,7 +25,8 @@ export class TrashBinComponent implements AfterViewInit {
     private storage: StorageService,
     private router: Router,
     private snackbar: SnackbarService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private _error: ErrorService
     ) {
 
   }
@@ -36,49 +38,37 @@ export class TrashBinComponent implements AfterViewInit {
         this.taskList = taskList;
       },
       (error) => {
-        if (error.status === 403) {
-          this.storage.clearSession();
-          this.router.navigateByUrl('/login');
-        }
-        this.snackbar.open(this.translate.instant(error.error.message));
+        this._error.handleApiError(error);
       }
     );
   }
   
-  delete(uid: string) {
+  delete(uid: string, title: string) {
     this.loadingDelete = uid;
     this.api.deleteTask(this.user.token, this.user.project, uid).subscribe(
       (taskList) => {
         this.loadingDelete = '';
         this.taskList = taskList;
-        this.snackbar.open(this.translate.instant('SUCCESS.TASK_DELETED', { uid: uid } ));
+        this.snackbar.open(this.translate.instant('SUCCESS.TASK_DELETED', { title: title } ));
       },
       (error) => {
         this.loadingDelete = '';
-        if (error.status === 403) {
-          this.storage.clearSession();
-          this.router.navigateByUrl('/login');
-        }
-        this.snackbar.open(this.translate.instant(error.error.message));
+        this._error.handleApiError(error);
       }
     );
   }
 
-  restore(uid: string) {
+  restore(uid: string, title: string) {
     this.loadingRestore = uid;
     this.api.restoreTask(this.user.token, this.user.project, uid).subscribe(
       (taskList) => {
         this.loadingRestore = '';
         this.taskList = taskList;
-        this.snackbar.open(this.translate.instant('SUCCESS.TASK_RESTORED', { uid: uid } ));
+        this.snackbar.open(this.translate.instant('SUCCESS.TASK_RESTORED', { title: title } ));
       },
       (error) => {
         this.loadingRestore = '';
-        if (error.status === 403) {
-          this.storage.clearSession();
-          this.router.navigateByUrl('/login');
-        }
-        this.snackbar.open(this.translate.instant(error.error.message));
+        this._error.handleApiError(error);
       }
     );
   }
@@ -93,11 +83,7 @@ export class TrashBinComponent implements AfterViewInit {
       },
       (error) => {
         this.loadingClear = false;
-        if (error.status === 403) {
-          this.storage.clearSession();
-          this.router.navigateByUrl('/login');
-        }
-        this.snackbar.open(this.translate.instant(error.error.message));
+        this._error.handleApiError(error);
       }
     );
   }

@@ -4,6 +4,7 @@ import { UserService } from './user.service';
 import { Observable, Subject } from 'rxjs';
 import { Loading } from '../interfaces/loading';
 import { StorageService } from './storage.service';
+import { ErrorService } from './error.service';
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +26,8 @@ export class StatsService {
   constructor(
     private api: ApiService,
     private user: UserService,
-    private storage: StorageService
+    private storage: StorageService,
+    private _error: ErrorService
   ) { }
 
   async init() {
@@ -85,31 +87,49 @@ export class StatsService {
                                           this.storage.setSessionEntry('stats', this.data);
                                           this.storage.setSessionEntry('statsRetrieval', true);
                                         },
-                                        (error) => { }
+                                        (error) => {
+                                          this._error.handleApiError(error);
+                                        }
                                       );
                                     },
-                                    (error) => { }
+                                    (error) => {
+                                      this._error.handleApiError(error);
+                                    }
                                   );
                                 },
-                                (error) => { }
+                                (error) => {
+                                  this._error.handleApiError(error);
+                                }
                               );
                             },
-                            (error) => { }
+                            (error) => {
+                              this._error.handleApiError(error);
+                            }
                           );
                         },
-                        (error) => { }
+                        (error) => {
+                          this._error.handleApiError(error);
+                        }
                       );
                     },
-                    (error) => { }
+                    (error) => {
+                      this._error.handleApiError(error);
+                    }
                   );
                 },
-                (error) => { }
+                (error) => {
+                  this._error.handleApiError(error);
+                }
               );
             },
-            (error) => { }
+            (error) => {
+              this._error.handleApiError(error);
+            }
           );
         },
-        (error) => { }
+        (error) => {
+          this._error.handleApiError(error);
+        }
       );
     }
   }

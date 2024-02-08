@@ -12,6 +12,7 @@ import { Permission } from 'src/app/enums/permission.enum';
 import { DialogComponent } from '../dialog/dialog.component';
 import { UserService } from 'src/app/services/user.service';
 import { NotificationsService } from 'src/app/services/notifications.service';
+import { ErrorService } from 'src/app/services/error.service';
 
 @Component({
 	selector: 'app-login',
@@ -34,12 +35,14 @@ export class LoginComponent implements OnInit {
 		private api: ApiService,
 		private dialog: MatDialog,
 		private user: UserService,
-		private notifications: NotificationsService
+		private notifications: NotificationsService,
+		private _error: ErrorService
 	) {
 		this.createForm();
 	}
 
 	ngOnInit(): void {
+		this.user.user = this.storage.getSessionEntry('user');
 		if (this.user?.['isLoggedIn'] && this.user?.['project'] !== '') {
 			this.router.navigateByUrl('/');
 		}
@@ -74,10 +77,6 @@ export class LoginComponent implements OnInit {
 				if (user.project === '') {
 					this.dialog.open(CreateProjectComponent).afterClosed().subscribe((created) => {
 						if (created) {
-							this.user.user = user
-							this.user.permission = Permission.OWNER;
-							this.user.project = user.project;
-							this.user.isLoggedIn = true;
 							this.notifications.init();
 							this.router.navigateByUrl('/');
 						} else {
@@ -108,7 +107,7 @@ export class LoginComponent implements OnInit {
 								this.snackbar.open(this.translate.instant(response.message));
 							},
 							(error) => {
-								this.snackbar.open(this.translate.instant(error.error.message));
+								this._error.handleApiError(error);
 							}
 						)
 					});
@@ -122,7 +121,7 @@ export class LoginComponent implements OnInit {
 			},
 			(error) => {
 				this.loading = false;
-				this.snackbar.open(this.translate.instant(error.error.message));
+				this._error.handleApiError(error);
 			}
 		);
 	}

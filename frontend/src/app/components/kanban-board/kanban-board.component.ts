@@ -13,6 +13,7 @@ import { ParserService } from 'src/app/services/parser.service';
 import { MatDialog } from '@angular/material/dialog';
 import { TaskDetailViewComponent } from '../task-detail-view/task-detail-view.component';
 import { Task } from 'src/app/interfaces/data/task';
+import { ErrorService } from 'src/app/services/error.service';
 
 @Component({
   selector: 'app-kanban-board',
@@ -32,7 +33,8 @@ export class KanbanBoardComponent implements AfterViewInit {
     private translate: TranslateService,
     private user: UserService,
     private parser: ParserService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private _error: ErrorService
   ) {
 
   }
@@ -44,17 +46,16 @@ export class KanbanBoardComponent implements AfterViewInit {
         this.taskList = taskList;        
       },
       (error) => {
-        if (error.status === 403) {
-          this.storage.clearSession();
-          this.router.navigateByUrl('/login');
-        }
-        this.snackbar.open(this.translate.instant(error.error.message));
+        this._error.handleApiError(error);
       }
     );
   }
 
   drop(event: any) {
     try {
+      const foundState = this.taskList.find((list) => list.state === event.event.target.id);    
+      const previousIndex = foundState!.tasks[event.currentIndex - 1]?.order ? foundState!.tasks[event.currentIndex - 1].order : 0;
+      const nextIndex = foundState!.tasks[event.currentIndex + 1]?.order === undefined ? previousIndex + 2 : foundState!.tasks[event.currentIndex + 1].order;
       if (event.previousContainer === event.container) {
         moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
       } else if (event.event.target.id === TaskState.DELETED) {
@@ -67,11 +68,7 @@ export class KanbanBoardComponent implements AfterViewInit {
           },
           (error) => {
             this.loadingDelete = false;
-            if (error.status === 403) {
-              this.storage.clearSession();
-              this.router.navigateByUrl('/login');
-            }
-            this.snackbar.open(this.translate.instant(error.error.message));
+            this._error.handleApiError(error);
           }
         );
         return;
@@ -83,19 +80,12 @@ export class KanbanBoardComponent implements AfterViewInit {
           event.currentIndex
         );      
       }
-      const foundState = this.taskList.find((list) => list.state === event.event.target.id);    
-      const previousIndex = foundState!.tasks[event.currentIndex - 1]?.order ? foundState!.tasks[event.currentIndex - 1].order : 0;
-      const nextIndex = foundState!.tasks[event.currentIndex + 1]?.order === undefined ? previousIndex + 2 : foundState!.tasks[event.currentIndex + 1].order;
       this.api.updatePosition(this.user.token, this.user.project, foundState!.tasks[event.currentIndex].uid, foundState!.state, (previousIndex + nextIndex) / 2).subscribe(
         (tasklist) => {
           this.taskList = tasklist;
         },
         (error) => {
-          if (error.status === 403) {
-            this.storage.clearSession();
-            this.router.navigateByUrl('/login');
-          }
-          this.snackbar.open(this.translate.instant(error.error.message));
+          this._error.handleApiError(error);
         }
       );
     } catch (err) {

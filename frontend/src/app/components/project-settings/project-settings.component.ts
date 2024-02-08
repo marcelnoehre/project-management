@@ -11,6 +11,7 @@ import { StorageService } from 'src/app/services/storage.service';
 import { DialogComponent } from '../dialog/dialog.component';
 import { Language } from 'src/app/interfaces/language';
 import { UserService } from 'src/app/services/user.service';
+import { ErrorService } from 'src/app/services/error.service';
 
 @Component({
   selector: 'app-project-settings',
@@ -42,7 +43,8 @@ export class ProjectSettingsComponent implements OnInit {
     private translate: TranslateService,
     private dialog: MatDialog,
     private router: Router,
-    private user: UserService
+    private user: UserService,
+    private _error: ErrorService
   ) {
     this.createForm();
   }
@@ -50,26 +52,10 @@ export class ProjectSettingsComponent implements OnInit {
   ngOnInit(): void {
     this.api.getTeamMembers(this.user.token, this.user.project).subscribe(
       (users) => {
-        this.members = users.sort((a, b) => {
-          if (a.permission === Permission.OWNER && b.permission !== Permission.OWNER) {
-            return -1;
-          } else if (b.permission === Permission.OWNER && a.permission !== Permission.OWNER) {
-            return 1;
-          } else if (a.permission === Permission.ADMIN && b.permission !== Permission.ADMIN) {
-            return -1;
-          } else if (b.permission === Permission.ADMIN && a.permission !== Permission.ADMIN) {
-            return 1;
-          } else {
-            return 0;
-          }
-        });
+        this.members = users;
       },
       (error) => {
-        if (error.status === 403) {
-          this.storage.clearSession();
-          this.router.navigateByUrl('/login');
-        }
-        this.snackbar.open(this.translate.instant(error.error.message));
+        this._error.handleApiError(error);
       }
     );
   }
@@ -107,11 +93,7 @@ export class ProjectSettingsComponent implements OnInit {
         },
         (error) => {
           this.loadingInvite = false;
-          if (error.status === 403) {
-            this.storage.clearSession();
-            this.router.navigateByUrl('/login');
-          }
-          this.snackbar.open(this.translate.instant(error.error.message));
+          this._error.handleApiError(error);
         }
       );
     } 
@@ -135,11 +117,7 @@ export class ProjectSettingsComponent implements OnInit {
           },
           (error) => {
             this.loadingDelete = '';
-            if (error.status === 403) {
-              this.storage.clearSession();
-              this.router.navigateByUrl('/login');
-            }
-            this.snackbar.open(this.translate.instant(error.error.message));
+            this._error.handleApiError(error);
           }
         )
       }
@@ -167,11 +145,7 @@ export class ProjectSettingsComponent implements OnInit {
             },
             (error) => {
               this.loadingLeave = false;
-              if (error.status === 403) {
-                this.storage.clearSession();
-                this.router.navigateByUrl('/login');
-              }
-              this.snackbar.open(this.translate.instant(error.error.message));
+              this._error.handleApiError(error);
             }
           );
         }
@@ -185,11 +159,7 @@ export class ProjectSettingsComponent implements OnInit {
         this.members = response;
       },
       (error) => {
-        if (error.status === 403) {
-          this.storage.clearSession();
-          this.router.navigateByUrl('/login');
-        }
-        this.snackbar.open(this.translate.instant(error.error.message));
+        this._error.handleApiError(error);
       }
     );
   }

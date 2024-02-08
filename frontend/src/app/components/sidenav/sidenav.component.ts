@@ -9,6 +9,7 @@ import { AppRoute } from 'src/app/enums/app-route.enum';
 import { App } from 'src/app/interfaces/app';
 import { ApiService } from 'src/app/services/api/api.service';
 import { DeviceService } from 'src/app/services/device.service';
+import { ErrorService } from 'src/app/services/error.service';
 import { EventService } from 'src/app/services/event.service';
 import { NotificationsService } from 'src/app/services/notifications.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
@@ -68,7 +69,8 @@ export class SidenavComponent implements OnInit, OnDestroy {
 		private translate: TranslateService,
 		private user: UserService,
 		private device: DeviceService,
-		private notifications: NotificationsService
+		private notifications: NotificationsService,
+		private _error: ErrorService
 	) {
 	}
 
@@ -83,12 +85,7 @@ export class SidenavComponent implements OnInit, OnDestroy {
 					this.notifications.init();
 				},
 				(error) => {
-					if (error.status === 403) {
-						this.storage.clearSession();
-						this.user.user = this.storage.getSessionEntry('user');
-						this.router.navigateByUrl('/login');
-					}
-					this.snackbar.open(this.translate.instant(error.error.message));
+					this._error.handleApiError(error);
 				}
 			);
 		}

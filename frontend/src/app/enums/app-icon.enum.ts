@@ -4,5 +4,7 @@ export enum AppIcon {
 	Board = 'view_kanban',
 	TrashBin = 'delete',
 	ImportTasks = 'upload_file',
-	Stats = 'pie_chart'
+	Stats = 'pie_chart',
+	ProjectSettings = 'group_add',
+	UserSettings = 'settings'
 }

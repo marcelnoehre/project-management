@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Permission } from 'src/app/enums/permission.enum';
 import { ApiService } from 'src/app/services/api/api.service';
+import { ErrorService } from 'src/app/services/error.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { StorageService } from 'src/app/services/storage.service';
 import { UserService } from 'src/app/services/user.service';
@@ -25,8 +26,8 @@ export class CreateProjectComponent {
     private storage: StorageService,
     private snackbar: SnackbarService,
     private translate: TranslateService,
-    private router: Router,
-    private user: UserService
+    private user: UserService,
+    private _error: ErrorService
   ) {
     this.createForm();
   }
@@ -58,11 +59,7 @@ export class CreateProjectComponent {
       },
       (error) => {
         this.loading = false;
-        if (error.status === 403) {
-          this.storage.clearSession();
-          this.router.navigateByUrl('/login');
-        }
-        this.snackbar.open(this.translate.instant(error.error.message));
+        this._error.handleApiError(error);
       }
     );
   }

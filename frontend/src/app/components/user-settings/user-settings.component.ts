@@ -9,6 +9,7 @@ import { SnackbarService } from 'src/app/services/snackbar.service';
 import { StorageService } from 'src/app/services/storage.service';
 import { DialogComponent } from '../dialog/dialog.component';
 import { UserService } from 'src/app/services/user.service';
+import { ErrorService } from 'src/app/services/error.service';
 
 @Component({
   selector: 'app-user-settings',
@@ -53,7 +54,8 @@ export class UserSettingsComponent implements OnInit {
     private snackbar: SnackbarService,
     private translate: TranslateService,
     private dialog: MatDialog,
-    private user: UserService
+    private user: UserService,
+    private _error: ErrorService
   ) {
 
   }
@@ -112,11 +114,7 @@ export class UserSettingsComponent implements OnInit {
             },
             (error) => {
               (this.loadingAttribute as any)[attribute] = false;
-              if (error.status === 403) {
-                this.storage.clearSession();
-                this.router.navigateByUrl('/login');
-              }
-              this.snackbar.open(this.translate.instant(error.error.message));
+              this._error.handleApiError(error);
             }
           );
         }
@@ -139,16 +137,13 @@ export class UserSettingsComponent implements OnInit {
             (response) => {
               this.loadingDelete = false;
               this.storage.clearSession();
+              this.user.user = this.storage.getSessionEntry('user');
               this.router.navigateByUrl('/login');
               this.snackbar.open(this.translate.instant(response.message));
             },
             (error) => {
               this.loadingDelete = false;
-              if (error.status === 403) {
-                this.storage.clearSession();
-                this.router.navigateByUrl('/login');
-              }
-              this.snackbar.open(this.translate.instant(error.error.message));
+              this._error.handleApiError(error);
             }
           );
         }

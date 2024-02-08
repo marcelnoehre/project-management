@@ -4,6 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Progress } from 'src/app/interfaces/data/progress';
 import { Task } from 'src/app/interfaces/data/task';
 import { ApiService } from 'src/app/services/api/api.service';
+import { ErrorService } from 'src/app/services/error.service';
 import { ParserService } from 'src/app/services/parser.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { StorageService } from 'src/app/services/storage.service';
@@ -24,10 +25,9 @@ export class ImportTasksComponent {
     private parser: ParserService,
     private api: ApiService,
     private user: UserService,
-    private storage: StorageService,
-    private router: Router,
     private translate: TranslateService,
-    private snackbar: SnackbarService
+    private snackbar: SnackbarService,
+    private _error: ErrorService
   ) {
 
   }
@@ -61,11 +61,7 @@ export class ImportTasksComponent {
       },
       (error) => {
         this.loading = false;
-        if (error.status === 403) {
-          this.storage.clearSession();
-          this.router.navigateByUrl('/login');
-        }
-        this.snackbar.open(this.translate.instant(error.error.message));
+        this._error.handleApiError(error);
       }
     );
   }
