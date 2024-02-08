@@ -40,6 +40,7 @@ export class NotificationsService {
         this.loading = false;
         if (error.status === 403) {
           this.storage.clearSession();
+          this.user.user = this.storage.getSessionEntry('user');
           this.router.navigateByUrl('/login');
         }
         this.snackbar.open(this.translate.instant(error.error.message));
@@ -60,6 +61,7 @@ export class NotificationsService {
       (error) => {
         if (error.status === 403) {
           this.storage.clearSession();
+          this.user.user = this.storage.getSessionEntry('user');
           this.router.navigateByUrl('/login');
         }
         this.snackbar.open(this.translate.instant(error.error.message));

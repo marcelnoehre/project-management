@@ -114,6 +114,7 @@ export class UserSettingsComponent implements OnInit {
               (this.loadingAttribute as any)[attribute] = false;
               if (error.status === 403) {
                 this.storage.clearSession();
+                this.user.user = this.storage.getSessionEntry('user');
                 this.router.navigateByUrl('/login');
               }
               this.snackbar.open(this.translate.instant(error.error.message));
@@ -139,6 +140,7 @@ export class UserSettingsComponent implements OnInit {
             (response) => {
               this.loadingDelete = false;
               this.storage.clearSession();
+              this.user.user = this.storage.getSessionEntry('user');
               this.router.navigateByUrl('/login');
               this.snackbar.open(this.translate.instant(response.message));
             },
@@ -146,6 +148,7 @@ export class UserSettingsComponent implements OnInit {
               this.loadingDelete = false;
               if (error.status === 403) {
                 this.storage.clearSession();
+                this.user.user = this.storage.getSessionEntry('user');
                 this.router.navigateByUrl('/login');
               }
               this.snackbar.open(this.translate.instant(error.error.message));

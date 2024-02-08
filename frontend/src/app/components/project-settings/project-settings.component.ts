@@ -67,6 +67,7 @@ export class ProjectSettingsComponent implements OnInit {
       (error) => {
         if (error.status === 403) {
           this.storage.clearSession();
+          this.user.user = this.storage.getSessionEntry('user');
           this.router.navigateByUrl('/login');
         }
         this.snackbar.open(this.translate.instant(error.error.message));
@@ -109,6 +110,7 @@ export class ProjectSettingsComponent implements OnInit {
           this.loadingInvite = false;
           if (error.status === 403) {
             this.storage.clearSession();
+            this.user.user = this.storage.getSessionEntry('user');
             this.router.navigateByUrl('/login');
           }
           this.snackbar.open(this.translate.instant(error.error.message));
@@ -137,6 +139,7 @@ export class ProjectSettingsComponent implements OnInit {
             this.loadingDelete = '';
             if (error.status === 403) {
               this.storage.clearSession();
+              this.user.user = this.storage.getSessionEntry('user');
               this.router.navigateByUrl('/login');
             }
             this.snackbar.open(this.translate.instant(error.error.message));
@@ -169,6 +172,7 @@ export class ProjectSettingsComponent implements OnInit {
               this.loadingLeave = false;
               if (error.status === 403) {
                 this.storage.clearSession();
+                this.user.user = this.storage.getSessionEntry('user');
                 this.router.navigateByUrl('/login');
               }
               this.snackbar.open(this.translate.instant(error.error.message));
@@ -187,6 +191,7 @@ export class ProjectSettingsComponent implements OnInit {
       (error) => {
         if (error.status === 403) {
           this.storage.clearSession();
+          this.user.user = this.storage.getSessionEntry('user');
           this.router.navigateByUrl('/login');
         }
         this.snackbar.open(this.translate.instant(error.error.message));

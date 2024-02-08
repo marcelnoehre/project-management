@@ -60,6 +60,7 @@ export class CreateProjectComponent {
         this.loading = false;
         if (error.status === 403) {
           this.storage.clearSession();
+          this.user.user = this.storage.getSessionEntry('user');
           this.router.navigateByUrl('/login');
         }
         this.snackbar.open(this.translate.instant(error.error.message));

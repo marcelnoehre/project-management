@@ -38,6 +38,7 @@ export class TrashBinComponent implements AfterViewInit {
       (error) => {
         if (error.status === 403) {
           this.storage.clearSession();
+          this.user.user = this.storage.getSessionEntry('user');
           this.router.navigateByUrl('/login');
         }
         this.snackbar.open(this.translate.instant(error.error.message));
@@ -57,6 +58,7 @@ export class TrashBinComponent implements AfterViewInit {
         this.loadingDelete = '';
         if (error.status === 403) {
           this.storage.clearSession();
+          this.user.user = this.storage.getSessionEntry('user');
           this.router.navigateByUrl('/login');
         }
         this.snackbar.open(this.translate.instant(error.error.message));
@@ -76,6 +78,7 @@ export class TrashBinComponent implements AfterViewInit {
         this.loadingRestore = '';
         if (error.status === 403) {
           this.storage.clearSession();
+          this.user.user = this.storage.getSessionEntry('user');
           this.router.navigateByUrl('/login');
         }
         this.snackbar.open(this.translate.instant(error.error.message));
@@ -95,6 +98,7 @@ export class TrashBinComponent implements AfterViewInit {
         this.loadingClear = false;
         if (error.status === 403) {
           this.storage.clearSession();
+          this.user.user = this.storage.getSessionEntry('user');
           this.router.navigateByUrl('/login');
         }
         this.snackbar.open(this.translate.instant(error.error.message));
