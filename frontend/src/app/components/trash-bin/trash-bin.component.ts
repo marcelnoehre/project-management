@@ -1,6 +1,7 @@
 import { AfterViewInit, Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { Permission } from 'src/app/enums/permission.enum';
 import { Task } from 'src/app/interfaces/data/task';
 import { ApiService } from 'src/app/services/api/api.service';
 import { ErrorService } from 'src/app/services/error.service';
@@ -86,6 +87,10 @@ export class TrashBinComponent implements AfterViewInit {
         this._error.handleApiError(error);
       }
     );
+  }
+
+  showClear() {
+    return this.user.hasPermission(Permission.ADMIN);
   }
 
   disableClear() {
