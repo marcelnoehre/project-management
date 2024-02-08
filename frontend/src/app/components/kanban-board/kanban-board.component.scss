@@ -71,13 +71,22 @@
     margin-left: 5%;
 
     .trash-bin {
+        position: relative;
         display: flex;
         flex-direction: column;
         justify-content: center;
+        align-items: flex-start;
         border: 1px dashed black;
         height: 100%;
         width: 50%;
         border-radius: 5px;
+
+        .material-icons {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+        }
     }
     
     .actions {
