@@ -12,5 +12,6 @@ export const authGuard: CanActivateFn = () => {
   }
   
   router.navigate(['/login']);
+  storage.clearSession();
   return false;
 };

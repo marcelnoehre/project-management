@@ -42,6 +42,7 @@ export class LoginComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
+		this.user.user = this.storage.getSessionEntry('user');
 		if (this.user?.['isLoggedIn'] && this.user?.['project'] !== '') {
 			this.router.navigateByUrl('/');
 		}

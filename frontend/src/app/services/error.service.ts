@@ -23,7 +23,9 @@ export class ErrorService {
       this.handleInvalidUser();
     }
     this.snackbar.open(this.translate.instant(error.error.message));
-    this.snackbar.open(error.statusText);
+    if (!error.error.message) {
+      this.snackbar.open(error.statusText);
+    }
   }
 
   handleInvalidUser() {
