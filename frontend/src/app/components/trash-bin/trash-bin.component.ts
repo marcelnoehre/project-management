@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Task } from 'src/app/interfaces/data/task';
 import { ApiService } from 'src/app/services/api/api.service';
+import { ErrorService } from 'src/app/services/error.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { StorageService } from 'src/app/services/storage.service';
 import { UserService } from 'src/app/services/user.service';
@@ -24,7 +25,8 @@ export class TrashBinComponent implements AfterViewInit {
     private storage: StorageService,
     private router: Router,
     private snackbar: SnackbarService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private _error: ErrorService
     ) {
 
   }
@@ -36,12 +38,7 @@ export class TrashBinComponent implements AfterViewInit {
         this.taskList = taskList;
       },
       (error) => {
-        if (error.status === 403) {
-          this.storage.clearSession();
-          this.user.user = this.storage.getSessionEntry('user');
-          this.router.navigateByUrl('/login');
-        }
-        this.snackbar.open(this.translate.instant(error.error.message));
+        this._error.handleApiError(error);
       }
     );
   }
@@ -56,12 +53,7 @@ export class TrashBinComponent implements AfterViewInit {
       },
       (error) => {
         this.loadingDelete = '';
-        if (error.status === 403) {
-          this.storage.clearSession();
-          this.user.user = this.storage.getSessionEntry('user');
-          this.router.navigateByUrl('/login');
-        }
-        this.snackbar.open(this.translate.instant(error.error.message));
+        this._error.handleApiError(error);
       }
     );
   }
@@ -76,12 +68,7 @@ export class TrashBinComponent implements AfterViewInit {
       },
       (error) => {
         this.loadingRestore = '';
-        if (error.status === 403) {
-          this.storage.clearSession();
-          this.user.user = this.storage.getSessionEntry('user');
-          this.router.navigateByUrl('/login');
-        }
-        this.snackbar.open(this.translate.instant(error.error.message));
+        this._error.handleApiError(error);
       }
     );
   }
@@ -96,12 +83,7 @@ export class TrashBinComponent implements AfterViewInit {
       },
       (error) => {
         this.loadingClear = false;
-        if (error.status === 403) {
-          this.storage.clearSession();
-          this.user.user = this.storage.getSessionEntry('user');
-          this.router.navigateByUrl('/login');
-        }
-        this.snackbar.open(this.translate.instant(error.error.message));
+        this._error.handleApiError(error);
       }
     );
   }

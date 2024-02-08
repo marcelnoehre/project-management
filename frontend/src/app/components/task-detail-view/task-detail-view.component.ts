@@ -6,6 +6,7 @@ import { TaskState } from 'src/app/enums/task-state.enum';
 import { Task } from 'src/app/interfaces/data/task';
 import { User } from 'src/app/interfaces/data/user';
 import { ApiService } from 'src/app/services/api/api.service';
+import { ErrorService } from 'src/app/services/error.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { StorageService } from 'src/app/services/storage.service';
 import { UserService } from 'src/app/services/user.service';
@@ -30,7 +31,8 @@ export class TaskDetailViewComponent implements OnInit {
     private snackbar: SnackbarService,
     private storage: StorageService,
     private router: Router,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private _error: ErrorService
   ) {
     
   }
@@ -43,12 +45,7 @@ export class TaskDetailViewComponent implements OnInit {
         this.members = users;
       },
       (error) => {
-        if (error.status === 403) {
-          this.storage.clearSession();
-          this.user.user = this.storage.getSessionEntry('user');
-          this.router.navigateByUrl('/login');
-        }
-        this.snackbar.open(this.translate.instant(error.error.message));
+        this._error.handleApiError(error);
       }
     );
   }
@@ -68,12 +65,7 @@ export class TaskDetailViewComponent implements OnInit {
         this.dialogRef.close(response);
       },
       (error) => {
-        if (error.status === 403) {
-          this.storage.clearSession();
-          this.user.user = this.storage.getSessionEntry('user');
-          this.router.navigateByUrl('/login');
-        }
-        this.snackbar.open(this.translate.instant(error.error.message));
+        this._error.handleApiError(error);
       }
     );
     this.loading = false;

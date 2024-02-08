@@ -6,6 +6,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { TaskState } from 'src/app/enums/task-state.enum';
 import { User } from 'src/app/interfaces/data/user';
 import { ApiService } from 'src/app/services/api/api.service';
+import { ErrorService } from 'src/app/services/error.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { StorageService } from 'src/app/services/storage.service';
 import { UserService } from 'src/app/services/user.service';
@@ -29,8 +30,7 @@ export class CreateTaskComponent implements OnInit {
     private snackbar: SnackbarService,
     private translate: TranslateService,
     private user: UserService,
-    private storage: StorageService,
-    private router: Router
+    private _error: ErrorService
   ) {
     this.createForm();
   }
@@ -41,12 +41,7 @@ export class CreateTaskComponent implements OnInit {
         this.members = users;
       },
       (error) => {
-        if (error.status === 403) {
-          this.storage.clearSession();
-          this.user.user = this.storage.getSessionEntry('user');
-          this.router.navigateByUrl('/login');
-        }
-        this.snackbar.open(this.translate.instant(error.error.message));
+        this._error.handleApiError(error);
       }
     );
 		setTimeout(() => this.inputTitle.nativeElement.focus());
@@ -93,7 +88,7 @@ export class CreateTaskComponent implements OnInit {
       },
       (error) => {
         this.loading = false;
-        this.snackbar.open(this.translate.instant(error.error.message));
+        this._error.handleApiError(error);
       }
     );
   }

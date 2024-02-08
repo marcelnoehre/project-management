@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Language } from 'src/app/interfaces/language';
 import { ApiService } from 'src/app/services/api/api.service';
+import { ErrorService } from 'src/app/services/error.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { StorageService } from 'src/app/services/storage.service';
 import { UserService } from 'src/app/services/user.service';
@@ -39,7 +40,8 @@ export class RegistrationComponent implements OnInit {
     private snackbar: SnackbarService,
     private translate: TranslateService,
     private api: ApiService,
-    private user: UserService
+    private user: UserService,
+    private _error: ErrorService
     ) {
       this.createForm();
     }
@@ -116,7 +118,7 @@ export class RegistrationComponent implements OnInit {
         },
         (error) => {
           this.loading = false;
-          this.snackbar.open(this.translate.instant(error.error.message));
+          this._error.handleApiError(error);
         }
       );
     }

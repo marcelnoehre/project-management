@@ -12,6 +12,7 @@ import { Permission } from 'src/app/enums/permission.enum';
 import { DialogComponent } from '../dialog/dialog.component';
 import { UserService } from 'src/app/services/user.service';
 import { NotificationsService } from 'src/app/services/notifications.service';
+import { ErrorService } from 'src/app/services/error.service';
 
 @Component({
 	selector: 'app-login',
@@ -34,7 +35,8 @@ export class LoginComponent implements OnInit {
 		private api: ApiService,
 		private dialog: MatDialog,
 		private user: UserService,
-		private notifications: NotificationsService
+		private notifications: NotificationsService,
+		private _error: ErrorService
 	) {
 		this.createForm();
 	}
@@ -104,7 +106,7 @@ export class LoginComponent implements OnInit {
 								this.snackbar.open(this.translate.instant(response.message));
 							},
 							(error) => {
-								this.snackbar.open(this.translate.instant(error.error.message));
+								this._error.handleApiError(error);
 							}
 						)
 					});
@@ -118,7 +120,7 @@ export class LoginComponent implements OnInit {
 			},
 			(error) => {
 				this.loading = false;
-				this.snackbar.open(this.translate.instant(error.error.message));
+				this._error.handleApiError(error);
 			}
 		);
 	}

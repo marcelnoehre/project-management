@@ -13,6 +13,7 @@ import { ParserService } from 'src/app/services/parser.service';
 import { MatDialog } from '@angular/material/dialog';
 import { TaskDetailViewComponent } from '../task-detail-view/task-detail-view.component';
 import { Task } from 'src/app/interfaces/data/task';
+import { ErrorService } from 'src/app/services/error.service';
 
 @Component({
   selector: 'app-kanban-board',
@@ -32,7 +33,8 @@ export class KanbanBoardComponent implements AfterViewInit {
     private translate: TranslateService,
     private user: UserService,
     private parser: ParserService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private _error: ErrorService
   ) {
 
   }
@@ -44,12 +46,7 @@ export class KanbanBoardComponent implements AfterViewInit {
         this.taskList = taskList;        
       },
       (error) => {
-        if (error.status === 403) {
-          this.storage.clearSession();
-          this.user.user = this.storage.getSessionEntry('user');
-          this.router.navigateByUrl('/login');
-        }
-        this.snackbar.open(this.translate.instant(error.error.message));
+        this._error.handleApiError(error);
       }
     );
   }
@@ -68,12 +65,7 @@ export class KanbanBoardComponent implements AfterViewInit {
           },
           (error) => {
             this.loadingDelete = false;
-            if (error.status === 403) {
-              this.storage.clearSession();
-              this.user.user = this.storage.getSessionEntry('user');
-              this.router.navigateByUrl('/login');
-            }
-            this.snackbar.open(this.translate.instant(error.error.message));
+            this._error.handleApiError(error);
           }
         );
         return;
@@ -93,12 +85,7 @@ export class KanbanBoardComponent implements AfterViewInit {
           this.taskList = tasklist;
         },
         (error) => {
-          if (error.status === 403) {
-            this.storage.clearSession();
-            this.user.user = this.storage.getSessionEntry('user');
-            this.router.navigateByUrl('/login');
-          }
-          this.snackbar.open(this.translate.instant(error.error.message));
+          this._error.handleApiError(error);
         }
       );
     } catch (err) {

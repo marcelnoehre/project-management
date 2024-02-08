@@ -6,6 +6,7 @@ import { SnackbarService } from './snackbar.service';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Notification } from '../interfaces/data/notification';
+import { ErrorService } from './error.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,8 @@ export class NotificationsService {
     private user: UserService,
     private storage: StorageService,
     private snackbar: SnackbarService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private _error: ErrorService
   ) { }
 
   init(): void {
@@ -38,12 +40,7 @@ export class NotificationsService {
       },
       (error) => {
         this.loading = false;
-        if (error.status === 403) {
-          this.storage.clearSession();
-          this.user.user = this.storage.getSessionEntry('user');
-          this.router.navigateByUrl('/login');
-        }
-        this.snackbar.open(this.translate.instant(error.error.message));
+        this._error.handleApiError(error);
       }
     );
   }
@@ -59,12 +56,7 @@ export class NotificationsService {
         });
       },
       (error) => {
-        if (error.status === 403) {
-          this.storage.clearSession();
-          this.user.user = this.storage.getSessionEntry('user');
-          this.router.navigateByUrl('/login');
-        }
-        this.snackbar.open(this.translate.instant(error.error.message));
+        this._error.handleApiError(error);
       }
     );
   }

@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { ApiService } from 'src/app/services/api/api.service';
 import { DeviceService } from 'src/app/services/device.service';
+import { ErrorService } from 'src/app/services/error.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { StorageService } from 'src/app/services/storage.service';
 import { UserService } from 'src/app/services/user.service';
@@ -19,11 +20,10 @@ export class ToolbarComponent {
 	constructor(
 		private user: UserService,
 		private api: ApiService,
-		private storage: StorageService,
-		private router: Router,
 		private snackbar: SnackbarService,
 		private translate: TranslateService,
-		private device: DeviceService
+		private device: DeviceService,
+		private _error: ErrorService
 	) {
 	}
 
@@ -47,12 +47,7 @@ export class ToolbarComponent {
 				this.snackbar.open(this.translate.instant(response.message));
 			},
 			(error) => {
-				if (error.status === 403) {
-					this.storage.clearSession();
-					this.user.user = this.storage.getSessionEntry('user');
-					this.router.navigateByUrl('/login');
-				  }
-				  this.snackbar.open(this.translate.instant(error.error.message));
+				this._error.handleApiError(error);
 			}
 		);
 	}
