@@ -52,19 +52,7 @@ export class ProjectSettingsComponent implements OnInit {
   ngOnInit(): void {
     this.api.getTeamMembers(this.user.token, this.user.project).subscribe(
       (users) => {
-        this.members = users.sort((a, b) => {
-          if (a.permission === Permission.OWNER && b.permission !== Permission.OWNER) {
-            return -1;
-          } else if (b.permission === Permission.OWNER && a.permission !== Permission.OWNER) {
-            return 1;
-          } else if (a.permission === Permission.ADMIN && b.permission !== Permission.ADMIN) {
-            return -1;
-          } else if (b.permission === Permission.ADMIN && a.permission !== Permission.ADMIN) {
-            return 1;
-          } else {
-            return 0;
-          }
-        });
+        this.members = users;
       },
       (error) => {
         this._error.handleApiError(error);
