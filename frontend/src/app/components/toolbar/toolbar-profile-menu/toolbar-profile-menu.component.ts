@@ -38,7 +38,7 @@ export class ToolbarProfileMenuComponent {
 	}
 
 	public logout(): void {
-		this.storage.deleteSessionEntry('user');
+		this.storage.clearSession();
 		this.user.user = this.storage.getSessionEntry('user');
 		this.snackbar.open(this.translate.instant('SUCCESS.LOGOUT'));
 		this.router.navigateByUrl('/login');
