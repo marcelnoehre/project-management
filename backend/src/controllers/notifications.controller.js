@@ -1,43 +1,13 @@
+const notificationsService = require('../services/notifications.service');
 const admin = require('firebase-admin');
 const jwt = require('jsonwebtoken');
 const db = admin.firestore();
 
 async function getNotifications(req, res, next) {
     try {
-        const notificationsCollection = db.collection('notifications');
-        const unseenQuery = await notificationsCollection
-            .where('project', '==', req.body.project)
-            .where('unseen', 'array-contains', req.body.username)
-            .orderBy('timestamp', 'desc')
-            .get();
-        const seenQuery = await notificationsCollection
-            .where('project', '==', req.body.project)
-            .where('seen', 'array-contains', req.body.username)
-            .orderBy('timestamp', 'desc')
-            .get();
-        const notifiactions = [];
-        unseenQuery.forEach(doc => {
-            const data = doc.data();
-            notifiactions.push({
-                uid: data.uid,
-                message: data.message,
-                data: data.data,
-                icon: data.icon,
-                timestamp: data.timestamp,
-                seen: false
-            });
-        });
-        seenQuery.forEach(doc => {
-            const data = doc.data();
-            notifiactions.push({
-                uid: data.uid,
-                message: data.message,
-                data: data.data,
-                icon: data.icon,
-                timestamp: data.timestamp,
-                seen: true
-            });
-        });
+        const seen = notificationsService.getTypedNotifications(db, project, username, 'seen');
+        const unseen = notificationsService.getTypedNotifications(db, project, username, 'unseen');
+        const notifiactions = seen.concat(unseen);
         res.json(notifiactions);
     } catch (err) {
         next(err);

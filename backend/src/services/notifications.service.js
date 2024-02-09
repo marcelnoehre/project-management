@@ -1,3 +1,25 @@
+async function getTypedNotifications(db, project, username, type) {
+    const notificationsCollection = db.collection('notifications');
+    const notificationsSnapshot = await notificationsCollection
+        .where('project', '==', project)
+        .where(type, 'array-contains', username)
+        .orderBy('timestamp', 'desc')
+        .get();
+    const notifiactions = [];
+    notificationsSnapshot.forEach(doc => {
+        const data = doc.data();
+        notifiactions.push({
+            uid: data.uid,
+            message: data.message,
+            data: data.data,
+            icon: data.icon,
+            timestamp: data.timestamp,
+            seen: type === 'seen'
+        });
+    });
+    return notifiactions;
+}
+
 async function createTeamNotification(db, project, author, message, data, icon) {
     try {
         const usersCollection = db.collection('users');
@@ -93,6 +115,7 @@ async function createRelatedNotification(db, project, self, author, assigned, me
 }
 
 module.exports = { 
+    getTypedNotifications,
     createTeamNotification,
     createAdminNotification,
     createRelatedNotification
