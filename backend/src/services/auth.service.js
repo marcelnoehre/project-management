@@ -1,6 +1,25 @@
-const defaultColors = ['#FF0000', '#00FF00', '#0000FF', '#FFA500', '#FFFFFF'];
+async function passwordValid(db, username, password, res) {
+    const passwordsCollection = db.collection('passwords');
+    const passwordsSnapshot = await passwordsCollection.where('username', '==', username).get();
+    if (passwordsSnapshot.empty || passwordsSnapshot.docs[0].data().password !== password) {
+        res.status(401).send({ message: 'ERROR.INVALID_CREDENTIALS' });
+    } else {
+        return true;
+    }
+}
+
+async function singleUser(db, username, res) {
+    const usersCollection = db.collection('users');
+    const usersSnapshot = await usersCollection.where('username', '==', username).get();
+    if (usersSnapshot.empty || usersSnapshot.size > 1) {
+        res.status(500).send({ message: 'ERROR.INTERNAL' });
+    } else {
+        return usersSnapshot.docs[0].data();
+    }
+}
 
 function defaultColor() {
+    const defaultColors = ['#FF0000', '#00FF00', '#0000FF', '#FFA500', '#FFFFFF'];
     return defaultColors[Math.floor(Math.random() * defaultColors.length)];
 }
 
@@ -35,6 +54,8 @@ async function updateStats(snapshot, attribute, counter) {
 }
 
 module.exports = { 
+    passwordValid,
+    singleUser,
     generateInitials,
     defaultColor,
     updateUserStats,

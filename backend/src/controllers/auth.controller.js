@@ -6,23 +6,13 @@ const db = admin.firestore();
 
 async function login(req, res, next) {
     try {
-        const passwordsCollection = db.collection('passwords');
-        const passwordsSnapshot = await passwordsCollection.where('username', '==', req.body.username).get();
-        if (passwordsSnapshot.empty) {
-            res.status(401).send({ message: 'ERROR.INVALID_CREDENTIALS' });
-        } else if (passwordsSnapshot.docs[0].data().password === req.body.password) {
-            const usersCollection = db.collection('users');
-            const usersSnapshot = await usersCollection.where('username', '==', req.body.username).get();
-            if (usersSnapshot.empty) {
-                res.status(500).send({ message: 'ERROR.INTERNAL' });
-            } else {
-                const user = usersSnapshot.docs[0].data();
-                user.token = jwt.sign(user, '3R#q!ZuFb2sPn8yT^@5vLmN7jA*C6hG', { expiresIn: '1h' });
-                user.isLoggedIn = user.project !== '' && user.permission !== 'INVITED';
-                res.json(user);
-            }
-        } else {
-            res.status(401).send({ message: 'ERROR.INVALID_CREDENTIALS' });
+        const username = req.body.username;
+        const password = req.body.password;
+        if (await authService.passwordValid(db, username, password, res)) {
+            const user = await authService.singleUser(db, username, res);
+            user.token = jwt.sign(user, '3R#q!ZuFb2sPn8yT^@5vLmN7jA*C6hG', { expiresIn: '1h' });
+            user.isLoggedIn = user.project !== '' && user.permission !== 'INVITED';
+            res.json(user);
         }
     } catch (err) {
         next(err);
