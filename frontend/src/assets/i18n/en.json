@@ -27,10 +27,16 @@
         "INVALID_TOKEN": "You have been logged out for security reasons!",
         "REQUIRED": {
             "USERNAME": "The username is required!",
+            "FULLNAME": "The full name is required!",
             "PASSWORD": "The password is required!",
-            "REPEAT_PASSWORD": "The password repetition is required!",
-            "FULLNAME": "The full name is required!"
+            "REPEAT_PASSWORD": "The password repetition is required!"
         },
+        "MINLENGTH": {
+            "USERNAME": "The username is too short!",
+            "PASSWORD": "The password is too short!",
+            "REPEAT_PASSWORD": "The password repetition is too short!"
+        },
+        "PATTERN": "Missmatched the pattern",
         "PASSWORDS_MATCH": "The passwords don't match!",
         "INVALID_CREDENTIALS": "Invalid credentials!",
         "REGISTRATION": "Registration failed!",
@@ -87,7 +93,8 @@
     "REGISTRATION": {
         "HEADER": "Create account",
         "REGISTER": "register",
-        "BACK": "Back to login"
+        "BACK": "Back to login",
+        "PASSWORD_FORMAT": "The password must contain at least 1 upper case letter, at least 1 lower case letter, at least 1 digit and at least 1 of the following special characters: @#$%^&+=*"
     },
     "DIALOG": {
         "HEADLINE": {

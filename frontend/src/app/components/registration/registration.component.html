@@ -58,6 +58,7 @@
 						<mat-icon matPrefix> language </mat-icon>
 					</mat-form-field>
 				</div>
+				<mat-icon [matTooltip]="passwordInformation()" matTooltipPosition="right" class="pb-1">info</mat-icon>
 				<div>
 					<mat-form-field appearance="outline" class="registration-form-field">
 						<mat-label> {{ 'USER.PASSWORD' | translate }}</mat-label>
@@ -70,7 +71,7 @@
 							matInput
 							required
 							minlength="8"
-							pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@#$%^&+=]).{8,}$"
+							pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@#$%^&+=*]).{8,}$"
 						/>
 						<mat-icon matPrefix> lock </mat-icon>
 						<button
@@ -86,7 +87,7 @@
 						</button>
 						<mat-error *ngIf="hasError('passwordFormControl', 'required')"> {{ 'ERROR.REQUIRED.PASSWORD' | translate }} </mat-error>
 						<mat-error *ngIf="hasError('passwordFormControl', 'minlength')"> {{ 'ERROR.MINLENGTH.PASSWORD' | translate }} </mat-error>
-						<mat-error *ngIf="!hasError('passwordFormControl', 'minlength') && hasError('passwordFormControl', 'pattern')"> {{ 'ERROR.PATTERN.PASSWORD' | translate }} </mat-error>
+						<mat-error *ngIf="!hasError('passwordFormControl', 'minlength') && hasError('passwordFormControl', 'pattern')"> {{ 'ERROR.PATTERN' | translate }} </mat-error>
 					</mat-form-field>
 				</div>
                 <div>
@@ -101,7 +102,7 @@
 							matInput
 							required
 							minlength="8"
-							pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@#$%^&+=]).{8,}$"
+							pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@#$%^&+=*]).{8,}$"
 						/>
 						<mat-icon matPrefix> lock </mat-icon>
 						<button
@@ -117,7 +118,7 @@
 						</button>
 						<mat-error *ngIf="hasError('passwordRepeatFormControl', 'required')"> {{ 'ERROR.REQUIRED.REPEAT_PASSWORD' | translate }} </mat-error>
 						<mat-error *ngIf="hasError('passwordRepeatFormControl', 'minlength')"> {{ 'ERROR.MINLENGTH.REPEAT_PASSWORD' | translate }} </mat-error>
-						<mat-error *ngIf="!hasError('passwordRepeatFormControl', 'minlength') && hasError('passwordRepeatFormControl', 'pattern')"> {{ 'ERROR.PATTERN.REPEAT_PASSWORD' | translate }} </mat-error>
+						<mat-error *ngIf="!hasError('passwordRepeatFormControl', 'minlength') && hasError('passwordRepeatFormControl', 'pattern')"> {{ 'ERROR.PATTERN' | translate }} </mat-error>
 					</mat-form-field>
 				</div>
 				<div>

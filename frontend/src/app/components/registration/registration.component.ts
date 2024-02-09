@@ -108,6 +108,10 @@ export class RegistrationComponent implements OnInit {
     return this.registrationForm.controls[formControl].hasError(type);
   }
 
+  passwordInformation(): string {
+    return this.translate.instant('REGISTRATION.PASSWORD_FORMAT');
+  }
+
   async register() {
     if (this.password !== this.passwordRepeat) {
       this.snackbar.open(this.translate.instant('ERROR.PASSWORDS_MATCH'));
