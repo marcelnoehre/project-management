@@ -168,7 +168,7 @@
         </mat-card>
     </div>
     <div class="regenerate-all">
-        <button mat-raised-button>
+        <button mat-raised-button (click)="regenerateAll()">
             <app-spinner-icon class="material-icons" icon="refresh" [spinning]="isLoading('all')"></app-spinner-icon>
             <ng-container *ngIf="isLoading('all')">&nbsp;</ng-container>
             {{ 'STATS.REGENERATE' | translate }}

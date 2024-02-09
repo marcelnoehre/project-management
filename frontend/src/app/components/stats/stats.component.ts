@@ -213,6 +213,10 @@ export class StatsComponent implements OnInit {
     return this.reload[stat];
   }
 
+  regenerateAll() {
+    this.stats.regenerateAll();
+  }
+
   async regeneratePersonalStats() {
     this.reload['personalStats'] = true;
     this.data.personalStats = await this.stats.personalStats(this.user.token);

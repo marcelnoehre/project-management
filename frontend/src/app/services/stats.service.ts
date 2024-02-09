@@ -159,4 +159,10 @@ export class StatsService {
       return null;
     }
   }
+
+  async regenerateAll() {
+    this.storage.deleteSessionEntry('stats');
+    this.storage.deleteSessionEntry('statsRetrieval');
+    this.init();
+  }
 }
