@@ -18,6 +18,49 @@ async function singleUser(db, username, res) {
     }
 }
 
+async function isNewUser(db, username) {
+    const usersCollection = db.collection('users');
+    const usersSnapshot = await usersCollection.where('username', '==', username).get();
+    if (!usersSnapshot.empty) {
+        res.status(402).send({ message: 'ERROR.USERNAME_TAKEN' });
+    } else {
+        return true;
+    }
+}
+
+async function createUser(db, username, fullName, language, password, res) {
+    const userData = {
+        username: username,
+        fullName: fullName,
+        language: language,
+        initials: authService.generateInitials(fullName),
+        color: authService.defaultColor(),
+        project: '',
+        permission: '',
+        profilePicture: '',
+        notificationsEnabled: true,
+        stats: {
+            created: 0,
+            imported: 0,
+            updated: 0,
+            edited: 0,
+            trashed: 0,
+            restored: 0,
+            deleted: 0,
+            cleared: 0
+        }
+    }
+    const passwordData = {
+        username: req.body.username,
+        password: password
+    }
+    const promises = [];
+    promises.push(db.collection('users').doc().set(userData));
+    promises.push(db.collection('passwords').doc().set(passwordData));
+    await Promise.all(promises);
+    res.json({ message: "SUCCESS.REGISTRATION" });
+}
+
 function defaultColor() {
     const defaultColors = ['#FF0000', '#00FF00', '#0000FF', '#FFA500', '#FFFFFF'];
     return defaultColors[Math.floor(Math.random() * defaultColors.length)];
@@ -56,6 +99,8 @@ async function updateStats(snapshot, attribute, counter) {
 module.exports = { 
     passwordValid,
     singleUser,
+    isNewUser,
+    createUser,
     generateInitials,
     defaultColor,
     updateUserStats,

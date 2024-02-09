@@ -34,43 +34,12 @@ async function login(req, res, next) {
 
 async function register(req, res, next) {
     try {
-        const usersCollection = db.collection('users');
-        const usersSnapshot = await usersCollection.where('username', '==', req.body.username).get();
-        if (usersSnapshot.empty) {
-            const initials = authService.generateInitials(req.body.fullName);
-            const color = authService.defaultColor();
-            const user = {
-                username: req.body.username,
-                fullName: req.body.fullName,
-                language: req.body.language,
-                initials: initials,
-                color: color,
-                project: '',
-                permission: '',
-                profilePicture: '',
-                notificationsEnabled: true,
-                stats: {
-                    created: 0,
-                    imported: 0,
-                    updated: 0,
-                    edited: 0,
-                    trashed: 0,
-                    restored: 0,
-                    deleted: 0,
-                    cleared: 0
-                }
-            }
-            const usersRef = db.collection('users').doc();
-            await usersRef.set(user);
-            const password = {
-                username: req.body.username,
-                password: req.body.password
-            }
-            const passwordsRef = db.collection('passwords').doc();
-            await passwordsRef.set(password);
-            res.json({ message: "SUCCESS.REGISTRATION" });
-        } else {
-            res.status(402).send({ message: 'ERROR.USERNAME_TAKEN' });
+        const username = req.body.username;
+        const fullName = req.body.fullName;
+        const language = req.body.language;
+        const password = req.body.password;
+        if (await authService.isNewUser(db, username, res)) {
+            authService.createUser(db, username, fullName, language, password, res);
         }
     } catch (err) {
         next(err);

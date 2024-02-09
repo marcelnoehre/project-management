@@ -35,7 +35,7 @@ async function createTask(req, res, next) {
             await notificationsService.createTeamNotification(db, req.body.project, req.body.author, 'NOTIFICATIONS.NEW.CREATE_TASK', [req.body.author, req.body.title], 'note_add');
             res.json({ message: 'SUCCESS.CREATE_TASK' });
         }).catch((err) => {
-            res.status(402).send({ message: 'ERROR.CREATE_TASK' });
+            res.status(402).send({ message: 'ERROR.CREATE_TASK' }); // Internal
         });
     } catch (err) {
         next(err);
