@@ -87,8 +87,7 @@ export class StatsComponent implements OnInit {
 
   constructor(
     private stats: StatsService,
-    private translate: TranslateService,
-    private user: UserService
+    private translate: TranslateService
   ) {
     
   }
@@ -145,12 +144,12 @@ export class StatsComponent implements OnInit {
       
       ],
       labels: [
-      TaskState.NONE,
-      TaskState.TODO,
-      TaskState.PROGRESS,
-      TaskState.REVIEW,
-      TaskState.DONE,
-      TaskState.DELETED
+        TaskState.NONE,
+        TaskState.TODO,
+        TaskState.PROGRESS,
+        TaskState.REVIEW,
+        TaskState.DONE,
+        TaskState.DELETED
       ]
    }
   }
@@ -217,10 +216,8 @@ export class StatsComponent implements OnInit {
     this.stats.regenerateAll();
   }
 
-  async regeneratePersonalStats() {
-    this.reload['personalStats'] = true;
-    this.data.personalStats = await this.stats.personalStats(this.user.token);
-    this.reload['personalStats'] = false;
+  async regenerateStat(stat: string) {
+    this.data[stat] = await this.stats.regenerateStat(stat);
   }
 
 }

@@ -3,7 +3,7 @@
         <mat-card class="stats-module">
             <mat-card-header>
                 <h2 class="pb-4">Personal Stats</h2>
-                <button mat-mini-fab color="basic" class="regenerate" (click)="regeneratePersonalStats()">
+                <button mat-mini-fab color="basic" class="regenerate" (click)="regenerateStat('personalStats')">
                     <app-spinner-icon class="material-icons" icon="refresh" [spinning]="isLoading('personalStats')"></app-spinner-icon>
                 </button>
             </mat-card-header>
@@ -21,7 +21,7 @@
         <mat-card class="stats-module">
             <mat-card-header>
                 <h2 class="pb-4">Stat Leaders</h2>
-                <button mat-mini-fab color="basic" class="regenerate">
+                <button mat-mini-fab color="basic" class="regenerate" (click)="regenerateStat('statLeaders')">
                     <app-spinner-icon class="material-icons" icon="refresh" [spinning]="isLoading('statLeaders')"></app-spinner-icon>
                 </button>
             </mat-card-header>
@@ -44,7 +44,7 @@
         <mat-card class="stats-module">
             <mat-card-header>
                 <h2 class="pb-4">Stats</h2>
-                <button mat-mini-fab color="basic" class="regenerate">
+                <button mat-mini-fab color="basic" class="regenerate" (click)="regenerateStat('stats')">
                     <app-spinner-icon class="material-icons" icon="refresh" [spinning]="isLoading('stats')"></app-spinner-icon>
                 </button>
             </mat-card-header>
@@ -67,7 +67,7 @@
         <mat-card class="stats-module">
             <mat-card-header>
                 <h2 class="pb-4">Task amount</h2>
-                <button mat-mini-fab color="basic" class="regenerate">
+                <button mat-mini-fab color="basic" class="regenerate" (click)="regenerateStat('taskAmount')">
                     <app-spinner-icon class="material-icons" icon="refresh" [spinning]="isLoading('taskAmount')"></app-spinner-icon>
                 </button>
             </mat-card-header>
@@ -89,7 +89,7 @@
         <mat-card class="stats-module">
             <mat-card-header>
                 <h2 class="pb-4">Average Time</h2>
-                <button mat-mini-fab color="basic" class="regenerate">
+                <button mat-mini-fab color="basic" class="regenerate" (click)="regenerateStat('averageTime')">
                     <app-spinner-icon class="material-icons" icon="refresh" [spinning]="isLoading('averageTime')"></app-spinner-icon>
                 </button>
             </mat-card-header>
@@ -116,7 +116,7 @@
         <mat-card class="stats-module">
             <mat-card-header>
                 <h2 class="pb-4">Work in Progress</h2>
-                <button mat-mini-fab color="basic" class="regenerate">
+                <button mat-mini-fab color="basic" class="regenerate" (click)="regenerateStat('wip')">
                     <app-spinner-icon class="material-icons" icon="refresh" [spinning]="isLoading('wip')"></app-spinner-icon>
                 </button>
             </mat-card-header>
@@ -129,7 +129,7 @@
         <mat-card class="stats-module">
             <mat-card-header>
                 <h2 class="pb-4">Task Progress</h2>
-                <button mat-mini-fab color="basic" class="regenerate">
+                <button mat-mini-fab color="basic" class="regenerate" (click)="regenerateStat('taskProgress')">
                     <app-spinner-icon class="material-icons" icon="refresh" [spinning]="isLoading('taskProgress')"></app-spinner-icon>
                 </button>
             </mat-card-header>
@@ -151,7 +151,7 @@
         <mat-card class="stats-module">
             <mat-card-header>
                 <h2 class="pb-4">Project Roadmap</h2>
-                <button mat-mini-fab color="basic" class="regenerate">
+                <button mat-mini-fab color="basic" class="regenerate" (click)="regenerateStat('projectRoadmap')">
                     <app-spinner-icon class="material-icons" icon="refresh" [spinning]="isLoading('projectRoadmap')"></app-spinner-icon>
                 </button>
             </mat-card-header>

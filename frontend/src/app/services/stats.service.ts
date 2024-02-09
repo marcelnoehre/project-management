@@ -22,6 +22,18 @@ export class StatsService {
     taskProgress: null,
     projectRoadmap: null
   }
+
+  private stats: { [key: string]: () => any } = {
+    optimizeOrder: this.getOptimizeOrder.bind(this),
+    personalStats: this.getPersonalStats.bind(this),
+    stats: this.getStats.bind(this),
+    statLeaders: this.getStatLeaders.bind(this),
+    taskAmount: this.getTaskAmount.bind(this),
+    averageTime: this.getAverageTime.bind(this),
+    wip: this.getWip.bind(this),
+    taskProgress: this.getTaskProgress.bind(this),
+    projectRoadmap: this.getProjectRoadmap.bind(this)
+  };
   
   constructor(
     private api: ApiService,
@@ -46,17 +58,16 @@ export class StatsService {
       await new Promise<void>(done => setTimeout(() => done(), 500));
       this.submitUpdate({ step: 'storage', information: 'STORAGE', percentage: 1, data: this.storage.getSessionEntry('stats') });
     } else {
-      const token = this.user.token;
       this.submitUpdate({ step: 'init', information: 'OPTIMIZE_ORDER', percentage: 0/9, data: null });
-      this.submitUpdate({ step: 'optimizeOrder', information: 'PERSONAL_STATS', percentage: 1/9, data: await this.optimizeOrder(token) });
-      this.submitUpdate({ step: 'personalStats', information: 'STATS', percentage: 2/9, data: await this.personalStats(token) });
-      this.submitUpdate({ step: 'stats', information: 'STAT_LEADERS', percentage: 3/9, data: await this.stats(token) });
-      this.submitUpdate({ step: 'statLeaders', information: 'TASK_AMOUNT', percentage: 4/9, data: await this.statLeaders(token) });
-      this.submitUpdate({ step: 'taskAmount', information: 'AVERAGE_TIME', percentage: 5/9, data: await this.taskAmount(token) });
-      this.submitUpdate({ step: 'averageTime', information: 'WIP', percentage: 6/9, data: await this.averageTime(token) });
-      this.submitUpdate({ step: 'wip', information: 'TASK_PROGRESS', percentage: 7/9, data: await this.wip(token) });
-      this.submitUpdate({ step: 'taskProgress', information: 'PROJECT_ROADMAP', percentage: 8/9, data: await this.taskProgress(token) });
-      this.submitUpdate({ step: 'projectRoadmap', information: 'DONE', percentage: 9/9, data: await this.projectRoadmap(token) });
+      this.submitUpdate({ step: 'optimizeOrder', information: 'PERSONAL_STATS', percentage: 1/9, data: await this.getOptimizeOrder() });
+      this.submitUpdate({ step: 'personalStats', information: 'STATS', percentage: 2/9, data: await this.getPersonalStats() });
+      this.submitUpdate({ step: 'stats', information: 'STAT_LEADERS', percentage: 3/9, data: await this.getStats() });
+      this.submitUpdate({ step: 'statLeaders', information: 'TASK_AMOUNT', percentage: 4/9, data: await this.getStatLeaders() });
+      this.submitUpdate({ step: 'taskAmount', information: 'AVERAGE_TIME', percentage: 5/9, data: await this.getTaskAmount() });
+      this.submitUpdate({ step: 'averageTime', information: 'WIP', percentage: 6/9, data: await this.getAverageTime() });
+      this.submitUpdate({ step: 'wip', information: 'TASK_PROGRESS', percentage: 7/9, data: await this.getWip() });
+      this.submitUpdate({ step: 'taskProgress', information: 'PROJECT_ROADMAP', percentage: 8/9, data: await this.getTaskProgress() });
+      this.submitUpdate({ step: 'projectRoadmap', information: 'DONE', percentage: 9/9, data: await this.getProjectRoadmap() });
       this.storage.setSessionEntry('stats', this.data);
       this.storage.setSessionEntry('statsRetrieval', true);
     }
@@ -70,9 +81,9 @@ export class StatsService {
     return this.updateSubject.asObservable();
   }
 
-  async optimizeOrder(token: string) {
+  async getOptimizeOrder() {
     try {
-      this.data['optimizeOrder'] = await lastValueFrom(this.api.optimizeOrder(token));
+      this.data['optimizeOrder'] = await lastValueFrom(this.api.optimizeOrder(this.user.token));
       return this.data['optimizeOrder'];
     } catch (error) {
       this._error.handleApiError(error);
@@ -80,9 +91,9 @@ export class StatsService {
     }
   }
 
-  async personalStats(token: string) {
+  async getPersonalStats() {
     try {
-      this.data['personalStats'] = await lastValueFrom(this.api.personalStats(token));
+      this.data['personalStats'] = await lastValueFrom(this.api.personalStats(this.user.token));
       return this.data['personalStats'];
     } catch (error) {
       this._error.handleApiError(error);
@@ -90,9 +101,9 @@ export class StatsService {
     }
   }
 
-  async stats(token: string) {
+  async getStats() {
     try {
-      this.data['stats'] = await lastValueFrom(this.api.stats(token));
+      this.data['stats'] = await lastValueFrom(this.api.stats(this.user.token));
       return this.data['stats'];
     } catch (error) {
       this._error.handleApiError(error);
@@ -100,9 +111,9 @@ export class StatsService {
     }
   }
 
-  async statLeaders(token: string) {
+  async getStatLeaders() {
     try {
-      this.data['statLeaders'] = await lastValueFrom(this.api.statLeaders(token));
+      this.data['statLeaders'] = await lastValueFrom(this.api.statLeaders(this.user.token));
       return this.data['statLeaders'];
     } catch (error) {
       this._error.handleApiError(error);
@@ -110,9 +121,9 @@ export class StatsService {
     }
   }
 
-  async taskAmount(token: string) {
+  async getTaskAmount() {
     try {
-      this.data['taskAmount'] = await lastValueFrom(this.api.taskAmount(token));
+      this.data['taskAmount'] = await lastValueFrom(this.api.taskAmount(this.user.token));
       return this.data['taskAmount'];
     } catch (error) {
       this._error.handleApiError(error);
@@ -120,9 +131,9 @@ export class StatsService {
     }
   }
 
-  async averageTime(token: string) {
+  async getAverageTime() {
     try {
-      this.data['averageTime'] = await lastValueFrom(this.api.averageTime(token));
+      this.data['averageTime'] = await lastValueFrom(this.api.averageTime(this.user.token));
       return this.data['averageTime'];
     } catch (error) {
       this._error.handleApiError(error);
@@ -130,9 +141,9 @@ export class StatsService {
     }
   }
 
-  async wip(token: string) {
+  async getWip() {
     try {
-      this.data['wip'] = await lastValueFrom(this.api.wip(token));
+      this.data['wip'] = await lastValueFrom(this.api.wip(this.user.token));
       return this.data['wip'];
     } catch (error) {
       this._error.handleApiError(error);
@@ -140,9 +151,9 @@ export class StatsService {
     }
   }
 
-  async taskProgress(token: string) {
+  async getTaskProgress() {
     try {
-      this.data['taskProgress'] = await lastValueFrom(this.api.taskProgress(token));
+      this.data['taskProgress'] = await lastValueFrom(this.api.taskProgress(this.user.token));
       return this.data['taskProgress'];
     } catch (error) {
       this._error.handleApiError(error);
@@ -150,9 +161,9 @@ export class StatsService {
     }
   }
 
-  async projectRoadmap(token: string) {
+  async getProjectRoadmap() {
     try {
-      this.data['projectRoadmap'] = await lastValueFrom(this.api.projectRoadmap(token));
+      this.data['projectRoadmap'] = await lastValueFrom(this.api.projectRoadmap(this.user.token));
       return this.data['projectRoadmap'];
     } catch (error) {
       this._error.handleApiError(error);
@@ -164,5 +175,9 @@ export class StatsService {
     this.storage.deleteSessionEntry('stats');
     this.storage.deleteSessionEntry('statsRetrieval');
     this.init();
+  }
+
+  async regenerateStat(stat: string) {
+    return this.stats[stat]();
   }
 }
