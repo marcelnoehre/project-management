@@ -13,6 +13,7 @@
                 required
                 maxlength="32"
             >
+            <mat-error *ngIf="!isValid()"> {{ 'ERROR.REQUIRED.TITLE' | translate }} </mat-error>
         </mat-form-field>
         <mat-form-field>
             <mat-label>{{ 'TASK.DESCRIPTION' | translate }}</mat-label>
@@ -45,6 +46,7 @@
         </mat-form-field>
         <button 
             #submitCreateTask
+            [disabled]="!isValid()"
             (click)="createTask()"
             tabindex="0"
             mat-raised-button

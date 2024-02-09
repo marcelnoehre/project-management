@@ -1,14 +1,12 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
-import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { TaskState } from 'src/app/enums/task-state.enum';
 import { User } from 'src/app/interfaces/data/user';
 import { ApiService } from 'src/app/services/api/api.service';
 import { ErrorService } from 'src/app/services/error.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
-import { StorageService } from 'src/app/services/storage.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -73,6 +71,10 @@ export class CreateTaskComponent implements OnInit {
 
   get state(): string {
     return this.createTaskForm.get('stateFormControl')?.value;
+  }
+
+  public isValid(): boolean {
+    return this.createTaskForm.controls['titleFormControl']?.valid;
   }
 
   public createTask() {
