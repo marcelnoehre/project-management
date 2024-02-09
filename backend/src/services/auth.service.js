@@ -88,6 +88,22 @@ async function updateUser(db, username, attribute, value) {
     return usersSnapshot.size === 1;
 }
 
+async function deleteUser(db, username) {
+    try {
+        const usersCollection = db.collection('users');
+        const usersSnapshot = await usersCollection.where('username', '==', username).get();
+        const passwordsCollection = db.collection('passwords');
+        const passwordsSnapshot = await passwordsCollection.where('username', '==', username).get();
+        const promises = [];
+        promises.push(await usersCollection.doc(usersSnapshot.docs[0].id).delete());
+        promises.push(await passwordsCollection.doc(passwordsSnapshot.docs[0].id).delete());
+        await Promise.all(promises);
+        return true;
+    } catch (err) {
+        return false;
+    }
+}
+
 function defaultColor() {
     const defaultColors = ['#FF0000', '#00FF00', '#0000FF', '#FFA500', '#FFFFFF'];
     return defaultColors[Math.floor(Math.random() * defaultColors.length)];
@@ -131,6 +147,7 @@ module.exports = {
     updateAttribute,
     updatePassword,
     updateUser,
+    deleteUser,
     generateInitials,
     defaultColor,
     updateUserStats,

@@ -153,25 +153,27 @@ async function toggleNotifications(req, res, next) {
     }
 }
 
+/**
+ * Deletes a user.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @throws {Error} - Throws an error if deletion fails.
+ * - 500: INTERNAL
+ *
+ * @returns {void}
+ */
 async function deleteUser(req, res, next) {
     try {
-        const usersCollection = db.collection('users');
-        const usersSnapshot = await usersCollection.where('username', '==', req.body.username).get();
-        if (usersSnapshot.empty) {
-            res.status(500).send({ message: 'ERROR.INTERNAL' });
+        const token = req.body.token;
+        const tokenUser = jwt.decode(token);
+        if (await authService.deleteUser(db, tokenUser.username)) {
+            await notificationsService.createTeamNotification(db, tokenUser.project, tokenUser.username, 'NOTIFICATIONS.NEW.LEAVE_PROJECT', [tokenUser.username], 'exit_to_app');
+            res.json({ message: 'SUCCESS.DELETE_ACCOUNT' });
         } else {
-            const passwordsCollection = db.collection('passwords');
-            const passwordsSnapshot = await passwordsCollection.where('username', '==', req.body.username).get();
-            if (passwordsSnapshot.empty) {
-                res.status(500).send({ message: 'ERROR.INTERNAL' });
-            } else {
-                const userId = usersSnapshot.docs[0].id;
-                await usersCollection.doc(userId).delete();
-                const passwordId = passwordsSnapshot.docs[0].id;
-                await passwordsCollection.doc(passwordId).delete();
-                await notificationsService.createTeamNotification(db, jwt.decode(req.body.token).project, req.body.username, 'NOTIFICATIONS.NEW.LEAVE_PROJECT', [req.body.username], 'exit_to_app');
-                res.json({ message: 'SUCCESS.DELETE_ACCOUNT' });
-            }
+            res.status(500).send({ message: 'ERROR.INTERNAL' });
         }
     } catch (err) {
         next(err);
