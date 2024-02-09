@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from './api/api.service';
 import { UserService } from './user.service';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, lastValueFrom } from 'rxjs';
 import { Loading } from '../interfaces/loading';
 import { StorageService } from './storage.service';
 import { ErrorService } from './error.service';
@@ -143,105 +143,92 @@ export class StatsService {
   }
 
   async optimizeOrder(token: string) {
-    this.api.optimizeOrder(token).subscribe(
-      (response) => {
-        this.data['optimizeOrder'] = response;
-      },
-      (error) => {
-        this._error.handleApiError(error);
-      }
-    );
+    try {
+      this.data['optimizeOrder'] = await lastValueFrom(this.api.optimizeOrder(token));
+      return this.data['optimizeOrder'];
+    } catch (error) {
+      this._error.handleApiError(error);
+      return null;
+    }
   }
 
   async personalStats(token: string) {
-    this.api.personalStats(token).subscribe(
-      (response) => {
-        this.data['personalStats'] = response;
-      },
-      (error) => {
-        this._error.handleApiError(error);
-      }
-    );
+    try {
+      this.data['personalStats'] = await lastValueFrom(this.api.personalStats(token));
+      return this.data['personalStats'];
+    } catch (error) {
+      this._error.handleApiError(error);
+      return null;
+    }
   }
 
   async stats(token: string) {
-    this.api.stats(token).subscribe(
-      (response) => {
-        this.data['stats'] = response;
-      },
-      (error) => {
-        this._error.handleApiError(error);
-      }
-    );
+    try {
+      this.data['stats'] = await lastValueFrom(this.api.stats(token));
+      return this.data['stats'];
+    } catch (error) {
+      this._error.handleApiError(error);
+      return null;
+    }
   }
 
   async statLeaders(token: string) {
-    this.api.statLeaders(token).subscribe(
-      (response) => {
-        this.data['statLeaders'] = response;
-      },
-      (error) => {
-        this._error.handleApiError(error);
-      }
-    );
+    try {
+      this.data['statLeaders'] = await lastValueFrom(this.api.statLeaders(token));
+      return this.data['statLeaders'];
+    } catch (error) {
+      this._error.handleApiError(error);
+      return null;
+    }
   }
 
   async taskAmount(token: string) {
-    this.api.taskAmount(token).subscribe(
-      (response) => {
-        this.data['taskAmount'] = response;
-      },
-      (error) => {
-        this._error.handleApiError(error);
-      }
-    );
+    try {
+      this.data['taskAmount'] = await lastValueFrom(this.api.taskAmount(token));
+      return this.data['taskAmount'];
+    } catch (error) {
+      this._error.handleApiError(error);
+      return null;
+    }
   }
 
   async averageTime(token: string) {
-    this.api.averageTime(token).subscribe(
-      (response) => {
-        this.data['averageTime'] = response;
-      },
-      (error) => {
-        this._error.handleApiError(error);
-      }
-    );
+    try {
+      this.data['averageTime'] = await lastValueFrom(this.api.averageTime(token));
+      return this.data['averageTime'];
+    } catch (error) {
+      this._error.handleApiError(error);
+      return null;
+    }
   }
 
   async wip(token: string) {
-    this.api.wip(token).subscribe(
-      (response) => {
-        this.data['wip'] = response;
-      },
-      (error) => {
-        this._error.handleApiError(error);
-      }
-    );
+    try {
+      this.data['wip'] = await lastValueFrom(this.api.wip(token));
+      return this.data['wip'];
+    } catch (error) {
+      this._error.handleApiError(error);
+      return null;
+    }
   }
 
   async taskProgress(token: string) {
-    this.api.taskProgress(token).subscribe(
-      (response) => {
-        this.data['taskProgress'] = response;
-      },
-      (error) => {
-        this._error.handleApiError(error);
-      }
-    );
+    try {
+      this.data['taskProgress'] = await lastValueFrom(this.api.taskProgress(token));
+      return this.data['taskProgress'];
+    } catch (error) {
+      this._error.handleApiError(error);
+      return null;
+    }
   }
 
   async projectRoadmap(token: string) {
-    this.api.projectRoadmap(token).subscribe(
-      (response) => {
-        this.data['projectRoadmap'] = response;
-      },
-      (error) => {
-        this._error.handleApiError(error);
-      }
-    );
+    try {
+      this.data['projectRoadmap'] = await lastValueFrom(this.api.projectRoadmap(token));
+      return this.data['projectRoadmap'];
+    } catch (error) {
+      this._error.handleApiError(error);
+      return null;
+    }
   }
-
-
-
-
 }

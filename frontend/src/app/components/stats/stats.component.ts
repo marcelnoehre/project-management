@@ -5,6 +5,7 @@ import { TaskState } from 'src/app/enums/task-state.enum';
 import { TaskStateColor } from 'src/app/enums/task-state-color.enum';
 import { TranslateService } from '@ngx-translate/core';
 import { ChartOptions } from 'src/app/interfaces/chart-options';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-stats',
@@ -86,7 +87,8 @@ export class StatsComponent implements OnInit {
 
   constructor(
     private stats: StatsService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private user: UserService
   ) {
     
   }
@@ -209,6 +211,12 @@ export class StatsComponent implements OnInit {
 
   isLoading(stat: string): boolean {
     return this.reload[stat];
+  }
+
+  async regeneratePersonalStats() {
+    this.reload['personalStats'] = true;
+    this.data.personalStats = await this.stats.personalStats(this.user.token);
+    this.reload['personalStats'] = false;
   }
 
 }

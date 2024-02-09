@@ -3,7 +3,7 @@
         <mat-card class="stats-module">
             <mat-card-header>
                 <h2 class="pb-4">Personal Stats</h2>
-                <button mat-mini-fab color="basic" class="regenerate">
+                <button mat-mini-fab color="basic" class="regenerate" (click)="regeneratePersonalStats()">
                     <app-spinner-icon class="material-icons" icon="refresh" [spinning]="isLoading('personalStats')"></app-spinner-icon>
                 </button>
             </mat-card-header>
