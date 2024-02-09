@@ -4,6 +4,19 @@ const admin = require('firebase-admin');
 const jwt = require('jsonwebtoken');
 const db = admin.firestore();
 
+/**
+ * Handles user authentication and login.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @throws {Error} - Throws an error if authentication fails.
+ * - 401: INVALID_CREDENTIALS
+ * - 500: INTERNAL
+ *
+ * @returns {void}
+ */
 async function login(req, res, next) {
     try {
         const username = req.body.username;
