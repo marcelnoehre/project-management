@@ -13,6 +13,7 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
     declarations: [],
@@ -30,7 +31,8 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
         MatOptionModule,
         MatDialogModule,
         MatProgressSpinnerModule,
-        MatProgressBarModule
+        MatProgressBarModule,
+        MatTooltipModule
     ],
     exports: [
         MatSidenavModule,
@@ -46,7 +48,8 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
         MatOptionModule,
         MatDialogModule,
         MatProgressSpinnerModule,
-        MatProgressBarModule
+        MatProgressBarModule,
+        MatTooltipModule
     ]
 })
 export class MaterialModule {}
