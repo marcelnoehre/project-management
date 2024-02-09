@@ -41,10 +41,23 @@ mat-progress-bar {
 }
 
 .stats-module {
+    position: relative;
     width: 90%;
     background-color: white;
     padding: 2rem;
     overflow-x: hidden;
+}
+
+.regenerate {
+    position: absolute;
+    right: 2.75rem;
+}
+
+.regenerate-all {
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
+    margin-left: 5%;  
 }
 
 .stat {

@@ -15,6 +15,17 @@ export class StatsComponent implements OnInit {
   information = 'INIT';
   mode: ProgressBarMode = 'determinate';
   loading = 0;
+  reload: any = {
+    all: false,
+    personalStats: false,
+    stats: false,
+    statLeaders: false,
+    taskAmount: false,
+    averageTime: false,
+    wip: false,
+    taskProgress: false,
+    projectRoadmap: false
+  };
   data: any = {
     optimizeOrder: null,
     personalStats: null,
@@ -194,6 +205,10 @@ export class StatsComponent implements OnInit {
       });
     });
     this.chartOptions.xaxis = this.data.taskProgress.timestamp;
+  }
+
+  isLoading(stat: string): boolean {
+    return this.reload[stat];
   }
 
 }
