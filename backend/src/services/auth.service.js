@@ -102,14 +102,14 @@ async function updateAttribute(db, username, attribute, value) {
     const validAttributes = ['username', 'fullName', 'language', 'initials', 'color', 'profilePicture', 'password'];
     if (validAttributes.includes(attribute)) {
         if (attribute === 'password') {
-            return await updatePassword(db, username, attribute, value);
+            return updatePassword(db, username, attribute, value);
         } else {
             if (attribute === 'username') {
-                if (!(await updatePassword(db, username, attribute, value))) {
+                if (!updatePassword(db, username, attribute, value)) {
                     return false; 
                 }
             }
-            return await updateUser(db, username, attribute, value);
+            return updateUser(db, username, attribute, value);
         }
     } else {
         return false;
