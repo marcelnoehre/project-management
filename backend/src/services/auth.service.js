@@ -1,20 +1,16 @@
-async function passwordValid(db, username, password, res) {
+async function passwordValid(db, username, password) {
     const passwordsCollection = db.collection('passwords');
     const passwordsSnapshot = await passwordsCollection.where('username', '==', username).get();
-    if (passwordsSnapshot.empty || passwordsSnapshot.docs[0].data().password !== password) {
-        res.status(401).send({ message: 'ERROR.INVALID_CREDENTIALS' });
-    } else {
-        return true;
-    }
+    return (!passwordsSnapshot.empty && passwordsSnapshot.docs[0].data().password === password);
 }
 
-async function singleUser(db, username, res) {
+async function singleUser(db, username) {
     const usersCollection = db.collection('users');
     const usersSnapshot = await usersCollection.where('username', '==', username).get();
-    if (usersSnapshot.empty || usersSnapshot.size > 1) {
-        res.status(500).send({ message: 'ERROR.INTERNAL' });
-    } else {
+    if (usersSnapshot.size === 1) {
         return usersSnapshot.docs[0].data();
+    } else {
+        return null;
     }
 }
 
@@ -28,7 +24,7 @@ async function isNewUser(db, username) {
     }
 }
 
-async function createUser(db, username, fullName, language, password, res) {
+async function createUser(db, username, fullName, language, password) {
     const userData = {
         username: username,
         fullName: fullName,
@@ -58,7 +54,6 @@ async function createUser(db, username, fullName, language, password, res) {
     promises.push(db.collection('users').doc().set(userData));
     promises.push(db.collection('passwords').doc().set(passwordData));
     await Promise.all(promises);
-    res.json({ message: "SUCCESS.REGISTRATION" });
 }
 
 function defaultColor() {

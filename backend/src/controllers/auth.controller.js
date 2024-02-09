@@ -21,42 +21,73 @@ async function login(req, res, next) {
     try {
         const username = req.body.username;
         const password = req.body.password;
-        if (await authService.passwordValid(db, username, password, res)) {
-            const user = await authService.singleUser(db, username, res);
-            user.token = jwt.sign(user, '3R#q!ZuFb2sPn8yT^@5vLmN7jA*C6hG', { expiresIn: '1h' });
-            user.isLoggedIn = user.project !== '' && user.permission !== 'INVITED';
-            res.json(user);
+        if (await authService.passwordValid(db, username, password)) {
+            const user = await authService.singleUser(db, username);
+            if (user) {
+                user.token = jwt.sign(user, '3R#q!ZuFb2sPn8yT^@5vLmN7jA*C6hG', { expiresIn: '1h' });
+                user.isLoggedIn = user.project !== '' && user.permission !== 'INVITED';
+                res.json(user);
+            } else {
+                res.status(500).send({ message: 'ERROR.INTERNAL' });
+            }
+        } else {
+            res.status(401).send({ message: 'ERROR.INVALID_CREDENTIALS' });
         }
     } catch (err) {
         next(err);
     }
 }
 
+/**
+ * Handles user registration.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @throws {Error} - Throws an error if authentication fails.
+ * - 402: USERNAME_TAKEN
+ *
+ * @returns {void}
+ */
 async function register(req, res, next) {
     try {
         const username = req.body.username;
         const fullName = req.body.fullName;
         const language = req.body.language;
         const password = req.body.password;
-        if (await authService.isNewUser(db, username, res)) {
-            authService.createUser(db, username, fullName, language, password, res);
+        if (await authService.isNewUser(db, username)) {
+            await authService.createUser(db, username, fullName, language, password);
+            res.json({ message: "SUCCESS.REGISTRATION" });
         }
     } catch (err) {
         next(err);
     }
 }
 
+/**
+ * Handles user registration.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @throws {Error} - Throws an error if authentication fails.
+ * - 403: INVALID_TOKEN
+ *
+ * @returns {void}
+ */
 async function verify(req, res, next) {
     try {
-        const usersCollection = db.collection('users');
-        const usersSnapshot = await usersCollection.where('username', '==', req.body.username).get();
-        if (usersSnapshot.empty) {
-            res.status(403).send({ message: 'ERROR.INVALID_TOKEN' });
-        } else {
-            const user = usersSnapshot.docs[0].data();
-            user.token = req.body.token;
+        const token = req.body.token;
+        const tokenUser = jwt.decode(token);
+        const user = await authService.singleUser(db, tokenUser.username);
+        if (user) {
+            user.token = token;
             user.isLoggedIn = user.project !== '' && user.permission !== 'INVITED';
             res.json(user);
+        } else {
+            res.status(403).send({ message: 'ERROR.INVALID_TOKEN' });
         }
     } catch(err) {
         next(err);
