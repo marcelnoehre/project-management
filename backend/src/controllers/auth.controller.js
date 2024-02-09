@@ -111,29 +111,42 @@ async function verify(req, res, next) {
 async function updateUser(req, res, next) {
     try {
         const token = req.body.token;
+        const attribute = req.body.attribute;
+        const value = req.body.value;
         const tokenUser = jwt.decode(token);
         const user = authService.singleUser(db, tokenUser.username);
-        if (user && await authService.updateAttribute()) {
+        if (user && await authService.updateAttribute(db, tokenUser.username, attribute, value)) {
             res.json({ message: 'SUCCESS.UPDATE_ACCOUNT' });
+        } else {
+            res.status(500).send({ message: 'ERROR.INTERNAL' });
         }
-        res.status(500).send({ message: 'ERROR.INTERNAL' });
     } catch (err) {
         next(err);
     }
 }
 
+/**
+ * Toggles notificationEnabled attribute.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @throws {Error} - Throws an error if toggle fails.
+ * - 500: INTERNAL
+ *
+ * @returns {void}
+ */
 async function toggleNotifications(req, res, next) {
     try {
-        const usersCollection = db.collection('users');
-        const usersSnapshot = await usersCollection.where('username', '==', req.body.username).get();
-        if (usersSnapshot.empty) {
-            res.status(500).send({ message: 'ERROR.INTERNAL' });
+        const token = req.body.token;
+        const notificationsEnabled = req.body.notificationsEnabled;
+        const tokenUser = jwt.decode(token);
+        const user = await authService.singleUser(db, tokenUser.username);
+        if (user && await authService.updateUser(db, tokenUser.username, 'notificationsEnabled', notificationsEnabled)) {
+            res.json({ message: notificationsEnabled ? 'SUCCESS.NOTIFICATIONS_ON' : 'SUCCESS.NOTIFICATIONS_OFF' });
         } else {
-            await usersSnapshot.docs[0].ref.update({
-                notificationsEnabled: req.body.notificationsEnabled
-            });
-            let msg = req.body.notificationsEnabled ? 'SUCCESS.NOTIFICATIONS_ON' : 'SUCCESS.NOTIFICATIONS_OFF';
-            res.json({ message: msg });
+            res.status(500).send({ message: 'ERROR.INTERNAL' });
         }
     } catch (err) {
         next(err);

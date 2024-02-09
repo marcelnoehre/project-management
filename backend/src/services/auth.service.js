@@ -129,6 +129,8 @@ module.exports = {
     isNewUser,
     createUser,
     updateAttribute,
+    updatePassword,
+    updateUser,
     generateInitials,
     defaultColor,
     updateUserStats,
