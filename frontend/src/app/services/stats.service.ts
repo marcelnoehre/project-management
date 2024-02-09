@@ -58,6 +58,7 @@ export class StatsService {
       await new Promise<void>(done => setTimeout(() => done(), 500));
       this.submitUpdate({ step: 'storage', information: 'STORAGE', percentage: 1, data: this.storage.getSessionEntry('stats') });
     } else {
+      // TODO: loop based on stat retrieval by string 
       this.submitUpdate({ step: 'init', information: 'OPTIMIZE_ORDER', percentage: 0/9, data: null });
       this.submitUpdate({ step: 'optimizeOrder', information: 'PERSONAL_STATS', percentage: 1/9, data: await this.getOptimizeOrder() });
       this.submitUpdate({ step: 'personalStats', information: 'STATS', percentage: 2/9, data: await this.getPersonalStats() });

@@ -5,7 +5,6 @@ import { TaskState } from 'src/app/enums/task-state.enum';
 import { TaskStateColor } from 'src/app/enums/task-state-color.enum';
 import { TranslateService } from '@ngx-translate/core';
 import { ChartOptions } from 'src/app/interfaces/chart-options';
-import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-stats',
