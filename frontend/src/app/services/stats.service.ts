@@ -142,4 +142,106 @@ export class StatsService {
     return this.updateSubject.asObservable();
   }
 
+  async optimizeOrder(token: string) {
+    this.api.optimizeOrder(token).subscribe(
+      (response) => {
+        this.data['optimizeOrder'] = response;
+      },
+      (error) => {
+        this._error.handleApiError(error);
+      }
+    );
+  }
+
+  async personalStats(token: string) {
+    this.api.personalStats(token).subscribe(
+      (response) => {
+        this.data['personalStats'] = response;
+      },
+      (error) => {
+        this._error.handleApiError(error);
+      }
+    );
+  }
+
+  async stats(token: string) {
+    this.api.stats(token).subscribe(
+      (response) => {
+        this.data['stats'] = response;
+      },
+      (error) => {
+        this._error.handleApiError(error);
+      }
+    );
+  }
+
+  async statLeaders(token: string) {
+    this.api.statLeaders(token).subscribe(
+      (response) => {
+        this.data['statLeaders'] = response;
+      },
+      (error) => {
+        this._error.handleApiError(error);
+      }
+    );
+  }
+
+  async taskAmount(token: string) {
+    this.api.taskAmount(token).subscribe(
+      (response) => {
+        this.data['taskAmount'] = response;
+      },
+      (error) => {
+        this._error.handleApiError(error);
+      }
+    );
+  }
+
+  async averageTime(token: string) {
+    this.api.averageTime(token).subscribe(
+      (response) => {
+        this.data['averageTime'] = response;
+      },
+      (error) => {
+        this._error.handleApiError(error);
+      }
+    );
+  }
+
+  async wip(token: string) {
+    this.api.wip(token).subscribe(
+      (response) => {
+        this.data['wip'] = response;
+      },
+      (error) => {
+        this._error.handleApiError(error);
+      }
+    );
+  }
+
+  async taskProgress(token: string) {
+    this.api.taskProgress(token).subscribe(
+      (response) => {
+        this.data['taskProgress'] = response;
+      },
+      (error) => {
+        this._error.handleApiError(error);
+      }
+    );
+  }
+
+  async projectRoadmap(token: string) {
+    this.api.projectRoadmap(token).subscribe(
+      (response) => {
+        this.data['projectRoadmap'] = response;
+      },
+      (error) => {
+        this._error.handleApiError(error);
+      }
+    );
+  }
+
+
+
+
 }
