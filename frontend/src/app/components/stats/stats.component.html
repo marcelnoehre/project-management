@@ -1,7 +1,12 @@
 <div class="stats-container" *ngIf="loaded()">
     <div class="stats-row">
         <mat-card class="stats-module">
-            <h2 class="pb-4">Personal Stats</h2>
+            <mat-card-header>
+                <h2 class="pb-4">Personal Stats</h2>
+                <button mat-mini-fab color="basic" class="regenerate" (click)="regenerateStat('personalStats')">
+                    <app-spinner-icon class="material-icons" icon="refresh" [spinning]="isLoading('personalStats')"></app-spinner-icon>
+                </button>
+            </mat-card-header>
             <mat-card-content class="row">
                 <div *ngFor="let stat of statLabels" class="col w-100 stat m-2">
                     <mat-icon>
@@ -14,7 +19,12 @@
     </div>
     <div class="stats-row">
         <mat-card class="stats-module">
-            <h2 class="pb-4">Stat Leaders</h2>
+            <mat-card-header>
+                <h2 class="pb-4">Stat Leaders</h2>
+                <button mat-mini-fab color="basic" class="regenerate" (click)="regenerateStat('statLeaders')">
+                    <app-spinner-icon class="material-icons" icon="refresh" [spinning]="isLoading('statLeaders')"></app-spinner-icon>
+                </button>
+            </mat-card-header>
             <mat-card-content class="row">
                 <div *ngFor="let stat of statLabels" class="col w-100 stat m-2">
                     <mat-icon>
@@ -32,7 +42,12 @@
     </div>
     <div class="stats-row">
         <mat-card class="stats-module">
-            <h2 class="pb-4">Stats</h2>
+            <mat-card-header>
+                <h2 class="pb-4">Stats</h2>
+                <button mat-mini-fab color="basic" class="regenerate" (click)="regenerateStat('stats')">
+                    <app-spinner-icon class="material-icons" icon="refresh" [spinning]="isLoading('stats')"></app-spinner-icon>
+                </button>
+            </mat-card-header>
             <mat-card-content class="row">
                 <div *ngFor="let user of data.stats">
                     <h4>{{ user.id | translate }}</h4>
@@ -50,7 +65,12 @@
     </div>
     <div class="stats-row">
         <mat-card class="stats-module">
-            <h2 class="pb-4">Task Amount</h2>
+            <mat-card-header>
+                <h2 class="pb-4">Task amount</h2>
+                <button mat-mini-fab color="basic" class="regenerate" (click)="regenerateStat('taskAmount')">
+                    <app-spinner-icon class="material-icons" icon="refresh" [spinning]="isLoading('taskAmount')"></app-spinner-icon>
+                </button>
+            </mat-card-header>
             <mat-card-content class="row">
                 <div style="display: block;">
                     <canvas baseChart 
@@ -67,7 +87,12 @@
     </div>
     <div class="stats-row">
         <mat-card class="stats-module">
-            <h2 class="pb-4">Average Time</h2>
+            <mat-card-header>
+                <h2 class="pb-4">Average Time</h2>
+                <button mat-mini-fab color="basic" class="regenerate" (click)="regenerateStat('averageTime')">
+                    <app-spinner-icon class="material-icons" icon="refresh" [spinning]="isLoading('averageTime')"></app-spinner-icon>
+                </button>
+            </mat-card-header>
             <mat-card-content class="row">
                 <div class="mb-2">
                     <canvas baseChart
@@ -89,13 +114,25 @@
     </div>
     <div class="stats-row">
         <mat-card class="stats-module">
-            <h2 class="pb-4">Work In Progress</h2>
-            <div class="fs-5">{{ getWipInfo() }}</div>
+            <mat-card-header>
+                <h2 class="pb-4">Work in Progress</h2>
+                <button mat-mini-fab color="basic" class="regenerate" (click)="regenerateStat('wip')">
+                    <app-spinner-icon class="material-icons" icon="refresh" [spinning]="isLoading('wip')"></app-spinner-icon>
+                </button>
+            </mat-card-header>
+            <mat-card-content>
+                <div class="fs-5">{{ getWipInfo() }}</div>
+            </mat-card-content>
         </mat-card>
     </div>
     <div class="stats-row">
         <mat-card class="stats-module">
-            <h2 class="pb-4">Task Progress</h2>
+            <mat-card-header>
+                <h2 class="pb-4">Task Progress</h2>
+                <button mat-mini-fab color="basic" class="regenerate" (click)="regenerateStat('taskProgress')">
+                    <app-spinner-icon class="material-icons" icon="refresh" [spinning]="isLoading('taskProgress')"></app-spinner-icon>
+                </button>
+            </mat-card-header>
             <mat-card-content class="row">
                 <div id="chart">
                     <apx-chart
@@ -112,7 +149,12 @@
     </div>
     <div class="stats-row">
         <mat-card class="stats-module">
-            <h2 class="pb-4">Project Roadmap</h2>
+            <mat-card-header>
+                <h2 class="pb-4">Project Roadmap</h2>
+                <button mat-mini-fab color="basic" class="regenerate" (click)="regenerateStat('projectRoadmap')">
+                    <app-spinner-icon class="material-icons" icon="refresh" [spinning]="isLoading('projectRoadmap')"></app-spinner-icon>
+                </button>
+            </mat-card-header>
             <mat-card-content class="row">
                 <p-timeline [value]="data.projectRoadmap">
                     <ng-template pTemplate="content" let-event>
@@ -124,6 +166,13 @@
                 </p-timeline>
             </mat-card-content>
         </mat-card>
+    </div>
+    <div class="regenerate-all">
+        <button mat-raised-button (click)="regenerateAll()">
+            <app-spinner-icon class="material-icons" icon="refresh" [spinning]="isLoading('all')"></app-spinner-icon>
+            <ng-container *ngIf="isLoading('all')">&nbsp;</ng-container>
+            {{ 'STATS.REGENERATE' | translate }}
+        </button>
     </div>
 </div>
 <div class="loading-container" *ngIf="!loaded()">

@@ -178,6 +178,7 @@
             "LEFT": "{{username}} has left the project",
             "ADMIN": "{{username}} has given {{target}} the permission 'ADMIN'",
             "MEMBER": "{{username}} has given {{target}} the permission 'MEMBER'"
-        }
+        },
+        "REGENERATE": "Regenerate all statistics"
     }
 }
