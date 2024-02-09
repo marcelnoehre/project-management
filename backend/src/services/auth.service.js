@@ -1,7 +1,7 @@
 async function passwordValid(db, username, password) {
     const passwordsCollection = db.collection('passwords');
     const passwordsSnapshot = await passwordsCollection.where('username', '==', username).get();
-    return (!passwordsSnapshot.empty && passwordsSnapshot.docs[0].data().password === password);
+    return (passwordsSnapshot.size === 1 && passwordsSnapshot.docs[0].data().password === password);
 }
 
 async function singleUser(db, username) {
@@ -17,11 +17,7 @@ async function singleUser(db, username) {
 async function isNewUser(db, username) {
     const usersCollection = db.collection('users');
     const usersSnapshot = await usersCollection.where('username', '==', username).get();
-    if (!usersSnapshot.empty) {
-        res.status(402).send({ message: 'ERROR.USERNAME_TAKEN' });
-    } else {
-        return true;
-    }
+    return usersSnapshot.empty;
 }
 
 async function createUser(db, username, fullName, language, password) {
@@ -29,8 +25,8 @@ async function createUser(db, username, fullName, language, password) {
         username: username,
         fullName: fullName,
         language: language,
-        initials: authService.generateInitials(fullName),
-        color: authService.defaultColor(),
+        initials: generateInitials(fullName),
+        color: defaultColor(),
         project: '',
         permission: '',
         profilePicture: '',
@@ -54,6 +50,42 @@ async function createUser(db, username, fullName, language, password) {
     promises.push(db.collection('users').doc().set(userData));
     promises.push(db.collection('passwords').doc().set(passwordData));
     await Promise.all(promises);
+}
+
+async function updateAttribute(db, username, attribute, value) {
+    const validAttributes = ['username', 'fullName', 'language', 'initials', 'color', 'profilePicture', 'password'];
+    if (validAttributes.includes(attribute)) {
+        if (attribute === 'password') {
+            return await updatePassword(db, username, attribute, value);
+        } else {
+            if (attribute === 'username') {
+                if (!(await updatePassword(db, username, attribute, value))) {
+                    return false; 
+                }
+            }
+            return await updateUser(db, username, attribute, value);
+        }
+    } else {
+        return false;
+    }
+}
+
+async function updatePassword(db, username, attribute, value) {
+    const passwordsCollection = db.collection('passwords');
+    const passwordsSnapshot = await passwordsCollection.where('username', '==', username).get();
+    if (passwordsSnapshot.size === 1) {
+        await passwordsSnapshot.docs[0].ref.update({ [attribute]: value });  
+    }
+    return passwordsSnapshot.size === 1;
+}
+
+async function updateUser(db, username, attribute, value) {
+    const usersCollection = db.collection('users');
+    const usersSnapshot = await usersCollection.where('username', '==', username).get();
+    if (usersSnapshot.size === 1) {
+        await usersSnapshot.docs[0].ref.update({ [attribute]: value });
+    }
+    return usersSnapshot.size === 1;
 }
 
 function defaultColor() {
@@ -96,6 +128,7 @@ module.exports = {
     singleUser,
     isNewUser,
     createUser,
+    updateAttribute,
     generateInitials,
     defaultColor,
     updateUserStats,

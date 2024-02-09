@@ -45,7 +45,7 @@ async function login(req, res, next) {
  * @param {Object} res - Express response object.
  * @param {Function} next - Express next middleware function.
  *
- * @throws {Error} - Throws an error if authentication fails.
+ * @throws {Error} - Throws an error if registration fails.
  * - 402: USERNAME_TAKEN
  *
  * @returns {void}
@@ -59,6 +59,8 @@ async function register(req, res, next) {
         if (await authService.isNewUser(db, username)) {
             await authService.createUser(db, username, fullName, language, password);
             res.json({ message: "SUCCESS.REGISTRATION" });
+        } else {
+            res.status(402).send({ message: 'ERROR.USERNAME_TAKEN' });
         }
     } catch (err) {
         next(err);
@@ -66,13 +68,13 @@ async function register(req, res, next) {
 }
 
 /**
- * Handles user registration.
+ * Verifies a user.
  *
  * @param {Object} req - Express request object.
  * @param {Object} res - Express response object.
  * @param {Function} next - Express next middleware function.
  *
- * @throws {Error} - Throws an error if authentication fails.
+ * @throws {Error} - Throws an error if user is invalid.
  * - 403: INVALID_TOKEN
  *
  * @returns {void}
@@ -94,41 +96,27 @@ async function verify(req, res, next) {
     }
 }
 
+/**
+ * Upadates a user attribute.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @throws {Error} - Throws an error if update fails.
+ * - 500: INTERNAL
+ *
+ * @returns {void}
+ */
 async function updateUser(req, res, next) {
     try {
-        const usersCollection = db.collection('users');
-        const usersSnapshot = await usersCollection.where('username', '==', req.body.username).get();
-        if (usersSnapshot.empty) {
-            res.status(500).send({ message: 'ERROR.INTERNAL' });
-        } else {
-            const validAttributes = ['username', 'fullName', 'language', 'initials', 'color', 'profilePicture', 'password'];
-            if (validAttributes.includes(req.body.attribute)) {
-                if (req.body.attribute === 'password') {
-                    const passwordsCollection = db.collection('passwords');
-                    const passwordsSnapshot = await passwordsCollection.where('username', '==', req.body.username).get();
-                    if (passwordsSnapshot.empty) {
-                        res.status(500).send({ message: 'ERROR.INTERNAL' });
-                    } else {
-                        await passwordsSnapshot.docs[0].ref.update({ password: req.body.value });
-                        res.json({ message: 'SUCCESS.UPDATE_ACCOUNT' });
-                    }
-                } else {
-                    if (req.body.attribute === 'username') {
-                        const passwordsCollection = db.collection('passwords');
-                        const passwordsSnapshot = await passwordsCollection.where('username', '==', req.body.username).get();
-                        if (passwordsSnapshot.empty) {
-                            res.status(500).send({ message: 'ERROR.INTERNAL' });
-                        } else {
-                            await passwordsSnapshot.docs[0].ref.update({ username: req.body.value });
-                        }
-                    }
-                    await usersSnapshot.docs[0].ref.update({ [req.body.attribute]: req.body.value });
-                    res.json({ message: 'SUCCESS.UPDATE_ACCOUNT' });
-                }
-            } else {
-                res.status(500).send({ message: 'ERROR.INTERNAL' });
-            }
+        const token = req.body.token;
+        const tokenUser = jwt.decode(token);
+        const user = authService.singleUser(db, tokenUser.username);
+        if (user && await authService.updateAttribute()) {
+            res.json({ message: 'SUCCESS.UPDATE_ACCOUNT' });
         }
+        res.status(500).send({ message: 'ERROR.INTERNAL' });
     } catch (err) {
         next(err);
     }
