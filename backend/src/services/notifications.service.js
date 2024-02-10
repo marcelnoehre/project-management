@@ -1,3 +1,12 @@
+/**
+ * Get a list of notifications.
+ *
+ * @param {Object} db - Firestore instance.
+ * @param {string} project - The project.
+ * @param {string} username - The username.
+ *
+ * @returns {Object[]} - The list of notifications.
+ */
 async function getNotifications(db, project, username) {
     const seen = getTypedNotifications(db, project, username, 'seen');
     const unseen = getTypedNotifications(db, project, username, 'unseen');
@@ -5,6 +14,16 @@ async function getNotifications(db, project, username) {
     return notifiactions;
 }
 
+/**
+ * Get a list of seen or unseen notifications.
+ *
+ * @param {Object} db - Firestore instance.
+ * @param {string} project - The project.
+ * @param {string} username - The username.
+ * @param {string} type - ['seen', 'unseen']
+ *
+ * @returns {Object[]} - The list of seen or unseen notifications.
+ */
 async function getTypedNotifications(db, project, username, type) {
     const notificationsCollection = db.collection('notifications');
     const notificationsSnapshot = await notificationsCollection
@@ -121,6 +140,17 @@ async function createRelatedNotification(db, project, self, author, assigned, me
     }
 }
 
+/**
+ * Update a list of notifications.
+ *
+ * @param {Object} db - Firestore instance.
+ * @param {string[]} removed - The list of notification uids that should get removed.
+ * @param {string[]} seen - The list of notification uids that should get marked as seen.
+ * @param {string} username - The username.
+ * @param {string} project - The project.
+ *
+ * @returns {void}
+ */
 async function updateNotifications(db, removed, seen, username, project) {
     const notificationsCollection = db.collection('notifications');
     let promises = [];
@@ -154,6 +184,14 @@ async function updateNotifications(db, removed, seen, username, project) {
     await Promise.all(promises);
 }
 
+/**
+ * Mark a notification as removed.
+ *
+ * @param {Object} data - The notification that should get removed.
+ * @param {string} username - The username.
+ *
+ * @returns {Object} The updated notification data.
+ */
 async function removeNotification(data, username) {
     const seenIndex = data.seen.indexOf(username);
     if (seenIndex !== -1) {
@@ -162,6 +200,14 @@ async function removeNotification(data, username) {
     return data;
 }
 
+/**
+ * Mark a notification as seen.
+ *
+ * @param {Object} data - The notification that should get marked as seen.
+ * @param {string} username - The username.
+ *
+ * @returns {Object} The updated notification data.
+ */
 async function seenNotifcation(data, username) {
     const unseenIndex = data.unseen.indexOf(username);
     if (unseenIndex !== -1) {

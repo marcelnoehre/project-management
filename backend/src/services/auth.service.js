@@ -19,7 +19,7 @@ async function passwordValid(db, username, password) {
  * @param {Object} db - Firestore instance.
  * @param {string} username - The username.
  *
- * @returns {Object | null} The user data, if the username is unique.
+ * @returns {Object} The user data, if the username is unique.
  */
 async function singleUser(db, username) {
     const usersCollection = db.collection('users');

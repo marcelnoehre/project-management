@@ -3,6 +3,15 @@ const admin = require('firebase-admin');
 const jwt = require('jsonwebtoken');
 const db = admin.firestore();
 
+/**
+ * Get user related notifications.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @returns {Notification[]} The list of user related notifications
+ */
 async function getNotifications(req, res, next) {
     try {
         const token = req.body.token;
@@ -14,6 +23,15 @@ async function getNotifications(req, res, next) {
     }
 }
 
+/**
+ * Updates a list of notifications.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @returns {Notification[]} The updated list of notifications.
+ */
 async function updateNotifications(req, res, next) {
     try {
         const token = req.body.token;
