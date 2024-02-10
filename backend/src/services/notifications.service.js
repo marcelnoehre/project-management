@@ -46,97 +46,128 @@ async function getTypedNotifications(db, project, username, type) {
     return notifiactions;
 }
 
-async function createTeamNotification(db, project, author, message, data, icon) {
+/**
+ * Create a team notification.
+ *
+ * @param {Object} db - Firestore instance.
+ * @param {string} project - The project.
+ * @param {string} self - The user who caused the notification.
+ * @param {string} message - The notification message.
+ * @param {string[]} data - The data for the notification translation.
+ * @param {string} icon - The icon displayed for the notification.
+ *
+ * @returns {void}
+ */
+async function createTeamNotification(db, project, self, message, data, icon) {
     try {
         const usersCollection = db.collection('users');
-        const usersSnapshot = await usersCollection.where('project', '==', project).where('permission', '!=', 'INVITED').get();
-        if (!usersSnapshot.empty) {
-            const unseen = [];
-            usersSnapshot.forEach(doc => {
-                if (doc.data().username !== author) {
-                    unseen.push(doc.data().username);
-                }
-            });
-            const notificationsCollection = db.collection('notifications');
-            const newDocRef = notificationsCollection.doc();
-            const notification = {
-                uid: newDocRef.id,
-                project: project,
-                timestamp: new Date().getTime(),
-                message: message,
-                data: data,
-                icon: icon,
-                seen: [],
-                unseen: unseen
-            };
-            await notificationsCollection.doc(newDocRef.id).set(notification);
-        }
-    } catch (err) {
-        console.log(err);
-    }
-}
-
-async function createAdminNotification(db, project, author, message, data, icon) {
-    try {
-        const usersCollection = db.collection('users');
-        const adminSnapshot = await usersCollection.where('project', '==', project).where('permission', '==', 'ADMIN').where('username', '!=', author).get();
-        const ownerSnapshot = await usersCollection.where('project', '==', project).where('permission', '==', 'OWNER').where('username', '!=', author).get();
+        const usersSnapshot = await usersCollection
+            .where('project', '==', project)
+            .where('permission', '!=', 'INVITED')
+            .get();
         const unseen = [];
-        if (!adminSnapshot.empty) {
-            adminSnapshot.forEach(doc => {
-                unseen.push(doc.data().username);
-            });
-        }
-        if (!ownerSnapshot.empty) {
-            ownerSnapshot.forEach(doc => {
-                unseen.push(doc.data().username);
-            });
-        }
-        if (unseen.length > 0) {
-            const notificationsCollection = db.collection('notifications');
-            const newDocRef = notificationsCollection.doc();
-            const notification = {
-                uid: newDocRef.id,
-                project: project,
-                timestamp: new Date().getTime(),
-                message: message,
-                data: data,
-                icon: icon,
-                seen: [],
-                unseen: unseen
-            };
-            await notificationsCollection.doc(newDocRef.id).set(notification);
-        }
+        usersSnapshot.forEach(doc => {
+            const user = doc.data();
+            if (user.username !== self && user.notificationsEnabled) {
+                unseen.push(user.username);
+            }
+        });
+        createNotification(db, project, message, data, icon, unseen);
     } catch (err) { }
 }
 
+/**
+ * Create a admin notification.
+ *
+ * @param {Object} db - Firestore instance.
+ * @param {string} project - The project.
+ * @param {string} self - The user who caused the notification.
+ * @param {string} message - The notification message.
+ * @param {string[]} data - The data for the notification translation.
+ * @param {string} icon - The icon displayed for the notification.
+ *
+ * @returns {void}
+ */
+async function createAdminNotification(db, project, self, message, data, icon) {
+    try {
+        const unseen = [];
+        const usersCollection = db.collection('users');
+        ['ADMIN', 'OWNER'].forEach(async (permission) => {
+            const snapshot = await usersCollection
+                .where('project', '==', project)
+                .where('permission', '==', permission)
+                .where('username', '!=', self)
+                .get();
+            snapshot.forEach((doc) => {
+                const user = doc.data();
+                if (user.notificationsEnabled) {
+                    unseen.push(user.username);
+                }
+            });
+        });
+        createNotification(db, project, message, data, icon, unseen);
+    } catch (err) { }
+}
+
+/**
+ * Create a related notification.
+ *
+ * @param {Object} db - Firestore instance.
+ * @param {string} project - The project.
+ * @param {string} self - The user who caused the notification.
+ * @param {string} author - The author of the related task.
+ * @param {string} assigned - The user assigned to the related task.
+ * @param {string} message - The notification message.
+ * @param {string[]} data - The data for the notification translation.
+ * @param {string} icon - The icon displayed for the notification.
+ *
+ * @returns {void}
+ */
 async function createRelatedNotification(db, project, self, author, assigned, message, data, icon) {
     try {
         const usersCollection = db.collection('users');
-        const usersSnapshot = await usersCollection.where('project', '==', project).where('permission', '!=', 'INVITED').get();
+        const usersSnapshot = await usersCollection
+            .where('project', '==', project)
+            .where('permission', '!=', 'INVITED')
+            .get();
         const unseen = [];
-        usersSnapshot.forEach(doc => {
-            if (doc.data().username !== self && (doc.data().username === author || doc.data().username === assigned)) {
-                unseen.push(doc.data().username);
+        usersSnapshot.forEach((doc) => {
+            const user = doc.data();
+            if (user.username !== self && (user.username === author || user.username === assigned)) {
+                unseen.push(user.username);
             }
         });
-        if (unseen.length > 0) {
-            const notificationsCollection = db.collection('notifications');
-            const newDocRef = notificationsCollection.doc();
-            const notification = {
-                uid: newDocRef.id,
-                project: project,
-                timestamp: new Date().getTime(),
-                message: message,
-                data: data,
-                icon: icon,
-                seen: [],
-                unseen: unseen
-            };
-            await notificationsCollection.doc(newDocRef.id).set(notification);
-        }
-    } catch (err) {
-        console.log(err);
+        createNotification(db, project, message, data, icon, unseen);
+    } catch (err) { }
+}
+
+/**
+ * Create a notification.
+ *
+ * @param {Object} db - Firestore instance.
+ * @param {string} project - The project.
+ * @param {string} message - The notification message.
+ * @param {string[]} data - The data for the notification translation.
+ * @param {string} icon - The icon displayed for the notification.
+ * @param {string[]} unseen - The list of users who should receive the notification.
+ *
+ * @returns {void}
+ */
+async function createNotification(db, project, message, data, icon, unseen) {
+    if (unseen.length) {
+        const notificationsCollection = db.collection('notifications');
+        const newDocRef = notificationsCollection.doc();
+        const notification = {
+            uid: newDocRef.id,
+            project: project,
+            timestamp: new Date().getTime(),
+            message: message,
+            data: data,
+            icon: icon,
+            seen: [],
+            unseen: unseen
+        };
+        await notificationsCollection.doc(newDocRef.id).set(notification);
     }
 }
 
