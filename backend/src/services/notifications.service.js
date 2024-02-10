@@ -1,3 +1,10 @@
+async function getNotifications(db, project, username) {
+    const seen = getTypedNotifications(db, project, username, 'seen');
+    const unseen = getTypedNotifications(db, project, username, 'unseen');
+    const notifiactions = seen.concat(unseen);
+    return notifiactions;
+}
+
 async function getTypedNotifications(db, project, username, type) {
     const notificationsCollection = db.collection('notifications');
     const notificationsSnapshot = await notificationsCollection
@@ -114,9 +121,63 @@ async function createRelatedNotification(db, project, self, author, assigned, me
     }
 }
 
-module.exports = { 
+async function updateNotifications(db, removed, seen, username, project) {
+    const notificationsCollection = db.collection('notifications');
+    let promises = [];
+    removed.forEach(async (uid) => {
+        const notificationsSnapshot = await notificationsCollection.where('uid', '==', uid).get();
+        if (notificationsSnapshot.size === 1) {
+            const doc = notificationsSnapshot.docs[0];
+            let data = doc.data();
+            data = removeNotification(data, username);
+            data = seenNotifcation(data, username);
+            promises.push(notificationsCollection.doc(doc.id).update(data));
+        }
+    });
+    await Promise.all(promises);
+    promises = [];
+    seen.forEach(async (uid) => {
+        const notificationsSnapshot = await notificationsCollection.where('uid', '==', uid).get();
+        const doc = notificationsSnapshot.docs[0];
+        const data = seenNotifcation(doc.data(), username);
+        promises.push(notificationsCollection.doc(doc.id).update(data));
+    });
+    await Promise.all(promises);
+    promises = [];
+    const cleanUp = await notificationsCollection.where('project', '==', project).get();
+    cleanUp.forEach(async (doc) => {
+        const data = doc.data();
+        if (!data.seen.length && !data.unseen.length) {
+            promises.push(doc.ref.delete());
+        }
+    });
+    await Promise.all(promises);
+}
+
+async function removeNotification(data, username) {
+    const seenIndex = data.seen.indexOf(username);
+    if (seenIndex !== -1) {
+        data.seen.splice(seenIndex, 1);
+    }
+    return data;
+}
+
+async function seenNotifcation(data, username) {
+    const unseenIndex = data.unseen.indexOf(username);
+    if (unseenIndex !== -1) {
+        data.unseen.splice(unseenIndex, 1);
+    }
+    data.seen.push(username);
+    return data;
+}
+
+module.exports = {
+    getNotifications,
     getTypedNotifications,
     createTeamNotification,
     createAdminNotification,
-    createRelatedNotification
+    createRelatedNotification,
+    updateNotifications,
+    removeNotification,
+    seenNotifcation
 };
