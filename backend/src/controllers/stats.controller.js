@@ -1,3 +1,4 @@
+const authService = require('../services/auth.service');
 const statsService = require('../services/stats.service');
 const admin = require('firebase-admin');
 const jwt = require('jsonwebtoken');
@@ -17,24 +18,25 @@ async function optimizeOrder(req, res, next) {
 
 async function personalStats(req, res, next) {
     try {
-        const usersCollection = db.collection('users');
-        const usersSnapshot = await usersCollection.where('username', '==', jwt.decode(req.body.token).username).get();
-        let stats = {
-            created: 0,
-            imported: 0,
-            updated: 0,
-            edited: 0,
-            trashed: 0,
-            restored: 0,
-            deleted: 0,
-            cleared: 0
-        };
-        if (!usersSnapshot.empty) {
-            stats = usersSnapshot.docs[0].data().stats;
+        const token = req.body.token;
+        const tokenUser = jwt.decode(token);
+        const user = authService.singleUser(db, tokenUser.username);
+        if (user) {
+            res.json(user.stats);
+        } else {
+            res.json({
+                created: 0,
+                imported: 0,
+                updated: 0,
+                edited: 0,
+                trashed: 0,
+                restored: 0,
+                deleted: 0,
+                cleared: 0
+            });
         }
-        res.json(stats);
     } catch (err) {
-        next(err)
+        next(err);
     }
 }
 
