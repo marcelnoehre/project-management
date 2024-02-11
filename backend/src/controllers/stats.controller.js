@@ -1,4 +1,5 @@
 const authService = require('../services/auth.service');
+const projectService = require('../services/project.service');
 const statsService = require('../services/stats.service');
 const admin = require('firebase-admin');
 const jwt = require('jsonwebtoken');
@@ -42,41 +43,10 @@ async function personalStats(req, res, next) {
 
 async function stats(req, res, next) {
     try {
-        const projectsCollection = db.collection('projects');
-        const projectsSnapshot = await projectsCollection
-            .where('name', '==', jwt.decode(req.body.token).project)
-            .get();
-        const stats = []
-        const [project, others] = [{
-            id: 'STATS.PROJECT',
-            stats: {}
-        },
-        {
-            id: 'STATS.OTHERS',
-            stats: {}
-        }];
-        if (!projectsSnapshot.empty) {
-            project.stats = projectsSnapshot.docs[0].data().stats;
-            others.stats = projectsSnapshot.docs[0].data().stats;
-        }
-        stats.push(project);
-        const usersCollection = db.collection('users');
-        const usersSnapshot = await usersCollection.where('project', '==', jwt.decode(req.body.token).project).get();
-        if (!usersSnapshot.empty) {
-            const statLabels = ['created', 'imported', 'updated', 'edited', 'trashed', 'restored', 'deleted', 'cleared'];
-            usersSnapshot.forEach(doc => {
-                const user = doc.data();
-                stats.push({
-                    id: user.username,
-                    stats: user.stats
-                });
-                statLabels.forEach((stat) => {
-                    others.stats[stat] -= user.stats[stat];
-                });
-            });
-        }
-        stats.push(others);
-        res.json(stats);
+        const token = req.body.token;
+        const tokenUser = jwt.decode(token);
+        const project = projectService.singleProject(db, tokenUser.project);
+        res.json(statsService.stats(db, project));
     } catch (err) {
         next(err);
     }
