@@ -19,9 +19,9 @@
             </mat-form-field>
             <button
                 type="button"
-                [ngClass]="{'submit-button': !isDisabled('username', username)}"
-                (click) = "updateUser('username', username)"
-                [disabled] = "isDisabled('username', username)"
+                [ngClass]="{'submit-button': !isDisabled('username')}"
+                (click) = "updateUser('username')"
+                [disabled] = "isDisabled('username')"
                 matSuffix
                 mat-icon-button
             >
@@ -45,9 +45,9 @@
             </mat-form-field>
             <button
                 type="button"
-                [ngClass]="{'submit-button': !isDisabled('fullName', fullName)}"
-                (click) = "updateUser('fullName', fullName)"
-                [disabled] = "isDisabled('fullName', fullName)"
+                [ngClass]="{'submit-button': !isDisabled('fullName')}"
+                (click) = "updateUser('fullName')"
+                [disabled] = "isDisabled('fullName')"
                 matSuffix
                 mat-icon-button
             >
@@ -74,9 +74,9 @@
             </mat-form-field>
             <button
                 type="button"
-                [ngClass]="{'submit-button': !isDisabled('language', language)}"
-                (click) = "updateUser('language', language)"
-                [disabled] = "isDisabled('language', language)"
+                [ngClass]="{'submit-button': !isDisabled('language')}"
+                (click) = "updateUser('language')"
+                [disabled] = "isDisabled('language')"
                 matSuffix
                 mat-icon-button
             >
@@ -117,9 +117,9 @@
             <button
                 class="submit-button"
                 type="button"
-                [ngClass]="{'submit-button': !isDisabled('password', password)}"
-                (click) = "updateUser('password', password)"
-                [disabled] = "isDisabled('password', password)"
+                [ngClass]="{'submit-button': !isDisabled('password')}"
+                (click) = "updateUser('password')"
+                [disabled] = "isDisabled('password')"
                 matSuffix
                 mat-icon-button
             >
@@ -145,9 +145,9 @@
             </mat-form-field>
             <button
                 type="button"
-                [ngClass]="{'submit-button': !isDisabled('initials', initials)}"
-                (click) = "updateUser('initials', initials)"
-                [disabled] = "isDisabled('initials', initials)"
+                [ngClass]="{'submit-button': !isDisabled('initials')}"
+                (click) = "updateUser('initials')"
+                [disabled] = "isDisabled('initials')"
                 matSuffix
                 mat-icon-button
             >
@@ -171,9 +171,9 @@
             </mat-form-field>
             <button
                 type="button"
-                [ngClass]="{'submit-button': !isDisabled('color', color)}"
-                (click) = "updateUser('color', color)"
-                [disabled] = "isDisabled('color', color)"
+                [ngClass]="{'submit-button': !isDisabled('color')}"
+                (click) = "updateUser('color')"
+                [disabled] = "isDisabled('color')"
                 matSuffix
                 mat-icon-button
             >
@@ -203,9 +203,9 @@
             </div>
             <button
                 type="button"
-                [ngClass]="{'submit-button': !isDisabled('profilePicture', profilePicture)}"
-                (click) = "updateUser('profilePicture', profilePicture)"
-                [disabled] = "isDisabled('profilePicture', profilePicture)"
+                [ngClass]="{'submit-button': !isDisabled('profilePicture')}"
+                (click) = "updateUser('profilePicture')"
+                [disabled] = "isDisabled('profilePicture')"
                 matSuffix
                 mat-icon-button
             >

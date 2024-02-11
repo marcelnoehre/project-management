@@ -17,7 +17,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   templateUrl: './user-settings.component.html',
   styleUrls: ['./user-settings.component.scss']
 })
-export class UserSettingsComponent implements OnInit {
+export class UserSettingsComponent {
   userSettingsForm!: FormGroup;
   languages: Language[] = [
     {
@@ -30,14 +30,8 @@ export class UserSettingsComponent implements OnInit {
     }
   ];
   initialUser: User = this.user.user;
-  username!: string;
-  fullName!: string;
-  initials!: string;
-  language!: string;
-  password!: string;
-  color!: string;
   hidePassword = true;
-  profilePicture!: string;
+  color!: string;
   loadingDelete: boolean = false;
   loadingAttribute = {
     username: false,
@@ -62,16 +56,6 @@ export class UserSettingsComponent implements OnInit {
     this.createForm();
   }
 
-  ngOnInit(): void {
-    this.username = this.initialUser.username;
-    this.fullName = this.initialUser.fullName;
-    this.initials = this.initialUser.initials;
-    this.language = this.initialUser.language;
-    this.color = this.initialUser.color;
-    this.password = '';
-    this.profilePicture = this.initialUser.profilePicture;
-  }
-
   private createForm(): void {
     this.userSettingsForm = new FormGroup(
       {
@@ -85,7 +69,11 @@ export class UserSettingsComponent implements OnInit {
       },
       { }
     );
-    
+      const controls = ['username', 'fullName', 'initials', 'language', 'color', 'password', 'profilePicture'];
+      controls.forEach((control) => {
+        this.userSettingsForm.get(control + 'FormControl')?.setValue(this.initialUser[control]);
+      });
+      this.color = this.initialUser.color;
   }
 
   onFileSelected(event: Event) {
@@ -95,7 +83,7 @@ export class UserSettingsComponent implements OnInit {
       if(file.type.startsWith("image/")) {
         const reader = new FileReader;
         reader.onload = (e) => {
-            this.profilePicture = e.target?.result as string;
+            this.userSettingsForm.get('profilePictureFormControl')?.setValue(e.target?.result as string);
         };
         reader.readAsDataURL(file);
       }
@@ -103,10 +91,11 @@ export class UserSettingsComponent implements OnInit {
   }
 
   removeFile() {
-    this.profilePicture = '';
+    this.userSettingsForm.get('profilePictureFormControl')?.setValue('');
   }
 
-  updateUser(attribute: string, value: string) {
+  updateUser(attribute: string) {
+    let value = attribute === 'color' ? this.color : this.userSettingsForm.get(attribute + 'FormControl')?.value;
     const key = this.translate.instant('USER.' + attribute.toUpperCase());
     const data = {
       headline: this.translate.instant('DIALOG.HEADLINE.CHANGE_ATTRIBUTE', { attribute: key}),
@@ -127,7 +116,7 @@ export class UserSettingsComponent implements OnInit {
               this.initialUser = this.user.user;
               this.storage.setSessionEntry('user', this.user.user);
               if (attribute === 'password') {
-                this.password = '';
+              this.userSettingsForm.get('passwordFormControl')?.setValue('');
               } else if (attribute === 'language') {
                 this.translate.use(value);
               }
@@ -171,17 +160,22 @@ export class UserSettingsComponent implements OnInit {
     );
   }
 
+  get profilePicture() {
+    return this.userSettingsForm.get('profilePictureFormControl')?.value;
+  }
+
   public hasError(formControl: string, type: string): boolean {
     return this.userSettingsForm.controls[formControl].hasError(type);
   }
 
-  isDisabled(attribute: string, value: string) {
+  isDisabled(attribute: string) {
+    const value = attribute === 'color' ? this.color : this.userSettingsForm.get(attribute + 'FormControl')?.value;
     if (attribute === 'profilePicture') return this.initialUser[attribute] === value;
-    return this.initialUser[attribute] === value || value === '' || value === null;
+    return !this.userSettingsForm.get(attribute + 'FormControl')?.valid || this.initialUser[attribute] === value || value === '' || value === null;
   }
 
   hasProfilePicture() {
-    return this.profilePicture !== '';
+    return this.userSettingsForm.get('profilePictureFormControl')?.value;
   }
 
   async sha256(message: string): Promise<string> {
