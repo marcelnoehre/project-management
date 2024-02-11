@@ -94,63 +94,33 @@ async function inviteUser(req, res, next) {
 
 async function handleInvite(req, res, next) {
     try {
-        const usersCollection = db.collection('users');
-        const usersSnapshot = await usersCollection.where('username', '==', req.body.username).get();
-        if (usersSnapshot.empty) {
-            res.status(500).send({ message: 'ERROR.INTERNAL' });
-        } else {
-            const userDoc = usersSnapshot.docs[0];
-            if (req.body.decision) {
-                await userDoc.ref.update({
-                    permission: 'MEMBER',
-                    isLoggedIn: true
-                });
-                const projectsCollection = db.collection('projects');
-                const historySnapshot = await projectsCollection.where('name', '==', userDoc.data().project).get();
-                if (historySnapshot.empty) {
-                    res.status(500).send({ message: 'ERROR.INTERNAL' });
-                } else {
-                    const event = {
-                        timestamp: new Date().getTime(),
-                        type: 'JOINED',
-                        username: req.body.username,
-                        target: null
-                    }
-                    const historyDoc = historySnapshot.docs[0];
-                    const history = historyDoc.data().history;
-                    history.push(event);
-                    await historyDoc.ref.update({
-                        history: history
-                    });
-                }
-                await notificationsService.createTeamNotification(db, userDoc.data().project, req.body.username, 'NOTIFICATIONS.NEW.JOINED', [req.body.username], 'person_add');
-                res.json({ message: 'SUCCESS.INVITE_ACCEPTED'});
-            } else {
-                await userDoc.ref.update({
-                    project: '',
-                    permission: ''
-                });
-                const projectsCollection = db.collection('projects');
-                const historySnapshot = await projectsCollection.where('name', '==', userDoc.data().project).get();
-                if (historySnapshot.empty) {
-                    res.status(500).send({ message: 'ERROR.INTERNAL' });
-                } else {
-                    const event = {
-                        timestamp: new Date().getTime(),
-                        type: 'REJECTED',
-                        username: req.body.username,
-                        target: null
-                    }
-                    const historyDoc = historySnapshot.docs[0];
-                    const history = historyDoc.data().history;
-                    history.push(event);
-                    await historyDoc.ref.update({
-                        history: history
-                    });
-                }
-                await notificationsService.createAdminNotification(db, userDoc.data().project, req.body.username, 'NOTIFICATIONS.NEW.REJECTED', [req.body.username], 'cancel');
-                res.json({ message: 'SUCCESS.INVITE_REJECTED'});
+        const token = req.body.token;
+        const decision = req.body.decision;
+        const tokenUser = jwt.decode(token);
+        const user = authService.singleUser(db, tokenUser.username);
+        if (user) {
+            const promises = [];
+            const userData = {
+                project: decision ? user.project : '',
+                permission: decision ? 'MEMBER' : ''
             }
+            const eventData = {
+                timestamp: new Date().getTime(),
+                type: decision ? 'JOINED' : 'REJECTED',
+                username: user.username,
+                target: null
+            }
+            promises.push(authService.updateUserData(db, user.username, userData));
+            promises.push(projectService.updateProjectHistory(db, user.project, eventData));
+            if (decision) {
+                promises.push(notificationsService.createTeamNotification(db, user.project, user.username, 'NOTIFICATIONS.NEW.JOINED', [user.username], 'person_add'));
+            } else {
+                promises.push(notificationsService.createAdminNotification(db, user.project, user.username, 'NOTIFICATIONS.NEW.REJECTED', [user.username], 'cancel'));
+            }
+            await Promise.all(promises);
+            res.json({ message: decision ? 'SUCCESS.INVITE_ACCEPTED' : 'SUCCESS.INVITE_REJECTED' });
+        } else {
+            res.status(500).send({ message: 'ERROR.INTERNAL' });
         }
     } catch (err) {
         next(err);
