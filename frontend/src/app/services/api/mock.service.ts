@@ -75,6 +75,10 @@ export class MockService extends AdapterService {
     throw new Error('Method not implemented!');
   }
 
+  public override updateToken(token: string): Observable<string> {
+    throw new Error('Method not implemented!');
+  }
+
   public override updateUser(token: string, attribute: string, value: string): Observable<Response> {
     const url = this.basePath + this.auth + 'updateUser/update.json';
     return this.http.get<Response>(url);
