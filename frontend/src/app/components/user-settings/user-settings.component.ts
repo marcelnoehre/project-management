@@ -101,7 +101,7 @@ export class UserSettingsComponent implements OnInit {
         if (confirmed) {
           if (attribute === 'password') value = await this.sha256(value);
           (this.loadingAttribute as any)[attribute] = true;          
-          this.api.updateUser(this.user.token, this.user.username, attribute, value).subscribe(
+          this.api.updateUser(this.user.token, attribute, value).subscribe(
             (response) => {
               (this.loadingAttribute as any)[attribute] = false;
               this.snackbar.open(this.translate.instant(response.message));
@@ -135,7 +135,7 @@ export class UserSettingsComponent implements OnInit {
       async (confirmed) => {
         if (confirmed) {
           this.loadingDelete = true;
-          this.api.deleteUser(this.user.token, this.user.username).subscribe(
+          this.api.deleteUser(this.user.token).subscribe(
             (response) => {
               this.loadingDelete = false;
               this.storage.clearSession();

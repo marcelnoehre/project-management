@@ -50,24 +50,24 @@ export class ApiService {
 		return this.adapter.login(username, password);
 	}
 
-	public register(username: string, password: string, fullName: string, language: string): Observable<Response> {
+	public register(username: string, fullName: string, language: string, password: string): Observable<Response> {
 		return this.adapter.register(username, password, fullName, language);
 	}
 
-	public verify(token: string, username: string): Observable<User> {
-		return this.adapter.verify(token, username);
+	public verify(token: string): Observable<User> {
+		return this.adapter.verify(token);
 	}
 
-	public updateUser(token: string, username: string, attribute: string, value: string): Observable<Response> {
-		return this.adapter.updateUser(token, username, attribute, value);
+	public updateUser(token: string, attribute: string, value: string): Observable<Response> {
+		return this.adapter.updateUser(token, attribute, value);
 	}
 
-	public toggleNotifications(token: string, username: string, notificationsEnabled: boolean): Observable<Response> {
-		return this.adapter.toggleNotifications(token, username, notificationsEnabled);
+	public toggleNotifications(token: string, notificationsEnabled: boolean): Observable<Response> {
+		return this.adapter.toggleNotifications(token, notificationsEnabled);
 	}
 
-	public deleteUser(token: string, username: string): Observable<Response> {
-		return this.adapter.deleteUser(token, username);
+	public deleteUser(token: string): Observable<Response> {
+		return this.adapter.deleteUser(token);
 	}
 
 

@@ -54,7 +54,7 @@ export class MockService extends AdapterService {
 		}
   }
 
-  public override register(username: string, password: string, fullName: string, language: string): Observable<Response> {
+  public override register(username: string, fullName: string, language: string, password: string): Observable<Response> {
     if (this.availableMockData.register.includes(username)) {
       const url = this.basePath + this.auth + `register/${username}.json`;
       return this.http.get<Response>(url);
@@ -64,28 +64,29 @@ export class MockService extends AdapterService {
     }
   }
 
-  public override verify(token: string, username: string): Observable<User> {
-    if (this.availableMockData.user.includes(username)) {
-      const url = this.basePath + this.auth + `verify/${username}.json`;
-      return this.http.get<User>(url);
-    } else {
-      this.snackbar.open(this.translate.instant('ERROR.INVALID_TOKEN'));
-      throw new Error(this.translate.instant('ERROR.INVALID_TOKEN'));
-    }
+  public override verify(token: string): Observable<User> {
+    // if (this.availableMockData.user.includes(username)) {
+    //   const url = this.basePath + this.auth + `verify/${username}.json`;
+    //   return this.http.get<User>(url);
+    // } else {
+    //   this.snackbar.open(this.translate.instant('ERROR.INVALID_TOKEN'));
+    //   throw new Error(this.translate.instant('ERROR.INVALID_TOKEN'));
+    // }
+    throw new Error('Method not implemented!');
   }
 
-  public override updateUser(token: string, username: string, attribute: string, value: string): Observable<Response> {
+  public override updateUser(token: string, attribute: string, value: string): Observable<Response> {
     const url = this.basePath + this.auth + 'updateUser/update.json';
     return this.http.get<Response>(url);
   }
 
-  public override toggleNotifications(token: string, username: string, notificationsEnabled: boolean): Observable<Response> {
+  public override toggleNotifications(token: string, notificationsEnabled: boolean): Observable<Response> {
     const file = notificationsEnabled ? 'notificationsEnabled/true.json' : 'notificationsEnabled/false.json';
     const url = this.basePath + this.auth + file;
     return this.http.get<Response>(url);
   }
 
-  public override deleteUser(token: string, username: string): Observable<Response> {
+  public override deleteUser(token: string): Observable<Response> {
     const url = this.basePath + this.auth + 'deleteUser/delete.json';
     return this.http.get<Response>(url);
   }

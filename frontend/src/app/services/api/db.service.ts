@@ -39,47 +39,43 @@ export class DbService extends AdapterService {
 		return this.http.post<User>(this.basePath + this.auth + 'login', body);
 	}
 
-  public override register(username: string, password: string, fullName: string, language: string): Observable<Response> {
+  public override register(username: string, fullName: string, language: string, password: string): Observable<Response> {
     const body = {
       username: username,
-      password: password,
       fullName: fullName,
-      language: language
+      language: language,
+      password: password
     };
     return this.http.post<Response>(this.basePath + this.auth + 'register', body);
   }
 
-  public override verify(token: string, username: string): Observable<User> {
+  public override verify(token: string): Observable<User> {
     const body = {
-      token: token,
-      username: username,
+      token: token
     }
     return this.http.post<User>(this.basePath + this.auth + 'verify', body);
   }
 
-  public override updateUser(token: string, username: string, attribute: string, value: string): Observable<Response> {
+  public override updateUser(token: string, attribute: string, value: string): Observable<Response> {
     const body = {
       token: token,
-      username: username,
       attribute: attribute,
       value: value
     }
     return this.http.post<Response>(this.basePath + this.auth + 'updateUser', body);
   }
 
-  public override toggleNotifications(token: string, username: string, notificationsEnabled: boolean): Observable<Response> {
+  public override toggleNotifications(token: string, notificationsEnabled: boolean): Observable<Response> {
     const body = {
       token: token,
-      username: username,
       notificationsEnabled: notificationsEnabled
     }
     return this.http.post<Response>(this.basePath + this.auth + 'toggleNotifications', body);
   }
 
-  public override deleteUser(token: string, username: string): Observable<Response> {
+  public override deleteUser(token: string): Observable<Response> {
     const body = {
-      token: token,
-      username: username
+      token: token
     }
     return this.http.post<Response>(this.basePath + this.auth + 'deleteUser', body);
   }
