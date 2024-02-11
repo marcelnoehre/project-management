@@ -53,7 +53,7 @@ export class ImportTasksComponent {
 
   importTasks() {
     this.loading = true;
-    this.api.importTasks(this.user.token, this.user.username, this.user.project, this.taskList).subscribe(
+    this.api.importTasks(this.user.token, this.taskList).subscribe(
       (response) => {
         this.loading = false;
         this.result = response;

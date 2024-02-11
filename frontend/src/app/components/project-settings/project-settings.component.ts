@@ -50,7 +50,7 @@ export class ProjectSettingsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.api.getTeamMembers(this.user.token, this.user.project).subscribe(
+    this.api.getTeamMembers(this.user.token).subscribe(
       (users) => {
         this.members = users;
       },
@@ -84,7 +84,7 @@ export class ProjectSettingsComponent implements OnInit {
       this.snackbar.open(this.translate.instant('ERROR.IN_PROJECT'));
     } else {
       this.loadingInvite = true;
-      this.api.inviteUser(this.user.token, this.username, this.user.project).subscribe(
+      this.api.inviteUser(this.user.token, this.username).subscribe(
         (user) => {
           this.loadingInvite = false;
           this.members.push(user);
@@ -135,7 +135,7 @@ export class ProjectSettingsComponent implements OnInit {
       async (confirmed) => {
         if (confirmed) {
           this.loadingLeave = true;
-          this.api.leaveProject(this.user.token, this.user.username).subscribe(
+          this.api.leaveProject(this.user.token).subscribe(
             (response) => {
               this.loadingLeave = false;
               this.storage.deleteSessionEntry('user');
@@ -153,7 +153,7 @@ export class ProjectSettingsComponent implements OnInit {
   }
 
   updatePermission(username: string, event: any) {
-    this.api.updatePermission(this.user.token, username, this.user.project, event.value).subscribe(
+    this.api.updatePermission(this.user.token, username, event.value).subscribe(
       (response) => {
         this.snackbar.open(this.translate.instant('SUCCESS.PERMISSION_UPDATED'));
         this.members = response;

@@ -28,7 +28,7 @@ export class NotificationsService {
 
   init(): void {
     this.loading = true;
-    this.api.getNotifications(this.user.token, this.user.project, this.user.username).subscribe(
+    this.api.getNotifications(this.user.token).subscribe(
       (response) => {
         this.loading = false;
         this.notifications = response;
@@ -46,7 +46,7 @@ export class NotificationsService {
   }
 
   update(seen: string[], removed: string[]): void {
-    this.api.updateNotifications(this.user.token, this.user.username, this.user.project, seen, removed).subscribe(
+    this.api.updateNotifications(this.user.token, seen, removed).subscribe(
       (response) => {
         this.notifications = response;
         this.notifications.forEach((notification) => {

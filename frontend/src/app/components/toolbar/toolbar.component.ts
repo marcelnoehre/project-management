@@ -42,7 +42,7 @@ export class ToolbarComponent {
 
 	public toggleNotifcations(): void {
 		this.user.notificationsEnabled = !this.notificationsEnabled;
-		this.api.toggleNotifications(this.user.token, this.user.username, this.user.notificationsEnabled).subscribe(
+		this.api.toggleNotifications(this.user.token, this.user.notificationsEnabled).subscribe(
 			(response) => {
 				this.snackbar.open(this.translate.instant(response.message));
 			},

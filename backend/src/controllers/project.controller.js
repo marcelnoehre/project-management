@@ -1,296 +1,305 @@
+const authService = require('../services/auth.service');
+const projectService = require('../services/project.service');
 const notificationsService = require('../services/notifications.service');
 const admin = require('firebase-admin');
 const jwt = require('jsonwebtoken');
 const db = admin.firestore();
 
+/**
+ * Creates a project.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @throws {Error} - Throws an error if creation fails.
+ * - 409: CREATE_PROJECT
+ * - 500: INTERNAL
+ *
+ * @returns {void}
+ */
 async function createProject(req, res, next) {
     try {
-        const usersCollection = db.collection('users');
-        const usersSnapshot = await usersCollection.where('username', '==', req.body.username).get();
-        if (usersSnapshot.empty) {
-            res.status(500).send({ message: 'ERROR.INTERNAL' });
-        } else {
-            const projectSnapshot = await usersCollection.where('project', '==', req.body.project).get();
-            if (projectSnapshot.empty) {
-                const projectsRef = db.collection('projects').doc();
-                const project = {
-                    name: req.body.project,
-                    history: [{
-                        timestamp: new Date().getTime(),
-                        type: 'CREATED',
-                        username: req.body.username,
-                        target: null
-                    }],
-                    stats: {
-                        created: 0,
-                        imported: 0,
-                        updated: 0,
-                        edited: 0,
-                        trashed: 0,
-                        restored: 0,
-                        deleted: 0,
-                        cleared: 0
-                    }
-                };
-                await projectsRef.set(project);
-                const userDoc = usersSnapshot.docs[0];
-                await userDoc.ref.update({
-                    project: req.body.project,
+        const token = req.body.token;
+        const project = req.body.project;
+        const tokenUser = jwt.decode(token);
+        const user = await authService.singleUser(db, tokenUser.username);
+        if (user) {
+            if (await projectService.isNewProject(db, project)) {
+                const promises = [];
+                const userData = {
+                    project: project,
                     permission: 'OWNER',
                     isLoggedIn: true
-                });
+                };
+                promises.push(authService.updateUserData(db, tokenUser.username, userData));
+                promises.push(projectService.createProject(db, tokenUser.username, project));
+                await Promise.all(promises);
                 res.json({ message: "SUCCESS.CREATE_PROJECT" });
             } else {
-                res.status(402).send({ message: 'ERROR.CREATE_PROJECT' });
+                res.status(409).send({ message: 'ERROR.CREATE_PROJECT' });
             }
+        } else {
+            res.status(500).send({ message: 'ERROR.INTERNAL' });
         }
     } catch (err) {
         next(err);
     }
 }
 
+/**
+ * Get a sorted list of team members.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @throws {Error} - Throws an error if retrieval fails.
+ * - 500: INTERNAL
+ *
+ * @returns {void}
+ */
 async function getTeamMembers(req, res, next) {
     try {
-        const usersCollection = db.collection('users');
-        const usersSnapshot = await usersCollection.where('project', '==', req.body.project).get();
-        if (usersSnapshot.empty) {
-            res.status(500).send({ message: 'ERROR.INTERNAL' });
+        const token = req.body.token;
+        const tokenUser = jwt.decode(token);
+        const members = await projectService.getTeamMembers(db, tokenUser.project);
+        if (members.length) {
+            res.json(members);
         } else {
-            const users = [];
-            usersSnapshot.forEach(doc => {
-                users.push(doc.data());
-            });
-            res.json(users);
+            res.status(500).send({ message: 'ERROR.INTERNAL' });
         }
     } catch (err) {
         next(err);
     }
 }
 
+/**
+ * Marks a user as invited.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @throws {Error} - Throws an error if invite fails.
+ * - 404: NO_ACCOUNT
+ * - 423: PENDING_INVITE
+ * - 423: HAS_PROJECT
+ * - 500: INTERNAL
+ *
+ * @returns {void}
+ */
 async function inviteUser(req, res, next) {
     try {
-        const usersCollection = db.collection('users');
-        const usersSnapshot = await usersCollection.where('username', '==', req.body.username).get();
-        if (usersSnapshot.empty) {
-            res.status(404).send({ message: 'ERROR.NO_ACCOUNT' });
-        } else {
-            const userDoc = usersSnapshot.docs[0];
-            if (userDoc.data().permission === 'INVITED') {
-                res.status(404).send({ message: 'ERROR.PENDING_INVITE' });
-            } else if (userDoc.data().project !== '') {
-                res.status(404).send({ message: 'ERROR.HAS_PROJECT' });
+        const token = req.body.token;
+        const username = req.body.username;
+        const tokenUser = jwt.decode(token);
+        const user = await authService.singleUser(db, username);
+        if (user) {
+            if (user.permission === 'INVITED') {
+                res.status(423).send({ message: 'ERROR.PENDING_INVITE' });
+            } else if (user.project !== '') {
+                res.status(423).send({ message: 'ERROR.HAS_PROJECT' });
             } else {
-                await userDoc.ref.update({
-                    project: req.body.project,
-                    permission: 'INVITED'
-                });
-                const projectsCollection = db.collection('projects');
-                const historySnapshot = await projectsCollection.where('name', '==', req.body.project).get();
-                if (historySnapshot.empty) {
-                    res.status(500).send({ message: 'ERROR.INTERNAL' });
-                } else {
-                    const event = {
+                if (await projectService.singleProject(db, tokenUser.project)) {
+                    const promises = [];
+                    const userData = {
+                        project: tokenUser.project,
+                        permission: 'INVITED'
+                    };
+                    const eventData = {
                         timestamp: new Date().getTime(),
                         type: 'INVITED',
-                        username: jwt.decode(req.body.token).username,
-                        target: req.body.username
+                        username: tokenUser.username,
+                        target: username
                     }
-                    const historyDoc = historySnapshot.docs[0];
-                    const history = historyDoc.data().history;
-                    history.push(event);
-                    await historyDoc.ref.update({
-                        history: history
-                    });
+                    promises.push(authService.updateUserData(db, username, userData));
+                    promises.push(projectService.updateProjectHistory(db, tokenUser.project, eventData));
+                    promises.push(notificationsService.createAdminNotification(db, tokenUser.project, tokenUser.username, 'NOTIFICATIONS.NEW.INVITED', [tokenUser.username, username], 'cancel'));
+                    await Promise.all(promises);
+                    user.project = tokenUser.project;
+                    user.permission = 'INVITED';
+                    res.json(user);
+                } else {
+                    res.status(500).send({ message: 'ERROR.INTERNAL' });
                 }
-                await notificationsService.createAdminNotification(db, req.body.project, jwt.decode(req.body.token).username, 'NOTIFICATIONS.NEW.INVITED', [jwt.decode(req.body.token).username, req.body.username], 'cancel');
-                const user = userDoc.data();
-                user.project = req.body.project;
-                user.permission = 'INVITED';
-                //TODO: return sorted list of all users
-                res.json(user);
             }
+        } else {
+            res.status(404).send({ message: 'ERROR.NO_ACCOUNT' });
         }
     } catch (err) {
         next(err);
     }
 }
 
+/**
+ * Updates a invite.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @throws {Error} - Throws an error if update fails.
+ * - 500: INTERNAL
+ *
+ * @returns {void}
+ */
 async function handleInvite(req, res, next) {
     try {
-        const usersCollection = db.collection('users');
-        const usersSnapshot = await usersCollection.where('username', '==', req.body.username).get();
-        if (usersSnapshot.empty) {
-            res.status(500).send({ message: 'ERROR.INTERNAL' });
-        } else {
-            const userDoc = usersSnapshot.docs[0];
-            if (req.body.decision) {
-                await userDoc.ref.update({
-                    permission: 'MEMBER',
-                    isLoggedIn: true
-                });
-                const projectsCollection = db.collection('projects');
-                const historySnapshot = await projectsCollection.where('name', '==', userDoc.data().project).get();
-                if (historySnapshot.empty) {
-                    res.status(500).send({ message: 'ERROR.INTERNAL' });
-                } else {
-                    const event = {
-                        timestamp: new Date().getTime(),
-                        type: 'JOINED',
-                        username: req.body.username,
-                        target: null
-                    }
-                    const historyDoc = historySnapshot.docs[0];
-                    const history = historyDoc.data().history;
-                    history.push(event);
-                    await historyDoc.ref.update({
-                        history: history
-                    });
-                }
-                await notificationsService.createTeamNotification(db, userDoc.data().project, req.body.username, 'NOTIFICATIONS.NEW.JOINED', [req.body.username], 'person_add');
-                res.json({ message: 'SUCCESS.INVITE_ACCEPTED'});
-            } else {
-                await userDoc.ref.update({
-                    project: '',
-                    permission: ''
-                });
-                const projectsCollection = db.collection('projects');
-                const historySnapshot = await projectsCollection.where('name', '==', userDoc.data().project).get();
-                if (historySnapshot.empty) {
-                    res.status(500).send({ message: 'ERROR.INTERNAL' });
-                } else {
-                    const event = {
-                        timestamp: new Date().getTime(),
-                        type: 'REJECTED',
-                        username: req.body.username,
-                        target: null
-                    }
-                    const historyDoc = historySnapshot.docs[0];
-                    const history = historyDoc.data().history;
-                    history.push(event);
-                    await historyDoc.ref.update({
-                        history: history
-                    });
-                }
-                await notificationsService.createAdminNotification(db, userDoc.data().project, req.body.username, 'NOTIFICATIONS.NEW.REJECTED', [req.body.username], 'cancel');
-                res.json({ message: 'SUCCESS.INVITE_REJECTED'});
+        const token = req.body.token;
+        const decision = req.body.decision;
+        const tokenUser = jwt.decode(token);
+        const user = await authService.singleUser(db, tokenUser.username);
+        if (user && await projectService.singleProject(db, tokenUser.project)) {
+            const promises = [];
+            const userData = {
+                project: decision ? user.project : '',
+                permission: decision ? 'MEMBER' : ''
             }
+            const eventData = {
+                timestamp: new Date().getTime(),
+                type: decision ? 'JOINED' : 'REJECTED',
+                username: user.username,
+                target: null
+            }
+            promises.push(authService.updateUserData(db, user.username, userData));
+            promises.push(projectService.updateProjectHistory(db, user.project, eventData));
+            if (decision) {
+                promises.push(notificationsService.createTeamNotification(db, user.project, user.username, 'NOTIFICATIONS.NEW.JOINED', [user.username], 'person_add'));
+            } else {
+                promises.push(notificationsService.createAdminNotification(db, user.project, user.username, 'NOTIFICATIONS.NEW.REJECTED', [user.username], 'cancel'));
+            }
+            await Promise.all(promises);
+            res.json({ message: decision ? 'SUCCESS.INVITE_ACCEPTED' : 'SUCCESS.INVITE_REJECTED' });
+        } else {
+            res.status(500).send({ message: 'ERROR.INTERNAL' });
         }
     } catch (err) {
         next(err);
     }
 }
 
+/**
+ * Updates a user permission.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @throws {Error} - Throws an error if update fails.
+ * - 500: INTERNAL
+ *
+ * @returns {void}
+ */
 async function updatePermission(req, res, next) {
     try {
-        const usersCollection = db.collection('users');
-        const userSnapshot = await usersCollection.where('username', '==', req.body.username).get();
-        if (userSnapshot.empty) {
-            res.status(500).send({ message: 'ERROR.INTERNAL' });
-        } else {
-            const userDoc = userSnapshot.docs[0];
-            await userDoc.ref.update({
-                permission: req.body.permission
-            });
-            const projectsCollection = db.collection('projects');
-            const historySnapshot = await projectsCollection.where('name', '==', userDoc.data().project).get();
-            if (historySnapshot.empty) {
-                res.status(500).send({ message: 'ERROR.INTERNAL' });
-            } else {
-                const event = {
-                    timestamp: new Date().getTime(),
-                    type: req.body.permission,
-                    username: jwt.decode(req.body.token).username,
-                    target: req.body.username
-                }
-                const historyDoc = historySnapshot.docs[0];
-                const history = historyDoc.data().history;
-                history.push(event);
-                await historyDoc.ref.update({
-                    history: history
-                });
+        const token = req.body.token;
+        const username = req.body.username;
+        const permission = req.body.permission;
+        const tokenUser = jwt.decode(token);
+        const user = await authService.singleUser(db, username);
+        if (user && await projectService.singleProject(db, tokenUser.project)) {
+            const promises = [];
+            const userData = {
+                permission: permission
             }
-            const usersSnapshot = await usersCollection.where('project', '==', req.body.project).get();
-            const users = [];
-            usersSnapshot.forEach(doc => {
-                users.push(doc.data());
-            });
-            res.json(users);
+            const eventData = {
+                timestamp: new Date().getTime(),
+                type: permission,
+                username: tokenUser.username,
+                target: username
+            }
+            promises.push(authService.updateUserData(db, username, userData));
+            promises.push(projectService.updateProjectHistory(db, tokenUser.project, eventData));
+            await Promise.all(promises);
+            res.json(await projectService.getTeamMembers(db, tokenUser.project));
+        } else {
+            res.status(500).send({ message: 'ERROR.INTERNAL' });
         }
     } catch (err) {
         next(err);
     }
 }
 
+/**
+ * Removes a user from the project.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @throws {Error} - Throws an error if removal fails.
+ * - 500: INTERNAL
+ *
+ * @returns {void}
+ */
 async function removeUser(req, res, next) {
     try {
-        const usersCollection = db.collection('users');
-        const usersSnapshot = await usersCollection.where('username', '==', req.body.username).get();
-        if (usersSnapshot.empty) {
-            res.status(500).send({ message: 'ERROR.INTERNAL' });
-        } else {
-            const userDoc = usersSnapshot.docs[0];
-            await userDoc.ref.update({
+        const token = req.body.token;
+        const username = req.body.username;
+        const tokenUser = jwt.decode(token);
+        const user = await authService.singleUser(db, username);
+        if (user && await projectService.singleProject(db, tokenUser.project)) {
+            const promises = [];
+            const userData = {
                 project: '',
                 permission: ''
-            });
-            const projectsCollection = db.collection('projects');
-            const historySnapshot = await projectsCollection.where('name', '==', userDoc.data().project).get();
-            if (historySnapshot.empty) {
-                res.status(500).send({ message: 'ERROR.INTERNAL' });
-            } else {
-                const event = {
-                    timestamp: new Date().getTime(),
-                    type: 'REMOVED',
-                    username: jwt.decode(req.body.token).username,
-                    target: req.body.username
-                }
-                const historyDoc = historySnapshot.docs[0];
-                const history = historyDoc.data().history;
-                history.push(event);
-                await historyDoc.ref.update({
-                    history: history
-                });
             }
-            await notificationsService.createTeamNotification(db, jwt.decode(req.body.token).project, jwt.decode(req.body.token).username, 'NOTIFICATIONS.NEW.REMOVED', [req.body.username, jwt.decode(req.body.token).username], 'person_remove');
+            const eventData = {
+                timestamp: new Date().getTime(),
+                type: 'REMOVED',
+                username: tokenUser.username,
+                target: username
+            }
+            promises.push(authService.updateUserData(db, username, userData));
+            promises.push(projectService.updateProjectHistory(db, tokenUser.project, eventData));
+            promises.push(notificationsService.createTeamNotification(db, tokenUser.project, tokenUser.username, 'NOTIFICATIONS.NEW.REMOVED', [username, tokenUser.username], 'person_remove'));
+            await Promise.all(promises);
             res.json({message: 'SUCCESS.REMOVE_MEMBER'});
+        } else {
+            res.status(500).send({ message: 'ERROR.INTERNAL' });
         }
     } catch (err) {
         next(err);
     }
 }
 
+/**
+ * Removes a user from the project.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @throws {Error} - Throws an error if removal fails.
+ * - 500: INTERNAL
+ *
+ * @returns {void}
+ */
 async function leaveProject(req, res, next) {
     try {
-        const usersCollection = db.collection('users');
-        const usersSnapshot = await usersCollection.where('username', '==', req.body.username).get();
-        if (usersSnapshot.empty) {
-            res.status(500).send({ message: 'ERROR.INTERNAL' });
-        } else {
-            const userDoc = usersSnapshot.docs[0];
-            await userDoc.ref.update({
+        const token = req.body.token;
+        const tokenUser = jwt.decode(token);
+        const user = await authService.singleUser(db, tokenUser.username);
+        if (user && await projectService.singleProject(db, tokenUser.project)) {
+            const promises = [];
+            const userData = {
                 project: '',
                 permission: ''
-            });
-            const projectsCollection = db.collection('projects');
-            const historySnapshot = await projectsCollection.where('name', '==', userDoc.data().project).get();
-            if (historySnapshot.empty) {
-                res.status(500).send({ message: 'ERROR.INTERNAL' });
-            } else {
-                const event = {
-                    timestamp: new Date().getTime(),
-                    type: 'LEFT',
-                    username: req.body.username,
-                    target: null
-                }
-                const historyDoc = historySnapshot.docs[0];
-                const history = historyDoc.data().history;
-                history.push(event);
-                await historyDoc.ref.update({
-                    history: history
-                });
             }
-            await notificationsService.createTeamNotification(db, jwt.decode(req.body.token).project, req.body.username, 'NOTIFICATIONS.NEW.LEAVE_PROJECT', [req.body.username], 'exit_to_app');
+            const eventData = {
+                timestamp: new Date().getTime(),
+                type: 'LEFT',
+                username: tokenUser.username,
+                target: null
+            }
+            promises.push(authService.updateUserData(db, tokenUser.username, userData));
+            promises.push(projectService.updateProjectHistory(db, tokenUser.project, eventData));
+            promises.push(notificationsService.createTeamNotification(db, tokenUser.project, tokenUser.username, 'NOTIFICATIONS.NEW.LEAVE_PROJECT', [tokenUser.username], 'exit_to_app'));
+            await Promise.all(promises);
             res.json({message: 'SUCCESS.LEAVE_PROJECT'});
+        } else {
+            res.status(500).send({ message: 'ERROR.INTERNAL' });
         }
     } catch (err) {
         next(err);

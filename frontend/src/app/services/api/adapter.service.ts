@@ -20,58 +20,58 @@ export abstract class AdapterService {
   // ### AUTH ###
   public abstract login(username: string, password: string): Observable<User>;
 
-  public abstract register(username: string, password: string, fullName: string, language: string): Observable<Response>;
+  public abstract register(username: string, fullName: string, language: string, password: string): Observable<Response>;
 
-  public abstract verify(token: string, username: string): Observable<User>;
+  public abstract verify(token: string): Observable<User>;
 
-  public abstract updateUser(token: string, username: string, attribute: string, value: string): Observable<Response>;
+  public abstract updateUser(token: string, attribute: string, value: string): Observable<Response>;
 
-  public abstract toggleNotifications(token: string, username: string, notificationsEnabled: boolean): Observable<Response>;
+  public abstract toggleNotifications(token: string, notificationsEnabled: boolean): Observable<Response>;
 
-  public abstract deleteUser(token: string, username: string): Observable<Response>;
+  public abstract deleteUser(token: string): Observable<Response>;
 
   
   // ### PROJECT ###
-  public abstract createProject(token: string, username: string, project: string): Observable<Response>;
+  public abstract createProject(token: string, project: string): Observable<Response>;
   
-  public abstract getTeamMembers(token: string, project: string): Observable<User[]>;
+  public abstract getTeamMembers(token: string): Observable<User[]>;
 
-  public abstract inviteUser(token: string, username: string, project: string): Observable<User>;
+  public abstract inviteUser(token: string, username: string): Observable<User>;
 
-  public abstract handleInvite(token: string, username: string, decision: boolean): Observable<Response>;
+  public abstract handleInvite(token: string, decision: boolean): Observable<Response>;
 
-  public abstract updatePermission(token: string, username: string, project: string, permission: Permission): Observable<User[]>;
+  public abstract updatePermission(token: string, username: string, permission: Permission): Observable<User[]>;
 
   public abstract removeUser(token: string, username: string): Observable<Response>;
 
-  public abstract leaveProject(token: string, username: string): Observable<Response>;
+  public abstract leaveProject(token: string): Observable<Response>;
 
 
   // ### TASKS ###
-  public abstract createTask(token: string, author: string, project: string, title: string, description: string, assigned: string, state: string): Observable<Response>;
+  public abstract createTask(token: string, title: string, description: string, assigned: string, state: string): Observable<Response>;
 
-  public abstract importTasks(token: string, author: string, project: string, tasks: Task[]): Observable<Progress>;
+  public abstract importTasks(token: string, tasks: Task[]): Observable<Progress>;
   
-  public abstract getTaskList(token: string, project: string): Observable<State[]>;
+  public abstract getTaskList(token: string): Observable<State[]>;
 
   public abstract updateTask(token: string, task: Task): Observable<State[]>;
 
-  public abstract updatePosition(token: string, project: string, uid: string, state: string, order: number): Observable<State[]>;
+  public abstract updatePosition(token: string, uid: string, state: string, order: number): Observable<State[]>;
 
-  public abstract moveToTrashBin(token: string, project: string, uid: string): Observable<State[]>;
+  public abstract moveToTrashBin(token: string, uid: string): Observable<State[]>;
 
-  public abstract getTrashBin(token: string, project: string): Observable<Task[]>;
+  public abstract getTrashBin(token: string): Observable<Task[]>;
 
-  public abstract deleteTask(token: string, project: string, uid: string): Observable<Task[]>;
+  public abstract deleteTask(token: string, uid: string): Observable<Task[]>;
 
-  public abstract restoreTask(token: string, project: string, uid: string): Observable<Task[]>;
+  public abstract restoreTask(token: string, uid: string): Observable<Task[]>;
 
-  public abstract clearTrashBin(token: string, project: string): Observable<Response>;
+  public abstract clearTrashBin(token: string): Observable<Response>;
 
   // ### NOTIFICATIONS ###
-  public abstract getNotifications(token: string, project: string, username: string): Observable<Notification[]>;
+  public abstract getNotifications(token: string): Observable<Notification[]>;
 
-  public abstract updateNotifications(token: string, username: string, project: string, seen: string[], removed: string[]): Observable<Notification[]>;
+  public abstract updateNotifications(token: string, seen: string[], removed: string[]): Observable<Notification[]>;
 
 
   // ### STATS ###

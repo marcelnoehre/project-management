@@ -54,7 +54,7 @@ export class MockService extends AdapterService {
 		}
   }
 
-  public override register(username: string, password: string, fullName: string, language: string): Observable<Response> {
+  public override register(username: string, fullName: string, language: string, password: string): Observable<Response> {
     if (this.availableMockData.register.includes(username)) {
       const url = this.basePath + this.auth + `register/${username}.json`;
       return this.http.get<Response>(url);
@@ -64,35 +64,36 @@ export class MockService extends AdapterService {
     }
   }
 
-  public override verify(token: string, username: string): Observable<User> {
-    if (this.availableMockData.user.includes(username)) {
-      const url = this.basePath + this.auth + `verify/${username}.json`;
-      return this.http.get<User>(url);
-    } else {
-      this.snackbar.open(this.translate.instant('ERROR.INVALID_TOKEN'));
-      throw new Error(this.translate.instant('ERROR.INVALID_TOKEN'));
-    }
+  public override verify(token: string): Observable<User> {
+    // if (this.availableMockData.user.includes(username)) {
+    //   const url = this.basePath + this.auth + `verify/${username}.json`;
+    //   return this.http.get<User>(url);
+    // } else {
+    //   this.snackbar.open(this.translate.instant('ERROR.INVALID_TOKEN'));
+    //   throw new Error(this.translate.instant('ERROR.INVALID_TOKEN'));
+    // }
+    throw new Error('Method not implemented!');
   }
 
-  public override updateUser(token: string, username: string, attribute: string, value: string): Observable<Response> {
+  public override updateUser(token: string, attribute: string, value: string): Observable<Response> {
     const url = this.basePath + this.auth + 'updateUser/update.json';
     return this.http.get<Response>(url);
   }
 
-  public override toggleNotifications(token: string, username: string, notificationsEnabled: boolean): Observable<Response> {
+  public override toggleNotifications(token: string, notificationsEnabled: boolean): Observable<Response> {
     const file = notificationsEnabled ? 'notificationsEnabled/true.json' : 'notificationsEnabled/false.json';
     const url = this.basePath + this.auth + file;
     return this.http.get<Response>(url);
   }
 
-  public override deleteUser(token: string, username: string): Observable<Response> {
+  public override deleteUser(token: string): Observable<Response> {
     const url = this.basePath + this.auth + 'deleteUser/delete.json';
     return this.http.get<Response>(url);
   }
 
 
   // ### PROJECT ###
-  public override createProject(token: string, username: string, project: string): Observable<Response> {
+  public override createProject(token: string, project: string): Observable<Response> {
     if (this.availableMockData.projects.includes(project)) {
       const url = this.basePath + this.project + `create-project/${project}.json`;
       return this.http.get<Response>(url);
@@ -102,17 +103,18 @@ export class MockService extends AdapterService {
     }
   }
 
-  public override getTeamMembers(token: string, project: string): Observable<User[]> {
-    if (this.availableMockData.projects.includes(project)) {
-      const url = this.basePath + this.project + `get-team-members/${project}.json`;
-      return this.http.get<User[]>(url);
-    } else {
-      this.snackbar.open(this.translate.instant('ERROR.INTERNAL'));
-      throw new Error(this.translate.instant('ERROR.INTERNAL'));
-    }
+  public override getTeamMembers(token: string): Observable<User[]> {
+    // if (this.availableMockData.projects.includes(project)) {
+    //   const url = this.basePath + this.project + `get-team-members/${project}.json`;
+    //   return this.http.get<User[]>(url);
+    // } else {
+    //   this.snackbar.open(this.translate.instant('ERROR.INTERNAL'));
+    //   throw new Error(this.translate.instant('ERROR.INTERNAL'));
+    // }
+    throw new Error('Method not implemented!');
   }
 
-  public override inviteUser(token: string, username: string, project: string): Observable<User> {
+  public override inviteUser(token: string, username: string): Observable<User> {
     if (this.availableMockData.invitable.includes(username)) {
       const url = this.basePath + this.project + `invite/${username}.json`;
       return this.http.get<User>(url);
@@ -122,14 +124,15 @@ export class MockService extends AdapterService {
     }
   }
 
-  public override handleInvite(token: string, username: string, decision: boolean): Observable<Response> {
+  public override handleInvite(token: string, decision: boolean): Observable<Response> {
     const url = this.basePath + this.project + `handleInvite/${decision}.json`;
     return this.http.get<Response>(url);
   }
 
-  public override updatePermission(token: string, username: string, project: string, permission: Permission): Observable<User[]> {
-    const url = this.basePath + this.project + `update-permission/${project}.json`;
-    return this.http.get<User[]>(url);
+  public override updatePermission(token: string, username: string, permission: Permission): Observable<User[]> {
+    // const url = this.basePath + this.project + `update-permission/${project}.json`;
+    // return this.http.get<User[]>(url);
+    throw new Error('Method not implemented!');
   }
 
   public override removeUser(token: string, username: string): Observable<Response> {
@@ -137,26 +140,27 @@ export class MockService extends AdapterService {
     return this.http.get<Response>(url);
   }
 
-  public override leaveProject(token: string, username: string): Observable<Response> {
+  public override leaveProject(token: string): Observable<Response> {
     const url = this.basePath + this.project + 'leave/success.json';
     return this.http.get<Response>(url);
   }
 
 
   // ### TASKS ###
-  public override createTask(token: string, author: string, project: string, title: string, description: string, assigned: string, state: string): Observable<Response> {
+  public override createTask(token: string, title: string, description: string, assigned: string, state: string): Observable<Response> {
     const url = this.basePath + this.task + 'create-task/mockTask.json';
     return this.http.get<Response>(url);
   }
 
-  public override importTasks(token: string, author: string, project: string, tasks: Task[]): Observable<Progress> {
+  public override importTasks(token: string, tasks: Task[]): Observable<Progress> {
     const url = this.basePath + this.task + 'import-tasks/progress.json';
     return this.http.get<Progress>(url);
   }
 
-  public override getTaskList(token: string, project: string): Observable<State[]> {
-    const url = this.basePath + this.task + `get-task-list/${project}.json`;
-    return this.http.get<State[]>(url);
+  public override getTaskList(token: string): Observable<State[]> {
+    // const url = this.basePath + this.task + `get-task-list/${project}.json`;
+    // return this.http.get<State[]>(url);
+    throw new Error('Method not implemented!');
   }
 
   public override updateTask(token: string, task: Task): Observable<State[]> {
@@ -164,43 +168,43 @@ export class MockService extends AdapterService {
     return this.http.get<State[]>(url);
   }
 
-  public override updatePosition(token: string, project: string, uid: string, state: string, order: number): Observable<State[]> {
+  public override updatePosition(token: string, uid: string, state: string, order: number): Observable<State[]> {
     const url = this.basePath + this.task + 'update-position/task.json';
     return this.http.get<State[]>(url);
   }
 
-  public override moveToTrashBin(token: string, project: string, uid: string): Observable<State[]> {
+  public override moveToTrashBin(token: string, uid: string): Observable<State[]> {
     const url = this.basePath + this.task + 'move-to-trash-bin/moved.json';
     return this.http.get<State[]>(url);
   }
   
-  public override getTrashBin(token: string, project: string): Observable<Task[]> {
+  public override getTrashBin(token: string): Observable<Task[]> {
     const url = this.basePath + this.task + 'get-trash-bin/trash-bin.json';  
     return this.http.get<Task[]>(url);
   }
 
-  public override deleteTask(token: string, project: string, uid: string): Observable<Task[]> {
+  public override deleteTask(token: string, uid: string): Observable<Task[]> {
     const url = this.basePath + this.task + 'delete-task/delete.json';
     return this.http.get<Task[]>(url);
   }
 
-  public override restoreTask(token: string, project: string, uid: string): Observable<Task[]> {
+  public override restoreTask(token: string, uid: string): Observable<Task[]> {
     const url = this.basePath + this.task + 'restore-task/restore.json';
     return this.http.get<Task[]>(url);
   }
 
-  public override clearTrashBin(token: string, project: string): Observable<Response> {
+  public override clearTrashBin(token: string): Observable<Response> {
     const url = this.basePath + this.task + 'clear-trash-bin/clear.json';
     return this.http.get<Response>(url);
   }
 
   // ### NOTIFICATIONS ###
-  public override getNotifications(token: string, project: string, username: string): Observable<Notification[]> {
+  public override getNotifications(token: string): Observable<Notification[]> {
     const url = this.basePath + this.notification + 'get-notifications/notifications.json';
     return this.http.get<Notification[]>(url);
   }
 
-  public override updateNotifications(token: string, username: string, project: string, seen: string[], removed: string[]): Observable<Notification[]> {
+  public override updateNotifications(token: string, seen: string[], removed: string[]): Observable<Notification[]> {
     const url = this.basePath + this.notification + 'update-notifications/success.json';
     return this.http.get<Notification[]>(url);
   }

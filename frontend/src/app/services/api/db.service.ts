@@ -39,93 +39,84 @@ export class DbService extends AdapterService {
 		return this.http.post<User>(this.basePath + this.auth + 'login', body);
 	}
 
-  public override register(username: string, password: string, fullName: string, language: string): Observable<Response> {
+  public override register(username: string, fullName: string, language: string, password: string): Observable<Response> {
     const body = {
       username: username,
-      password: password,
       fullName: fullName,
-      language: language
+      language: language,
+      password: password
     };
     return this.http.post<Response>(this.basePath + this.auth + 'register', body);
   }
 
-  public override verify(token: string, username: string): Observable<User> {
+  public override verify(token: string): Observable<User> {
     const body = {
-      token: token,
-      username: username,
+      token: token
     }
     return this.http.post<User>(this.basePath + this.auth + 'verify', body);
   }
 
-  public override updateUser(token: string, username: string, attribute: string, value: string): Observable<Response> {
+  public override updateUser(token: string, attribute: string, value: string): Observable<Response> {
     const body = {
       token: token,
-      username: username,
       attribute: attribute,
       value: value
     }
     return this.http.post<Response>(this.basePath + this.auth + 'updateUser', body);
   }
 
-  public override toggleNotifications(token: string, username: string, notificationsEnabled: boolean): Observable<Response> {
+  public override toggleNotifications(token: string, notificationsEnabled: boolean): Observable<Response> {
     const body = {
       token: token,
-      username: username,
       notificationsEnabled: notificationsEnabled
     }
     return this.http.post<Response>(this.basePath + this.auth + 'toggleNotifications', body);
   }
 
-  public override deleteUser(token: string, username: string): Observable<Response> {
+  public override deleteUser(token: string): Observable<Response> {
     const body = {
-      token: token,
-      username: username
+      token: token
     }
     return this.http.post<Response>(this.basePath + this.auth + 'deleteUser', body);
   }
 
 
   // ### PROJECT ###
-  public override createProject(token: string, username: string, project: string): Observable<Response> {
+  public override createProject(token: string, project: string): Observable<Response> {
     const body = {
       token: token,
-      username: username,
       project: project
     };
     return this.http.post<Response>(this.basePath + this.project + 'create-project', body);
   }
 
-  public override getTeamMembers(token: string, project: string): Observable<User[]> {
+  public override getTeamMembers(token: string): Observable<User[]> {
     const body = {
-      token: token,
-      project: project
+      token: token
     };
     return this.http.post<User[]>(this.basePath + this.project + 'get-team-members', body);
   }
 
-  public override inviteUser(token: string, username: string, project: string): Observable<User> {
+  public override inviteUser(token: string, username: string): Observable<User> {
     const body = {
       token: token,
-      username: username,
-      project: project
+      username: username
     };
     return this.http.post<User>(this.basePath + this.project + 'invite', body);
   }
 
-  public override handleInvite(token: string, username: string, decision: boolean): Observable<Response> {
+  public override handleInvite(token: string, decision: boolean): Observable<Response> {
     const body = {
       token: token,
-      username: username,
       decision: decision
     };
     return this.http.post<Response>(this.basePath + this.project + 'handleInvite', body);
   }
 
-  public override updatePermission(token: string, username: string, project: string, permission: Permission): Observable<User[]> {
+  public override updatePermission(token: string, username: string, permission: Permission): Observable<User[]> {
     const body = {
       token: token,
       username: username,
-      project: project,
       permission: permission
     }
     return this.http.post<User[]>(this.basePath + this.project + 'updatePermission', body);
@@ -139,21 +130,18 @@ export class DbService extends AdapterService {
     return this.http.post<Response>(this.basePath + this.project + 'remove', body);
   }
 
-  public override leaveProject(token: string, username: string): Observable<Response> {
+  public override leaveProject(token: string): Observable<Response> {
     const body = {
-      token: token,
-      username: username
+      token: token
     };
     return this.http.post<Response>(this.basePath + this.project + 'leave', body);
   }
 
 
   // ### TASKS ###
-  public override createTask(token: string, author: string, project: string, title: string, description: string, assigned: string, state: string): Observable<Response> {
+  public override createTask(token: string, title: string, description: string, assigned: string, state: string): Observable<Response> {
     const body = {
       token: token,
-      author: author,
-      project: project,
       title: title,
       description: description,
       assigned: assigned,
@@ -162,20 +150,17 @@ export class DbService extends AdapterService {
     return this.http.post<Response>(this.basePath + this.task + 'createTask', body);
   }
   
-  public override importTasks(token: string, author: string, project: string, tasks: Task[]): Observable<Progress> {
+  public override importTasks(token: string, tasks: Task[]): Observable<Progress> {
     const body = {
       token: token,
-      author: author,
-      project: project,
       tasks: tasks
     }
     return this.http.post<Progress>(this.basePath + this.task + 'importTasks', body);
   }
   
-  public override getTaskList(token: string, project: string): Observable<State[]> {
+  public override getTaskList(token: string): Observable<State[]> {
     const body = {
-      token: token,
-      project: project
+      token: token
     };
     return this.http.post<State[]>(this.basePath + this.task + 'getTaskList', body);
   }
@@ -188,10 +173,9 @@ export class DbService extends AdapterService {
     return this.http.post<State[]>(this.basePath + this.task + 'updateTask', body);
   }
 
-  public override updatePosition(token: string, project: string, uid: string, state: string, order: number): Observable<State[]> {
+  public override updatePosition(token: string, uid: string, state: string, order: number): Observable<State[]> {
     const body = {
       token: token,
-      project: project,
       uid: uid,
       state: state,
       order: order
@@ -199,64 +183,55 @@ export class DbService extends AdapterService {
     return this.http.post<State[]>(this.basePath + this.task + 'updatePosition', body);
   }
 
-  public override moveToTrashBin(token: string, project: string, uid: string): Observable<State[]> {
+  public override moveToTrashBin(token: string, uid: string): Observable<State[]> {
     const body = {
       token: token,
-      project: project,
       uid: uid
     }
     return this.http.post<State[]>(this.basePath + this.task + 'moveToTrashBin', body);
   }
 
-  public override getTrashBin(token: string, project: string): Observable<Task[]> {
+  public override getTrashBin(token: string): Observable<Task[]> {
     const body = {
-      token: token,
-      project: project
+      token: token
     }
     return this.http.post<Task[]>(this.basePath + this.task + 'getTrashBin', body);
   }
 
-  public override deleteTask(token: string, project: string, uid: string): Observable<Task[]> {
+  public override deleteTask(token: string, uid: string): Observable<Task[]> {
     const body = {
       token: token,
-      project: project,
       uid: uid
     }
     return this.http.post<Task[]>(this.basePath + this.task + 'deleteTask', body);
   }
   
-  public override restoreTask(token: string, project: string, uid: string): Observable<Task[]> {
+  public override restoreTask(token: string, uid: string): Observable<Task[]> {
     const body = {
       token: token,
-      project: project,
       uid: uid
     }
     return this.http.post<Task[]>(this.basePath + this.task + 'restoreTask', body);
   }
 
-  public override clearTrashBin(token: string, project: string): Observable<Response> {
+  public override clearTrashBin(token: string): Observable<Response> {
     const body = {
-      token: token,
-      project: project
+      token: token
     }
     return this.http.post<Response>(this.basePath + this.task + 'clearTrashBin', body);
   }
 
   // ### NOTIFICATIONS ###
-  public override getNotifications(token: string, project: string, username: string): Observable<Notification[]> {
+  public override getNotifications(token: string): Observable<Notification[]> {
     const body = {
-      token: token,
-      project: project,
-      username: username
+      token: token
     }
     return this.http.post<Notification[]>(this.basePath + this.notification + 'getNotifications', body);
   }
 
-  public override updateNotifications(token: string, username: string, project: string, seen: string[], removed: string[]): Observable<Notification[]> {
+  public override updateNotifications(token: string, seen: string[], removed: string[]): Observable<Notification[]> {
     const body = {
       token: token,
-      username: username,
-      project: project,
       seen: seen,
       removed: removed
     }

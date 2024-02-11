@@ -118,7 +118,7 @@ export class RegistrationComponent implements OnInit {
     } else {
       this.loading = true;
       const hashedPassword = await this.sha256(this.password);
-      this.api.register(this.username, hashedPassword, this.fullName, this.language).subscribe(
+      this.api.register(this.username, this.fullName, this.language, hashedPassword).subscribe(
         (response) => {
           this.loading = false;
           this.snackbar.open(this.translate.instant(response.message));

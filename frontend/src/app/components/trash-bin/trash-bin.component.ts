@@ -34,7 +34,7 @@ export class TrashBinComponent implements AfterViewInit {
 
   async ngAfterViewInit(): Promise<void> {
     while (this.user.project === undefined) await new Promise<void>(done => setTimeout(() => done(), 5));
-    this.api.getTrashBin(this.user.token, this.user.project).subscribe(
+    this.api.getTrashBin(this.user.token).subscribe(
       (taskList) => {
         this.taskList = taskList;
       },
@@ -46,7 +46,7 @@ export class TrashBinComponent implements AfterViewInit {
   
   delete(uid: string, title: string) {
     this.loadingDelete = uid;
-    this.api.deleteTask(this.user.token, this.user.project, uid).subscribe(
+    this.api.deleteTask(this.user.token, uid).subscribe(
       (taskList) => {
         this.loadingDelete = '';
         this.taskList = taskList;
@@ -61,7 +61,7 @@ export class TrashBinComponent implements AfterViewInit {
 
   restore(uid: string, title: string) {
     this.loadingRestore = uid;
-    this.api.restoreTask(this.user.token, this.user.project, uid).subscribe(
+    this.api.restoreTask(this.user.token, uid).subscribe(
       (taskList) => {
         this.loadingRestore = '';
         this.taskList = taskList;
@@ -76,7 +76,7 @@ export class TrashBinComponent implements AfterViewInit {
 
   clear() {
     this.loadingClear = true;
-    this.api.clearTrashBin(this.user.token, this.user.project).subscribe(
+    this.api.clearTrashBin(this.user.token).subscribe(
       (response) => {
         this.loadingClear = false;
         this.taskList = [];

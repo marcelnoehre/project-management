@@ -1,305 +1,214 @@
+const authService = require('../services/auth.service');
+const projectService = require('../services/project.service');
+const statsService = require('../services/stats.service');
 const admin = require('firebase-admin');
 const jwt = require('jsonwebtoken');
 const db = admin.firestore();
 
+/**
+ * Optimizes the task order attributes.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @returns {void}
+ */
 async function optimizeOrder(req, res, next) {
     try {
-        const tasksCollection = db.collection('tasks');
-        const tasksSnapshot = await tasksCollection
-            .where('project', '==', jwt.decode(req.body.token).project)
-            .where('state', '!=', 'DELETED')
-            .orderBy('state')
-            .orderBy('order')
-            .get();
-        if (!tasksSnapshot.empty) {
-            const sort = {
-                NONE: [],
-                TODO: [],
-                PROGRESS: [],
-                REVIEW: [],
-                DONE: []
-            };
-            tasksSnapshot.forEach(doc => {
-                const task = doc.data();
-                sort[task.state].push(doc);
-            });
-            const states = [sort.NONE, sort.TODO, sort.PROGRESS, sort.REVIEW, sort.DONE];
-            states.forEach(async (state) => {
-                for (let i = 0; i < state.length; i++) {
-                    await state[i].ref.update({
-                        order: i + 1
-                    });
-                }
-            });
-        }
+        const token = req.body.token;
+        const tokenUser = jwt.decode(token);
+        const tasks = statsService.getTaskList(db, tokenUser.project);
+        await statsService.optimizeOrder(tasks);
         res.json({message: 'SUCCESS.STATS.OPTIMIZE'});
     } catch (err) {
         next(err);
     }
 }
 
+/**
+ * Calculates the personal stats.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @returns {void}
+ */
 async function personalStats(req, res, next) {
     try {
-        const usersCollection = db.collection('users');
-        const usersSnapshot = await usersCollection.where('username', '==', jwt.decode(req.body.token).username).get();
-        let stats = {
-            created: 0,
-            imported: 0,
-            updated: 0,
-            edited: 0,
-            trashed: 0,
-            restored: 0,
-            deleted: 0,
-            cleared: 0
-        };
-        if (!usersSnapshot.empty) {
-            stats = usersSnapshot.docs[0].data().stats;
+        const token = req.body.token;
+        const tokenUser = jwt.decode(token);
+        const user = await authService.singleUser(db, tokenUser.username);
+        if (user) {
+            res.json(user.stats);
+        } else {
+            res.json({
+                created: 0,
+                imported: 0,
+                updated: 0,
+                edited: 0,
+                trashed: 0,
+                restored: 0,
+                deleted: 0,
+                cleared: 0
+            });
         }
-        res.json(stats);
     } catch (err) {
-        next(err)
+        next(err);
     }
 }
 
+/**
+ * Calculates the stats.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @returns {void}
+ */
 async function stats(req, res, next) {
     try {
-        const projectsCollection = db.collection('projects');
-        const projectsSnapshot = await projectsCollection
-            .where('name', '==', jwt.decode(req.body.token).project)
-            .get();
-        const stats = []
-        const [project, others] = [{
-            id: 'STATS.PROJECT',
-            stats: {}
-        },
-        {
-            id: 'STATS.OTHERS',
-            stats: {}
-        }];
-        if (!projectsSnapshot.empty) {
-            project.stats = projectsSnapshot.docs[0].data().stats;
-            others.stats = projectsSnapshot.docs[0].data().stats;
-        }
-        stats.push(project);
-        const usersCollection = db.collection('users');
-        const usersSnapshot = await usersCollection.where('project', '==', jwt.decode(req.body.token).project).get();
-        if (!usersSnapshot.empty) {
-            const statLabels = ['created', 'imported', 'updated', 'edited', 'trashed', 'restored', 'deleted', 'cleared'];
-            usersSnapshot.forEach(doc => {
-                const user = doc.data();
-                stats.push({
-                    id: user.username,
-                    stats: user.stats
-                });
-                statLabels.forEach((stat) => {
-                    others.stats[stat] -= user.stats[stat];
-                });
-            });
-        }
-        stats.push(others);
+        const token = req.body.token;
+        const tokenUser = jwt.decode(token);
+        const project = await projectService.singleProject(db, tokenUser.project);
+        const stats = await statsService.stats(db, project);
         res.json(stats);
     } catch (err) {
         next(err);
     }
 }
 
+/**
+ * Calculates the stat leaders.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @returns {void}
+ */
 async function statLeaders(req, res, next) {
     try {
-        const usersCollection = db.collection('users');
-        const usersSnapshot = await usersCollection.where('project', '==', jwt.decode(req.body.token).project).get();
-        const leader = {
-            created: { username: [], value: 0 },
-            imported: { username: [], value: 0 },
-            updated: { username: [], value: 0 },
-            edited: { username: [], value: 0 },
-            trashed: { username: [], value: 0 },
-            restored: { username: [], value: 0 },
-            deleted: { username: [], value: 0 },
-            cleared: { username: [], value: 0 }
-        };
-        if (!usersSnapshot.empty) {
-            const stats = ['created', 'imported', 'updated', 'edited', 'trashed', 'restored', 'deleted', 'cleared'];
-            usersSnapshot.forEach(doc => {
-                const user = doc.data();
-                stats.forEach((stat) => {
-                    if (user.stats[stat] > leader[stat].value) {
-                        leader[stat] = {
-                            username: [user.username],
-                            value: user.stats[stat]
-                        };
-                    } else if (user.stats[stat] === leader[stat].value) {
-                        leader[stat].username.push(user.username);
-                    }
-                });
-            });
-        }
-        res.json(leader);
+        const token = req.body.token;
+        const tokenUser = jwt.decode(token);
+        const statLeaders = await statsService.statLeaders(db, tokenUser.project);
+        res.json(statLeaders);
     } catch (err) {
         next(err);
     }
 }
 
+/**
+ * Calculates the task amount.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @returns {void}
+ */
 async function taskAmount(req, res, next) {
     try {
-        const tasksCollection = db.collection('tasks');
-        const tasksSnapshot = await tasksCollection.where('project', '==', jwt.decode(req.body.token).project).get();
+        const token = req.body.token;
+        const tokenUser = jwt.decode(token);
+        const tasks = await statsService.getTaskList(db, tokenUser.project);
         const states = {
-            NONE: 0,
-            TODO: 0,
-            PROGRESS: 0,
-            REVIEW: 0,
-            DONE: 0,
-            DELETED: 0
+            NONE: tasks.NONE.length,
+            TODO: tasks.TODO.length,
+            PROGRESS: tasks.PROGRESS.length,
+            REVIEW: tasks.REVIEW.length,
+            DONE: tasks.DONE.length,
+            DELETED: tasks.DELETED.length
         };
-        if (!tasksSnapshot.empty) {
-            tasksSnapshot.forEach(doc => {
-                states[doc.data().state]++;
-            });
-        }
         res.json(states);
     } catch (err) {
         next(err);
     }
 }
 
+/**
+ * Calculates the average time stats.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @returns {void}
+ */
 async function averageTime(req, res, next) {
     try {
-        const tasksCollection = db.collection('tasks');
-        const tasksSnapshot = await tasksCollection.where('project', '==', jwt.decode(req.body.token).project).get();
-        const states = {
-            NONE: 0,
-            TODO: 0,
-            PROGRESS: 0,
-            REVIEW: 0,
-            DONE: 0,
-            DELETED: 0
-        };
-        if (!tasksSnapshot.empty) {
-            const averageCategoryTime = {
-                NONE: { amount: 0, sum: 0 },
-                TODO: { amount: 0, sum: 0 },
-                PROGRESS: { amount: 0, sum: 0 },
-                REVIEW: { amount: 0, sum: 0 },
-                DONE: { amount: 0, sum: 0 },
-                DELETED: { amount: 0, sum: 0 }
-            };
-            tasksSnapshot.forEach(doc => {
-                const history = doc.data().history;
-                for (let i = 0; i < history - 1; i++) {
-                    averageCategoryTime[history[i].state].amount++;
-                    const duration = history[i + 1].timestamp - history[i].timestamp;
-                    averageCategoryTime[history[i].state].sum += duration;
-                }
-                averageCategoryTime[history[history.length - 1].state].amount++;
-                const duration = new Date().getTime() - history[history.length - 1].timestamp;
-                averageCategoryTime[history[history.length - 1].state].sum += duration;
-            });
-            const categories = ['NONE', 'TODO', 'PROGRESS', 'REVIEW', 'DONE', 'DELETED'];
-            categories.forEach((category) => {
-                if (averageCategoryTime[category].amount > 0) {
-                    states[category] = averageCategoryTime[category].sum / averageCategoryTime[category].amount;
-                }
-            });
-        }
-        res.json(states);
+        const token = req.body.token;
+        const tokenUser = jwt.decode(token);
+        const tasks = await statsService.getTaskList(db, tokenUser.project);
+        const averageTime = await statsService.averageTime(tasks);
+        res.json(averageTime);
     } catch (err) {
         next(err);
     }
 }
 
+/**
+ * Calculates the wip.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @returns {void}
+ */
 async function wip(req, res, next) {
     try {
-        const tasksCollection = db.collection('tasks');
-        const tasksSnapshot = await tasksCollection
-            .where('project', '==', jwt.decode(req.body.token).project)
-            .where('state', '==', 'PROGRESS')
-            .get();
-        let amount = 0;
-        if (!tasksSnapshot.empty) {
-            tasksSnapshot.forEach(doc => {
-                amount++;
-            });
-        }
-        res.json(amount);
+        const token = req.body.token;
+        const tokenUser = jwt.decode(token);
+        const wip = await statsService.wip(db, tokenUser.project);
+        res.json(wip);
     } catch (err) {
         next(err);
     }
 }
 
+/**
+ * Calculates the task progress.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @returns {void}
+ */
 async function taskProgress(req, res, next) {
     try {
-        const tasksCollection = db.collection('tasks');
-        const tasksSnapshot = await tasksCollection.where('project', '==', jwt.decode(req.body.token).project).get();
-        const charData = {
-            timestamps: [],
-            NONE: [],
-            TODO: [],
-            PROGRESS: [],
-            REVIEW: [],
-            DONE: []
-        }
-        if (!tasksSnapshot.empty) {
-            const historyEvents = [];
-            tasksSnapshot.forEach(doc => {
-                if (doc.data().state !== 'DELETED') {
-                    doc.data().history.forEach((event) => {
-                        historyEvents.push(event);
-                    });
-                }
-            });
-            historyEvents.sort((a, b) => a.timestamp - b.timestamp);
-            const states = ['NONE', 'TODO', 'PROGRESS', 'REVIEW', 'DONE'];
-            const counters = {
-                NONE: 0,
-                TODO: 0,
-                PROGRESS: 0,
-                REVIEW: 0,
-                DONE: 0
-            };
-            historyEvents.forEach((event) => {
-                if (states.indexOf(event.state) !== -1) {
-                    if (event.previous === null) {
-                        counters[event.state]++;
-                    } else {
-                        if (states.indexOf(event.state) > states.indexOf(event.previous)) {
-                            for (let i = states.indexOf(event.state); i > states.indexOf(event.previous); i--) {
-                                counters[states[i]]++;
-                            }
-                        } else if (states.indexOf(event.state) < states.indexOf(event.previous)) {
-                            for (let i = states.indexOf(event.previous); i > states.indexOf(event.state); i--) {
-                                counters[states[i]]--;
-                            }
-                        }
-                    }
-                    charData.timestamps.push(event.timestamp);
-                    states.forEach((state) => {
-                        charData[state].push(counters[state]);
-                    });
-                }
-            });
-        }
-        res.json(charData);
+        const token = req.body.token;
+        const tokenUser = jwt.decode(token);
+        const taskProgress = await statsService.taskProgress(db, tokenUser.project);
+        res.json(taskProgress);
     } catch (err) {
         next(err);
     }
 }
 
+/**
+ * Calculates the project roadmap.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @returns {void}
+ */
 async function projectRoadmap(req, res, next) {
     try {
-        const projectsCollection = db.collection('projects');
-        const projectsSnapshot = await projectsCollection.where('name', '==', jwt.decode(req.body.token).project).get();
-        const history = [];
-        if (!projectsSnapshot.empty) {
-            projectsSnapshot.docs[0].data().history.forEach((event) => {
-                history.push({
-                    timestamp: event.timestamp,
-                    type: 'STATS.PROJECT_ROADMAP.' + event.type,
-                    username: event.username,
-                    target: event.target,
-                });
-            });
+        const token = req.body.token;
+        const tokenUser = jwt.decode(token);
+        const project = await projectService.singleProject(db, tokenUser.project);
+        if (project) {
+            const projectRoadmap = await statsService.projectRoadmap(project);
+            res.json(projectRoadmap);
+        } else {
+            res.json([]);
         }
-        res.json(history);
     } catch (err) {
         next(err);
     }

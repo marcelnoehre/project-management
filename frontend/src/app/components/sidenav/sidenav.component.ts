@@ -77,7 +77,7 @@ export class SidenavComponent implements OnInit, OnDestroy {
 	ngOnInit(): void {
 		this.user.user = this.storage.getSessionEntry('user');
 		if (this.isLoggedIn()) {
-			this.api.verify(this.user.token, this.user.username).subscribe(
+			this.api.verify(this.user.token).subscribe(
 				(user) => {
 					this.storage.setSessionEntry('user', user);
 					this.user.user = user;

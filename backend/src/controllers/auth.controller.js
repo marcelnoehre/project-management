@@ -4,22 +4,31 @@ const admin = require('firebase-admin');
 const jwt = require('jsonwebtoken');
 const db = admin.firestore();
 
+/**
+ * Handles user authentication and login.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @throws {Error} - Throws an error if authentication fails.
+ * - 401: INVALID_CREDENTIALS
+ * - 500: INTERNAL
+ *
+ * @returns {void}
+ */
 async function login(req, res, next) {
     try {
-        const passwordsCollection = db.collection('passwords');
-        const passwordsSnapshot = await passwordsCollection.where('username', '==', req.body.username).get();
-        if (passwordsSnapshot.empty) {
-            res.status(401).send({ message: 'ERROR.INVALID_CREDENTIALS' });
-        } else if (passwordsSnapshot.docs[0].data().password === req.body.password) {
-            const usersCollection = db.collection('users');
-            const usersSnapshot = await usersCollection.where('username', '==', req.body.username).get();
-            if (usersSnapshot.empty) {
-                res.status(500).send({ message: 'ERROR.INTERNAL' });
-            } else {
-                const user = usersSnapshot.docs[0].data();
+        const username = req.body.username;
+        const password = req.body.password;
+        if (await authService.passwordValid(db, username, password)) {
+            const user = await authService.singleUser(db, username);
+            if (user) {
                 user.token = jwt.sign(user, '3R#q!ZuFb2sPn8yT^@5vLmN7jA*C6hG', { expiresIn: '1h' });
                 user.isLoggedIn = user.project !== '' && user.permission !== 'INVITED';
                 res.json(user);
+            } else {
+                res.status(500).send({ message: 'ERROR.INTERNAL' });
             }
         } else {
             res.status(401).send({ message: 'ERROR.INVALID_CREDENTIALS' });
@@ -29,42 +38,26 @@ async function login(req, res, next) {
     }
 }
 
+/**
+ * Handles user registration.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @throws {Error} - Throws an error if registration fails.
+ * - 402: USERNAME_TAKEN
+ *
+ * @returns {void}
+ */
 async function register(req, res, next) {
     try {
-        const usersCollection = db.collection('users');
-        const usersSnapshot = await usersCollection.where('username', '==', req.body.username).get();
-        if (usersSnapshot.empty) {
-            const initials = authService.generateInitials(req.body.fullName);
-            const color = authService.defaultColor();
-            const user = {
-                username: req.body.username,
-                fullName: req.body.fullName,
-                language: req.body.language,
-                initials: initials,
-                color: color,
-                project: '',
-                permission: '',
-                profilePicture: '',
-                notificationsEnabled: true,
-                stats: {
-                    created: 0,
-                    imported: 0,
-                    updated: 0,
-                    edited: 0,
-                    trashed: 0,
-                    restored: 0,
-                    deleted: 0,
-                    cleared: 0
-                }
-            }
-            const usersRef = db.collection('users').doc();
-            await usersRef.set(user);
-            const password = {
-                username: req.body.username,
-                password: req.body.password
-            }
-            const passwordsRef = db.collection('passwords').doc();
-            await passwordsRef.set(password);
+        const username = req.body.username;
+        const fullName = req.body.fullName;
+        const language = req.body.language;
+        const password = req.body.password;
+        if (await authService.isNewUser(db, username)) {
+            await authService.createUser(db, username, fullName, language, password);
             res.json({ message: "SUCCESS.REGISTRATION" });
         } else {
             res.status(402).send({ message: 'ERROR.USERNAME_TAKEN' });
@@ -74,100 +67,113 @@ async function register(req, res, next) {
     }
 }
 
+/**
+ * Verifies a user.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @throws {Error} - Throws an error if user is invalid.
+ * - 403: INVALID_TOKEN
+ *
+ * @returns {void}
+ */
 async function verify(req, res, next) {
     try {
-        const usersCollection = db.collection('users');
-        const usersSnapshot = await usersCollection.where('username', '==', req.body.username).get();
-        if (usersSnapshot.empty) {
-            res.status(403).send({ message: 'ERROR.INVALID_TOKEN' });
-        } else {
-            const user = usersSnapshot.docs[0].data();
-            user.token = req.body.token;
+        const token = req.body.token;
+        const tokenUser = jwt.decode(token);
+        const user = await authService.singleUser(db, tokenUser.username);
+        if (user) {
+            user.token = token;
             user.isLoggedIn = user.project !== '' && user.permission !== 'INVITED';
             res.json(user);
+        } else {
+            res.status(403).send({ message: 'ERROR.INVALID_TOKEN' });
         }
     } catch(err) {
         next(err);
     }
 }
 
+/**
+ * Upadates a user attribute.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @throws {Error} - Throws an error if update fails.
+ * - 500: INTERNAL
+ *
+ * @returns {void}
+ */
 async function updateUser(req, res, next) {
     try {
-        const usersCollection = db.collection('users');
-        const usersSnapshot = await usersCollection.where('username', '==', req.body.username).get();
-        if (usersSnapshot.empty) {
-            res.status(500).send({ message: 'ERROR.INTERNAL' });
+        const token = req.body.token;
+        const attribute = req.body.attribute;
+        const value = req.body.value;
+        const tokenUser = jwt.decode(token);
+        const user = await authService.singleUser(db, tokenUser.username);
+        if (user && await authService.updateAttribute(db, tokenUser.username, attribute, value)) {
+            res.json({ message: 'SUCCESS.UPDATE_ACCOUNT' });
         } else {
-            const validAttributes = ['username', 'fullName', 'language', 'initials', 'color', 'profilePicture', 'password'];
-            if (validAttributes.includes(req.body.attribute)) {
-                if (req.body.attribute === 'password') {
-                    const passwordsCollection = db.collection('passwords');
-                    const passwordsSnapshot = await passwordsCollection.where('username', '==', req.body.username).get();
-                    if (passwordsSnapshot.empty) {
-                        res.status(500).send({ message: 'ERROR.INTERNAL' });
-                    } else {
-                        await passwordsSnapshot.docs[0].ref.update({ password: req.body.value });
-                        res.json({ message: 'SUCCESS.UPDATE_ACCOUNT' });
-                    }
-                } else {
-                    if (req.body.attribute === 'username') {
-                        const passwordsCollection = db.collection('passwords');
-                        const passwordsSnapshot = await passwordsCollection.where('username', '==', req.body.username).get();
-                        if (passwordsSnapshot.empty) {
-                            res.status(500).send({ message: 'ERROR.INTERNAL' });
-                        } else {
-                            await passwordsSnapshot.docs[0].ref.update({ username: req.body.value });
-                        }
-                    }
-                    await usersSnapshot.docs[0].ref.update({ [req.body.attribute]: req.body.value });
-                    res.json({ message: 'SUCCESS.UPDATE_ACCOUNT' });
-                }
-            } else {
-                res.status(500).send({ message: 'ERROR.INTERNAL' });
-            }
+            res.status(500).send({ message: 'ERROR.INTERNAL' });
         }
     } catch (err) {
         next(err);
     }
 }
 
+/**
+ * Toggles notificationEnabled attribute.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @throws {Error} - Throws an error if toggle fails.
+ * - 500: INTERNAL
+ *
+ * @returns {void}
+ */
 async function toggleNotifications(req, res, next) {
     try {
-        const usersCollection = db.collection('users');
-        const usersSnapshot = await usersCollection.where('username', '==', req.body.username).get();
-        if (usersSnapshot.empty) {
-            res.status(500).send({ message: 'ERROR.INTERNAL' });
+        const token = req.body.token;
+        const notificationsEnabled = req.body.notificationsEnabled;
+        const tokenUser = jwt.decode(token);
+        const user = await authService.singleUser(db, tokenUser.username);
+        if (user && await authService.updateUserAttribute(db, tokenUser.username, 'notificationsEnabled', notificationsEnabled)) {
+            res.json({ message: notificationsEnabled ? 'SUCCESS.NOTIFICATIONS_ON' : 'SUCCESS.NOTIFICATIONS_OFF' });
         } else {
-            await usersSnapshot.docs[0].ref.update({
-                notificationsEnabled: req.body.notificationsEnabled
-            });
-            let msg = req.body.notificationsEnabled ? 'SUCCESS.NOTIFICATIONS_ON' : 'SUCCESS.NOTIFICATIONS_OFF';
-            res.json({ message: msg });
+            res.status(500).send({ message: 'ERROR.INTERNAL' });
         }
     } catch (err) {
         next(err);
     }
 }
 
+/**
+ * Deletes a user.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @throws {Error} - Throws an error if deletion fails.
+ * - 500: INTERNAL
+ *
+ * @returns {void}
+ */
 async function deleteUser(req, res, next) {
     try {
-        const usersCollection = db.collection('users');
-        const usersSnapshot = await usersCollection.where('username', '==', req.body.username).get();
-        if (usersSnapshot.empty) {
-            res.status(500).send({ message: 'ERROR.INTERNAL' });
+        const token = req.body.token;
+        const tokenUser = jwt.decode(token);
+        if (await authService.deleteUser(db, tokenUser.username)) {
+            await notificationsService.createTeamNotification(db, tokenUser.project, tokenUser.username, 'NOTIFICATIONS.NEW.LEAVE_PROJECT', [tokenUser.username], 'exit_to_app');
+            res.json({ message: 'SUCCESS.DELETE_ACCOUNT' });
         } else {
-            const passwordsCollection = db.collection('passwords');
-            const passwordsSnapshot = await passwordsCollection.where('username', '==', req.body.username).get();
-            if (passwordsSnapshot.empty) {
-                res.status(500).send({ message: 'ERROR.INTERNAL' });
-            } else {
-                const userId = usersSnapshot.docs[0].id;
-                await usersCollection.doc(userId).delete();
-                const passwordId = passwordsSnapshot.docs[0].id;
-                await passwordsCollection.doc(passwordId).delete();
-                await notificationsService.createTeamNotification(db, jwt.decode(req.body.token).project, req.body.username, 'NOTIFICATIONS.NEW.LEAVE_PROJECT', [req.body.username], 'exit_to_app');
-                res.json({ message: 'SUCCESS.DELETE_ACCOUNT' });
-            }
+            res.status(500).send({ message: 'ERROR.INTERNAL' });
         }
     } catch (err) {
         next(err);

@@ -1,352 +1,346 @@
 const authService = require('../services/auth.service');
+const taskService = require('../services/task.service');
 const notificationsService = require('../services/notifications.service');
 const admin = require('firebase-admin');
 const jwt = require('jsonwebtoken');
 const db = admin.firestore();
 
+/**
+ * Creates a task.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @returns {void}
+ */
 async function createTask(req, res, next) {
     try {
-        const tasksCollection = db.collection('tasks');
-        const orderSnapshot = await tasksCollection
-            .where('project', '==', req.body.project)
-            .where('state', '==', req.body.state)
-            .orderBy('order', 'desc').limit(1).get();
-        const order = orderSnapshot.empty ? 1 : (Math.ceil(orderSnapshot.docs[0].data().order) + 1);
-        const newDocRef = tasksCollection.doc();
-        const task = {
-            uid: newDocRef.id,
-            author: req.body.author,
-            project: req.body.project,
-            title: req.body.title,
-            description: req.body.description,
-            assigned: req.body.assigned,
-            state: req.body.state,
-            order: order,
-            history: [{
-                timestamp: new Date().getTime(),
-                username: jwt.decode(req.body.token).username,
-                state: req.body.state,
-                previous: null
-            }]
-        };
-        tasksCollection.doc(newDocRef.id).set(task).then(async () => {
-            await authService.updateUserStats(db, jwt.decode(req.body.token).username, 'created', 1);
-            await authService.updateProjectStats(db, jwt.decode(req.body.token).project, 'created', 1);
-            await notificationsService.createTeamNotification(db, req.body.project, req.body.author, 'NOTIFICATIONS.NEW.CREATE_TASK', [req.body.author, req.body.title], 'note_add');
-            res.json({ message: 'SUCCESS.CREATE_TASK' });
-        }).catch((err) => {
-            res.status(402).send({ message: 'ERROR.CREATE_TASK' });
-        });
+        const token = req.body.token;
+        const title = req.body.title;
+        const description = req.body.description;
+        const assigned = req.body.assigned;
+        const state = req.body.state;
+        const tokenUser = jwt.decode(token);
+        const order = await taskService.highestOrder(db, tokenUser.project, state);
+        await taskService.createTask(db, tokenUser.username, tokenUser.project, title, description, assigned, state, order);
+        const promises = [];
+        promises.push(authService.updateUserStats(db, tokenUser.username, 'created', 1));
+        promises.push(authService.updateProjectStats(db, tokenUser.project, 'created', 1));
+        promises.push(notificationsService.createTeamNotification(db, tokenUser.project, tokenUser.username, 'NOTIFICATIONS.NEW.CREATE_TASK', [tokenUser.username, title], 'note_add'));
+        await Promise.all(promises);
+        res.json({ message: 'SUCCESS.CREATE_TASK' });
     } catch (err) {
         next(err);
     }
 }
 
+/**
+ * Imports a list of tasks
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @returns {void}
+ */
 async function importTasks(req, res, next) {
     try {
-        const tasksCollection = db.collection('tasks');
-        let [success, fail] = [0, 0];
-        for (const task of req.body.tasks) {
-            try {
-                const orderSnapshot = await tasksCollection
-                    .where('project', '==', req.body.project)
-                    .where('state', '==', task.state === '' ? 'NONE' : task.state)
-                    .orderBy('order', 'desc').limit(1).get();
-                const order = orderSnapshot.empty ? 1 : (Math.ceil(orderSnapshot.docs[0].data().order) + 1);
-                const newDocRef = tasksCollection.doc();
-                const taskData = {
-                    uid: newDocRef.id,
-                    author: task.author === '' ? req.body.author : task.author,
-                    project: req.body.project,
-                    title: task.title,
-                    description: task.description,
-                    assigned: '',
-                    state: task.state === '' ? 'NONE' : task.state,
-                    order: order,
-                    history: [{
-                        timestamp: new Date().getTime(),
-                        username: jwt.decode(req.body.token).username,
-                        state: task.state === '' ? 'NONE' : task.state,
-                        previous: null
-                    }]
-                };
-                await tasksCollection.doc(newDocRef.id).set(taskData);
-                success++;
-            } catch (err) {
-                fail++;
-            }
+        const token = req.body.token;
+        const tasks = req.body.tasks;
+        const tokenUser = jwt.decode(token);
+        const result = {
+            success: 0,
+            fail: 0
+        };
+        for (const task of tasks) {
+            const response = await taskService.importTask(db, task, tokenUser.project, tokenUser.username);
+            result[response]++;
         }
-        if (success > 0) {
-            await authService.updateUserStats(db, jwt.decode(req.body.token).username, 'imported', success);
-            await authService.updateProjectStats(db, jwt.decode(req.body.token).project, 'imported', success);
-            await notificationsService.createTeamNotification(db, req.body.project, req.body.author, 'NOTIFICATIONS.NEW.IMPORTED_TASKS', [req.body.author], 'upload_file');
+        if (result.success > 0) {
+            const promises = [];
+            promises.push(authService.updateUserStats(db, tokenUser.username, 'imported', result.success));
+            promises.push(authService.updateProjectStats(db, tokenUser.project, 'imported', result.success));
+            promises.push(notificationsService.createTeamNotification(db, tokenUser.project, tokenUser.username, 'NOTIFICATIONS.NEW.IMPORTED_TASKS', [tokenUser.username], 'upload_file'));
+            await Promise.all(promises);
         }
         res.json({
-            amount: req.body.tasks.length,
-            success: success,
-            fail: fail
+            amount: tasks.length,
+            success: result.success,
+            fail: result.fail
         });
     } catch (err) {
         next(err);
     }
 }
 
-
+/**
+ * Get a list of tasks subdivided by state.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @returns {void}
+ */
 async function getTaskList(req, res, next) {
     try {
-        const tasksCollection = db.collection('tasks');
-        const tasksSnapshot = await tasksCollection
-            .where('project', '==', req.body.project)
-            .where('state', '!=', 'DELETED')
-            .orderBy('state')
-            .orderBy('order')
-            .get();
-        const response = [
-            { state: 'NONE', tasks: [] },
-            { state: 'TODO', tasks: [] },
-            { state: 'PROGRESS', tasks: [] },
-            { state: 'REVIEW', tasks: [] },
-            { state: 'DONE', tasks: [] }
-        ];
-        tasksSnapshot.forEach(doc => {
-            const task = doc.data();
-            response.find(list => list.state === task.state).tasks.push(task);
-        });
-        res.json(response);
+        const token = req.body.token;
+        const tokenUser = jwt.decode(token);
+        const taskList = await taskService.getTaskList(db, tokenUser.project);
+        res.json(taskList);
     } catch (err) {
         next(err);
     }
 }
 
+/**
+ * Updates a task.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @throws {Error} - Throws an error if update fails.
+ * - 500: INTERNAL
+ *
+ * @returns {void}
+ */
 async function updateTask(req, res, next) {
     try {
-        const tasksCollection = db.collection('tasks');
-        const tasksSnapshot = await tasksCollection.where('uid', '==', req.body.task.uid).get();
-        if (tasksSnapshot.empty) {
-            res.status(500).send({ message: 'ERROR.INTERNAL' });
+        const token = req.body.token;
+        const tokenUser = jwt.decode(token);
+        const task = req.body.task;
+        if (await taskService.singleTask(db, task.uid)) {
+            const promises = [];
+            promises.push(taskService.updateTask(db, task.uid, task));
+            promises.push(authService.updateUserStats(db, tokenUser.username, 'edited', 1));
+            promises.push(authService.updateProjectStats(db, tokenUser.project, 'edited', 1));
+            promises.push(notificationsService.createRelatedNotification(db, tokenUser.project, tokenUser.username, task.author, task.assigned, 'NOTIFICATIONS.NEW.EDITED_TASK', [tokenUser.username, task.title], 'edit_square'));
+            await Promise.all(promises);
+            const taskList = await taskService.getTaskList(db, tokenUser.project);
+            res.json(taskList);
         } else {
-            const taskDoc = tasksSnapshot.docs[0];
-            const task = req.body.task;
-            taskDoc.ref.update(task);
-            await authService.updateUserStats(db, jwt.decode(req.body.token).username, 'edited', 1);
-            await authService.updateProjectStats(db, jwt.decode(req.body.token).project, 'edited', 1);
-            await notificationsService.createRelatedNotification(db, req.body.task.project, jwt.decode(req.body.token).username, req.body.task.author, req.body.task.assigned, 'NOTIFICATIONS.NEW.EDITED_TASK', [jwt.decode(req.body.token).username, req.body.task.title], 'edit_square');
-            const taskListSnapshot = await tasksCollection
-                .where('project', '==', req.body.task.project)
-                .where('state', '!=', 'DELETED')
-                .orderBy('state')
-                .orderBy('order')
-                .get();
-            const response = [
-                { state: 'NONE', tasks: [] },
-                { state: 'TODO', tasks: [] },
-                { state: 'PROGRESS', tasks: [] },
-                { state: 'REVIEW', tasks: [] },
-                { state: 'DONE', tasks: [] }
-            ];
-            taskListSnapshot.forEach(doc => {
-                const task = doc.data();
-                response.find(list => list.state === task.state).tasks.push(task);
-            });
-            res.json(response);
+            res.status(500).send({ message: 'ERROR.INTERNAL' });
         }
     } catch(err) {
         next(err);
     }
 }
 
+/**
+ * Updates the position of a task.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @throws {Error} - Throws an error if update fails.
+ * - 500: INTERNAL
+ *
+ * @returns {void}
+ */
 async function updatePosition(req, res, next) {
     try {
-        const tasksCollection = db.collection('tasks');
-        const tasksSnapshot = await tasksCollection.where('uid', '==', req.body.uid).get();
-        if (tasksSnapshot.empty) {
-            res.status(500).send({ message: 'ERROR.INTERNAL' });
-        } else {
-            const taskDoc = tasksSnapshot.docs[0];
-            const history = taskDoc.data().history;
+        const token = req.body.token;
+        const uid = req.body.uid;
+        const state = req.body.state;
+        const order = req.body.order;
+        const tokenUser = jwt.decode(token);
+        const task = await taskService.singleTask(db, uid);
+        if (task) {
+            const history = task.history;
             history.push({
                 timestamp: new Date().getTime(),
-                username: jwt.decode(req.body.token).username,
-                state: req.body.state,
-                previous: taskDoc.data().state
+                username: tokenUser.username,
+                state: state,
+                previous: task.state
             });
-            await taskDoc.ref.update({
-                state: req.body.state,
-                order: req.body.order,
+            const taskData = {
+                state: state,
+                order: order,
                 history: history
-            });
-            await authService.updateUserStats(db, jwt.decode(req.body.token).username, 'updated', 1);
-            await authService.updateProjectStats(db, jwt.decode(req.body.token).project, 'updated', 1);
-            await notificationsService.createRelatedNotification(db, taskDoc.data().project, jwt.decode(req.body.token).username, taskDoc.data().author, taskDoc.data().assigned, 'NOTIFICATIONS.NEW.UPDATE_TASK_POSITION', [jwt.decode(req.body.token).username, taskDoc.data().title], 'edit_square');
-            const taskListSnapshot = await tasksCollection
-                .where('project', '==', req.body.project)
-                .where('state', '!=', 'DELETED')
-                .orderBy('state')
-                .orderBy('order')
-                .get();
-            const response = [
-                { state: 'NONE', tasks: [] },
-                { state: 'TODO', tasks: [] },
-                { state: 'PROGRESS', tasks: [] },
-                { state: 'REVIEW', tasks: [] },
-                { state: 'DONE', tasks: [] }
-            ];
-            taskListSnapshot.forEach(doc => {
-                const task = doc.data();
-                response.find(list => list.state === task.state).tasks.push(task);
-            });
-            res.json(response);
-        }
+            };
+            const promises = [];
+            promises.push(taskService.updateTask(db, task.uid, taskData));
+            promises.push(authService.updateUserStats(db, tokenUser.username, 'updated', 1));
+            promises.push(authService.updateProjectStats(db, tokenUser.project, 'updated', 1));
+            promises.push(notificationsService.createRelatedNotification(db, task.project, tokenUser.username, task.author, task.assigned, 'NOTIFICATIONS.NEW.UPDATE_TASK_POSITION', [tokenUser.username, task.title], 'edit_square'));
+            await Promise.all(promises);
+            const taskList = await taskService.getTaskList(db, tokenUser.project);
+            res.json(taskList);
+        } else {
+            res.status(500).send({ message: 'ERROR.INTERNAL' });
+        }            
     } catch (err) {
         next(err);
     }
 }
 
+/**
+ * Marks a task as trashed.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @throws {Error} - Throws an error if update fails.
+ * - 500: INTERNAL
+ *
+ * @returns {void}
+ */
 async function moveToTrashBin(req, res, next) {
     try {
-        const tasksCollection = db.collection('tasks');
-        const tasksSnapshot = await tasksCollection.where('uid', '==', req.body.uid).get();
-        if (tasksSnapshot.empty) {
-            res.status(500).send({ message: 'ERROR.INTERNAL' });
-        } else {
-            const taskDoc = tasksSnapshot.docs[0];
-            const history = taskDoc.data().history;
-            await taskDoc.ref.update({
+        const token = req.body.token;
+        const uid = req.body.uid;
+        const tokenUser = jwt.decode(token);
+        const task = await taskService.singleTask(db, uid);
+        if (task) {
+            const taskData = {
                 state: 'DELETED',
-                history: history
-            });
-            await authService.updateUserStats(db, jwt.decode(req.body.token).username, 'trashed', 1);
-            await authService.updateProjectStats(db, jwt.decode(req.body.token).project, 'trashed', 1);
-            await notificationsService.createRelatedNotification(db, taskDoc.data().project, jwt.decode(req.body.token).username, taskDoc.data().author, taskDoc.data().assigned, 'NOTIFICATIONS.NEW.TRASHED_TASK', [jwt.decode(req.body.token).username, taskDoc.data().title], 'delete');
-            const taskListSnapshot = await tasksCollection
-                .where('project', '==', req.body.project)
-                .where('state', '!=', 'DELETED')
-                .orderBy('state')
-                .orderBy('order')
-                .get();
-            const response = [
-                { state: 'NONE', tasks: [] },
-                { state: 'TODO', tasks: [] },
-                { state: 'PROGRESS', tasks: [] },
-                { state: 'REVIEW', tasks: [] },
-                { state: 'DONE', tasks: [] }
-            ];
-            taskListSnapshot.forEach(doc => {
-                const task = doc.data();
-                response.find(list => list.state === task.state).tasks.push(task);
-            });
-            res.json(response);
+            };
+            const promises = [];
+            promises.push(taskService.updateTask(db, uid, taskData));
+            promises.push(authService.updateUserStats(db, tokenUser.username, 'trashed', 1));
+            promises.push(authService.updateProjectStats(db, tokenUser.project, 'trashed', 1));
+            promises.push(notificationsService.createRelatedNotification(db, task.project, tokenUser.username, task.author, task.assigned, 'NOTIFICATIONS.NEW.TRASHED_TASK', [tokenUser.username, task.title], 'delete'));
+            await Promise.all(promises);
+            const taskList = await taskService.getTaskList(db, tokenUser.project);
+            res.json(taskList);
+        } else {
+            res.status(500).send({ message: 'ERROR.INTERNAL' });
         }
     } catch (err) {
         next(err);
     }
 }
 
+/**
+ * Get a list of trashed tasks.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @returns {void}
+ */
 async function getTrashBin(req, res, next) {
     try {
-        const tasksCollection = db.collection('tasks');
-        const tasksSnapshot = await tasksCollection
-            .where('project', '==', req.body.project)
-            .where('state', '==', 'DELETED')
-            .orderBy('state')
-            .orderBy('order')
-            .get();
-        const tasks = [];
-        tasksSnapshot.forEach(doc => {
-            tasks.push(doc.data());
-        });
-        res.json(tasks);
+        const token = req.body.token;
+        const tokenUser = jwt.decode(token);
+        const trashedList = await taskService.getTrashedList(db, tokenUser.project);
+        res.json(trashedList);
     } catch (err) {
         next(err);
     }
 }
 
+/**
+ * Store a trashed task back in the previous state.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @throws {Error} - Throws an error if update fails.
+ * - 500: INTERNAL
+ *
+ * @returns {void}
+ */
 async function restoreTask(req, res, next) {
     try {
-        const tasksCollection = db.collection('tasks');
-        const tasksSnapshot = await tasksCollection.where('uid', '==', req.body.uid).get();
-        if (tasksSnapshot.empty) {
-            res.status(500).send({ message: 'ERROR.INTERNAL' });
+        const token = req.body.token;
+        const tokenUser = jwt.decode(token);
+        const uid = req.body.uid;
+        const task = await taskService.singleTask(db, uid);
+        if (task) {
+            const taskData = {
+                state: task.history[task.history.length - 1].state
+            }
+            const promises = [];
+            promises.push(taskService.updateTask(db, uid, taskData));
+            promises.push(authService.updateUserStats(db, tokenUser.username, 'restored', 1));
+            promises.push(authService.updateProjectStats(db, tokenUser.project, 'restored', 1));
+            promises.push(notificationsService.createRelatedNotification(db, task.project, tokenUser.username, task.author, task.assigned, 'NOTIFICATIONS.NEW.RESTORED_TASK', [tokenUser.username, task.title], 'undo'));
+            await Promise.all(promises);
+            const trashedList = await taskService.getTrashedList(db, tokenUser.project);
+            res.json(trashedList);
         } else {
-            const taskDoc = tasksSnapshot.docs[0];
-            const history = taskDoc.data().history;
-            const previousState = history[history.length - 2].state
-            await taskDoc.ref.update({
-                state: previousState,
-                history: history
-            });
-            await authService.updateUserStats(db, jwt.decode(req.body.token).username, 'restored', 1);
-            await authService.updateProjectStats(db, jwt.decode(req.body.token).project, 'restored', 1);
-            await notificationsService.createRelatedNotification(db, taskDoc.data().project, jwt.decode(req.body.token).username, taskDoc.data().author, taskDoc.data().assigned, 'NOTIFICATIONS.NEW.RESTORED_TASK', [jwt.decode(req.body.token).username, taskDoc.data().title], 'undo');
-            const taskListSnapshot = await tasksCollection
-                .where('project', '==', req.body.project)
-                .where('state', '==', 'DELETED')
-                .orderBy('state')
-                .orderBy('order')
-                .get();
-            const tasks = [];
-            taskListSnapshot.forEach(doc => {
-                tasks.push(doc.data());
-            });
-            res.json(tasks);
+            res.status(500).send({ message: 'ERROR.INTERNAL' });
         }
     } catch (err) {
         next(err);
     }
 }
 
+/**
+ * Delete a trashed task irrevocably.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @throws {Error} - Throws an error if deletion fails.
+ * - 500: INTERNAL
+ *
+ * @returns {void}
+ */
 async function deleteTask(req, res, next) {
     try {
-        const tasksCollection = db.collection('tasks');
-        const tasksSnapshot = await tasksCollection.where('uid', '==', req.body.uid).get();
-        if (tasksSnapshot.empty) {
-            res.status(500).send({ message: 'ERROR.INTERNAL' });
+        const token = req.body.token;
+        const tokenUser = jwt.decode(token);
+        const uid = req.body.uid;
+        const task = await taskService.singleTask(db, uid);
+        if (task) {
+            const promises = [];
+            promises.push(taskService.deleteTask(db, uid));
+            promises.push(authService.updateUserStats(db, tokenUser.username, 'deleted', 1));
+            promises.push(authService.updateProjectStats(db, tokenUser.project, 'deleted', 1));
+            promises.push(notificationsService.createRelatedNotification(db, task.project, tokenUser.username, task.author, task.assigned, 'NOTIFICATIONS.NEW.DELETED_TASK', [tokenUser.username, task.title], 'delete'));
+            await Promise.all(promises);
+            const trashedList = await taskService.getTrashedList(db, tokenUser.project);
+            res.json(trashedList);
         } else {
-            const taskDoc = tasksSnapshot.docs[0];
-            await taskDoc.ref.delete();
-            await authService.updateUserStats(db, jwt.decode(req.body.token).username, 'deleted', 1);
-            await authService.updateProjectStats(db, jwt.decode(req.body.token).project, 'deleted', 1);
-            await notificationsService.createRelatedNotification(db, taskDoc.data().project, jwt.decode(req.body.token).username, taskDoc.data().author, taskDoc.data().assigned, 'NOTIFICATIONS.NEW.DELETED_TASK', [jwt.decode(req.body.token).username, taskDoc.data().title], 'delete');
-            const taskListSnapshot = await tasksCollection
-                .where('project', '==', req.body.project)
-                .where('state', '==', 'DELETED')
-                .orderBy('state')
-                .orderBy('order')
-                .get();
-            const tasks = [];
-            taskListSnapshot.forEach(doc => {
-                tasks.push(doc.data());
-            });
-            res.json(tasks);
+            res.status(500).send({ message: 'ERROR.INTERNAL' });
         }
     } catch (err) {
         next(err);
     }
 }
 
+/**
+ * Delete all trashed tasks irrevocably.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @throws {Error} - Throws an error if deletion fails.
+ * - 500: INTERNAL
+ *
+ * @returns {void}
+ */
 async function clearTrashBin(req, res, next) {
     try {
-        const tasksCollection = db.collection('tasks');
-        const tasksSnapshot = await tasksCollection
-                .where('project', '==', req.body.project)
-                .where('state', '==', 'DELETED')
-                .get();
-        if (tasksSnapshot.empty) {
-            res.status(500).send({ message: 'ERROR.INTERNAL' });
-        } else {
-            const deletePromises = [];
-            let tasks = 0;
-            tasksSnapshot.forEach(doc => {
-                deletePromises.push(doc.ref.delete());
-                tasks++;
+        const token = req.body.token;
+        const tokenUser = jwt.decode(token);
+        const tasks = await taskService.getTrashedList(db, tokenUser.project);
+        if (tasks.length) {
+            let promises = [];
+            tasks.forEach(task => {
+                promises.push(taskService.deleteTask(db, task.uid));
             });
-            await Promise.all(deletePromises);
-            await authService.updateUserStats(db, jwt.decode(req.body.token).username, 'deleted', tasks);
-            await authService.updateUserStats(db, jwt.decode(req.body.token).username, 'cleared', 1);
-            await authService.updateProjectStats(db, jwt.decode(req.body.token).project, 'deleted', tasks);
-            await authService.updateProjectStats(db, jwt.decode(req.body.token).project, 'cleared', 1);
-            await notificationsService.createAdminNotification(db, req.body.project, jwt.decode(req.body.token).username, 'NOTIFICATIONS.NEW.CLEARED_TRASH_BIN', [jwt.decode(req.body.token).username], 'delete_forever');
+            await Promise.all(promises);
+            promises = [];
+            promises.push(authService.updateUserStats(db, tokenUser.username, 'deleted', tasks.length));
+            promises.push(authService.updateUserStats(db, tokenUser.username, 'cleared', 1));
+            promises.push(authService.updateProjectStats(db, tokenUser.project, 'deleted', tasks.length));
+            promises.push(authService.updateProjectStats(db, tokenUser.project, 'cleared', 1));
+            promises.push(notificationsService.createAdminNotification(db, tokenUser.project, tokenUser.username, 'NOTIFICATIONS.NEW.CLEARED_TRASH_BIN', [tokenUser.username], 'delete_forever'));
+            await Promise.all(promises);
             res.json({'message': 'SUCCESS.CLEAR_TRASH_BIN'});
+        } else {
+            res.status(500).send({ message: 'ERROR.INTERNAL' });
         }
     } catch (err) {
         next(err);

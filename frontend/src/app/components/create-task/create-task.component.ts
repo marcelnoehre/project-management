@@ -34,7 +34,7 @@ export class CreateTaskComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.api.getTeamMembers(this.user.token, this.user.project).subscribe(
+    this.api.getTeamMembers(this.user.token).subscribe(
       (users) => {
         this.members = users;
       },
@@ -81,7 +81,7 @@ export class CreateTaskComponent implements OnInit {
     this.loading = true;
     const assigned = this.assigned === '' || this.assigned === null ? '' : this.assigned;
     const state = this.state === '' || this.state === null ? TaskState.NONE : this.state;
-    this.api.createTask(this.user.token, this.user.username, this.user.project, this.title, this.description, assigned, state).subscribe(
+    this.api.createTask(this.user.token, this.title, this.description, assigned, state).subscribe(
       (response) => {
         this.loading = false;
         this.createTaskForm.reset();
