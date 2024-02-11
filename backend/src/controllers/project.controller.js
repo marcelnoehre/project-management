@@ -98,7 +98,7 @@ async function handleInvite(req, res, next) {
         const decision = req.body.decision;
         const tokenUser = jwt.decode(token);
         const user = authService.singleUser(db, tokenUser.username);
-        if (user) {
+        if (user && projectService.singleProject(db, tokenUser.project)) {
             const promises = [];
             const userData = {
                 project: decision ? user.project : '',
@@ -134,7 +134,7 @@ async function updatePermission(req, res, next) {
         const permission = req.body.permission;
         const tokenUser = jwt.decode(token);
         const user = authService.singleUser(db, username);
-        if (user) {
+        if (user && projectService.singleProject(db, tokenUser.project)) {
             const promises = [];
             const userData = {
                 permission: permission
@@ -159,36 +159,29 @@ async function updatePermission(req, res, next) {
 
 async function removeUser(req, res, next) {
     try {
-        const usersCollection = db.collection('users');
-        const usersSnapshot = await usersCollection.where('username', '==', req.body.username).get();
-        if (usersSnapshot.empty) {
-            res.status(500).send({ message: 'ERROR.INTERNAL' });
-        } else {
-            const userDoc = usersSnapshot.docs[0];
-            await userDoc.ref.update({
+        const token = req.body.token;
+        const username = req.body.username;
+        const tokenUser = jwt.decode(token);
+        const user = authService.singleUser(db, username);
+        if (user && projectService.singleProject(db, tokenUser.project)) {
+            const promises = [];
+            const userData = {
                 project: '',
                 permission: ''
-            });
-            const projectsCollection = db.collection('projects');
-            const historySnapshot = await projectsCollection.where('name', '==', userDoc.data().project).get();
-            if (historySnapshot.empty) {
-                res.status(500).send({ message: 'ERROR.INTERNAL' });
-            } else {
-                const event = {
-                    timestamp: new Date().getTime(),
-                    type: 'REMOVED',
-                    username: jwt.decode(req.body.token).username,
-                    target: req.body.username
-                }
-                const historyDoc = historySnapshot.docs[0];
-                const history = historyDoc.data().history;
-                history.push(event);
-                await historyDoc.ref.update({
-                    history: history
-                });
             }
-            await notificationsService.createTeamNotification(db, jwt.decode(req.body.token).project, jwt.decode(req.body.token).username, 'NOTIFICATIONS.NEW.REMOVED', [req.body.username, jwt.decode(req.body.token).username], 'person_remove');
+            const eventData = {
+                timestamp: new Date().getTime(),
+                type: 'REMOVED',
+                username: tokenUser.username,
+                target: username
+            }
+            promises.push(authService.updateUserData(db, username, userData));
+            promises.push(projectService.updateProjectHistory(db, tokenUser.project, eventData));
+            promises.push(notificationsService.createTeamNotification(db, tokenUser.project, tokenUser.username, 'NOTIFICATIONS.NEW.REMOVED', [username, tokenUser.username], 'person_remove'));
+            await Promise.all(promises);
             res.json({message: 'SUCCESS.REMOVE_MEMBER'});
+        } else {
+            res.status(500).send({ message: 'ERROR.INTERNAL' });
         }
     } catch (err) {
         next(err);
