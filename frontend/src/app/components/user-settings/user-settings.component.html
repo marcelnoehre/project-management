@@ -1,16 +1,21 @@
 <div class="user-settings-component">
-    <form>
+    <form [formGroup]="userSettingsForm">
         <div class="form-container">
             <mat-form-field appearance="outline" class="user-settings-form-field" MatInput>
                 <mat-label> {{ 'USER.USERNAME' | translate }}</mat-label>
                 <input
                     id="username-input"
-                    [(ngModel)]="username"
                     name="username"
+                    formControlName="usernameFormControl"
                     placeholder="{{'USER.USERNAME' | translate}}"
                     matInput
+                    required
+                    minlength="4"
+                    maxlength="16"
                 />
                 <mat-icon matPrefix> person </mat-icon>
+                <mat-error *ngIf="hasError('usernameFormControl', 'required')"> {{ 'ERROR.REQUIRED.USERNAME' | translate }} </mat-error>
+                <mat-error *ngIf="hasError('usernameFormControl', 'minlength')">{{ 'ERROR.MINLENGTH.USERNAME' | translate }}</mat-error>
             </mat-form-field>
             <button
                 type="button"
@@ -28,12 +33,15 @@
                 <mat-label> {{ 'USER.FULLNAME' | translate }}</mat-label>
                 <input
                     id="fullname-input"
-                    [(ngModel)]="fullName"
                     name="fullName"
+                    formControlName="fullNameFormControl"
                     placeholder="{{'USER.FULLNAME' | translate}}"
                     matInput
+                    required
+                    maxlength="32"
                 />
                 <mat-icon matPrefix> badge </mat-icon>
+                <mat-error *ngIf="hasError('fullNameFormControl', 'required')"> {{ 'ERROR.REQUIRED.FULLNAME' | translate }} </mat-error>
             </mat-form-field>
             <button
                 type="button"
@@ -52,8 +60,8 @@
                 <mat-select 
                     id="language-select"
                     name="language"
+                    formControlName="languageFormControl"
                     placeholder="{{'USER.LANGUAGE'|translate}}"
-                    [(ngModel)]="language"
                 >
                     <mat-option
                         *ngFor="let lang of languages"
@@ -82,10 +90,13 @@
                 <input
                     id="password-input"
                     name="password"
+                    formControlName="passwordFormControl"
                     placeholder="{{'USER.NEW_PASSWORD'|translate}}"
-                    [(ngModel)]="password"
                     [type]="hidePassword ? 'password' : 'text'"
                     matInput
+                    required
+                    minlength="8"
+                    pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@#$%^&+=*]).{8,}$"
                 />
                 <mat-icon matPrefix> lock </mat-icon>
                 <button
@@ -99,6 +110,9 @@
                 >
                     <mat-icon> {{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
                 </button>
+                <mat-error *ngIf="hasError('passwordFormControl', 'required')"> {{ 'ERROR.REQUIRED.PASSWORD' | translate }} </mat-error>
+                <mat-error *ngIf="hasError('passwordFormControl', 'minlength')"> {{ 'ERROR.MINLENGTH.PASSWORD' | translate }} </mat-error>
+                <mat-error *ngIf="!hasError('passwordFormControl', 'minlength') && hasError('passwordFormControl', 'pattern')"> {{ 'ERROR.PATTERN' | translate }} </mat-error>
             </mat-form-field>
             <button
                 class="submit-button"
@@ -117,12 +131,17 @@
                 <mat-label> {{ 'USER.INITIALS' | translate }}</mat-label>
                 <input
                     id="initials-input"
-                    [(ngModel)]="initials"
                     name="initials"
+                    formControlName="initialsFormControl"
                     placeholder="{{ 'USER.INITIALS' | translate }}"
                     matInput
+                    required
+                    minlength="2"
+                    maxlength="2"
                 />
                 <mat-icon matPrefix> image </mat-icon>
+                <mat-error *ngIf="hasError('initialsFormControl', 'required')"> {{ 'ERROR.REQUIRED.INITIALS' | translate }} </mat-error>
+                <mat-error *ngIf="hasError('initialsFormControl', 'minlength')"> {{ 'ERROR.MINLENGTH.INITIALS' | translate }} </mat-error>
             </mat-form-field>
             <button
                 type="button"
@@ -144,6 +163,7 @@
                     [style.background]="color"
                     cpPosition="top"
                     name="color"
+                    formControlName="colorFormControl"
                     readonly
                     matInput
                 />
@@ -164,6 +184,7 @@
             <input
                 id="profile-picture-input" 
                 name="profile-picture"
+                formControlName="profilePictureFormControl"
                 *ngIf="!hasProfilePicture()"
                 type="file" 
                 (change)="onFileSelected($event)"

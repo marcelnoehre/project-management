@@ -49,7 +49,6 @@ export class RegistrationComponent implements OnInit {
   ngOnInit(): void {
     this.user.user = this.storage.getSessionEntry('user');
     if (this.user.isLoggedIn) {
-      //TODO: verify
 			this.router.navigateByUrl('/');
 		}
 		setTimeout(() => this.inputUser.nativeElement.focus());

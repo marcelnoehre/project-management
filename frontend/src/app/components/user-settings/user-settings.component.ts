@@ -10,6 +10,7 @@ import { StorageService } from 'src/app/services/storage.service';
 import { DialogComponent } from '../dialog/dialog.component';
 import { UserService } from 'src/app/services/user.service';
 import { ErrorService } from 'src/app/services/error.service';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-user-settings',
@@ -17,6 +18,7 @@ import { ErrorService } from 'src/app/services/error.service';
   styleUrls: ['./user-settings.component.scss']
 })
 export class UserSettingsComponent implements OnInit {
+  userSettingsForm!: FormGroup;
   languages: Language[] = [
     {
       key: 'en',
@@ -57,7 +59,7 @@ export class UserSettingsComponent implements OnInit {
     private user: UserService,
     private _error: ErrorService
   ) {
-
+    this.createForm();
   }
 
   ngOnInit(): void {
@@ -68,6 +70,22 @@ export class UserSettingsComponent implements OnInit {
     this.color = this.initialUser.color;
     this.password = '';
     this.profilePicture = this.initialUser.profilePicture;
+  }
+
+  private createForm(): void {
+    this.userSettingsForm = new FormGroup(
+      {
+        usernameFormControl: new FormControl('', {validators: [Validators.required] }),
+        fullNameFormControl: new FormControl('', {validators: [Validators.required]}),
+        languageFormControl: new FormControl('', {validators: []}),
+        passwordFormControl: new FormControl('', { validators: [Validators.required] }),
+        initialsFormControl: new FormControl('', {validators: [Validators.required]}),
+        colorFormControl: new FormControl('', {validators: []}),
+        profilePictureFormControl: new FormControl('', {validators: []})
+      },
+      { }
+    );
+    
   }
 
   onFileSelected(event: Event) {
@@ -151,6 +169,10 @@ export class UserSettingsComponent implements OnInit {
         }
       }
     );
+  }
+
+  public hasError(formControl: string, type: string): boolean {
+    return this.userSettingsForm.controls[formControl].hasError(type);
   }
 
   isDisabled(attribute: string, value: string) {
