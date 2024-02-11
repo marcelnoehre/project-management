@@ -29,7 +29,35 @@ async function createTask(db, author, project, title, description, assigned, sta
     return tasksCollection.doc(task.uid).set(task);
 }
 
+async function importTask(db, task, project, author) {
+    try {
+        const order = highestOrder(db, project, task.state);
+        const newDocRef = tasksCollection.doc();
+        const taskData = {
+            uid: newDocRef.id,
+            author: task.author === '' ? author : task.author,
+            project: project,
+            title: task.title,
+            description: task.description,
+            assigned: task.assigned,
+            state: task.state === '' ? 'NONE' : task.state,
+            order: order,
+            history: [{
+                timestamp: new Date().getTime(),
+                username: author,
+                state: task.state === '' ? 'NONE' : task.state,
+                previous: null
+            }]
+        };
+        await tasksCollection.doc(newDocRef.id).set(taskData);
+        return 'success';
+    } catch (err) {
+        return 'fail';
+    }
+}
+
 module.exports = { 
     highestOrder,
-    createTask
+    createTask,
+    importTask
 };

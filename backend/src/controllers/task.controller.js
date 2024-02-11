@@ -28,47 +28,27 @@ async function createTask(req, res, next) {
 
 async function importTasks(req, res, next) {
     try {
-        const tasksCollection = db.collection('tasks');
-        let [success, fail] = [0, 0];
-        for (const task of req.body.tasks) {
-            try {
-                const orderSnapshot = await tasksCollection
-                    .where('project', '==', req.body.project)
-                    .where('state', '==', task.state === '' ? 'NONE' : task.state)
-                    .orderBy('order', 'desc').limit(1).get();
-                const order = orderSnapshot.empty ? 1 : (Math.ceil(orderSnapshot.docs[0].data().order) + 1);
-                const newDocRef = tasksCollection.doc();
-                const taskData = {
-                    uid: newDocRef.id,
-                    author: task.author === '' ? req.body.author : task.author,
-                    project: req.body.project,
-                    title: task.title,
-                    description: task.description,
-                    assigned: '',
-                    state: task.state === '' ? 'NONE' : task.state,
-                    order: order,
-                    history: [{
-                        timestamp: new Date().getTime(),
-                        username: jwt.decode(req.body.token).username,
-                        state: task.state === '' ? 'NONE' : task.state,
-                        previous: null
-                    }]
-                };
-                await tasksCollection.doc(newDocRef.id).set(taskData);
-                success++;
-            } catch (err) {
-                fail++;
-            }
-        }
+        const token = req.bdoy.token;
+        const tokenUser = jwt.decode(token);
+        const tasks = req.body.tasks;
+        const result = {
+            success: 0,
+            fail: 0
+        };
+        tasks.forEach((task) => {
+            result[taskService.importTask(db, task, tokenUser.project, tokenUser.username)]++;
+        });
         if (success > 0) {
-            await authService.updateUserStats(db, jwt.decode(req.body.token).username, 'imported', success);
-            await authService.updateProjectStats(db, jwt.decode(req.body.token).project, 'imported', success);
-            await notificationsService.createTeamNotification(db, req.body.project, req.body.author, 'NOTIFICATIONS.NEW.IMPORTED_TASKS', [req.body.author], 'upload_file');
+            const promises = [];
+            promises.push(authService.updateUserStats(db, jwt.decode(req.body.token).username, 'imported', success));
+            promises.push(authService.updateProjectStats(db, jwt.decode(req.body.token).project, 'imported', success));
+            promises.push(notificationsService.createTeamNotification(db, req.body.project, req.body.author, 'NOTIFICATIONS.NEW.IMPORTED_TASKS', [req.body.author], 'upload_file'));
+            await Promise.all(promises);
         }
         res.json({
-            amount: req.body.tasks.length,
-            success: success,
-            fail: fail
+            amount: tasks.length,
+            success: result.success,
+            fail: result.fail
         });
     } catch (err) {
         next(err);
