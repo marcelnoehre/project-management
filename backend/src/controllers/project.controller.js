@@ -190,36 +190,28 @@ async function removeUser(req, res, next) {
 
 async function leaveProject(req, res, next) {
     try {
-        const usersCollection = db.collection('users');
-        const usersSnapshot = await usersCollection.where('username', '==', req.body.username).get();
-        if (usersSnapshot.empty) {
-            res.status(500).send({ message: 'ERROR.INTERNAL' });
-        } else {
-            const userDoc = usersSnapshot.docs[0];
-            await userDoc.ref.update({
+        const token = req.body.token;
+        const tokenUser = jwt.decode(token);
+        const user = authService.singleUser(db, username);
+        if (user && projectService.singleProject(db, tokenUser.project)) {
+            const promises = [];
+            const userData = {
                 project: '',
                 permission: ''
-            });
-            const projectsCollection = db.collection('projects');
-            const historySnapshot = await projectsCollection.where('name', '==', userDoc.data().project).get();
-            if (historySnapshot.empty) {
-                res.status(500).send({ message: 'ERROR.INTERNAL' });
-            } else {
-                const event = {
-                    timestamp: new Date().getTime(),
-                    type: 'LEFT',
-                    username: req.body.username,
-                    target: null
-                }
-                const historyDoc = historySnapshot.docs[0];
-                const history = historyDoc.data().history;
-                history.push(event);
-                await historyDoc.ref.update({
-                    history: history
-                });
             }
-            await notificationsService.createTeamNotification(db, jwt.decode(req.body.token).project, req.body.username, 'NOTIFICATIONS.NEW.LEAVE_PROJECT', [req.body.username], 'exit_to_app');
+            const eventData = {
+                timestamp: new Date().getTime(),
+                type: 'LEFT',
+                username: tokenUser.username,
+                target: null
+            }
+            promises.push(authService.updateUserData(db, tokenUser.username, userData));
+            promises.push(projectService.updateProjectHistory(db, tokenUser.project, eventData));
+            promises.push(notificationsService.createTeamNotification(db, tokenUser.project, tokenUser.username, 'NOTIFICATIONS.NEW.LEAVE_PROJECT', [tokenUser.username], 'exit_to_app'));
+            await Promise.all(promises);
             res.json({message: 'SUCCESS.LEAVE_PROJECT'});
+        } else {
+            res.status(500).send({ message: 'ERROR.INTERNAL' });
         }
     } catch (err) {
         next(err);
