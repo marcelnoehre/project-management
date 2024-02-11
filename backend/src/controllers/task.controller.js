@@ -191,7 +191,7 @@ async function deleteTask(req, res, next) {
         const task = taskService.singleTask(db, uid);
         if (task) {
             const promises = [];
-            promises.push(taskDoc.ref.delete());
+            promises.push(taskService.deleteTask(db, uid));
             promises.push(authService.updateUserStats(db, tokenUser.username, 'deleted', 1));
             promises.push(authService.updateProjectStats(db, tokenUser.project, 'deleted', 1));
             promises.push(notificationsService.createRelatedNotification(db, task.project, tokenUser.username, task.author, task.assigned, 'NOTIFICATIONS.NEW.DELETED_TASK', [tokenUser.username, task.title], 'delete'));
@@ -207,27 +207,25 @@ async function deleteTask(req, res, next) {
 
 async function clearTrashBin(req, res, next) {
     try {
-        const tasksCollection = db.collection('tasks');
-        const tasksSnapshot = await tasksCollection
-                .where('project', '==', req.body.project)
-                .where('state', '==', 'DELETED')
-                .get();
-        if (tasksSnapshot.empty) {
-            res.status(500).send({ message: 'ERROR.INTERNAL' });
-        } else {
-            const deletePromises = [];
-            let tasks = 0;
-            tasksSnapshot.forEach(doc => {
-                deletePromises.push(doc.ref.delete());
-                tasks++;
+        const token = req.body.token;
+        const tokenUser = jwt.decode(token);
+        const tasks = taskService.getTaskList(db, tokenUser.project, false);
+        if (tasks.length) {
+            let promises = [];
+            tasks.forEach(task => {
+                promises.push(taskService.deleteTask(db, task.uid));
             });
-            await Promise.all(deletePromises);
-            await authService.updateUserStats(db, jwt.decode(req.body.token).username, 'deleted', tasks);
-            await authService.updateUserStats(db, jwt.decode(req.body.token).username, 'cleared', 1);
-            await authService.updateProjectStats(db, jwt.decode(req.body.token).project, 'deleted', tasks);
-            await authService.updateProjectStats(db, jwt.decode(req.body.token).project, 'cleared', 1);
-            await notificationsService.createAdminNotification(db, req.body.project, jwt.decode(req.body.token).username, 'NOTIFICATIONS.NEW.CLEARED_TRASH_BIN', [jwt.decode(req.body.token).username], 'delete_forever');
+            await Promise.all(promises);
+            promises = [];
+            promises.push(authService.updateUserStats(db, tokenUser.username, 'deleted', tasks.length));
+            promises.push(authService.updateUserStats(db, tokenUser.username, 'cleared', 1));
+            promises.push(authService.updateProjectStats(db, tokenUser.project, 'deleted', tasks.length));
+            promises.push(authService.updateProjectStats(db, tokenUser.project, 'cleared', 1));
+            promises.push(notificationsService.createAdminNotification(db, tokenUser.project, tokenUser.username, 'NOTIFICATIONS.NEW.CLEARED_TRASH_BIN', [tokenUser.username], 'delete_forever'));
+            Promise.all(promises);
             res.json({'message': 'SUCCESS.CLEAR_TRASH_BIN'});
+        } else {
+            res.status(500).send({ message: 'ERROR.INTERNAL' });
         }
     } catch (err) {
         next(err);

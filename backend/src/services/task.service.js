@@ -95,11 +95,18 @@ async function updateTask(db, uid, taskData) {
     return tasksSnapshot.docs[0].ref.update(taskData);
 }
 
+async function deleteTask(db, uid) {
+    const tasksCollection = db.collection('tasks');
+    const tasksSnapshot = await tasksCollection.where('uid', '==', uid).get();
+    return tasksSnapshot.docs[0].ref.delete();
+}
+
 module.exports = { 
     singleTask,
     getTaskList,
     highestOrder,
     createTask,
     importTask,
-    updateTask
+    updateTask,
+    deleteTask
 };
