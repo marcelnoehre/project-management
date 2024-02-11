@@ -88,6 +88,12 @@ async function createUser(db, username, fullName, language, password) {
     await Promise.all(promises);
 }
 
+async function updateUserData(db, username, userData) {
+    const usersCollection = db.collection('users');
+    const usersSnapshot = await usersCollection.where('username', '==', username).get();
+    return usersSnapshot.docs[0].ref.update(userData);
+}
+
 /**
  * Update a user attribute.
  *
@@ -102,14 +108,14 @@ async function updateAttribute(db, username, attribute, value) {
     const validAttributes = ['username', 'fullName', 'language', 'initials', 'color', 'profilePicture', 'password'];
     if (validAttributes.includes(attribute)) {
         if (attribute === 'password') {
-            return updatePassword(db, username, attribute, value);
+            return updatePasswordAttribute(db, username, attribute, value);
         } else {
             if (attribute === 'username') {
-                if (!updatePassword(db, username, attribute, value)) {
+                if (!updatePasswordAttribute(db, username, attribute, value)) {
                     return false; 
                 }
             }
-            return updateUser(db, username, attribute, value);
+            return updateUserAttribute(db, username, attribute, value);
         }
     } else {
         return false;
@@ -126,7 +132,7 @@ async function updateAttribute(db, username, attribute, value) {
  *
  * @returns {boolean} Whether the password data has been updated successfully.
  */
-async function updatePassword(db, username, attribute, value) {
+async function updatePasswordAttribute(db, username, attribute, value) {
     const passwordsCollection = db.collection('passwords');
     const passwordsSnapshot = await passwordsCollection.where('username', '==', username).get();
     if (passwordsSnapshot.size === 1) {
@@ -145,7 +151,7 @@ async function updatePassword(db, username, attribute, value) {
  *
  * @returns {boolean} Whether the user data has been updated successfully.
  */
-async function updateUser(db, username, attribute, value) {
+async function updateUserAttribute(db, username, attribute, value) {
     const usersCollection = db.collection('users');
     const usersSnapshot = await usersCollection.where('username', '==', username).get();
     if (usersSnapshot.size === 1) {
@@ -259,9 +265,10 @@ module.exports = {
     singleUser,
     isNewUser,
     createUser,
+    updateUserData,
     updateAttribute,
-    updatePassword,
-    updateUser,
+    updatePasswordAttribute,
+    updateUserAttribute,
     deleteUser,
     generateInitials,
     defaultColor,

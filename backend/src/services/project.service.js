@@ -4,16 +4,17 @@ async function isNewProject(db, project) {
     return projectsSnapshot.empty;
 }
 
+async function singleProject(db, project) {
+    const projectsCollection = db.collection('projects');
+    const projectsSnapshot = await projectsCollection.where('name', '==', project).get();
+    if (projectsSnapshot.size === 1) {
+        return projectsSnapshot.docs[0].data();
+    } else {
+        return null;
+    }
+}
+
 async function createProject(db, username, project) {
-    const promises = [];
-    const usersCollection = db.collection('users');
-    const usersSnapshot = await usersCollection.where('username', '==', username).get();
-    const userDoc = usersSnapshot.docs[0];
-    const userData = {
-        project: project,
-        permission: 'OWNER',
-        isLoggedIn: true
-    };
     const projectsRef = db.collection('projects').doc();
     const projectData = {
         name: project,
@@ -34,9 +35,7 @@ async function createProject(db, username, project) {
             cleared: 0
         }
     };
-    promises.push(userDoc.ref.update(userData));
-    promises.push(projectsRef.set(projectData));
-    await Promise.all(promises);
+    return projectsRef.set(projectData);
 }
 
 async function getTeamMembers(db, project) {
@@ -56,8 +55,21 @@ async function getTeamMembers(db, project) {
     return users;
 }
 
+async function updateProjectHistory(db, project, eventData) {
+    const projectsCollection = db.collection('projects');
+    const projectsSnapshot = await projectsCollection.where('name', '==', project).get();
+    const projectsDoc = projectsSnapshot.docs[0];
+    const history = projectsDoc.data().history;
+    history.push(eventData);
+    return projectsDoc.ref.update({
+        history: history
+    });
+}
+
 module.exports = {
     isNewProject,
+    singleProject,
     createProject,
-    getTeamMembers
+    getTeamMembers,
+    updateProjectHistory
 };

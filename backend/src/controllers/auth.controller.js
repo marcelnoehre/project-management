@@ -143,7 +143,7 @@ async function toggleNotifications(req, res, next) {
         const notificationsEnabled = req.body.notificationsEnabled;
         const tokenUser = jwt.decode(token);
         const user = await authService.singleUser(db, tokenUser.username);
-        if (user && authService.updateUser(db, tokenUser.username, 'notificationsEnabled', notificationsEnabled)) {
+        if (user && authService.updateUserAttribute(db, tokenUser.username, 'notificationsEnabled', notificationsEnabled)) {
             res.json({ message: notificationsEnabled ? 'SUCCESS.NOTIFICATIONS_ON' : 'SUCCESS.NOTIFICATIONS_OFF' });
         } else {
             res.status(500).send({ message: 'ERROR.INTERNAL' });
