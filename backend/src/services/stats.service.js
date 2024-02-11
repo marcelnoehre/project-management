@@ -131,11 +131,21 @@ function averageTime(tasks) {
     return averageTime;
 }
 
+async function wip(db, project) {
+    const tasksCollection = db.collection('tasks');
+    const tasksSnapshot = await tasksCollection
+        .where('project', '==', project)
+        .where('state', '==', 'PROGRESS')
+        .get();
+    return tasksSnapshot.size;
+}
+
 
 module.exports = { 
     getTaskList,
     optimizeOrder,
     stats,
     statLeaders,
-    averageTime
+    averageTime,
+    wip
 };

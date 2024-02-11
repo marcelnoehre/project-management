@@ -94,18 +94,9 @@ async function averageTime(req, res, next) {
 
 async function wip(req, res, next) {
     try {
-        const tasksCollection = db.collection('tasks');
-        const tasksSnapshot = await tasksCollection
-            .where('project', '==', jwt.decode(req.body.token).project)
-            .where('state', '==', 'PROGRESS')
-            .get();
-        let amount = 0;
-        if (!tasksSnapshot.empty) {
-            tasksSnapshot.forEach(doc => {
-                amount++;
-            });
-        }
-        res.json(amount);
+        const token = req.body.token;
+        const tokenUser = jwt.decode(token);
+        res.json(statsService.wip(db, tokenUser.project));
     } catch (err) {
         next(err);
     }
