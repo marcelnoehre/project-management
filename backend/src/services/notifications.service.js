@@ -32,7 +32,7 @@ async function getTypedNotifications(db, project, username, type) {
         .orderBy('timestamp', 'desc')
         .get();
     const notifiactions = [];
-    notificationsSnapshot.forEach(doc => {
+    notificationsSnapshot.forEach((doc) => {
         const data = doc.data();
         notifiactions.push({
             uid: data.uid,
@@ -66,7 +66,7 @@ async function createTeamNotification(db, project, self, message, data, icon) {
             .where('permission', '!=', 'INVITED')
             .get();
         const unseen = [];
-        usersSnapshot.forEach(doc => {
+        usersSnapshot.forEach((doc) => {
             const user = doc.data();
             if (user.username !== self && user.notificationsEnabled) {
                 unseen.push(user.username);

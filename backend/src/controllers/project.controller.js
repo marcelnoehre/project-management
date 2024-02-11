@@ -1,3 +1,5 @@
+const authService = require('../services/auth.service');
+const projectService = require('../services/project.service');
 const notificationsService = require('../services/notifications.service');
 const admin = require('firebase-admin');
 const jwt = require('jsonwebtoken');
@@ -5,44 +7,19 @@ const db = admin.firestore();
 
 async function createProject(req, res, next) {
     try {
-        const usersCollection = db.collection('users');
-        const usersSnapshot = await usersCollection.where('username', '==', req.body.username).get();
-        if (usersSnapshot.empty) {
-            res.status(500).send({ message: 'ERROR.INTERNAL' });
-        } else {
-            const projectSnapshot = await usersCollection.where('project', '==', req.body.project).get();
-            if (projectSnapshot.empty) {
-                const projectsRef = db.collection('projects').doc();
-                const project = {
-                    name: req.body.project,
-                    history: [{
-                        timestamp: new Date().getTime(),
-                        type: 'CREATED',
-                        username: req.body.username,
-                        target: null
-                    }],
-                    stats: {
-                        created: 0,
-                        imported: 0,
-                        updated: 0,
-                        edited: 0,
-                        trashed: 0,
-                        restored: 0,
-                        deleted: 0,
-                        cleared: 0
-                    }
-                };
-                await projectsRef.set(project);
-                const userDoc = usersSnapshot.docs[0];
-                await userDoc.ref.update({
-                    project: req.body.project,
-                    permission: 'OWNER',
-                    isLoggedIn: true
-                });
+        const token = req.body.token;
+        const project = req.body.project;
+        const tokenUser = jwt.decode(token);
+        const user = authService.singleUser(db, tokenUser.username);
+        if (user) {
+            if (projectService.isNewProject(db, project)) {
+                projectService.createProject(db, tokenUser.username, project);
                 res.json({ message: "SUCCESS.CREATE_PROJECT" });
             } else {
-                res.status(402).send({ message: 'ERROR.CREATE_PROJECT' });
+                res.status(409).send({ message: 'ERROR.CREATE_PROJECT' });
             }
+        } else {
+            res.status(500).send({ message: 'ERROR.INTERNAL' });
         }
     } catch (err) {
         next(err);
