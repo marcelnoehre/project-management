@@ -139,11 +139,9 @@ export class DbService extends AdapterService {
 
 
   // ### TASKS ###
-  public override createTask(token: string, author: string, project: string, title: string, description: string, assigned: string, state: string): Observable<Response> {
+  public override createTask(token: string, title: string, description: string, assigned: string, state: string): Observable<Response> {
     const body = {
       token: token,
-      author: author,
-      project: project,
       title: title,
       description: description,
       assigned: assigned,
@@ -152,20 +150,17 @@ export class DbService extends AdapterService {
     return this.http.post<Response>(this.basePath + this.task + 'createTask', body);
   }
   
-  public override importTasks(token: string, author: string, project: string, tasks: Task[]): Observable<Progress> {
+  public override importTasks(token: string, tasks: Task[]): Observable<Progress> {
     const body = {
       token: token,
-      author: author,
-      project: project,
       tasks: tasks
     }
     return this.http.post<Progress>(this.basePath + this.task + 'importTasks', body);
   }
   
-  public override getTaskList(token: string, project: string): Observable<State[]> {
+  public override getTaskList(token: string): Observable<State[]> {
     const body = {
-      token: token,
-      project: project
+      token: token
     };
     return this.http.post<State[]>(this.basePath + this.task + 'getTaskList', body);
   }
@@ -178,10 +173,9 @@ export class DbService extends AdapterService {
     return this.http.post<State[]>(this.basePath + this.task + 'updateTask', body);
   }
 
-  public override updatePosition(token: string, project: string, uid: string, state: string, order: number): Observable<State[]> {
+  public override updatePosition(token: string, uid: string, state: string, order: number): Observable<State[]> {
     const body = {
       token: token,
-      project: project,
       uid: uid,
       state: state,
       order: order
@@ -189,45 +183,40 @@ export class DbService extends AdapterService {
     return this.http.post<State[]>(this.basePath + this.task + 'updatePosition', body);
   }
 
-  public override moveToTrashBin(token: string, project: string, uid: string): Observable<State[]> {
+  public override moveToTrashBin(token: string, uid: string): Observable<State[]> {
     const body = {
       token: token,
-      project: project,
       uid: uid
     }
     return this.http.post<State[]>(this.basePath + this.task + 'moveToTrashBin', body);
   }
 
-  public override getTrashBin(token: string, project: string): Observable<Task[]> {
+  public override getTrashBin(token: string): Observable<Task[]> {
     const body = {
-      token: token,
-      project: project
+      token: token
     }
     return this.http.post<Task[]>(this.basePath + this.task + 'getTrashBin', body);
   }
 
-  public override deleteTask(token: string, project: string, uid: string): Observable<Task[]> {
+  public override deleteTask(token: string, uid: string): Observable<Task[]> {
     const body = {
       token: token,
-      project: project,
       uid: uid
     }
     return this.http.post<Task[]>(this.basePath + this.task + 'deleteTask', body);
   }
   
-  public override restoreTask(token: string, project: string, uid: string): Observable<Task[]> {
+  public override restoreTask(token: string, uid: string): Observable<Task[]> {
     const body = {
       token: token,
-      project: project,
       uid: uid
     }
     return this.http.post<Task[]>(this.basePath + this.task + 'restoreTask', body);
   }
 
-  public override clearTrashBin(token: string, project: string): Observable<Response> {
+  public override clearTrashBin(token: string): Observable<Response> {
     const body = {
-      token: token,
-      project: project
+      token: token
     }
     return this.http.post<Response>(this.basePath + this.task + 'clearTrashBin', body);
   }

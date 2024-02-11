@@ -47,8 +47,8 @@ async function createTask(req, res, next) {
 async function importTasks(req, res, next) {
     try {
         const token = req.bdoy.token;
-        const tokenUser = jwt.decode(token);
         const tasks = req.body.tasks;
+        const tokenUser = jwt.decode(token);
         const result = {
             success: 0,
             fail: 0
@@ -188,8 +188,8 @@ async function updatePosition(req, res, next) {
 async function moveToTrashBin(req, res, next) {
     try {
         const token = req.body.token;
-        const tokenUser = jwt.decode(token);
         const uid = req.body.uid;
+        const tokenUser = jwt.decode(token);
         const task = taskService.singleTask(db, uid);
         if (task) {
             const taskData = {

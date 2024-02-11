@@ -41,7 +41,7 @@ export class KanbanBoardComponent implements AfterViewInit {
 
   async ngAfterViewInit(): Promise<void> {
     while (this.user.project === undefined) await new Promise<void>(done => setTimeout(() => done(), 5));
-    this.api.getTaskList(this.user.token, this.user.project).subscribe(
+    this.api.getTaskList(this.user.token).subscribe(
       (taskList) => {
         this.taskList = taskList;        
       },
@@ -55,7 +55,7 @@ export class KanbanBoardComponent implements AfterViewInit {
     try {
       if (event.event.target.id === TaskState.DELETED) {
         this.loadingDelete = true;
-        this.api.moveToTrashBin(this.user.token, this.user.project, event.previousContainer.data[event.previousIndex].uid).subscribe(
+        this.api.moveToTrashBin(this.user.token, event.previousContainer.data[event.previousIndex].uid).subscribe(
           (tasklist) => {
             this.loadingDelete = false;
             this.taskList = tasklist;
@@ -81,7 +81,7 @@ export class KanbanBoardComponent implements AfterViewInit {
           event.currentIndex
         );      
       }
-      this.api.updatePosition(this.user.token, this.user.project, foundState!.tasks[event.currentIndex].uid, foundState!.state, (previousIndex + nextIndex) / 2).subscribe(
+      this.api.updatePosition(this.user.token, foundState!.tasks[event.currentIndex].uid, foundState!.state, (previousIndex + nextIndex) / 2).subscribe(
         (tasklist) => {
           this.taskList = tasklist;
         },

@@ -102,44 +102,44 @@ export class ApiService {
 
 
 	// ### TASKS ###
-	public createTask(token: string, author: string, project: string, title: string, description: string, assigned: string, state: string): Observable<Response> {
-		return this.adapter.createTask(token, author, project, title, description, assigned, state);
+	public createTask(token: string, title: string, description: string, assigned: string, state: string): Observable<Response> {
+		return this.adapter.createTask(token, title, description, assigned, state);
 	}
 
-	public importTasks(token: string, author: string, project: string, tasks: Task[]): Observable<Progress> {
-		return this.adapter.importTasks(token, author, project, tasks);
+	public importTasks(token: string, tasks: Task[]): Observable<Progress> {
+		return this.adapter.importTasks(token, tasks);
 	}
 
-	public getTaskList(token: string, project: string): Observable<State[]> {
-		return this.adapter.getTaskList(token, project);
+	public getTaskList(token: string): Observable<State[]> {
+		return this.adapter.getTaskList(token);
 	}
 
 	public updateTask(token: string, task: Task): Observable<State[]> {
 		return this.adapter.updateTask(token, task);
 	}
 
-	public updatePosition(token: string, project: string, uid: string, state: string, order: number): Observable<State[]> {
-		return this.adapter.updatePosition(token, project, uid, state, order);
+	public updatePosition(token: string, uid: string, state: string, order: number): Observable<State[]> {
+		return this.adapter.updatePosition(token, uid, state, order);
 	}
 
-	public moveToTrashBin(token: string, project: string, uid: string): Observable<State[]> {
-		return this.adapter.moveToTrashBin(token, project, uid);
+	public moveToTrashBin(token: string, uid: string): Observable<State[]> {
+		return this.adapter.moveToTrashBin(token, uid);
 	}
 	
-	public getTrashBin(token: string, project: string): Observable<Task[]> {
-		return this.adapter.getTrashBin(token, project);
+	public getTrashBin(token: string): Observable<Task[]> {
+		return this.adapter.getTrashBin(token);
 	}
 
-	public deleteTask(token: string, project: string, uid: string): Observable<Task[]> {
-		return this.adapter.deleteTask(token, project, uid);
+	public deleteTask(token: string, uid: string): Observable<Task[]> {
+		return this.adapter.deleteTask(token, uid);
 	}
 
-	public restoreTask(token: string, project: string, uid: string): Observable<Task[]> {
-		return this.adapter.restoreTask(token, project, uid);
+	public restoreTask(token: string, uid: string): Observable<Task[]> {
+		return this.adapter.restoreTask(token, uid);
 	}
 
-	public clearTrashBin(token: string, project: string): Observable<Response> {
-		return this.adapter.clearTrashBin(token, project);
+	public clearTrashBin(token: string): Observable<Response> {
+		return this.adapter.clearTrashBin(token);
 	}
 
 	// ### NOTIFICATIONS ###

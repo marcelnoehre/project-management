@@ -147,19 +147,20 @@ export class MockService extends AdapterService {
 
 
   // ### TASKS ###
-  public override createTask(token: string, author: string, project: string, title: string, description: string, assigned: string, state: string): Observable<Response> {
+  public override createTask(token: string, title: string, description: string, assigned: string, state: string): Observable<Response> {
     const url = this.basePath + this.task + 'create-task/mockTask.json';
     return this.http.get<Response>(url);
   }
 
-  public override importTasks(token: string, author: string, project: string, tasks: Task[]): Observable<Progress> {
+  public override importTasks(token: string, tasks: Task[]): Observable<Progress> {
     const url = this.basePath + this.task + 'import-tasks/progress.json';
     return this.http.get<Progress>(url);
   }
 
-  public override getTaskList(token: string, project: string): Observable<State[]> {
-    const url = this.basePath + this.task + `get-task-list/${project}.json`;
-    return this.http.get<State[]>(url);
+  public override getTaskList(token: string): Observable<State[]> {
+    // const url = this.basePath + this.task + `get-task-list/${project}.json`;
+    // return this.http.get<State[]>(url);
+    throw new Error('Method not implemented!');
   }
 
   public override updateTask(token: string, task: Task): Observable<State[]> {
@@ -167,32 +168,32 @@ export class MockService extends AdapterService {
     return this.http.get<State[]>(url);
   }
 
-  public override updatePosition(token: string, project: string, uid: string, state: string, order: number): Observable<State[]> {
+  public override updatePosition(token: string, uid: string, state: string, order: number): Observable<State[]> {
     const url = this.basePath + this.task + 'update-position/task.json';
     return this.http.get<State[]>(url);
   }
 
-  public override moveToTrashBin(token: string, project: string, uid: string): Observable<State[]> {
+  public override moveToTrashBin(token: string, uid: string): Observable<State[]> {
     const url = this.basePath + this.task + 'move-to-trash-bin/moved.json';
     return this.http.get<State[]>(url);
   }
   
-  public override getTrashBin(token: string, project: string): Observable<Task[]> {
+  public override getTrashBin(token: string): Observable<Task[]> {
     const url = this.basePath + this.task + 'get-trash-bin/trash-bin.json';  
     return this.http.get<Task[]>(url);
   }
 
-  public override deleteTask(token: string, project: string, uid: string): Observable<Task[]> {
+  public override deleteTask(token: string, uid: string): Observable<Task[]> {
     const url = this.basePath + this.task + 'delete-task/delete.json';
     return this.http.get<Task[]>(url);
   }
 
-  public override restoreTask(token: string, project: string, uid: string): Observable<Task[]> {
+  public override restoreTask(token: string, uid: string): Observable<Task[]> {
     const url = this.basePath + this.task + 'restore-task/restore.json';
     return this.http.get<Task[]>(url);
   }
 
-  public override clearTrashBin(token: string, project: string): Observable<Response> {
+  public override clearTrashBin(token: string): Observable<Response> {
     const url = this.basePath + this.task + 'clear-trash-bin/clear.json';
     return this.http.get<Response>(url);
   }

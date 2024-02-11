@@ -48,25 +48,25 @@ export abstract class AdapterService {
 
 
   // ### TASKS ###
-  public abstract createTask(token: string, author: string, project: string, title: string, description: string, assigned: string, state: string): Observable<Response>;
+  public abstract createTask(token: string, title: string, description: string, assigned: string, state: string): Observable<Response>;
 
-  public abstract importTasks(token: string, author: string, project: string, tasks: Task[]): Observable<Progress>;
+  public abstract importTasks(token: string, tasks: Task[]): Observable<Progress>;
   
-  public abstract getTaskList(token: string, project: string): Observable<State[]>;
+  public abstract getTaskList(token: string): Observable<State[]>;
 
   public abstract updateTask(token: string, task: Task): Observable<State[]>;
 
-  public abstract updatePosition(token: string, project: string, uid: string, state: string, order: number): Observable<State[]>;
+  public abstract updatePosition(token: string, uid: string, state: string, order: number): Observable<State[]>;
 
-  public abstract moveToTrashBin(token: string, project: string, uid: string): Observable<State[]>;
+  public abstract moveToTrashBin(token: string, uid: string): Observable<State[]>;
 
-  public abstract getTrashBin(token: string, project: string): Observable<Task[]>;
+  public abstract getTrashBin(token: string): Observable<Task[]>;
 
-  public abstract deleteTask(token: string, project: string, uid: string): Observable<Task[]>;
+  public abstract deleteTask(token: string, uid: string): Observable<Task[]>;
 
-  public abstract restoreTask(token: string, project: string, uid: string): Observable<Task[]>;
+  public abstract restoreTask(token: string, uid: string): Observable<Task[]>;
 
-  public abstract clearTrashBin(token: string, project: string): Observable<Response>;
+  public abstract clearTrashBin(token: string): Observable<Response>;
 
   // ### NOTIFICATIONS ###
   public abstract getNotifications(token: string, project: string, username: string): Observable<Notification[]>;
