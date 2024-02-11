@@ -104,57 +104,9 @@ async function wip(req, res, next) {
 
 async function taskProgress(req, res, next) {
     try {
-        const tasksCollection = db.collection('tasks');
-        const tasksSnapshot = await tasksCollection.where('project', '==', jwt.decode(req.body.token).project).get();
-        const charData = {
-            timestamps: [],
-            NONE: [],
-            TODO: [],
-            PROGRESS: [],
-            REVIEW: [],
-            DONE: []
-        }
-        if (!tasksSnapshot.empty) {
-            const historyEvents = [];
-            tasksSnapshot.forEach(doc => {
-                if (doc.data().state !== 'DELETED') {
-                    doc.data().history.forEach((event) => {
-                        historyEvents.push(event);
-                    });
-                }
-            });
-            historyEvents.sort((a, b) => a.timestamp - b.timestamp);
-            const states = ['NONE', 'TODO', 'PROGRESS', 'REVIEW', 'DONE'];
-            const counters = {
-                NONE: 0,
-                TODO: 0,
-                PROGRESS: 0,
-                REVIEW: 0,
-                DONE: 0
-            };
-            historyEvents.forEach((event) => {
-                if (states.indexOf(event.state) !== -1) {
-                    if (event.previous === null) {
-                        counters[event.state]++;
-                    } else {
-                        if (states.indexOf(event.state) > states.indexOf(event.previous)) {
-                            for (let i = states.indexOf(event.state); i > states.indexOf(event.previous); i--) {
-                                counters[states[i]]++;
-                            }
-                        } else if (states.indexOf(event.state) < states.indexOf(event.previous)) {
-                            for (let i = states.indexOf(event.previous); i > states.indexOf(event.state); i--) {
-                                counters[states[i]]--;
-                            }
-                        }
-                    }
-                    charData.timestamps.push(event.timestamp);
-                    states.forEach((state) => {
-                        charData[state].push(counters[state]);
-                    });
-                }
-            });
-        }
-        res.json(charData);
+        const token = req.body.token;
+        const tokenUser = jwt.decode(token);
+        res.json(statsService.taskProgress(db, tokenUser.project));
     } catch (err) {
         next(err);
     }

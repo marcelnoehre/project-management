@@ -140,7 +140,56 @@ async function wip(db, project) {
     return tasksSnapshot.size;
 }
 
-async function projectRoadmap(project) {
+async function taskProgress(db, project) {
+    const taskProgress = {
+        timestamps: [],
+        NONE: [],
+        TODO: [],
+        PROGRESS: [],
+        REVIEW: [],
+        DONE: []
+    }
+    const tasks = [].concat(...Object.values(getTaskList(db, project)));
+    const historyEvents = [];
+    tasks.forEach((task) => {
+        task.history.forEach((event) => {
+            historyEvents.push(event);
+        });
+    });
+    historyEvents.sort((a, b) => a.timestamp - b.timestamp);
+    const states = ['NONE', 'TODO', 'PROGRESS', 'REVIEW', 'DONE'];
+    const counters = {
+        NONE: 0,
+        TODO: 0,
+        PROGRESS: 0,
+        REVIEW: 0,
+        DONE: 0
+    };        
+    historyEvents.forEach((event) => {
+        if (states.indexOf(event.state) !== -1) {
+            if (event.previous === null) {
+                counters[event.state]++;
+            } else {
+                if (states.indexOf(event.state) > states.indexOf(event.previous)) {
+                    for (let i = states.indexOf(event.state); i > states.indexOf(event.previous); i--) {
+                        counters[states[i]]++;
+                    }
+                } else if (states.indexOf(event.state) < states.indexOf(event.previous)) {
+                    for (let i = states.indexOf(event.previous); i > states.indexOf(event.state); i--) {
+                        counters[states[i]]--;
+                    }
+                }
+            }
+            taskProgress.timestamps.push(event.timestamp);
+            states.forEach((state) => {
+                taskProgress[state].push(counters[state]);
+            });
+        }
+    });
+    return taskProgress;
+} 
+
+function projectRoadmap(project) {
     const history = project.history;
     history.forEach((event) => {
         event.type = 'STATS.PROJECT_ROADMAP.' + event.type;
@@ -156,5 +205,6 @@ module.exports = {
     statLeaders,
     averageTime,
     wip,
+    taskProgress,
     projectRoadmap
 };
