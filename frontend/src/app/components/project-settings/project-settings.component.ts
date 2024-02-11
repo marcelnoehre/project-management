@@ -184,6 +184,10 @@ export class ProjectSettingsComponent implements OnInit {
     return !this.user.hasPermission(required) || permission === Permission.OWNER;
   }
 
+  public hasError(formControl: string, type: string): boolean {
+    return this.inviteForm.controls[formControl].hasError(type);
+  }
+
   deleteLoading(username: string) {
     return username === this.loadingDelete;
   }

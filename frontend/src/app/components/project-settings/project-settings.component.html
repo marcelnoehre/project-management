@@ -54,8 +54,13 @@
                         formControlName="usernameFormControl"
                         placeholder="{{'USER.USERNAME'|translate}}"
                         matInput
+                        required
+                        minlength="4"
+                        maxlength="16"
                     />
                     <mat-icon matPrefix> group_add </mat-icon>
+                    <mat-error *ngIf="hasError('usernameFormControl', 'required')"> {{ 'ERROR.REQUIRED.USERNAME' | translate }} </mat-error>
+                    <mat-error *ngIf="hasError('usernameFormControl', 'minlength')">{{ 'ERROR.MINLENGTH.USERNAME' | translate }}</mat-error>
                 </mat-form-field>
                 <button mat-fab color="primary" (click)="inviteUser()" [disabled]="!usernameValid()">
                     <app-spinner-icon class="material-icons" icon="add" [spinning]="loadingInvite"></app-spinner-icon>
