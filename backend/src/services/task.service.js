@@ -8,11 +8,11 @@ async function singleTask(db, uid) {
     }
 }
 
-async function getTaskList(db, project) {
+async function getTaskList(db, project, active) {
     const tasksCollection = db.collection('tasks');
     const tasksSnapshot = await tasksCollection
         .where('project', '==', project)
-        .where('state', '!=', 'DELETED')
+        .where('state', active ? '!=' : '==', 'DELETED')
         .orderBy('state')
         .orderBy('order')
         .get();
