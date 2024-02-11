@@ -1,5 +1,7 @@
 const projectService = require('../services/project.service');
 
+const statLabels = ['created', 'imported', 'updated', 'edited', 'trashed', 'restored', 'deleted', 'cleared'];
+
 async function getTaskList(db, project) {
     const tasksCollection = db.collection('tasks');
     const tasksSnapshot = await tasksCollection
@@ -33,7 +35,7 @@ async function optimizeOrder(tasks) {
     await Promise.all(promises);
 }
 
-async function stats(db, project) {
+function stats(db, project) {
     const stats = []
     const projectStats = {
         id: 'STATS.PROJECT',
@@ -48,7 +50,6 @@ async function stats(db, project) {
         othersStats.stats = project.stats;
     }
     stats.push(projectStats);
-    const statLabels = ['created', 'imported', 'updated', 'edited', 'trashed', 'restored', 'deleted', 'cleared'];
     const members = projectService.getTeamMembers(db, project.name);
     members.forEach((doc) => {
         const user = doc.data();
@@ -63,9 +64,38 @@ async function stats(db, project) {
     stats.push(othersStats);
 }
 
+function statLeaders(db, project) {
+    const leader = {
+        created: { username: [], value: 0 },
+        imported: { username: [], value: 0 },
+        updated: { username: [], value: 0 },
+        edited: { username: [], value: 0 },
+        trashed: { username: [], value: 0 },
+        restored: { username: [], value: 0 },
+        deleted: { username: [], value: 0 },
+        cleared: { username: [], value: 0 }
+    };
+    const members = projectService.getTeamMembers(db, project);
+    members.forEach((doc) => {
+        const user = doc.data();
+        statLabels.forEach((stat) => {
+            if (user.stats[stat] > leader[stat].value) {
+                leader[stat] = {
+                    username: [user.username],
+                    value: user.stats[stat]
+                };
+            } else if (user.stats[stat] === leader[stat].value) {
+                leader[stat].username.push(user.username);
+            }
+        });
+    });
+    return leader;
+}
+
 
 module.exports = { 
     getTaskList,
     optimizeOrder,
-    stats
+    stats,
+    statLeaders
 };

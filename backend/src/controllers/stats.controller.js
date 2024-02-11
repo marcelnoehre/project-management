@@ -54,35 +54,9 @@ async function stats(req, res, next) {
 
 async function statLeaders(req, res, next) {
     try {
-        const usersCollection = db.collection('users');
-        const usersSnapshot = await usersCollection.where('project', '==', jwt.decode(req.body.token).project).get();
-        const leader = {
-            created: { username: [], value: 0 },
-            imported: { username: [], value: 0 },
-            updated: { username: [], value: 0 },
-            edited: { username: [], value: 0 },
-            trashed: { username: [], value: 0 },
-            restored: { username: [], value: 0 },
-            deleted: { username: [], value: 0 },
-            cleared: { username: [], value: 0 }
-        };
-        if (!usersSnapshot.empty) {
-            const stats = ['created', 'imported', 'updated', 'edited', 'trashed', 'restored', 'deleted', 'cleared'];
-            usersSnapshot.forEach(doc => {
-                const user = doc.data();
-                stats.forEach((stat) => {
-                    if (user.stats[stat] > leader[stat].value) {
-                        leader[stat] = {
-                            username: [user.username],
-                            value: user.stats[stat]
-                        };
-                    } else if (user.stats[stat] === leader[stat].value) {
-                        leader[stat].username.push(user.username);
-                    }
-                });
-            });
-        }
-        res.json(leader);
+        const token = req.body.token;
+        const tokenUser = jwt.decode(token);
+        res.json(statsService.statLeaders(db, tokenUser.project));
     } catch (err) {
         next(err);
     }
