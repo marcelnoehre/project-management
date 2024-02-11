@@ -1,37 +1,14 @@
+const statsService = require('../services/stats.service');
 const admin = require('firebase-admin');
 const jwt = require('jsonwebtoken');
 const db = admin.firestore();
 
 async function optimizeOrder(req, res, next) {
     try {
-        const tasksCollection = db.collection('tasks');
-        const tasksSnapshot = await tasksCollection
-            .where('project', '==', jwt.decode(req.body.token).project)
-            .where('state', '!=', 'DELETED')
-            .orderBy('state')
-            .orderBy('order')
-            .get();
-        if (!tasksSnapshot.empty) {
-            const sort = {
-                NONE: [],
-                TODO: [],
-                PROGRESS: [],
-                REVIEW: [],
-                DONE: []
-            };
-            tasksSnapshot.forEach(doc => {
-                const task = doc.data();
-                sort[task.state].push(doc);
-            });
-            const states = [sort.NONE, sort.TODO, sort.PROGRESS, sort.REVIEW, sort.DONE];
-            states.forEach(async (state) => {
-                for (let i = 0; i < state.length; i++) {
-                    await state[i].ref.update({
-                        order: i + 1
-                    });
-                }
-            });
-        }
+        const token = req.body.token;
+        const tokenUser = jwt.decode(token);
+        const tasks = statsService.getTaskList(db, tokenUser.project);
+        statsService.optimizeOrder(tasks);
         res.json({message: 'SUCCESS.STATS.OPTIMIZE'});
     } catch (err) {
         next(err);
