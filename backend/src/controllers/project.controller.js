@@ -5,6 +5,19 @@ const admin = require('firebase-admin');
 const jwt = require('jsonwebtoken');
 const db = admin.firestore();
 
+/**
+ * Creates a project.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @throws {Error} - Throws an error if creation fails.
+ * - 409: CREATE_PROJECT
+ * - 500: INTERNAL
+ *
+ * @returns {void}
+ */
 async function createProject(req, res, next) {
     try {
         const token = req.body.token;
@@ -34,6 +47,18 @@ async function createProject(req, res, next) {
     }
 }
 
+/**
+ * Get a sorted list of team members.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @throws {Error} - Throws an error if retrieval fails.
+ * - 500: INTERNAL
+ *
+ * @returns {void}
+ */
 async function getTeamMembers(req, res, next) {
     try {
         const token = req.body.token;
@@ -49,6 +74,21 @@ async function getTeamMembers(req, res, next) {
     }
 }
 
+/**
+ * Marks a user as invited.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @throws {Error} - Throws an error if invite fails.
+ * - 404: NO_ACCOUNT
+ * - 423: PENDING_INVITE
+ * - 423: HAS_PROJECT
+ * - 500: INTERNAL
+ *
+ * @returns {void}
+ */
 async function inviteUser(req, res, next) {
     try {
         const token = req.body.token;
@@ -92,6 +132,18 @@ async function inviteUser(req, res, next) {
     }
 }
 
+/**
+ * Updates a invite.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @throws {Error} - Throws an error if update fails.
+ * - 500: INTERNAL
+ *
+ * @returns {void}
+ */
 async function handleInvite(req, res, next) {
     try {
         const token = req.body.token;
@@ -127,6 +179,18 @@ async function handleInvite(req, res, next) {
     }
 }
 
+/**
+ * Updates a user permission.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @throws {Error} - Throws an error if update fails.
+ * - 500: INTERNAL
+ *
+ * @returns {void}
+ */
 async function updatePermission(req, res, next) {
     try {
         const token = req.body.token;
@@ -157,6 +221,18 @@ async function updatePermission(req, res, next) {
     }
 }
 
+/**
+ * Removes a user from the project.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @throws {Error} - Throws an error if removal fails.
+ * - 500: INTERNAL
+ *
+ * @returns {void}
+ */
 async function removeUser(req, res, next) {
     try {
         const token = req.body.token;
@@ -188,6 +264,18 @@ async function removeUser(req, res, next) {
     }
 }
 
+/**
+ * Removes a user from the project.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @throws {Error} - Throws an error if removal fails.
+ * - 500: INTERNAL
+ *
+ * @returns {void}
+ */
 async function leaveProject(req, res, next) {
     try {
         const token = req.body.token;

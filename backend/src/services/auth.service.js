@@ -88,6 +88,15 @@ async function createUser(db, username, fullName, language, password) {
     await Promise.all(promises);
 }
 
+/**
+ * Update the user data.
+ *
+ * @param {Object} db - Firestore instance.
+ * @param {string} username - The username.
+ * @param {Object} userData - The object of user data that should get updated.
+ *
+ * @returns {Promise} Promise of the running update.
+ */
 async function updateUserData(db, username, userData) {
     const usersCollection = db.collection('users');
     const usersSnapshot = await usersCollection.where('username', '==', username).get();
@@ -95,7 +104,7 @@ async function updateUserData(db, username, userData) {
 }
 
 /**
- * Update a user attribute.
+ * Update a user | password attribute attribute.
  *
  * @param {Object} db - Firestore instance.
  * @param {string} username - The username.
@@ -123,7 +132,7 @@ async function updateAttribute(db, username, attribute, value) {
 }
 
 /**
- * Update the password data.
+ * Update a password attribute.
  *
  * @param {Object} db - Firestore instance.
  * @param {string} username - The username.
@@ -142,7 +151,7 @@ async function updatePasswordAttribute(db, username, attribute, value) {
 }
 
 /**
- * Update the user data.
+ * Update a user attribute.
  *
  * @param {Object} db - Firestore instance.
  * @param {string} username - The username.
