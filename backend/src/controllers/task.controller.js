@@ -160,32 +160,23 @@ async function getTrashBin(req, res, next) {
 
 async function restoreTask(req, res, next) {
     try {
-        const tasksCollection = db.collection('tasks');
-        const tasksSnapshot = await tasksCollection.where('uid', '==', req.body.uid).get();
-        if (tasksSnapshot.empty) {
-            res.status(500).send({ message: 'ERROR.INTERNAL' });
+        const token = req.body.token;
+        const tokenUser = jwt.decode(token);
+        const uid = req.body.uid;
+        const task = taskService.singleTask(db, uid);
+        if (task) {
+            const taskData = {
+                state: task.history[task.history.length - 1].state
+            }
+            const promises = [];
+            promises.push(taskService.updateTask(db, uid, taskData));
+            promises.push(authService.updateUserStats(db, tokenUser.username, 'restored', 1));
+            promises.push(authService.updateProjectStats(db, tokenUser.project, 'restored', 1));
+            promises.push(notificationsService.createRelatedNotification(db, task.project, tokenUser.username, task.author, task.assigned, 'NOTIFICATIONS.NEW.RESTORED_TASK', [tokenUser.username, task.title], 'undo'));
+            await Promise.all(promises);
+            res.json(taskService.getTaskList(db, tokenUser.project, false));
         } else {
-            const taskDoc = tasksSnapshot.docs[0];
-            const history = taskDoc.data().history;
-            const previousState = history[history.length - 2].state
-            await taskDoc.ref.update({
-                state: previousState,
-                history: history
-            });
-            await authService.updateUserStats(db, jwt.decode(req.body.token).username, 'restored', 1);
-            await authService.updateProjectStats(db, jwt.decode(req.body.token).project, 'restored', 1);
-            await notificationsService.createRelatedNotification(db, taskDoc.data().project, jwt.decode(req.body.token).username, taskDoc.data().author, taskDoc.data().assigned, 'NOTIFICATIONS.NEW.RESTORED_TASK', [jwt.decode(req.body.token).username, taskDoc.data().title], 'undo');
-            const taskListSnapshot = await tasksCollection
-                .where('project', '==', req.body.project)
-                .where('state', '==', 'DELETED')
-                .orderBy('state')
-                .orderBy('order')
-                .get();
-            const tasks = [];
-            taskListSnapshot.forEach(doc => {
-                tasks.push(doc.data());
-            });
-            res.json(tasks);
+            res.status(500).send({ message: 'ERROR.INTERNAL' });
         }
     } catch (err) {
         next(err);
