@@ -89,46 +89,35 @@ async function updateTask(req, res, next) {
 
 async function updatePosition(req, res, next) {
     try {
-        const tasksCollection = db.collection('tasks');
-        const tasksSnapshot = await tasksCollection.where('uid', '==', req.body.uid).get();
-        if (tasksSnapshot.empty) {
-            res.status(500).send({ message: 'ERROR.INTERNAL' });
-        } else {
-            const taskDoc = tasksSnapshot.docs[0];
-            const history = taskDoc.data().history;
+        const token = req.body.token;
+        const uid = req.body.uid;
+        const state = req.body.state;
+        const order = req.body.order;
+        const tokenUser = jwt.decode(token);
+        const task = taskService.singleTask(db, uid);
+        if (task) {
+            const history = task.history;
             history.push({
                 timestamp: new Date().getTime(),
-                username: jwt.decode(req.body.token).username,
-                state: req.body.state,
-                previous: taskDoc.data().state
+                username: tokenUser.username,
+                state: state,
+                previous: task.state
             });
-            await taskDoc.ref.update({
-                state: req.body.state,
-                order: req.body.order,
+            const taskData = {
+                state: state,
+                order: order,
                 history: history
-            });
-            await authService.updateUserStats(db, jwt.decode(req.body.token).username, 'updated', 1);
-            await authService.updateProjectStats(db, jwt.decode(req.body.token).project, 'updated', 1);
-            await notificationsService.createRelatedNotification(db, taskDoc.data().project, jwt.decode(req.body.token).username, taskDoc.data().author, taskDoc.data().assigned, 'NOTIFICATIONS.NEW.UPDATE_TASK_POSITION', [jwt.decode(req.body.token).username, taskDoc.data().title], 'edit_square');
-            const taskListSnapshot = await tasksCollection
-                .where('project', '==', req.body.project)
-                .where('state', '!=', 'DELETED')
-                .orderBy('state')
-                .orderBy('order')
-                .get();
-            const response = [
-                { state: 'NONE', tasks: [] },
-                { state: 'TODO', tasks: [] },
-                { state: 'PROGRESS', tasks: [] },
-                { state: 'REVIEW', tasks: [] },
-                { state: 'DONE', tasks: [] }
-            ];
-            taskListSnapshot.forEach(doc => {
-                const task = doc.data();
-                response.find(list => list.state === task.state).tasks.push(task);
-            });
-            res.json(response);
-        }
+            };
+            const promises = [];
+            promises.push(taskService.updateTask(db, task.uid, taskData));
+            promises.push(authService.updateUserStats(db, tokenUser.username, 'updated', 1));
+            promises.push(authService.updateProjectStats(db, tokenUser.project, 'updated', 1));
+            promises.push(notificationsService.createRelatedNotification(db, task.project, tokenUser.username, task.author, task.assigned, 'NOTIFICATIONS.NEW.UPDATE_TASK_POSITION', [tokenUser.username, task.title], 'edit_square'));
+            await Promise.all(promises);
+            res.json(taskService.getTaskList(db, tokenUser.project));
+        } else {
+            res.status(500).send({ message: 'ERROR.INTERNAL' });
+        }            
     } catch (err) {
         next(err);
     }
