@@ -125,38 +125,23 @@ async function updatePosition(req, res, next) {
 
 async function moveToTrashBin(req, res, next) {
     try {
-        const tasksCollection = db.collection('tasks');
-        const tasksSnapshot = await tasksCollection.where('uid', '==', req.body.uid).get();
-        if (tasksSnapshot.empty) {
-            res.status(500).send({ message: 'ERROR.INTERNAL' });
-        } else {
-            const taskDoc = tasksSnapshot.docs[0];
-            const history = taskDoc.data().history;
-            await taskDoc.ref.update({
+        const token = req.body.token;
+        const tokenUser = jwt.decode(token);
+        const uid = req.body.uid;
+        const task = taskService.singleTask(db, uid);
+        if (task) {
+            const taskData = {
                 state: 'DELETED',
-                history: history
-            });
-            await authService.updateUserStats(db, jwt.decode(req.body.token).username, 'trashed', 1);
-            await authService.updateProjectStats(db, jwt.decode(req.body.token).project, 'trashed', 1);
-            await notificationsService.createRelatedNotification(db, taskDoc.data().project, jwt.decode(req.body.token).username, taskDoc.data().author, taskDoc.data().assigned, 'NOTIFICATIONS.NEW.TRASHED_TASK', [jwt.decode(req.body.token).username, taskDoc.data().title], 'delete');
-            const taskListSnapshot = await tasksCollection
-                .where('project', '==', req.body.project)
-                .where('state', '!=', 'DELETED')
-                .orderBy('state')
-                .orderBy('order')
-                .get();
-            const response = [
-                { state: 'NONE', tasks: [] },
-                { state: 'TODO', tasks: [] },
-                { state: 'PROGRESS', tasks: [] },
-                { state: 'REVIEW', tasks: [] },
-                { state: 'DONE', tasks: [] }
-            ];
-            taskListSnapshot.forEach(doc => {
-                const task = doc.data();
-                response.find(list => list.state === task.state).tasks.push(task);
-            });
-            res.json(response);
+            };
+            const promises = [];
+            promises.push(taskService.updateTask(db, uid, taskData));
+            promises.push(authService.updateUserStats(db, tokenUser.username, 'trashed', 1));
+            promises.push(authService.updateProjectStats(db, tokenUser.project, 'trashed', 1));
+            promises.push(notificationsService.createRelatedNotification(db, task.project, tokenUser.username, task.author, task.assigned, 'NOTIFICATIONS.NEW.TRASHED_TASK', [tokenUser.username, task.title], 'delete'));
+            await Promise.all(promises);
+            res.json(taskService.getTaskList(db, tokenUser.project));
+        } else {
+            res.status(500).send({ message: 'ERROR.INTERNAL' });
         }
     } catch (err) {
         next(err);
