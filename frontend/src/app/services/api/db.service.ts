@@ -56,11 +56,11 @@ export class DbService extends AdapterService {
     return this.http.post<User>(this.basePath + this.auth + 'verify', body);
   }
 
-  public override updateToken(token: string): Observable<string> {
+  public override refreshToken(token: string): Observable<string> {
     const body = {
       token: token
     }
-    return this.http.post<string>(this.basePath + this.auth + 'updateToken', body);
+    return this.http.post<string>(this.basePath + this.auth + 'refreshToken', body);
   }
 
   public override updateUser(token: string, attribute: string, value: string): Observable<Response> {

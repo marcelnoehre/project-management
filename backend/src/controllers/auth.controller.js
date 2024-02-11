@@ -97,6 +97,33 @@ async function verify(req, res, next) {
 }
 
 /**
+ * Refreshes the token.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @throws {Error} - Throws an error if user is invalid.
+ * - 403: INVALID_TOKEN
+ *
+ * @returns {void}
+ */
+async function refreshToken(req, res, next) {
+    try {
+        const token = req.body.token;
+        const tokenUser = jwt.decode(token);
+        const user = await authService.singleUser(db, tokenUser.username);
+        if (user) {
+            res.json(jwt.sign(user, '3R#q!ZuFb2sPn8yT^@5vLmN7jA*C6hG', { expiresIn: '1h' }));
+        } else {
+            res.status(403).send({ message: 'ERROR.INVALID_TOKEN' });
+        }
+    } catch (err) {
+        next(err);
+    }
+}
+
+/**
  * Upadates a user attribute.
  *
  * @param {Object} req - Express request object.
@@ -184,6 +211,7 @@ module.exports = {
     login,
     register,
     verify,
+    refreshToken,
     updateUser,
     toggleNotifications,
     deleteUser

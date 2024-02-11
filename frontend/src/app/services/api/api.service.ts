@@ -58,8 +58,8 @@ export class ApiService {
 		return this.adapter.verify(token);
 	}
 
-	public updateToken(token: string): Observable<string> {
-		return this.adapter.updateToken(token);
+	public refreshToken(token: string): Observable<string> {
+		return this.adapter.refreshToken(token);
 	}
 
 	public updateUser(token: string, attribute: string, value: string): Observable<Response> {

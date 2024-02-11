@@ -75,7 +75,7 @@ export class MockService extends AdapterService {
     throw new Error('Method not implemented!');
   }
 
-  public override updateToken(token: string): Observable<string> {
+  public override refreshToken(token: string): Observable<string> {
     throw new Error('Method not implemented!');
   }
 

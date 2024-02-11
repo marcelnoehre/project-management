@@ -24,7 +24,7 @@ export abstract class AdapterService {
 
   public abstract verify(token: string): Observable<User>;
 
-  public abstract updateToken(token: string): Observable<string>;
+  public abstract refreshToken(token: string): Observable<string>;
 
   public abstract updateUser(token: string, attribute: string, value: string): Observable<Response>;
 
