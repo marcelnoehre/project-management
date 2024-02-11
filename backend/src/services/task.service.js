@@ -56,8 +56,31 @@ async function importTask(db, task, project, author) {
     }
 }
 
+async function getTaskList(db, project) {
+    const tasksCollection = db.collection('tasks');
+    const tasksSnapshot = await tasksCollection
+        .where('project', '==', project)
+        .where('state', '!=', 'DELETED')
+        .orderBy('state')
+        .orderBy('order')
+        .get();
+    const tasks = [
+        { state: 'NONE', tasks: [] },
+        { state: 'TODO', tasks: [] },
+        { state: 'PROGRESS', tasks: [] },
+        { state: 'REVIEW', tasks: [] },
+        { state: 'DONE', tasks: [] }
+    ];
+    tasksSnapshot.forEach((doc) => {
+        const task = doc.data();
+        tasks.find(list => list.state === task.state).tasks.push(task);
+    });
+    return tasks;
+}
+
 module.exports = { 
     highestOrder,
     createTask,
-    importTask
+    importTask,
+    getTaskList
 };
