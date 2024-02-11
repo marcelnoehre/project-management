@@ -72,32 +72,32 @@ export class ApiService {
 
 
 	// ### PROJECT ###
-	public createProject(token: string, username: string, project: string): Observable<Response> {
-		return this.adapter.createProject(token, username, project);
+	public createProject(token: string, project: string): Observable<Response> {
+		return this.adapter.createProject(token, project);
 	}
 	
-	public getTeamMembers(token: string, project: string): Observable<User[]> {
-		return this.adapter.getTeamMembers(token, project);
+	public getTeamMembers(token: string): Observable<User[]> {
+		return this.adapter.getTeamMembers(token);
 	}
 
-	public inviteUser(token: string, username: string, project: string): Observable<User> {
-		return this.adapter.inviteUser(token, username, project);
+	public inviteUser(token: string, username: string): Observable<User> {
+		return this.adapter.inviteUser(token, username);
 	}
 
-	public handleInvite(token: string, username: string, decision: boolean): Observable<Response> {
-		return this.adapter.handleInvite(token, username, decision);
+	public handleInvite(token: string, decision: boolean): Observable<Response> {
+		return this.adapter.handleInvite(token, decision);
 	}
 
-	public updatePermission(token: string, username: string, project: string, permission: Permission): Observable<User[]> {
-		return this.adapter.updatePermission(token, username, project, permission);
+	public updatePermission(token: string, username: string, permission: Permission): Observable<User[]> {
+		return this.adapter.updatePermission(token, username, permission);
 	}
 
 	public removeUser(token: string, username: string): Observable<Response> {
 		return this.adapter.removeUser(token, username);
 	}
 
-	public leaveProject(token: string, username: string): Observable<Response> {
-		return this.adapter.leaveProject(token, username);
+	public leaveProject(token: string): Observable<Response> {
+		return this.adapter.leaveProject(token);
 	}
 
 

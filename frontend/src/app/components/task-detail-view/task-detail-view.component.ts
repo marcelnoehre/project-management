@@ -40,7 +40,7 @@ export class TaskDetailViewComponent implements OnInit {
   ngOnInit(): void {
     this.task = { ...this.data };
     this.initialTask = { ...this.data };
-    this.api.getTeamMembers(this.user.token, this.user.project).subscribe(
+    this.api.getTeamMembers(this.user.token).subscribe(
       (users) => {
         this.members = users;
       },

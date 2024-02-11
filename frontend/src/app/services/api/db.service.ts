@@ -82,46 +82,41 @@ export class DbService extends AdapterService {
 
 
   // ### PROJECT ###
-  public override createProject(token: string, username: string, project: string): Observable<Response> {
+  public override createProject(token: string, project: string): Observable<Response> {
     const body = {
       token: token,
-      username: username,
       project: project
     };
     return this.http.post<Response>(this.basePath + this.project + 'create-project', body);
   }
 
-  public override getTeamMembers(token: string, project: string): Observable<User[]> {
+  public override getTeamMembers(token: string): Observable<User[]> {
     const body = {
-      token: token,
-      project: project
+      token: token
     };
     return this.http.post<User[]>(this.basePath + this.project + 'get-team-members', body);
   }
 
-  public override inviteUser(token: string, username: string, project: string): Observable<User> {
+  public override inviteUser(token: string, username: string): Observable<User> {
     const body = {
       token: token,
-      username: username,
-      project: project
+      username: username
     };
     return this.http.post<User>(this.basePath + this.project + 'invite', body);
   }
 
-  public override handleInvite(token: string, username: string, decision: boolean): Observable<Response> {
+  public override handleInvite(token: string, decision: boolean): Observable<Response> {
     const body = {
       token: token,
-      username: username,
       decision: decision
     };
     return this.http.post<Response>(this.basePath + this.project + 'handleInvite', body);
   }
 
-  public override updatePermission(token: string, username: string, project: string, permission: Permission): Observable<User[]> {
+  public override updatePermission(token: string, username: string, permission: Permission): Observable<User[]> {
     const body = {
       token: token,
       username: username,
-      project: project,
       permission: permission
     }
     return this.http.post<User[]>(this.basePath + this.project + 'updatePermission', body);
@@ -135,10 +130,9 @@ export class DbService extends AdapterService {
     return this.http.post<Response>(this.basePath + this.project + 'remove', body);
   }
 
-  public override leaveProject(token: string, username: string): Observable<Response> {
+  public override leaveProject(token: string): Observable<Response> {
     const body = {
-      token: token,
-      username: username
+      token: token
     };
     return this.http.post<Response>(this.basePath + this.project + 'leave', body);
   }

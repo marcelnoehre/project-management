@@ -34,7 +34,7 @@ export class CreateTaskComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.api.getTeamMembers(this.user.token, this.user.project).subscribe(
+    this.api.getTeamMembers(this.user.token).subscribe(
       (users) => {
         this.members = users;
       },

@@ -46,7 +46,7 @@ export class CreateProjectComponent {
 
   createProject() {
     this.loading = true;
-    this.api.createProject(this.sessionUser.token, this.sessionUser.username, this.project).subscribe(
+    this.api.createProject(this.sessionUser.token, this.project).subscribe(
       (response) => {
         this.loading = false;
         this.snackbar.open(this.translate.instant(response.message));

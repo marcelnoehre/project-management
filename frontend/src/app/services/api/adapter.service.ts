@@ -32,19 +32,19 @@ export abstract class AdapterService {
 
   
   // ### PROJECT ###
-  public abstract createProject(token: string, username: string, project: string): Observable<Response>;
+  public abstract createProject(token: string, project: string): Observable<Response>;
   
-  public abstract getTeamMembers(token: string, project: string): Observable<User[]>;
+  public abstract getTeamMembers(token: string): Observable<User[]>;
 
-  public abstract inviteUser(token: string, username: string, project: string): Observable<User>;
+  public abstract inviteUser(token: string, username: string): Observable<User>;
 
-  public abstract handleInvite(token: string, username: string, decision: boolean): Observable<Response>;
+  public abstract handleInvite(token: string, decision: boolean): Observable<Response>;
 
-  public abstract updatePermission(token: string, username: string, project: string, permission: Permission): Observable<User[]>;
+  public abstract updatePermission(token: string, username: string, permission: Permission): Observable<User[]>;
 
   public abstract removeUser(token: string, username: string): Observable<Response>;
 
-  public abstract leaveProject(token: string, username: string): Observable<Response>;
+  public abstract leaveProject(token: string): Observable<Response>;
 
 
   // ### TASKS ###
