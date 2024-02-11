@@ -5,6 +5,15 @@ const admin = require('firebase-admin');
 const jwt = require('jsonwebtoken');
 const db = admin.firestore();
 
+/**
+ * Creates a task.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @returns {void}
+ */
 async function createTask(req, res, next) {
     try {
         const token = req.body.token;
@@ -26,6 +35,15 @@ async function createTask(req, res, next) {
     }
 }
 
+/**
+ * Imports a list of tasks
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @returns {void}
+ */
 async function importTasks(req, res, next) {
     try {
         const token = req.bdoy.token;
@@ -55,17 +73,37 @@ async function importTasks(req, res, next) {
     }
 }
 
-
+/**
+ * Get a list of tasks subdivided by state.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @returns {void}
+ */
 async function getTaskList(req, res, next) {
     try {
         const token = req.body.token;
         const tokenUser = jwt.decode(token);
-        res.json(taskService.getTaskList(db, tokenUser.project, true));
+        res.json(taskService.getTaskList(db, tokenUser.project));
     } catch (err) {
         next(err);
     }
 }
 
+/**
+ * Updates a task.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @throws {Error} - Throws an error if update fails.
+ * - 500: INTERNAL
+ *
+ * @returns {void}
+ */
 async function updateTask(req, res, next) {
     try {
         const token = req.body.token;
@@ -78,7 +116,7 @@ async function updateTask(req, res, next) {
             promises.push(authService.updateProjectStats(db, tokenUser.project, 'edited', 1));
             promises.push(notificationsService.createRelatedNotification(db, tokenUser.project, tokenUser.username, task.author, task.assigned, 'NOTIFICATIONS.NEW.EDITED_TASK', [tokenUser.username, task.title], 'edit_square'));
             await Promise.all(promises);
-            res.json(taskService.getTaskList(db, tokenUser.project, true));
+            res.json(taskService.getTaskList(db, tokenUser.project));
         } else {
             res.status(500).send({ message: 'ERROR.INTERNAL' });
         }
@@ -87,6 +125,18 @@ async function updateTask(req, res, next) {
     }
 }
 
+/**
+ * Updates the position of a task.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @throws {Error} - Throws an error if update fails.
+ * - 500: INTERNAL
+ *
+ * @returns {void}
+ */
 async function updatePosition(req, res, next) {
     try {
         const token = req.body.token;
@@ -114,7 +164,7 @@ async function updatePosition(req, res, next) {
             promises.push(authService.updateProjectStats(db, tokenUser.project, 'updated', 1));
             promises.push(notificationsService.createRelatedNotification(db, task.project, tokenUser.username, task.author, task.assigned, 'NOTIFICATIONS.NEW.UPDATE_TASK_POSITION', [tokenUser.username, task.title], 'edit_square'));
             await Promise.all(promises);
-            res.json(taskService.getTaskList(db, tokenUser.project, true));
+            res.json(taskService.getTaskList(db, tokenUser.project));
         } else {
             res.status(500).send({ message: 'ERROR.INTERNAL' });
         }            
@@ -123,6 +173,18 @@ async function updatePosition(req, res, next) {
     }
 }
 
+/**
+ * Marks a task as trashed.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @throws {Error} - Throws an error if update fails.
+ * - 500: INTERNAL
+ *
+ * @returns {void}
+ */
 async function moveToTrashBin(req, res, next) {
     try {
         const token = req.body.token;
@@ -139,7 +201,7 @@ async function moveToTrashBin(req, res, next) {
             promises.push(authService.updateProjectStats(db, tokenUser.project, 'trashed', 1));
             promises.push(notificationsService.createRelatedNotification(db, task.project, tokenUser.username, task.author, task.assigned, 'NOTIFICATIONS.NEW.TRASHED_TASK', [tokenUser.username, task.title], 'delete'));
             await Promise.all(promises);
-            res.json(taskService.getTaskList(db, tokenUser.project, true));
+            res.json(taskService.getTaskList(db, tokenUser.project));
         } else {
             res.status(500).send({ message: 'ERROR.INTERNAL' });
         }
@@ -148,16 +210,37 @@ async function moveToTrashBin(req, res, next) {
     }
 }
 
+/**
+ * Get a list of trashed tasks.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @returns {void}
+ */
 async function getTrashBin(req, res, next) {
     try {
         const token = req.body.token;
         const tokenUser = jwt.decode(token);
-        res.json(taskService.getTaskList(db, tokenUser.project, false));
+        res.json(taskService.getTrashedList(db, tokenUser.project));
     } catch (err) {
         next(err);
     }
 }
 
+/**
+ * Store a trashed task back in the previous state.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @throws {Error} - Throws an error if update fails.
+ * - 500: INTERNAL
+ *
+ * @returns {void}
+ */
 async function restoreTask(req, res, next) {
     try {
         const token = req.body.token;
@@ -174,7 +257,7 @@ async function restoreTask(req, res, next) {
             promises.push(authService.updateProjectStats(db, tokenUser.project, 'restored', 1));
             promises.push(notificationsService.createRelatedNotification(db, task.project, tokenUser.username, task.author, task.assigned, 'NOTIFICATIONS.NEW.RESTORED_TASK', [tokenUser.username, task.title], 'undo'));
             await Promise.all(promises);
-            res.json(taskService.getTaskList(db, tokenUser.project, false));
+            res.json(taskService.getTrashedList(db, tokenUser.project));
         } else {
             res.status(500).send({ message: 'ERROR.INTERNAL' });
         }
@@ -183,6 +266,18 @@ async function restoreTask(req, res, next) {
     }
 }
 
+/**
+ * Delete a trashed task irrevocably.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @throws {Error} - Throws an error if deletion fails.
+ * - 500: INTERNAL
+ *
+ * @returns {void}
+ */
 async function deleteTask(req, res, next) {
     try {
         const token = req.body.token;
@@ -196,7 +291,7 @@ async function deleteTask(req, res, next) {
             promises.push(authService.updateProjectStats(db, tokenUser.project, 'deleted', 1));
             promises.push(notificationsService.createRelatedNotification(db, task.project, tokenUser.username, task.author, task.assigned, 'NOTIFICATIONS.NEW.DELETED_TASK', [tokenUser.username, task.title], 'delete'));
             await Promise.all(promises);
-            res.json(taskService.getTaskList(db, tokenUser.project, false));
+            res.json(taskService.getTrashedList(db, tokenUser.project));
         } else {
             res.status(500).send({ message: 'ERROR.INTERNAL' });
         }
@@ -205,11 +300,23 @@ async function deleteTask(req, res, next) {
     }
 }
 
+/**
+ * Delete all trashed tasks irrevocably.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @throws {Error} - Throws an error if deletion fails.
+ * - 500: INTERNAL
+ *
+ * @returns {void}
+ */
 async function clearTrashBin(req, res, next) {
     try {
         const token = req.body.token;
         const tokenUser = jwt.decode(token);
-        const tasks = taskService.getTaskList(db, tokenUser.project, false);
+        const tasks = taskService.getTrashedList(db, tokenUser.project);
         if (tasks.length) {
             let promises = [];
             tasks.forEach(task => {

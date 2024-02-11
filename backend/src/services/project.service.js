@@ -18,7 +18,7 @@ async function isNewProject(db, project) {
  * @param {Object} db - Firestore instance.
  * @param {string} project - The project name.
  *
- * @returns {Promise} The project data, if the name is unique.
+ * @returns {Object} The project data, if the name is unique.
  */
 async function singleProject(db, project) {
     const projectsCollection = db.collection('projects');
