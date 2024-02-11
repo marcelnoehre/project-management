@@ -129,39 +129,28 @@ async function handleInvite(req, res, next) {
 
 async function updatePermission(req, res, next) {
     try {
-        const usersCollection = db.collection('users');
-        const userSnapshot = await usersCollection.where('username', '==', req.body.username).get();
-        if (userSnapshot.empty) {
-            res.status(500).send({ message: 'ERROR.INTERNAL' });
-        } else {
-            const userDoc = userSnapshot.docs[0];
-            await userDoc.ref.update({
-                permission: req.body.permission
-            });
-            const projectsCollection = db.collection('projects');
-            const historySnapshot = await projectsCollection.where('name', '==', userDoc.data().project).get();
-            if (historySnapshot.empty) {
-                res.status(500).send({ message: 'ERROR.INTERNAL' });
-            } else {
-                const event = {
-                    timestamp: new Date().getTime(),
-                    type: req.body.permission,
-                    username: jwt.decode(req.body.token).username,
-                    target: req.body.username
-                }
-                const historyDoc = historySnapshot.docs[0];
-                const history = historyDoc.data().history;
-                history.push(event);
-                await historyDoc.ref.update({
-                    history: history
-                });
+        const token = req.body.token;
+        const username = req.body.username;
+        const permission = req.body.permission;
+        const tokenUser = jwt.decode(token);
+        const user = authService.singleUser(db, username);
+        if (user) {
+            const promises = [];
+            const userData = {
+                permission: permission
             }
-            const usersSnapshot = await usersCollection.where('project', '==', req.body.project).get();
-            const users = [];
-            usersSnapshot.forEach(doc => {
-                users.push(doc.data());
-            });
-            res.json(users);
+            const eventData = {
+                timestamp: new Date().getTime(),
+                type: permission,
+                username: tokenUser.username,
+                target: username
+            }
+            promises.push(this.authService.updateUserData(db, username, userData));
+            promises.push(this.projectService.updateProjectHistory(db, tokenUser.project, eventData));
+            await Promise.all(promises);
+            res.json(await projectService.getTeamMembers(db, tokenUser.project));
+        } else {
+            res.status(500).send({ message: 'ERROR.INTERNAL' });
         }
     } catch (err) {
         next(err);
