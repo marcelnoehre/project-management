@@ -92,10 +92,50 @@ function statLeaders(db, project) {
     return leader;
 }
 
+function averageTime(tasks) {
+    const states = ['NONE', 'TODO', 'PROGRESS', 'REVIEW', 'DONE', 'DELETED'];
+    const averageStateTime = {
+        NONE: { amount: 0, sum: 0 },
+        TODO: { amount: 0, sum: 0 },
+        PROGRESS: { amount: 0, sum: 0 },
+        REVIEW: { amount: 0, sum: 0 },
+        DONE: { amount: 0, sum: 0 },
+        DELETED: { amount: 0, sum: 0 }
+    };
+    states.forEach((category) => {
+        tasks[category].forEach((task) => {
+            const history = task.history;
+            for (let i = 0; i < history - 1; i++) {
+                averageStateTime[history[i].state].amount++;
+                const duration = history[i + 1].timestamp - history[i].timestamp;
+                averageStateTime[history[i].state].sum += duration;
+            }
+            averageStateTime[history[history.length - 1].state].amount++;
+            const duration = new Date().getTime() - history[history.length - 1].timestamp;
+            averageStateTime[history[history.length - 1].state].sum += duration;
+        });
+    });
+    const averageTime = {
+        NONE: 0,
+        TODO: 0,
+        PROGRESS: 0,
+        REVIEW: 0,
+        DONE: 0,
+        DELETED: 0
+    }
+    states.forEach((state) => {
+        if (averageStateTime[state].amount > 0) {
+            averageTime[state] = averageStateTime[state].sum / averageStateTime[state].amount;
+        }
+    });
+    return averageTime;
+}
+
 
 module.exports = { 
     getTaskList,
     optimizeOrder,
     stats,
-    statLeaders
+    statLeaders,
+    averageTime
 };
