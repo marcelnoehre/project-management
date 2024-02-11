@@ -28,16 +28,13 @@ async function createProject(req, res, next) {
 
 async function getTeamMembers(req, res, next) {
     try {
-        const usersCollection = db.collection('users');
-        const usersSnapshot = await usersCollection.where('project', '==', req.body.project).get();
-        if (usersSnapshot.empty) {
-            res.status(500).send({ message: 'ERROR.INTERNAL' });
+        const token = req.body.token;
+        const tokenUser = jwt.decode(token);
+        const members = await projectService.getTeamMembers(db, tokenUser.project);
+        if (members.length) {
+            res.json(members);
         } else {
-            const users = [];
-            usersSnapshot.forEach(doc => {
-                users.push(doc.data());
-            });
-            res.json(users);
+            res.status(500).send({ message: 'ERROR.INTERNAL' });
         }
     } catch (err) {
         next(err);

@@ -39,7 +39,25 @@ async function createProject(db, username, project) {
     await Promise.all(promises);
 }
 
-module.exports = { 
+async function getTeamMembers(db, project) {
+    const usersCollection = db.collection('users');
+    const usersSnapshot = await usersCollection.where('project', '==', project).get();
+    const users = [];
+    usersSnapshot.forEach((doc) => {
+        users.push(doc.data());
+    });
+    const order = {
+        'OWNER': 0,
+        'ADMIN': 1,
+        'MEMBER': 2,
+        'INVITED': 3
+    };
+    users.sort((a, b) => order[a.permission] - order[b.permission]);
+    return users;
+}
+
+module.exports = {
     isNewProject,
-    createProject
+    createProject,
+    getTeamMembers
 };
