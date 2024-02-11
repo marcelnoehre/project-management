@@ -68,35 +68,19 @@ async function getTaskList(req, res, next) {
 
 async function updateTask(req, res, next) {
     try {
-        const tasksCollection = db.collection('tasks');
-        const tasksSnapshot = await tasksCollection.where('uid', '==', req.body.task.uid).get();
-        if (tasksSnapshot.empty) {
-            res.status(500).send({ message: 'ERROR.INTERNAL' });
+        const token = req.body.token;
+        const tokenUser = jwt.decode(token);
+        const task = req.body.task;
+        if (taskService.singleTask(db, task.uid)) {
+            const promises = [];
+            promises.push(taskService.updateTask(db, task.uid, task));
+            promises.push(authService.updateUserStats(db, tokenUser.username, 'edited', 1));
+            promises.push(authService.updateProjectStats(db, tokenUser.project, 'edited', 1));
+            promises.push(notificationsService.createRelatedNotification(db, tokenUser.project, tokenUser.username, task.author, task.assigned, 'NOTIFICATIONS.NEW.EDITED_TASK', [tokenUser.username, task.title], 'edit_square'));
+            await Promise.all(promises);
+            res.json(taskService.getTaskList(db, tokenUser.project));
         } else {
-            const taskDoc = tasksSnapshot.docs[0];
-            const task = req.body.task;
-            taskDoc.ref.update(task);
-            await authService.updateUserStats(db, jwt.decode(req.body.token).username, 'edited', 1);
-            await authService.updateProjectStats(db, jwt.decode(req.body.token).project, 'edited', 1);
-            await notificationsService.createRelatedNotification(db, req.body.task.project, jwt.decode(req.body.token).username, req.body.task.author, req.body.task.assigned, 'NOTIFICATIONS.NEW.EDITED_TASK', [jwt.decode(req.body.token).username, req.body.task.title], 'edit_square');
-            const taskListSnapshot = await tasksCollection
-                .where('project', '==', req.body.task.project)
-                .where('state', '!=', 'DELETED')
-                .orderBy('state')
-                .orderBy('order')
-                .get();
-            const response = [
-                { state: 'NONE', tasks: [] },
-                { state: 'TODO', tasks: [] },
-                { state: 'PROGRESS', tasks: [] },
-                { state: 'REVIEW', tasks: [] },
-                { state: 'DONE', tasks: [] }
-            ];
-            taskListSnapshot.forEach(doc => {
-                const task = doc.data();
-                response.find(list => list.state === task.state).tasks.push(task);
-            });
-            res.json(response);
+            res.status(500).send({ message: 'ERROR.INTERNAL' });
         }
     } catch(err) {
         next(err);

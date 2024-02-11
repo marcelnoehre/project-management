@@ -1,3 +1,35 @@
+async function singleTask(db, uid) {
+    const tasksCollection = db.collection('tasks');
+    const tasksSnapshot = await tasksCollection.where('uid', '==', uid).get();
+    if (tasksSnapshot.size === 1) {
+        return tasksSnapshot.docs[0].data();
+    } else {
+        return null;
+    }
+}
+
+async function getTaskList(db, project) {
+    const tasksCollection = db.collection('tasks');
+    const tasksSnapshot = await tasksCollection
+        .where('project', '==', project)
+        .where('state', '!=', 'DELETED')
+        .orderBy('state')
+        .orderBy('order')
+        .get();
+    const tasks = [
+        { state: 'NONE', tasks: [] },
+        { state: 'TODO', tasks: [] },
+        { state: 'PROGRESS', tasks: [] },
+        { state: 'REVIEW', tasks: [] },
+        { state: 'DONE', tasks: [] }
+    ];
+    tasksSnapshot.forEach((doc) => {
+        const task = doc.data();
+        tasks.find(list => list.state === task.state).tasks.push(task);
+    });
+    return tasks;
+}
+
 async function highestOrder(db, project, state) {
     const tasksCollection = db.collection('tasks');
     const tasksSnapshot = await tasksCollection
@@ -6,6 +38,7 @@ async function highestOrder(db, project, state) {
         .orderBy('order', 'desc').limit(1).get();
     return tasksSnapshot.empty ? 1 : (Math.ceil(tasksSnapshot.docs[0].data().order) + 1);
 }
+
 
 async function createTask(db, author, project, title, description, assigned, state, order) {
     const tasksCollection = db.collection('tasks');
@@ -56,31 +89,17 @@ async function importTask(db, task, project, author) {
     }
 }
 
-async function getTaskList(db, project) {
+async function updateTask(db, uid, taskData) {
     const tasksCollection = db.collection('tasks');
-    const tasksSnapshot = await tasksCollection
-        .where('project', '==', project)
-        .where('state', '!=', 'DELETED')
-        .orderBy('state')
-        .orderBy('order')
-        .get();
-    const tasks = [
-        { state: 'NONE', tasks: [] },
-        { state: 'TODO', tasks: [] },
-        { state: 'PROGRESS', tasks: [] },
-        { state: 'REVIEW', tasks: [] },
-        { state: 'DONE', tasks: [] }
-    ];
-    tasksSnapshot.forEach((doc) => {
-        const task = doc.data();
-        tasks.find(list => list.state === task.state).tasks.push(task);
-    });
-    return tasks;
+    const tasksSnapshot = await tasksCollection.where('uid', '==', uid).get();
+    return tasksSnapshot.docs[0].ref.update(taskData);
 }
 
 module.exports = { 
+    singleTask,
+    getTaskList,
     highestOrder,
     createTask,
     importTask,
-    getTaskList
+    updateTask
 };
