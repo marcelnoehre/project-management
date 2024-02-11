@@ -29,13 +29,15 @@
             "USERNAME": "The username is required!",
             "FULLNAME": "The full name is required!",
             "PASSWORD": "The password is required!",
+            "INITIALS": "The initials are required!",
             "REPEAT_PASSWORD": "The password repetition is required!",
             "TITLE": "The title is required!"
         },
         "MINLENGTH": {
             "USERNAME": "The username is too short!",
             "PASSWORD": "The password is too short!",
-            "REPEAT_PASSWORD": "The password repetition is too short!"
+            "REPEAT_PASSWORD": "The password repetition is too short!",
+            "INITIALS": "The initials are too short!"
         },
         "PATTERN": "Missmatched the pattern",
         "PASSWORDS_MATCH": "The passwords don't match!",
