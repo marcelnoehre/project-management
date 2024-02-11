@@ -64,21 +64,17 @@ async function statLeaders(req, res, next) {
 
 async function taskAmount(req, res, next) {
     try {
-        const tasksCollection = db.collection('tasks');
-        const tasksSnapshot = await tasksCollection.where('project', '==', jwt.decode(req.body.token).project).get();
+        const token = req.body.token;
+        const tokenUser = jwt.decode(token);
+        const tasks = statsService.getTaskList(db, tokenUser.project);
         const states = {
-            NONE: 0,
-            TODO: 0,
-            PROGRESS: 0,
-            REVIEW: 0,
-            DONE: 0,
-            DELETED: 0
+            NONE: tasks[NONE].length,
+            TODO: tasks[TODO].length,
+            PROGRESS: tasks[PROGRESS].length,
+            REVIEW: tasks[REVIEW].length,
+            DONE: tasks[DONE].length,
+            DELETED: tasks[DELETED].length
         };
-        if (!tasksSnapshot.empty) {
-            tasksSnapshot.forEach(doc => {
-                states[doc.data().state]++;
-            });
-        }
         res.json(states);
     } catch (err) {
         next(err);
