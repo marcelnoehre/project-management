@@ -96,13 +96,21 @@ export class LoginComponent implements OnInit {
 							(response) => {
 								if(accept) {
 									this.user.user = user
-									this.user.permission = Permission.MEMBER;
-									this.user.project = user.project;
-									this.user.isLoggedIn = true;
-									this.notifications.init();
-									this.storage.setSessionEntry('user', this.user.user);
-									this.updateLanguage();
-									this.router.navigateByUrl('/');
+									this.api.refreshToken(this.user.token).subscribe(
+										(response) => {
+											this.user.token = response;
+											this.user.permission = Permission.MEMBER;
+											this.user.project = user.project;
+											this.user.isLoggedIn = true;
+											this.notifications.init();
+											this.storage.setSessionEntry('user', this.user.user);
+											this.updateLanguage();
+											this.router.navigateByUrl('/');
+										},
+										(error) => {
+											this._error.handleApiError(error);
+										}
+									);
 								} else {
 									this.storage.deleteSessionEntry('user');
 								}
