@@ -21,7 +21,7 @@ async function login(req, res, next) {
     try {
         const username = req.body.username;
         const password = req.body.password;
-        if (authService.passwordValid(db, username, password)) {
+        if (await authService.passwordValid(db, username, password)) {
             const user = await authService.singleUser(db, username);
             if (user) {
                 user.token = jwt.sign(user, '3R#q!ZuFb2sPn8yT^@5vLmN7jA*C6hG', { expiresIn: '1h' });
@@ -56,8 +56,8 @@ async function register(req, res, next) {
         const fullName = req.body.fullName;
         const language = req.body.language;
         const password = req.body.password;
-        if (authService.isNewUser(db, username)) {
-            authService.createUser(db, username, fullName, language, password);
+        if (await authService.isNewUser(db, username)) {
+            await authService.createUser(db, username, fullName, language, password);
             res.json({ message: "SUCCESS.REGISTRATION" });
         } else {
             res.status(402).send({ message: 'ERROR.USERNAME_TAKEN' });
@@ -114,8 +114,8 @@ async function updateUser(req, res, next) {
         const attribute = req.body.attribute;
         const value = req.body.value;
         const tokenUser = jwt.decode(token);
-        const user = authService.singleUser(db, tokenUser.username);
-        if (user && authService.updateAttribute(db, tokenUser.username, attribute, value)) {
+        const user = await authService.singleUser(db, tokenUser.username);
+        if (user && await authService.updateAttribute(db, tokenUser.username, attribute, value)) {
             res.json({ message: 'SUCCESS.UPDATE_ACCOUNT' });
         } else {
             res.status(500).send({ message: 'ERROR.INTERNAL' });
@@ -143,7 +143,7 @@ async function toggleNotifications(req, res, next) {
         const notificationsEnabled = req.body.notificationsEnabled;
         const tokenUser = jwt.decode(token);
         const user = await authService.singleUser(db, tokenUser.username);
-        if (user && authService.updateUserAttribute(db, tokenUser.username, 'notificationsEnabled', notificationsEnabled)) {
+        if (user && await authService.updateUserAttribute(db, tokenUser.username, 'notificationsEnabled', notificationsEnabled)) {
             res.json({ message: notificationsEnabled ? 'SUCCESS.NOTIFICATIONS_ON' : 'SUCCESS.NOTIFICATIONS_OFF' });
         } else {
             res.status(500).send({ message: 'ERROR.INTERNAL' });
@@ -169,7 +169,7 @@ async function deleteUser(req, res, next) {
     try {
         const token = req.body.token;
         const tokenUser = jwt.decode(token);
-        if (authService.deleteUser(db, tokenUser.username)) {
+        if (await authService.deleteUser(db, tokenUser.username)) {
             await notificationsService.createTeamNotification(db, tokenUser.project, tokenUser.username, 'NOTIFICATIONS.NEW.LEAVE_PROJECT', [tokenUser.username], 'exit_to_app');
             res.json({ message: 'SUCCESS.DELETE_ACCOUNT' });
         } else {

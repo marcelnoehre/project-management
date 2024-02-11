@@ -8,8 +8,8 @@
  * @returns {Object[]} - The list of notifications.
  */
 async function getNotifications(db, project, username) {
-    const seen = getTypedNotifications(db, project, username, 'seen');
-    const unseen = getTypedNotifications(db, project, username, 'unseen');
+    const seen = await getTypedNotifications(db, project, username, 'seen');
+    const unseen = await getTypedNotifications(db, project, username, 'unseen');
     const notifiactions = seen.concat(unseen);
     return notifiactions;
 }
@@ -190,8 +190,8 @@ async function updateNotifications(db, removed, seen, username, project) {
         if (notificationsSnapshot.size === 1) {
             const doc = notificationsSnapshot.docs[0];
             let data = doc.data();
-            data = removeNotification(data, username);
-            data = seenNotifcation(data, username);
+            data = await removeNotification(data, username);
+            data = await seenNotifcation(data, username);
             promises.push(notificationsCollection.doc(doc.id).update(data));
         }
     });

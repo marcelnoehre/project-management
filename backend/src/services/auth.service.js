@@ -117,14 +117,14 @@ async function updateAttribute(db, username, attribute, value) {
     const validAttributes = ['username', 'fullName', 'language', 'initials', 'color', 'profilePicture', 'password'];
     if (validAttributes.includes(attribute)) {
         if (attribute === 'password') {
-            return updatePasswordAttribute(db, username, attribute, value);
+            return await updatePasswordAttribute(db, username, attribute, value);
         } else {
             if (attribute === 'username') {
-                if (!updatePasswordAttribute(db, username, attribute, value)) {
+                if (await !updatePasswordAttribute(db, username, attribute, value)) {
                     return false; 
                 }
             }
-            return updateUserAttribute(db, username, attribute, value);
+            return await updateUserAttribute(db, username, attribute, value);
         }
     } else {
         return false;
@@ -180,12 +180,12 @@ async function updateUserAttribute(db, username, attribute, value) {
 async function deleteUser(db, username) {
     try {
         const usersCollection = db.collection('users');
-        const usersSnapshot = await usersCollection.where('username', '==', username).get();
         const passwordsCollection = db.collection('passwords');
+        const usersSnapshot = await usersCollection.where('username', '==', username).get();
         const passwordsSnapshot = await passwordsCollection.where('username', '==', username).get();
         const promises = [];
-        promises.push(await usersCollection.doc(usersSnapshot.docs[0].id).delete());
-        promises.push(await passwordsCollection.doc(passwordsSnapshot.docs[0].id).delete());
+        promises.push(usersCollection.doc(usersSnapshot.docs[0].id).delete());
+        promises.push(passwordsCollection.doc(passwordsSnapshot.docs[0].id).delete());
         await Promise.all(promises);
         return true;
     } catch (err) {
@@ -206,7 +206,7 @@ async function deleteUser(db, username) {
 async function updateUserStats(db, username, attribute, counter) {
     const usersCollection = db.collection('users');
     const usersSnapshot = await usersCollection.where('username', '==', username).get();
-    updateStats(usersSnapshot, attribute, counter);
+    await updateStats(usersSnapshot, attribute, counter);
 }
 
 /**
@@ -222,7 +222,7 @@ async function updateUserStats(db, username, attribute, counter) {
 async function updateProjectStats(db, project, attribute, counter) {
     const projectsCollection = db.collection('projects');
     const projectsSnapshot = await projectsCollection.where('name', '==', project).get();
-    updateStats(projectsSnapshot, attribute, counter);
+    await updateStats(projectsSnapshot, attribute, counter);
 }
 
 /**

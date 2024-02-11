@@ -19,7 +19,7 @@ async function optimizeOrder(req, res, next) {
         const token = req.body.token;
         const tokenUser = jwt.decode(token);
         const tasks = statsService.getTaskList(db, tokenUser.project);
-        statsService.optimizeOrder(tasks);
+        await statsService.optimizeOrder(tasks);
         res.json({message: 'SUCCESS.STATS.OPTIMIZE'});
     } catch (err) {
         next(err);
@@ -39,7 +39,7 @@ async function personalStats(req, res, next) {
     try {
         const token = req.body.token;
         const tokenUser = jwt.decode(token);
-        const user = authService.singleUser(db, tokenUser.username);
+        const user = await authService.singleUser(db, tokenUser.username);
         if (user) {
             res.json(user.stats);
         } else {
@@ -72,8 +72,9 @@ async function stats(req, res, next) {
     try {
         const token = req.body.token;
         const tokenUser = jwt.decode(token);
-        const project = projectService.singleProject(db, tokenUser.project);
-        res.json(statsService.stats(db, project));
+        const project = await projectService.singleProject(db, tokenUser.project);
+        const stats = await statsService.stats(db, project);
+        res.json(stats);
     } catch (err) {
         next(err);
     }
@@ -92,7 +93,8 @@ async function statLeaders(req, res, next) {
     try {
         const token = req.body.token;
         const tokenUser = jwt.decode(token);
-        res.json(statsService.statLeaders(db, tokenUser.project));
+        const statLeaders = await statsService.statLeaders(db, tokenUser.project);
+        res.json(statLeaders);
     } catch (err) {
         next(err);
     }
@@ -111,7 +113,7 @@ async function taskAmount(req, res, next) {
     try {
         const token = req.body.token;
         const tokenUser = jwt.decode(token);
-        const tasks = statsService.getTaskList(db, tokenUser.project);
+        const tasks = await statsService.getTaskList(db, tokenUser.project);
         const states = {
             NONE: tasks[NONE].length,
             TODO: tasks[TODO].length,
@@ -139,8 +141,9 @@ async function averageTime(req, res, next) {
     try {
         const token = req.body.token;
         const tokenUser = jwt.decode(token);
-        const tasks = statsService.getTaskList(db, tokenUser.project);
-        res.json(statsService.averageTime(tasks));
+        const tasks = await statsService.getTaskList(db, tokenUser.project);
+        const averageTime = await statsService.averageTime(tasks);
+        res.json(averageTime);
     } catch (err) {
         next(err);
     }
@@ -159,7 +162,8 @@ async function wip(req, res, next) {
     try {
         const token = req.body.token;
         const tokenUser = jwt.decode(token);
-        res.json(statsService.wip(db, tokenUser.project));
+        const wip = await statsService.wip(db, tokenUser.project);
+        res.json(wip);
     } catch (err) {
         next(err);
     }
@@ -178,7 +182,8 @@ async function taskProgress(req, res, next) {
     try {
         const token = req.body.token;
         const tokenUser = jwt.decode(token);
-        res.json(statsService.taskProgress(db, tokenUser.project));
+        const taskProgress = await statsService.taskProgress(db, tokenUser.project);
+        res.json(taskProgress);
     } catch (err) {
         next(err);
     }
@@ -197,9 +202,10 @@ async function projectRoadmap(req, res, next) {
     try {
         const token = req.body.token;
         const tokenUser = jwt.decode(token);
-        const project = projectService.singleProject(db, tokenUser.project);
+        const project = await projectService.singleProject(db, tokenUser.project);
         if (project) {
-            statsService.projectRoadmap(project);
+            const projectRoadmap = await statsService.projectRoadmap(project);
+            res.json(projectRoadmap);
         } else {
             res.json([]);
         }

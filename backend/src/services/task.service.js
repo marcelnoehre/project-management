@@ -135,7 +135,7 @@ async function createTask(db, author, project, title, description, assigned, sta
  */
 async function importTask(db, task, project, author) {
     try {
-        const order = highestOrder(db, project, task.state);
+        const order = await highestOrder(db, project, task.state);
         const newDocRef = tasksCollection.doc();
         const taskData = {
             uid: newDocRef.id,

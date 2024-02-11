@@ -280,8 +280,8 @@ async function leaveProject(req, res, next) {
     try {
         const token = req.body.token;
         const tokenUser = jwt.decode(token);
-        const user = authService.singleUser(db, username);
-        if (user && projectService.singleProject(db, tokenUser.project)) {
+        const user = await authService.singleUser(db, username);
+        if (user && await projectService.singleProject(db, tokenUser.project)) {
             const promises = [];
             const userData = {
                 project: '',

@@ -58,7 +58,7 @@ async function optimizeOrder(tasks) {
  *
  * @returns {Object} The calculated stats.
  */
-function stats(db, project) {
+async function stats(db, project) {
     const stats = []
     const projectStats = {
         id: 'STATS.PROJECT',
@@ -73,7 +73,7 @@ function stats(db, project) {
         othersStats.stats = project.stats;
     }
     stats.push(projectStats);
-    const members = projectService.getTeamMembers(db, project.name);
+    const members = await projectService.getTeamMembers(db, project.name);
     members.forEach((doc) => {
         const user = doc.data();
         stats.push({
@@ -95,7 +95,7 @@ function stats(db, project) {
  *
  * @returns {Object} The calculated stat leaders.
  */
-function statLeaders(db, project) {
+async function statLeaders(db, project) {
     const leader = {
         created: { username: [], value: 0 },
         imported: { username: [], value: 0 },
@@ -106,7 +106,7 @@ function statLeaders(db, project) {
         deleted: { username: [], value: 0 },
         cleared: { username: [], value: 0 }
     };
-    const members = projectService.getTeamMembers(db, project);
+    const members = await projectService.getTeamMembers(db, project);
     members.forEach((doc) => {
         const user = doc.data();
         statLabels.forEach((stat) => {
@@ -203,7 +203,7 @@ async function taskProgress(db, project) {
         REVIEW: [],
         DONE: []
     }
-    const tasks = [].concat(...Object.values(getTaskList(db, project)));
+    const tasks = [].concat(...Object.values(await getTaskList(db, project)));
     const historyEvents = [];
     tasks.forEach((task) => {
         task.history.forEach((event) => {
