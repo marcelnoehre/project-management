@@ -79,7 +79,7 @@ async function createUser(db, username, fullName, language, password) {
         }
     }
     const passwordData = {
-        username: req.body.username,
+        username: username,
         password: password
     }
     const promises = [];

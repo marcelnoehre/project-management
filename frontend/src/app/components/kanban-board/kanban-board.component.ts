@@ -53,6 +53,10 @@ export class KanbanBoardComponent implements AfterViewInit {
 
   drop(event: any) {
     try {
+      const targets = [TaskState.NONE, TaskState.TODO, TaskState.PROGRESS, TaskState.REVIEW, TaskState.DONE, TaskState.DELETED];
+      if (!targets.includes(event.event.target.id)) {
+        return;
+      }
       if (event.event.target.id === TaskState.DELETED) {
         this.loadingDelete = true;
         this.api.moveToTrashBin(this.user.token, event.previousContainer.data[event.previousIndex].uid).subscribe(
@@ -67,10 +71,7 @@ export class KanbanBoardComponent implements AfterViewInit {
           }
         );
         return;
-      }
-      const foundState = this.taskList.find((list) => list.state === event.event.target.id);    
-      const previousIndex = foundState!.tasks[event.currentIndex - 1]?.order ? foundState!.tasks[event.currentIndex - 1].order : 0;
-      const nextIndex = foundState!.tasks[event.currentIndex + 1]?.order === undefined ? previousIndex + 2 : foundState!.tasks[event.currentIndex + 1].order;
+      }      
       if (event.previousContainer === event.container) {
         moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
       } else {
@@ -81,6 +82,9 @@ export class KanbanBoardComponent implements AfterViewInit {
           event.currentIndex
         );      
       }
+      const foundState = this.taskList.find((list) => list.state === event.event.target.id);
+      const previousIndex = foundState!.tasks[event.currentIndex - 1]?.order ? foundState!.tasks[event.currentIndex - 1].order : 0;
+      const nextIndex = foundState!.tasks[event.currentIndex + 1]?.order === undefined ? previousIndex + 2 : foundState!.tasks[event.currentIndex + 1].order;
       this.api.updatePosition(this.user.token, foundState!.tasks[event.currentIndex].uid, foundState!.state, (previousIndex + nextIndex) / 2).subscribe(
         (tasklist) => {
           this.taskList = tasklist;

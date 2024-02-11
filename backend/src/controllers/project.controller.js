@@ -23,9 +23,9 @@ async function createProject(req, res, next) {
         const token = req.body.token;
         const project = req.body.project;
         const tokenUser = jwt.decode(token);
-        const user = authService.singleUser(db, tokenUser.username);
+        const user = await authService.singleUser(db, tokenUser.username);
         if (user) {
-            if (projectService.isNewProject(db, project)) {
+            if (await projectService.isNewProject(db, project)) {
                 const promises = [];
                 const userData = {
                     project: project,
@@ -94,14 +94,14 @@ async function inviteUser(req, res, next) {
         const token = req.body.token;
         const username = req.body.username;
         const tokenUser = jwt.decode(token);
-        const user = authService.singleUser(db, username);
+        const user = await authService.singleUser(db, username);
         if (user) {
             if (user.permission === 'INVITED') {
                 res.status(423).send({ message: 'ERROR.PENDING_INVITE' });
             } else if (user.project !== '') {
                 res.status(423).send({ message: 'ERROR.HAS_PROJECT' });
             } else {
-                if (projectService.singleProject(db, tokenUser.project)) {
+                if (await projectService.singleProject(db, tokenUser.project)) {
                     const promises = [];
                     const userData = {
                         project: tokenUser.project,
@@ -114,7 +114,7 @@ async function inviteUser(req, res, next) {
                         target: username
                     }
                     promises.push(authService.updateUserData(db, username, userData));
-                    promises.push(projectService.updateProjectHistory(db, res, tokenUser.project, eventData));
+                    promises.push(projectService.updateProjectHistory(db, tokenUser.project, eventData));
                     promises.push(notificationsService.createAdminNotification(db, tokenUser.project, tokenUser.username, 'NOTIFICATIONS.NEW.INVITED', [tokenUser.username, username], 'cancel'));
                     await Promise.all(promises);
                     user.project = tokenUser.project;
@@ -149,8 +149,8 @@ async function handleInvite(req, res, next) {
         const token = req.body.token;
         const decision = req.body.decision;
         const tokenUser = jwt.decode(token);
-        const user = authService.singleUser(db, tokenUser.username);
-        if (user && projectService.singleProject(db, tokenUser.project)) {
+        const user = await authService.singleUser(db, tokenUser.username);
+        if (user && await projectService.singleProject(db, tokenUser.project)) {
             const promises = [];
             const userData = {
                 project: decision ? user.project : '',
@@ -197,8 +197,8 @@ async function updatePermission(req, res, next) {
         const username = req.body.username;
         const permission = req.body.permission;
         const tokenUser = jwt.decode(token);
-        const user = authService.singleUser(db, username);
-        if (user && projectService.singleProject(db, tokenUser.project)) {
+        const user = await authService.singleUser(db, username);
+        if (user && await projectService.singleProject(db, tokenUser.project)) {
             const promises = [];
             const userData = {
                 permission: permission
@@ -209,8 +209,8 @@ async function updatePermission(req, res, next) {
                 username: tokenUser.username,
                 target: username
             }
-            promises.push(this.authService.updateUserData(db, username, userData));
-            promises.push(this.projectService.updateProjectHistory(db, tokenUser.project, eventData));
+            promises.push(authService.updateUserData(db, username, userData));
+            promises.push(projectService.updateProjectHistory(db, tokenUser.project, eventData));
             await Promise.all(promises);
             res.json(await projectService.getTeamMembers(db, tokenUser.project));
         } else {
@@ -238,8 +238,8 @@ async function removeUser(req, res, next) {
         const token = req.body.token;
         const username = req.body.username;
         const tokenUser = jwt.decode(token);
-        const user = authService.singleUser(db, username);
-        if (user && projectService.singleProject(db, tokenUser.project)) {
+        const user = await authService.singleUser(db, username);
+        if (user && await projectService.singleProject(db, tokenUser.project)) {
             const promises = [];
             const userData = {
                 project: '',
@@ -280,7 +280,7 @@ async function leaveProject(req, res, next) {
     try {
         const token = req.body.token;
         const tokenUser = jwt.decode(token);
-        const user = await authService.singleUser(db, username);
+        const user = await authService.singleUser(db, tokenUser.username);
         if (user && await projectService.singleProject(db, tokenUser.project)) {
             const promises = [];
             const userData = {

@@ -10,7 +10,7 @@
 async function getNotifications(db, project, username) {
     const seen = await getTypedNotifications(db, project, username, 'seen');
     const unseen = await getTypedNotifications(db, project, username, 'unseen');
-    const notifiactions = seen.concat(unseen);
+    const notifiactions = unseen.concat(seen);
     return notifiactions;
 }
 
@@ -187,20 +187,18 @@ async function updateNotifications(db, removed, seen, username, project) {
     let promises = [];
     removed.forEach(async (uid) => {
         const notificationsSnapshot = await notificationsCollection.where('uid', '==', uid).get();
-        if (notificationsSnapshot.size === 1) {
-            const doc = notificationsSnapshot.docs[0];
-            let data = doc.data();
-            data = await removeNotification(data, username);
-            data = await seenNotifcation(data, username);
-            promises.push(notificationsCollection.doc(doc.id).update(data));
-        }
+        const doc = notificationsSnapshot.docs[0];
+        let data = doc.data();
+        data = await seenNotifcation(data, username);
+        data = await removeNotification(data, username);
+        promises.push(notificationsCollection.doc(doc.id).update(data));
     });
     await Promise.all(promises);
     promises = [];
     seen.forEach(async (uid) => {
         const notificationsSnapshot = await notificationsCollection.where('uid', '==', uid).get();
         const doc = notificationsSnapshot.docs[0];
-        const data = seenNotifcation(doc.data(), username);
+        const data = await seenNotifcation(doc.data(), username);
         promises.push(notificationsCollection.doc(doc.id).update(data));
     });
     await Promise.all(promises);
@@ -243,8 +241,8 @@ async function seenNotifcation(data, username) {
     const unseenIndex = data.unseen.indexOf(username);
     if (unseenIndex !== -1) {
         data.unseen.splice(unseenIndex, 1);
+        data.seen.push(username);
     }
-    data.seen.push(username);
     return data;
 }
 

@@ -115,12 +115,12 @@ async function taskAmount(req, res, next) {
         const tokenUser = jwt.decode(token);
         const tasks = await statsService.getTaskList(db, tokenUser.project);
         const states = {
-            NONE: tasks[NONE].length,
-            TODO: tasks[TODO].length,
-            PROGRESS: tasks[PROGRESS].length,
-            REVIEW: tasks[REVIEW].length,
-            DONE: tasks[DONE].length,
-            DELETED: tasks[DELETED].length
+            NONE: tasks.NONE.length,
+            TODO: tasks.TODO.length,
+            PROGRESS: tasks.PROGRESS.length,
+            REVIEW: tasks.REVIEW.length,
+            DONE: tasks.DONE.length,
+            DELETED: tasks.DELETED.length
         };
         res.json(states);
     } catch (err) {

@@ -29,7 +29,8 @@
             "USERNAME": "The username is required!",
             "FULLNAME": "The full name is required!",
             "PASSWORD": "The password is required!",
-            "REPEAT_PASSWORD": "The password repetition is required!"
+            "REPEAT_PASSWORD": "The password repetition is required!",
+            "TITLE": "The title is required!"
         },
         "MINLENGTH": {
             "USERNAME": "The username is too short!",

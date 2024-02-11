@@ -14,8 +14,6 @@ async function getTaskList(db, project) {
     const tasksCollection = db.collection('tasks');
     const tasksSnapshot = await tasksCollection
         .where('project', '==', project)
-        .where('state', '!=', 'DELETED')
-        .orderBy('state')
         .orderBy('order')
         .get();
     const tasks = {
@@ -23,7 +21,8 @@ async function getTaskList(db, project) {
         TODO: [],
         PROGRESS: [],
         REVIEW: [],
-        DONE: []
+        DONE: [],
+        DELETED: []
     };
     tasksSnapshot.forEach((doc) => {
         tasks[doc.data().state].push(doc);
@@ -74,8 +73,7 @@ async function stats(db, project) {
     }
     stats.push(projectStats);
     const members = await projectService.getTeamMembers(db, project.name);
-    members.forEach((doc) => {
-        const user = doc.data();
+    members.forEach((user) => {
         stats.push({
             id: user.username,
             stats: user.stats
@@ -85,6 +83,7 @@ async function stats(db, project) {
         });
     });
     stats.push(othersStats);
+    return stats;
 }
 
 /**
@@ -107,8 +106,7 @@ async function statLeaders(db, project) {
         cleared: { username: [], value: 0 }
     };
     const members = await projectService.getTeamMembers(db, project);
-    members.forEach((doc) => {
-        const user = doc.data();
+    members.forEach((user) => {
         statLabels.forEach((stat) => {
             if (user.stats[stat] > leader[stat].value) {
                 leader[stat] = {
@@ -142,7 +140,7 @@ function averageTime(tasks) {
     };
     states.forEach((category) => {
         tasks[category].forEach((task) => {
-            const history = task.history;
+            const history = task.data().history;
             for (let i = 0; i < history - 1; i++) {
                 averageStateTime[history[i].state].amount++;
                 const duration = history[i + 1].timestamp - history[i].timestamp;
@@ -206,9 +204,11 @@ async function taskProgress(db, project) {
     const tasks = [].concat(...Object.values(await getTaskList(db, project)));
     const historyEvents = [];
     tasks.forEach((task) => {
-        task.history.forEach((event) => {
-            historyEvents.push(event);
-        });
+        if (task.data().state !== 'DELETED') {
+            task.data().history.forEach((event) => {
+                historyEvents.push(event);
+            });
+        }
     });
     historyEvents.sort((a, b) => a.timestamp - b.timestamp);
     const states = ['NONE', 'TODO', 'PROGRESS', 'REVIEW', 'DONE'];

@@ -23,7 +23,7 @@ async function createTask(req, res, next) {
         const state = req.body.state;
         const tokenUser = jwt.decode(token);
         const order = await taskService.highestOrder(db, tokenUser.project, state);
-        await createTask(db, tokenUser.username, tokenUser.project, title, description, assigned, state, order);
+        await taskService.createTask(db, tokenUser.username, tokenUser.project, title, description, assigned, state, order);
         const promises = [];
         promises.push(authService.updateUserStats(db, tokenUser.username, 'created', 1));
         promises.push(authService.updateProjectStats(db, tokenUser.project, 'created', 1));
@@ -46,22 +46,22 @@ async function createTask(req, res, next) {
  */
 async function importTasks(req, res, next) {
     try {
-        const token = req.bdoy.token;
+        const token = req.body.token;
         const tasks = req.body.tasks;
         const tokenUser = jwt.decode(token);
         const result = {
             success: 0,
             fail: 0
         };
-        tasks.forEach(async (task) => {
+        for (const task of tasks) {
             const response = await taskService.importTask(db, task, tokenUser.project, tokenUser.username);
             result[response]++;
-        });
-        if (success > 0) {
+        }
+        if (result.success > 0) {
             const promises = [];
-            promises.push(authService.updateUserStats(db, jwt.decode(req.body.token).username, 'imported', success));
-            promises.push(authService.updateProjectStats(db, jwt.decode(req.body.token).project, 'imported', success));
-            promises.push(notificationsService.createTeamNotification(db, req.body.project, req.body.author, 'NOTIFICATIONS.NEW.IMPORTED_TASKS', [req.body.author], 'upload_file'));
+            promises.push(authService.updateUserStats(db, tokenUser.username, 'imported', result.success));
+            promises.push(authService.updateProjectStats(db, tokenUser.project, 'imported', result.success));
+            promises.push(notificationsService.createTeamNotification(db, tokenUser.project, tokenUser.username, 'NOTIFICATIONS.NEW.IMPORTED_TASKS', [tokenUser.username], 'upload_file'));
             await Promise.all(promises);
         }
         res.json({
