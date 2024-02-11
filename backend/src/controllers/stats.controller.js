@@ -162,20 +162,14 @@ async function taskProgress(req, res, next) {
 
 async function projectRoadmap(req, res, next) {
     try {
-        const projectsCollection = db.collection('projects');
-        const projectsSnapshot = await projectsCollection.where('name', '==', jwt.decode(req.body.token).project).get();
-        const history = [];
-        if (!projectsSnapshot.empty) {
-            projectsSnapshot.docs[0].data().history.forEach((event) => {
-                history.push({
-                    timestamp: event.timestamp,
-                    type: 'STATS.PROJECT_ROADMAP.' + event.type,
-                    username: event.username,
-                    target: event.target,
-                });
-            });
+        const token = req.body.token;
+        const tokenUser = jwt.decode(token);
+        const project = projectService.singleProject(db, tokenUser.project);
+        if (project) {
+            statsService.projectRoadmap(project);
+        } else {
+            res.json([]);
         }
-        res.json(history);
     } catch (err) {
         next(err);
     }

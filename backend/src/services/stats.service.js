@@ -140,6 +140,14 @@ async function wip(db, project) {
     return tasksSnapshot.size;
 }
 
+async function projectRoadmap(project) {
+    const history = project.history;
+    history.forEach((event) => {
+        event.type = 'STATS.PROJECT_ROADMAP.' + event.type;
+    });
+    return history;
+}
+
 
 module.exports = { 
     getTaskList,
@@ -147,5 +155,6 @@ module.exports = {
     stats,
     statLeaders,
     averageTime,
-    wip
+    wip,
+    projectRoadmap
 };
