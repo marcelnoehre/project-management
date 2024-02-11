@@ -46,7 +46,6 @@
         "PENDING_INVITE": "The user has a pending invitation!",
         "HAS_PROJECT": "The user is already a member of another project!",
         "IN_PROJECT": "The user is already a member of your project!", 
-        "CREATE_TASK": "Task could not be created!",
         "NO_VALID_SECTION": "Please place the task in a category or the trash bin!"
     },
     "SUCCESS": {

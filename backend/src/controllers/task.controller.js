@@ -1,4 +1,5 @@
 const authService = require('../services/auth.service');
+const taskService = require('../services/task.service');
 const notificationsService = require('../services/notifications.service');
 const admin = require('firebase-admin');
 const jwt = require('jsonwebtoken');
@@ -6,37 +7,20 @@ const db = admin.firestore();
 
 async function createTask(req, res, next) {
     try {
-        const tasksCollection = db.collection('tasks');
-        const orderSnapshot = await tasksCollection
-            .where('project', '==', req.body.project)
-            .where('state', '==', req.body.state)
-            .orderBy('order', 'desc').limit(1).get();
-        const order = orderSnapshot.empty ? 1 : (Math.ceil(orderSnapshot.docs[0].data().order) + 1);
-        const newDocRef = tasksCollection.doc();
-        const task = {
-            uid: newDocRef.id,
-            author: req.body.author,
-            project: req.body.project,
-            title: req.body.title,
-            description: req.body.description,
-            assigned: req.body.assigned,
-            state: req.body.state,
-            order: order,
-            history: [{
-                timestamp: new Date().getTime(),
-                username: jwt.decode(req.body.token).username,
-                state: req.body.state,
-                previous: null
-            }]
-        };
-        tasksCollection.doc(newDocRef.id).set(task).then(async () => {
-            await authService.updateUserStats(db, jwt.decode(req.body.token).username, 'created', 1);
-            await authService.updateProjectStats(db, jwt.decode(req.body.token).project, 'created', 1);
-            await notificationsService.createTeamNotification(db, req.body.project, req.body.author, 'NOTIFICATIONS.NEW.CREATE_TASK', [req.body.author, req.body.title], 'note_add');
-            res.json({ message: 'SUCCESS.CREATE_TASK' });
-        }).catch((err) => {
-            res.status(402).send({ message: 'ERROR.CREATE_TASK' }); // Internal
-        });
+        const token = req.body.token;
+        const title = req.body.title;
+        const description = req.body.description;
+        const assigned = req.body.assigned;
+        const state = req.body.state;
+        const tokenUser = jwt.decode(token);
+        const order = taskService.highestOrder(db, tokenUser.project, state);
+        await createTask(db, tokenUser.username, tokenUser.project, title, description, assigned, state, order);
+        const promises = [];
+        promises.push(authService.updateUserStats(db, tokenUser.username, 'created', 1));
+        promises.push(authService.updateProjectStats(db, tokenUser.project, 'created', 1));
+        promises.push(notificationsService.createTeamNotification(db, tokenUser.project, tokenUser.username, 'NOTIFICATIONS.NEW.CREATE_TASK', [tokenUser.username, title], 'note_add'));
+        await Promise.all(promises);
+        res.json({ message: 'SUCCESS.CREATE_TASK' });
     } catch (err) {
         next(err);
     }
