@@ -2,6 +2,14 @@ const projectService = require('../services/project.service');
 
 const statLabels = ['created', 'imported', 'updated', 'edited', 'trashed', 'restored', 'deleted', 'cleared'];
 
+/**
+ * Retrieves the list of tasks subdivided by state.
+ *
+ * @param {Object} db - Firestore instance.
+ * @param {string} project - The project name.
+ *
+ * @returns {Object} The list of tasks.
+ */
 async function getTaskList(db, project) {
     const tasksCollection = db.collection('tasks');
     const tasksSnapshot = await tasksCollection
@@ -23,6 +31,13 @@ async function getTaskList(db, project) {
     return tasks;
 }
 
+/**
+ * Optimizes the order attributes of active tasks.
+ *
+ * @param {Object} tasks - The list of active tasks subdivided by state.
+ *
+ * @returns {void}
+ */
 async function optimizeOrder(tasks) {
     const promises = [];
     Object.values(tasks).forEach(async (state) => {
@@ -35,6 +50,14 @@ async function optimizeOrder(tasks) {
     await Promise.all(promises);
 }
 
+/**
+ * Calculates the stats.
+ *
+ * @param {Object} db - Firestore instance.
+ * @param {string} project - The project name.
+ *
+ * @returns {Object} The calculated stats.
+ */
 function stats(db, project) {
     const stats = []
     const projectStats = {
@@ -64,6 +87,14 @@ function stats(db, project) {
     stats.push(othersStats);
 }
 
+/**
+ * Calculates the stat leaders.
+ *
+ * @param {Object} db - Firestore instance.
+ * @param {string} project - The project name.
+ *
+ * @returns {Object} The calculated stat leaders.
+ */
 function statLeaders(db, project) {
     const leader = {
         created: { username: [], value: 0 },
@@ -92,6 +123,13 @@ function statLeaders(db, project) {
     return leader;
 }
 
+/**
+ * Calculates the average time.
+ *
+ * @param {Object} tasks - The list of active tasks subdivided by state.
+ *
+ * @returns {Object} The calculated average time.
+ */
 function averageTime(tasks) {
     const states = ['NONE', 'TODO', 'PROGRESS', 'REVIEW', 'DONE', 'DELETED'];
     const averageStateTime = {
@@ -131,6 +169,14 @@ function averageTime(tasks) {
     return averageTime;
 }
 
+/**
+ * Calculates the work in progress.
+ *
+ * @param {Object} db - Firestore instance.
+ * @param {string} project - The project name.
+ *
+ * @returns {number} The calculated work in progress.
+ */
 async function wip(db, project) {
     const tasksCollection = db.collection('tasks');
     const tasksSnapshot = await tasksCollection
@@ -140,6 +186,14 @@ async function wip(db, project) {
     return tasksSnapshot.size;
 }
 
+/**
+ * Calculates the task progress.
+ *
+ * @param {Object} db - Firestore instance.
+ * @param {string} project - The project name.
+ *
+ * @returns {Object} The calculated task progress.
+ */
 async function taskProgress(db, project) {
     const taskProgress = {
         timestamps: [],
@@ -189,6 +243,14 @@ async function taskProgress(db, project) {
     return taskProgress;
 } 
 
+/**
+ * Calculates the project roadmap.
+ *
+ * @param {Object} db - Firestore instance.
+ * @param {string} project - The project name.
+ *
+ * @returns {Object} The calculated project roadmap.
+ */
 function projectRoadmap(project) {
     const history = project.history;
     history.forEach((event) => {
@@ -196,7 +258,6 @@ function projectRoadmap(project) {
     });
     return history;
 }
-
 
 module.exports = { 
     getTaskList,

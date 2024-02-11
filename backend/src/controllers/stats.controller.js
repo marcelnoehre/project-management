@@ -5,6 +5,15 @@ const admin = require('firebase-admin');
 const jwt = require('jsonwebtoken');
 const db = admin.firestore();
 
+/**
+ * Optimizes the task order attributes.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @returns {void}
+ */
 async function optimizeOrder(req, res, next) {
     try {
         const token = req.body.token;
@@ -17,6 +26,15 @@ async function optimizeOrder(req, res, next) {
     }
 }
 
+/**
+ * Calculates the personal stats.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @returns {void}
+ */
 async function personalStats(req, res, next) {
     try {
         const token = req.body.token;
@@ -41,6 +59,15 @@ async function personalStats(req, res, next) {
     }
 }
 
+/**
+ * Calculates the stats.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @returns {void}
+ */
 async function stats(req, res, next) {
     try {
         const token = req.body.token;
@@ -52,6 +79,15 @@ async function stats(req, res, next) {
     }
 }
 
+/**
+ * Calculates the stat leaders.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @returns {void}
+ */
 async function statLeaders(req, res, next) {
     try {
         const token = req.body.token;
@@ -62,6 +98,15 @@ async function statLeaders(req, res, next) {
     }
 }
 
+/**
+ * Calculates the task amount.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @returns {void}
+ */
 async function taskAmount(req, res, next) {
     try {
         const token = req.body.token;
@@ -81,6 +126,15 @@ async function taskAmount(req, res, next) {
     }
 }
 
+/**
+ * Calculates the average time stats.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @returns {void}
+ */
 async function averageTime(req, res, next) {
     try {
         const token = req.body.token;
@@ -92,6 +146,15 @@ async function averageTime(req, res, next) {
     }
 }
 
+/**
+ * Calculates the wip.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @returns {void}
+ */
 async function wip(req, res, next) {
     try {
         const token = req.body.token;
@@ -102,6 +165,15 @@ async function wip(req, res, next) {
     }
 }
 
+/**
+ * Calculates the task progress.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @returns {void}
+ */
 async function taskProgress(req, res, next) {
     try {
         const token = req.body.token;
@@ -112,6 +184,15 @@ async function taskProgress(req, res, next) {
     }
 }
 
+/**
+ * Calculates the project roadmap.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @returns {void}
+ */
 async function projectRoadmap(req, res, next) {
     try {
         const token = req.body.token;
