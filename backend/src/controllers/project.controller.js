@@ -254,6 +254,7 @@ async function removeUser(req, res, next) {
             promises.push(authService.updateUserData(db, username, userData));
             promises.push(projectService.updateProjectHistory(db, tokenUser.project, eventData));
             promises.push(notificationsService.createTeamNotification(db, tokenUser.project, tokenUser.username, 'NOTIFICATIONS.NEW.REMOVED', [username, tokenUser.username], 'person_remove'));
+            promises.push(notificationsService.clearUserRelatedNotifications(db, tokenUser.project, username));
             await Promise.all(promises);
             res.json({message: 'SUCCESS.REMOVE_MEMBER'});
         } else {
@@ -296,6 +297,7 @@ async function leaveProject(req, res, next) {
             promises.push(authService.updateUserData(db, tokenUser.username, userData));
             promises.push(projectService.updateProjectHistory(db, tokenUser.project, eventData));
             promises.push(notificationsService.createTeamNotification(db, tokenUser.project, tokenUser.username, 'NOTIFICATIONS.NEW.LEAVE_PROJECT', [tokenUser.username], 'exit_to_app'));
+            promises.push(notificationsService.clearUserRelatedNotifications(db, tokenUser.project, tokenUser.username));
             await Promise.all(promises);
             res.json({message: 'SUCCESS.LEAVE_PROJECT'});
         } else {

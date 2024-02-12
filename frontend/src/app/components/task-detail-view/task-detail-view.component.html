@@ -42,23 +42,6 @@
                 </mat-select>
                 <mat-icon matPrefix> person </mat-icon>
             </mat-form-field>            
-			<mat-form-field appearance="outline" class="task-detail-view-form-field">
-                <mat-label>{{ 'TASK.STATE' | translate }}</mat-label>
-                <mat-select 
-                    id="state-select"
-                    name="state"
-                    placeholder="{{'TASK.STATE'|translate}}"
-                    [(ngModel)]="task.state"
-                >
-                    <mat-option
-                        *ngFor="let state of taskStates"
-                        [value]="state"
-                    >
-                        {{ state }}
-                    </mat-option>
-                </mat-select>
-                <mat-icon matPrefix> person </mat-icon>
-            </mat-form-field>
 		</form>
 	</mat-dialog-content>
 	<mat-dialog-actions class="actions">

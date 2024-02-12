@@ -202,15 +202,7 @@ async function updateNotifications(db, removed, seen, username, project) {
         promises.push(notificationsCollection.doc(doc.id).update(data));
     });
     await Promise.all(promises);
-    promises = [];
-    const cleanUp = await notificationsCollection.where('project', '==', project).get();
-    cleanUp.forEach(async (doc) => {
-        const data = doc.data();
-        if (!data.seen.length && !data.unseen.length) {
-            promises.push(doc.ref.delete());
-        }
-    });
-    await Promise.all(promises);
+    await cleanUpEmptyNotifications(db, project);
 }
 
 /**
@@ -246,6 +238,74 @@ async function seenNotifcation(data, username) {
     return data;
 }
 
+/**
+ * Remove a user who is not in the team anymore from notifications.
+ *
+ * @param {Object} db - Firestore instance.
+ * @param {string} project - The project name.
+ * @param {string} username - The username.
+ *
+ * @returns {void}
+ */
+async function clearUserRelatedNotifications(db, project, username) {
+    const promises = [];
+    promises.push(clearTypedUserRelatedNotifications(db, project, username, 'seen'));
+    promises.push(clearTypedUserRelatedNotifications(db, project, username, 'unseen'));
+    await Promise.all(promises);
+    await cleanUpEmptyNotifications(db, project);
+}
+
+/**
+ * Remove a user who is not in the team anymore from seen or unseen notifications.
+ *
+ * @param {Object} db - Firestore instance.
+ * @param {string} project - The project name.
+ * @param {string} username - The username.
+ *
+ * @returns {void}
+ */
+async function clearTypedUserRelatedNotifications(db, project, username, type) {
+    const notificationsCollection = db.collection('notifications');
+    const notificationsSnapshot = await notificationsCollection
+        .where('project', '==', project)
+        .where(type, 'array-contains', username)
+        .get();
+    const promises = [];
+    notificationsSnapshot.forEach((doc) => {
+        const users = doc.data()[type];
+        const index = users.indexOf(username);
+        if (index !== -1) {
+            users.splice(index, 1);
+        }
+        const data = {
+            [type]: users
+        }
+        promises.push(doc.ref.update(data));
+    });
+    await Promise.all(promises);
+}
+
+/**
+ * Delete empty notifications.
+ *
+ * @param {Object} db - Firestore instance.
+ * @param {string} project - The project name.
+ *
+ * @returns {void}
+ */
+async function cleanUpEmptyNotifications(db, project) {
+    const notificationsCollection = db.collection('notifications');
+    const cleanUp = await notificationsCollection.where('project', '==', project).get();
+    const promises = [];
+    cleanUp.forEach(async (doc) => {
+        const data = doc.data();
+        if (!data.seen.length && !data.unseen.length) {
+            promises.push(doc.ref.delete());
+        }
+    });
+    await Promise.all(promises);
+}
+
 module.exports = {
     getNotifications,
     getTypedNotifications,
@@ -254,5 +314,8 @@ module.exports = {
     createRelatedNotification,
     updateNotifications,
     removeNotification,
-    seenNotifcation
+    seenNotifcation,
+    clearUserRelatedNotifications,
+    clearTypedUserRelatedNotifications,
+    cleanUpEmptyNotifications
 };

@@ -29,13 +29,15 @@
             "USERNAME": "The username is required!",
             "FULLNAME": "The full name is required!",
             "PASSWORD": "The password is required!",
+            "INITIALS": "The initials are required!",
             "REPEAT_PASSWORD": "The password repetition is required!",
             "TITLE": "The title is required!"
         },
         "MINLENGTH": {
             "USERNAME": "The username is too short!",
             "PASSWORD": "The password is too short!",
-            "REPEAT_PASSWORD": "The password repetition is too short!"
+            "REPEAT_PASSWORD": "The password repetition is too short!",
+            "INITIALS": "The initials are too short!"
         },
         "PATTERN": "Missmatched the pattern",
         "PASSWORDS_MATCH": "The passwords don't match!",
@@ -53,6 +55,7 @@
         "LOGOUT": "You have been successfully logged out!",
         "REGISTRATION": "Registered successfully!",
         "UPDATE_ACCOUNT" : "Account has been updated!",
+        "UPDATE_USERNAME" : "Account has been updated! You can now log in with the new user name.",
         "NOTIFICATIONS_ON": "The notifications have been activated!",
         "NOTIFICATIONS_OFF": "The notifications have been deactivated!",
         "CREATE_PROJECT": "Project created successfully!",

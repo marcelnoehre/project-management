@@ -2,7 +2,6 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { TaskState } from 'src/app/enums/task-state.enum';
 import { Task } from 'src/app/interfaces/data/task';
 import { User } from 'src/app/interfaces/data/user';
 import { ApiService } from 'src/app/services/api/api.service';
@@ -21,7 +20,6 @@ export class TaskDetailViewComponent implements OnInit {
   initialTask!: Task;
   task!: Task;
   members: User[] = [];
-  taskStates = [TaskState.NONE, TaskState.TODO, TaskState.PROGRESS, TaskState.REVIEW, TaskState.DONE];
 
   constructor(
     private dialogRef: MatDialogRef<TaskDetailViewComponent>,
@@ -53,8 +51,7 @@ export class TaskDetailViewComponent implements OnInit {
   disableSubmit(): boolean {
     return this.task.title === this.initialTask.title
       && this.task.description === this.initialTask.description
-      && this.task.assigned === this.initialTask.assigned
-      && this.task.state === this.initialTask.state;
+      && this.task.assigned === this.initialTask.assigned;
   }
 
   updateTaskDetails(): void {

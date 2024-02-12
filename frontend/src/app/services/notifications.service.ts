@@ -49,6 +49,7 @@ export class NotificationsService {
     this.api.updateNotifications(this.user.token, seen, removed).subscribe(
       (response) => {
         this.notifications = response;
+        this.unseen = 0;
         this.notifications.forEach((notification) => {
           if (!notification.seen) {
             this.unseen++;

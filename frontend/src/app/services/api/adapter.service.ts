@@ -24,6 +24,8 @@ export abstract class AdapterService {
 
   public abstract verify(token: string): Observable<User>;
 
+  public abstract refreshToken(token: string): Observable<string>;
+
   public abstract updateUser(token: string, attribute: string, value: string): Observable<Response>;
 
   public abstract toggleNotifications(token: string, notificationsEnabled: boolean): Observable<Response>;

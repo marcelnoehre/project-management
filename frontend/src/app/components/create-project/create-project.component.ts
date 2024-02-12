@@ -48,14 +48,24 @@ export class CreateProjectComponent {
     this.loading = true;
     this.api.createProject(this.sessionUser.token, this.project).subscribe(
       (response) => {
-        this.loading = false;
-        this.snackbar.open(this.translate.instant(response.message));
-        this.user.user = this.sessionUser;
-        this.user.project = this.project;
-        this.user.permission = Permission.OWNER;
-        this.user.isLoggedIn = true;
-        this.storage.setSessionEntry('user', this.user.user);
-        this.dialogRef.close(true);
+        const message = response.message;
+        this.api.refreshToken(this.user.token).subscribe(
+          (response) => {
+            this.loading = false;
+            this.snackbar.open(this.translate.instant(message));
+            this.user.user = this.sessionUser;
+            this.user.token = response;
+            this.user.project = this.project;
+            this.user.permission = Permission.OWNER;
+            this.user.isLoggedIn = true;
+            this.storage.setSessionEntry('user', this.user.user);
+            this.dialogRef.close(true);
+          },
+          (error) => {
+            this.loading = false;
+            this._error.handleApiError(error);
+          }
+        );
       },
       (error) => {
         this.loading = false;

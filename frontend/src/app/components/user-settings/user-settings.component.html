@@ -1,22 +1,27 @@
 <div class="user-settings-component">
-    <form>
+    <form [formGroup]="userSettingsForm">
         <div class="form-container">
             <mat-form-field appearance="outline" class="user-settings-form-field" MatInput>
                 <mat-label> {{ 'USER.USERNAME' | translate }}</mat-label>
                 <input
                     id="username-input"
-                    [(ngModel)]="username"
                     name="username"
+                    formControlName="usernameFormControl"
                     placeholder="{{'USER.USERNAME' | translate}}"
                     matInput
+                    required
+                    minlength="4"
+                    maxlength="16"
                 />
                 <mat-icon matPrefix> person </mat-icon>
+                <mat-error *ngIf="hasError('usernameFormControl', 'required')"> {{ 'ERROR.REQUIRED.USERNAME' | translate }} </mat-error>
+                <mat-error *ngIf="hasError('usernameFormControl', 'minlength')">{{ 'ERROR.MINLENGTH.USERNAME' | translate }}</mat-error>
             </mat-form-field>
             <button
                 type="button"
-                [ngClass]="{'submit-button': !isDisabled('username', username)}"
-                (click) = "updateUser('username', username)"
-                [disabled] = "isDisabled('username', username)"
+                [ngClass]="{'submit-button': !isDisabled('username')}"
+                (click) = "updateUser('username')"
+                [disabled] = "isDisabled('username')"
                 matSuffix
                 mat-icon-button
             >
@@ -28,18 +33,21 @@
                 <mat-label> {{ 'USER.FULLNAME' | translate }}</mat-label>
                 <input
                     id="fullname-input"
-                    [(ngModel)]="fullName"
                     name="fullName"
+                    formControlName="fullNameFormControl"
                     placeholder="{{'USER.FULLNAME' | translate}}"
                     matInput
+                    required
+                    maxlength="32"
                 />
                 <mat-icon matPrefix> badge </mat-icon>
+                <mat-error *ngIf="hasError('fullNameFormControl', 'required')"> {{ 'ERROR.REQUIRED.FULLNAME' | translate }} </mat-error>
             </mat-form-field>
             <button
                 type="button"
-                [ngClass]="{'submit-button': !isDisabled('fullName', fullName)}"
-                (click) = "updateUser('fullName', fullName)"
-                [disabled] = "isDisabled('fullName', fullName)"
+                [ngClass]="{'submit-button': !isDisabled('fullName')}"
+                (click) = "updateUser('fullName')"
+                [disabled] = "isDisabled('fullName')"
                 matSuffix
                 mat-icon-button
             >
@@ -52,8 +60,8 @@
                 <mat-select 
                     id="language-select"
                     name="language"
+                    formControlName="languageFormControl"
                     placeholder="{{'USER.LANGUAGE'|translate}}"
-                    [(ngModel)]="language"
                 >
                     <mat-option
                         *ngFor="let lang of languages"
@@ -66,9 +74,9 @@
             </mat-form-field>
             <button
                 type="button"
-                [ngClass]="{'submit-button': !isDisabled('language', language)}"
-                (click) = "updateUser('language', language)"
-                [disabled] = "isDisabled('language', language)"
+                [ngClass]="{'submit-button': !isDisabled('language')}"
+                (click) = "updateUser('language')"
+                [disabled] = "isDisabled('language')"
                 matSuffix
                 mat-icon-button
             >
@@ -82,10 +90,13 @@
                 <input
                     id="password-input"
                     name="password"
+                    formControlName="passwordFormControl"
                     placeholder="{{'USER.NEW_PASSWORD'|translate}}"
-                    [(ngModel)]="password"
                     [type]="hidePassword ? 'password' : 'text'"
                     matInput
+                    required
+                    minlength="8"
+                    pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@#$%^&+=*]).{8,}$"
                 />
                 <mat-icon matPrefix> lock </mat-icon>
                 <button
@@ -99,13 +110,16 @@
                 >
                     <mat-icon> {{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
                 </button>
+                <mat-error *ngIf="hasError('passwordFormControl', 'required')"> {{ 'ERROR.REQUIRED.PASSWORD' | translate }} </mat-error>
+                <mat-error *ngIf="hasError('passwordFormControl', 'minlength')"> {{ 'ERROR.MINLENGTH.PASSWORD' | translate }} </mat-error>
+                <mat-error *ngIf="!hasError('passwordFormControl', 'minlength') && hasError('passwordFormControl', 'pattern')"> {{ 'ERROR.PATTERN' | translate }} </mat-error>
             </mat-form-field>
             <button
                 class="submit-button"
                 type="button"
-                [ngClass]="{'submit-button': !isDisabled('password', password)}"
-                (click) = "updateUser('password', password)"
-                [disabled] = "isDisabled('password', password)"
+                [ngClass]="{'submit-button': !isDisabled('password')}"
+                (click) = "updateUser('password')"
+                [disabled] = "isDisabled('password')"
                 matSuffix
                 mat-icon-button
             >
@@ -117,18 +131,23 @@
                 <mat-label> {{ 'USER.INITIALS' | translate }}</mat-label>
                 <input
                     id="initials-input"
-                    [(ngModel)]="initials"
                     name="initials"
+                    formControlName="initialsFormControl"
                     placeholder="{{ 'USER.INITIALS' | translate }}"
                     matInput
+                    required
+                    minlength="2"
+                    maxlength="2"
                 />
                 <mat-icon matPrefix> image </mat-icon>
+                <mat-error *ngIf="hasError('initialsFormControl', 'required')"> {{ 'ERROR.REQUIRED.INITIALS' | translate }} </mat-error>
+                <mat-error *ngIf="hasError('initialsFormControl', 'minlength')"> {{ 'ERROR.MINLENGTH.INITIALS' | translate }} </mat-error>
             </mat-form-field>
             <button
                 type="button"
-                [ngClass]="{'submit-button': !isDisabled('initials', initials)}"
-                (click) = "updateUser('initials', initials)"
-                [disabled] = "isDisabled('initials', initials)"
+                [ngClass]="{'submit-button': !isDisabled('initials')}"
+                (click) = "updateUser('initials')"
+                [disabled] = "isDisabled('initials')"
                 matSuffix
                 mat-icon-button
             >
@@ -144,6 +163,7 @@
                     [style.background]="color"
                     cpPosition="top"
                     name="color"
+                    formControlName="colorFormControl"
                     readonly
                     matInput
                 />
@@ -151,9 +171,9 @@
             </mat-form-field>
             <button
                 type="button"
-                [ngClass]="{'submit-button': !isDisabled('color', color)}"
-                (click) = "updateUser('color', color)"
-                [disabled] = "isDisabled('color', color)"
+                [ngClass]="{'submit-button': !isDisabled('color')}"
+                (click) = "updateUser('color')"
+                [disabled] = "isDisabled('color')"
                 matSuffix
                 mat-icon-button
             >
@@ -182,16 +202,16 @@
             </div>
             <button
                 type="button"
-                [ngClass]="{'submit-button': !isDisabled('profilePicture', profilePicture)}"
-                (click) = "updateUser('profilePicture', profilePicture)"
-                [disabled] = "isDisabled('profilePicture', profilePicture)"
+                [ngClass]="{'submit-button': !isDisabled('profilePicture')}"
+                (click) = "updateUser('profilePicture')"
+                [disabled] = "isDisabled('profilePicture')"
                 matSuffix
                 mat-icon-button
             >
                 <app-spinner-icon class="material-icons" icon="done_all" [spinning]="isLoading('profilePicture')"></app-spinner-icon>
             </button>
         </div>
-        <div class="delete mt-5">
+        <div class="delete mt-5" *ngIf="showDelete()">
             <button color="warn" mat-raised-button (click)="deleteUser()">
                 {{ 'USER.DELETE' | translate }}
                 <app-spinner-icon class="material-icons" icon="delete" [spinning]="loadingDelete"></app-spinner-icon>

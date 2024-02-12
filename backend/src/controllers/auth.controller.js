@@ -97,6 +97,33 @@ async function verify(req, res, next) {
 }
 
 /**
+ * Refreshes the token.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @throws {Error} - Throws an error if user is invalid.
+ * - 403: INVALID_TOKEN
+ *
+ * @returns {void}
+ */
+async function refreshToken(req, res, next) {
+    try {
+        const token = req.body.token;
+        const tokenUser = jwt.decode(token);
+        const user = await authService.singleUser(db, tokenUser.username);
+        if (user) {
+            res.json(jwt.sign(user, '3R#q!ZuFb2sPn8yT^@5vLmN7jA*C6hG', { expiresIn: '1h' }));
+        } else {
+            res.status(403).send({ message: 'ERROR.INVALID_TOKEN' });
+        }
+    } catch (err) {
+        next(err);
+    }
+}
+
+/**
  * Upadates a user attribute.
  *
  * @param {Object} req - Express request object.
@@ -116,7 +143,7 @@ async function updateUser(req, res, next) {
         const tokenUser = jwt.decode(token);
         const user = await authService.singleUser(db, tokenUser.username);
         if (user && await authService.updateAttribute(db, tokenUser.username, attribute, value)) {
-            res.json({ message: 'SUCCESS.UPDATE_ACCOUNT' });
+            res.json({ message: 'SUCCESS.' + (attribute === 'username' ? 'UPDATE_USERNAME' : 'UPDATE_ACCOUNT') });
         } else {
             res.status(500).send({ message: 'ERROR.INTERNAL' });
         }
@@ -170,7 +197,10 @@ async function deleteUser(req, res, next) {
         const token = req.body.token;
         const tokenUser = jwt.decode(token);
         if (await authService.deleteUser(db, tokenUser.username)) {
-            await notificationsService.createTeamNotification(db, tokenUser.project, tokenUser.username, 'NOTIFICATIONS.NEW.LEAVE_PROJECT', [tokenUser.username], 'exit_to_app');
+            const promises = [];
+            promises.push(notificationsService.createTeamNotification(db, tokenUser.project, tokenUser.username, 'NOTIFICATIONS.NEW.LEAVE_PROJECT', [tokenUser.username], 'exit_to_app'));
+            promises.push(notificationsService.clearUserRelatedNotifications(db, tokenUser.project, tokenUser.username));
+            await Promise.all(promises);
             res.json({ message: 'SUCCESS.DELETE_ACCOUNT' });
         } else {
             res.status(500).send({ message: 'ERROR.INTERNAL' });
@@ -184,6 +214,7 @@ module.exports = {
     login,
     register,
     verify,
+    refreshToken,
     updateUser,
     toggleNotifications,
     deleteUser

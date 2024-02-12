@@ -135,26 +135,11 @@ async function createTask(db, author, project, title, description, assigned, sta
  */
 async function importTask(db, task, project, author) {
     try {
-        const tasksCollection = db.collection('tasks');
-        const order = await highestOrder(db, project, task.state);
-        const newDocRef = tasksCollection.doc();
-        const taskData = {
-            uid: newDocRef.id,
-            author: task.author === '' ? author : task.author,
-            project: project,
-            title: task.title,
-            description: task.description,
-            assigned: '',
-            state: task.state === '' ? 'NONE' : task.state,
-            order: order,
-            history: [{
-                timestamp: new Date().getTime(),
-                username: author,
-                state: task.state === '' ? 'NONE' : task.state,
-                previous: null
-            }]
-        };
-        await tasksCollection.doc(newDocRef.id).set(taskData);
+        const author = task.author === '' ? author : task.author;
+        const assigned = '';
+        const state = task.state === '' ? 'NONE' : task.state;
+        const order = await highestOrder(db, project, state);
+        await createTask(db, author, project, task.title, task.description, assigned, state, order);
         return 'success';
     } catch (err) {
         return 'fail';

@@ -222,7 +222,9 @@ async function taskProgress(db, project) {
     historyEvents.forEach((event) => {
         if (states.indexOf(event.state) !== -1) {
             if (event.previous === null) {
-                counters[event.state]++;
+                for (let i = 0; i <= states.indexOf(event.state); i++) {
+                    counters[states[i]]++;
+                }
             } else {
                 if (states.indexOf(event.state) > states.indexOf(event.previous)) {
                     for (let i = states.indexOf(event.state); i > states.indexOf(event.previous); i--) {
