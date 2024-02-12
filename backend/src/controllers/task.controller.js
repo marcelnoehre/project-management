@@ -53,12 +53,12 @@ async function importTasks(req, res, next) {
             success: 0,
             fail: 0
         };
-        const data = [];
+        const taskList = [];
         for (const task of tasks) {
             const response = await taskService.importTask(db, task, tokenUser.project, tokenUser.username);
             if (response) {
                 result.success++;
-                data.push(response);
+                taskList.push(response);
             } else {
                 result.fail++;
             }
@@ -74,7 +74,7 @@ async function importTasks(req, res, next) {
             amount: tasks.length,
             success: result.success,
             fail: result.fail,
-            data: data
+            taskList: taskList
         });
     } catch (err) {
         next(err);

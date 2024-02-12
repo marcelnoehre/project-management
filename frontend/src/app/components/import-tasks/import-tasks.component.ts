@@ -57,6 +57,7 @@ export class ImportTasksComponent {
       (response) => {
         this.loading = false;
         this.result = response;
+        this.taskList = response.taskList;
         this.snackbar.open(this.translate.instant('SUCCESS.IMPORT_TASKS'));
       },
       (error) => {
