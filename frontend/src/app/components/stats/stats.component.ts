@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ProgressBarMode } from '@angular/material/progress-bar';
 import { StatsService } from 'src/app/services/stats.service';
 import { TaskState } from 'src/app/enums/task-state.enum';
 import { TaskStateColor } from 'src/app/enums/task-state-color.enum';
 import { TranslateService } from '@ngx-translate/core';
 import { ChartOptions } from 'src/app/interfaces/chart-options';
+import { ApexAxisChartSeries, ChartComponent } from 'ng-apexcharts';
 
 @Component({
   selector: 'app-stats',
@@ -12,6 +13,7 @@ import { ChartOptions } from 'src/app/interfaces/chart-options';
   styleUrls: ['./stats.component.scss']
 })
 export class StatsComponent implements OnInit {
+  @ViewChild('chart') chart!: ChartComponent;
   information = 'INIT';
   mode: ProgressBarMode = 'determinate';
   loading = 0;
@@ -217,6 +219,17 @@ export class StatsComponent implements OnInit {
 
   async regenerateStat(stat: string) {
     this.data[stat] = await this.stats.regenerateStat(stat);
+    if (stat === 'taskProgress') {
+      const series: ApexAxisChartSeries = [];
+      const states = [TaskState.NONE, TaskState.TODO, TaskState.PROGRESS, TaskState.REVIEW, TaskState.DONE];
+      states.forEach((state) => {
+        series.push({
+          name: state,
+          data: this.data.taskProgress[state]
+        });
+      });
+      this.chart.updateSeries(series);
+    }
   }
 
 }
