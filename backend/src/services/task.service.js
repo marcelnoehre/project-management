@@ -1,3 +1,5 @@
+const authService = require('./auth.service');
+
 /**
  * Check if there is exactly 1 task with a specific uid.
  *
@@ -135,11 +137,22 @@ async function createTask(db, author, project, title, description, assigned, sta
  */
 async function importTask(db, task, project, author) {
     try {
-        const author = task.author === '' ? author : task.author;
-        const assigned = '';
-        const state = task.state === '' ? 'NONE' : task.state;
+        const taskAuthor = task.author ? await authService.singleUser(db, task.author) : null;
+        const taskAssigned = task.assigned ? await authService.singleUser(db, task.assigned) : null;
+        const validStates = ['NONE', 'TODO', 'PROGRESS', 'REVIEW', 'DONE'];
+        const state = validStates.includes(task.state) ? task.state : 'NONE';
         const order = await highestOrder(db, project, state);
-        await createTask(db, author, project, task.title, task.description, assigned, state, order);
+        const data = {
+            author: author,
+            assigned: ''
+        }
+        if (taskAuthor && taskAuthor.project === project) {
+            data.author = task.author;
+        }
+        if(taskAssigned && taskAssigned.project === project) {
+            data.assigned = task.assigned;
+        }
+        await createTask(db, data.author, project, task.title, task.description, data.assigned, state, order);
         return 'success';
     } catch (err) {
         return 'fail';
