@@ -133,7 +133,7 @@ async function createTask(db, author, project, title, description, assigned, sta
  * @param {string} project - The project name.
  * @param {string} author - The task author.
  *
- * @returns {Promise} Promise of the import.
+ * @returns {Object} The created user - partial information.
  */
 async function importTask(db, task, project, author) {
     try {
@@ -153,9 +153,15 @@ async function importTask(db, task, project, author) {
             data.assigned = task.assigned;
         }
         await createTask(db, data.author, project, task.title, task.description, data.assigned, state, order);
-        return 'success';
+        const adjusted = {
+            title: task.title,
+            description: task.description,
+            state: state,
+            author: data.author
+        };
+        return adjusted;
     } catch (err) {
-        return 'fail';
+        return null;
     }
 }
 
