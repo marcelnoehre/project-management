@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Progress } from 'src/app/interfaces/data/progress';
 import { Task } from 'src/app/interfaces/data/task';
@@ -7,7 +6,6 @@ import { ApiService } from 'src/app/services/api/api.service';
 import { ErrorService } from 'src/app/services/error.service';
 import { ParserService } from 'src/app/services/parser.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
-import { StorageService } from 'src/app/services/storage.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -18,7 +16,7 @@ import { UserService } from 'src/app/services/user.service';
 export class ImportTasksComponent {
   taskList: Task[] = [];
   fileInput: string = '';
-  result!: Progress;
+  result!: Progress | null;
   loading: boolean = false;
 
   constructor(
@@ -65,5 +63,10 @@ export class ImportTasksComponent {
         this._error.handleApiError(error);
       }
     );
+  }
+
+  reset() {
+    this.taskList = [];
+    this.result = null;
   }
 }
