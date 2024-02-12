@@ -1,15 +1,15 @@
 <div class="import-tasks-container">
     <form class="import-tasks-form">
-        <h1 class="header">
+        <h1 class="header m-4">
             {{ 'NAV.IMPORT_TASKS' | translate }}
         </h1>
-        <div class="form-container center mb-5">
+        <div class="form-container center">
             <input
                 id="task-list-input"
                 name="task-list-input"
                 *ngIf="!hasTaskList()"
                 type="file"
-                class="file-input p-5"
+                class="file-input p-5 mt-4"
                 (change)="onFileSelected($event)"
             >
             <div *ngIf="hasTaskList()" class="import-preview">
@@ -33,10 +33,14 @@
                         <p>Success: {{ result.success }}</p>
                         <p>Failed: {{ result.fail }}</p>
                     </ng-container>
-                    <button mat-raised-button color="accent" (click)="importTasks()">
+                    <button mat-raised-button *ngIf="!result" color="accent" (click)="importTasks()">
                         <app-spinner-icon class="material-icons" icon="upload" [spinning]="loading"></app-spinner-icon>
                         <ng-container *ngIf="loading">&nbsp;</ng-container>
                         {{ 'APP.IMPORT' | translate }}
+                    </button>
+                    <button mat-raised-button *ngIf="result" color="accent" (click)="reset()">
+                        <mat-icon>refresh</mat-icon>
+                        {{ 'APP.RESET' | translate }}
                     </button>
                 </div>
             </div>

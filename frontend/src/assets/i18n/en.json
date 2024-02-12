@@ -8,7 +8,8 @@
         "ACCEPT": "Accept",
         "REJECT": "Reject",
         "CLEAR": "Clear",
-        "IMPORT": "Import"
+        "IMPORT": "Import",
+        "RESET": "Reset"
     },
     "NAV": {
         "DASHBOARD": "Dashboard",
