@@ -202,15 +202,7 @@ async function updateNotifications(db, removed, seen, username, project) {
         promises.push(notificationsCollection.doc(doc.id).update(data));
     });
     await Promise.all(promises);
-    promises = [];
-    const cleanUp = await notificationsCollection.where('project', '==', project).get();
-    cleanUp.forEach(async (doc) => {
-        const data = doc.data();
-        if (!data.seen.length && !data.unseen.length) {
-            promises.push(doc.ref.delete());
-        }
-    });
-    await Promise.all(promises);
+    await cleanUpEmptyNotifications(db, project);
 }
 
 /**
@@ -246,12 +238,15 @@ async function seenNotifcation(data, username) {
     return data;
 }
 
-async function clearUserRelatedNotifications(project, username) {
-    await clearTypedUserRelatedNotifications(project, username, 'seen');
-    await clearTypedUserRelatedNotifications(project, username, 'unseen');
+async function clearUserRelatedNotifications(db, project, username) {
+    const promises = [];
+    promises.push(clearTypedUserRelatedNotifications(db, project, username, 'seen'));
+    promises.push(clearTypedUserRelatedNotifications(db, project, username, 'unseen'));
+    await Promise.all(promises);
+    await cleanUpEmptyNotifications(db, project);
 }
 
-async function clearTypedUserRelatedNotifications(project, username, type) {
+async function clearTypedUserRelatedNotifications(db, project, username, type) {
     const notificationsCollection = db.collection('notifications');
     const notificationsSnapshot = await notificationsCollection
         .where('project', '==', project)
@@ -262,12 +257,25 @@ async function clearTypedUserRelatedNotifications(project, username, type) {
         const users = doc.data()[type];
         const index = users.indexOf(username);
         if (index !== -1) {
-            users.splice(seenIndex, 1);
+            users.splice(index, 1);
         }
         const data = {
             [type]: users
         }
         promises.push(doc.ref.update(data));
+    });
+    await Promise.all(promises);
+}
+
+async function cleanUpEmptyNotifications(db, project) {
+    const notificationsCollection = db.collection('notifications');
+    const cleanUp = await notificationsCollection.where('project', '==', project).get();
+    const promises = [];
+    cleanUp.forEach(async (doc) => {
+        const data = doc.data();
+        if (!data.seen.length && !data.unseen.length) {
+            promises.push(doc.ref.delete());
+        }
     });
     await Promise.all(promises);
 }
@@ -282,5 +290,6 @@ module.exports = {
     removeNotification,
     seenNotifcation,
     clearUserRelatedNotifications,
-    clearTypedUserRelatedNotifications
+    clearTypedUserRelatedNotifications,
+    cleanUpEmptyNotifications
 };

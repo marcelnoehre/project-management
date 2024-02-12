@@ -197,7 +197,10 @@ async function deleteUser(req, res, next) {
         const token = req.body.token;
         const tokenUser = jwt.decode(token);
         if (await authService.deleteUser(db, tokenUser.username)) {
-            await notificationsService.createTeamNotification(db, tokenUser.project, tokenUser.username, 'NOTIFICATIONS.NEW.LEAVE_PROJECT', [tokenUser.username], 'exit_to_app');
+            const promises = [];
+            promises.push(notificationsService.createTeamNotification(db, tokenUser.project, tokenUser.username, 'NOTIFICATIONS.NEW.LEAVE_PROJECT', [tokenUser.username], 'exit_to_app'));
+            promises.push(notificationsService.clearUserRelatedNotifications(db, tokenUser.project, tokenUser.username));
+            await Promise.all(promises);
             res.json({ message: 'SUCCESS.DELETE_ACCOUNT' });
         } else {
             res.status(500).send({ message: 'ERROR.INTERNAL' });
