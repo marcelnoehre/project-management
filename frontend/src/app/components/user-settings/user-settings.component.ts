@@ -117,9 +117,13 @@ export class UserSettingsComponent {
               this.initialUser = this.user.user;
               this.storage.setSessionEntry('user', this.user.user);
               if (attribute === 'password') {
-              this.userSettingsForm.get('passwordFormControl')?.setValue('');
+                this.userSettingsForm.get('passwordFormControl')?.setValue('');
               } else if (attribute === 'language') {
                 this.translate.use(value);
+              } else if (attribute === 'username') {
+                this.storage.clearSession();
+                this.user.user = this.storage.getSessionEntry('user');
+                this.router.navigateByUrl('/login');
               }
             },
             (error) => {

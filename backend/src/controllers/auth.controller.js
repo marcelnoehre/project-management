@@ -143,7 +143,7 @@ async function updateUser(req, res, next) {
         const tokenUser = jwt.decode(token);
         const user = await authService.singleUser(db, tokenUser.username);
         if (user && await authService.updateAttribute(db, tokenUser.username, attribute, value)) {
-            res.json({ message: 'SUCCESS.UPDATE_ACCOUNT' });
+            res.json({ message: 'SUCCESS.' + (attribute === 'username' ? 'UPDATE_USERNAME' : 'UPDATE_ACCOUNT') });
         } else {
             res.status(500).send({ message: 'ERROR.INTERNAL' });
         }
