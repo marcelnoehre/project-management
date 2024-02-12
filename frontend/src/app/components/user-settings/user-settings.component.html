@@ -211,7 +211,7 @@
                 <app-spinner-icon class="material-icons" icon="done_all" [spinning]="isLoading('profilePicture')"></app-spinner-icon>
             </button>
         </div>
-        <div class="delete mt-5">
+        <div class="delete mt-5" *ngIf="showDelete()">
             <button color="warn" mat-raised-button (click)="deleteUser()">
                 {{ 'USER.DELETE' | translate }}
                 <app-spinner-icon class="material-icons" icon="delete" [spinning]="loadingDelete"></app-spinner-icon>

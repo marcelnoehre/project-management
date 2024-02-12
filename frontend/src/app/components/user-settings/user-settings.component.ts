@@ -11,6 +11,7 @@ import { DialogComponent } from '../dialog/dialog.component';
 import { UserService } from 'src/app/services/user.service';
 import { ErrorService } from 'src/app/services/error.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Permission } from 'src/app/enums/permission.enum';
 
 @Component({
   selector: 'app-user-settings',
@@ -176,6 +177,10 @@ export class UserSettingsComponent {
 
   hasProfilePicture() {
     return this.userSettingsForm.get('profilePictureFormControl')?.value;
+  }
+
+  showDelete() {
+    return !this.user.hasPermission(Permission.OWNER);
   }
 
   async sha256(message: string): Promise<string> {
