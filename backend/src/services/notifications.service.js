@@ -246,6 +246,32 @@ async function seenNotifcation(data, username) {
     return data;
 }
 
+async function clearUserRelatedNotifications(project, username) {
+    await clearTypedUserRelatedNotifications(project, username, 'seen');
+    await clearTypedUserRelatedNotifications(project, username, 'unseen');
+}
+
+async function clearTypedUserRelatedNotifications(project, username, type) {
+    const notificationsCollection = db.collection('notifications');
+    const notificationsSnapshot = await notificationsCollection
+        .where('project', '==', project)
+        .where(type, 'array-contains', username)
+        .get();
+    const promises = [];
+    notificationsSnapshot.forEach((doc) => {
+        const users = doc.data()[type];
+        const index = users.indexOf(username);
+        if (index !== -1) {
+            users.splice(seenIndex, 1);
+        }
+        const data = {
+            [type]: users
+        }
+        promises.push(doc.ref.update(data));
+    });
+    await Promise.all(promises);
+}
+
 module.exports = {
     getNotifications,
     getTypedNotifications,
@@ -254,5 +280,7 @@ module.exports = {
     createRelatedNotification,
     updateNotifications,
     removeNotification,
-    seenNotifcation
+    seenNotifcation,
+    clearUserRelatedNotifications,
+    clearTypedUserRelatedNotifications
 };
