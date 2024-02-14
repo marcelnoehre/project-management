@@ -15,8 +15,9 @@ import { AssignedStats } from 'src/app/interfaces/data/assigned-stats';
 import { StatLeaders } from 'src/app/interfaces/data/stat-leaders';
 import { CategoryStats } from 'src/app/interfaces/data/category-stats';
 import { Stats } from 'src/app/interfaces/data/stats';
-import { RequestService } from '../request.service';
 import { RequestPath } from 'src/app/enums/request-path.enum';
+import { TaskProgress } from 'src/app/interfaces/data/task-progress';
+import { ProjectRoadmap } from 'src/app/interfaces/data/project-roadmap';
 
 @Injectable({
   providedIn: 'root'
@@ -140,7 +141,45 @@ export class MockService extends AdapterService {
   }
 
 
-  // // ### TASK ###
+  // ### STATS ###
+  public override personalStats(token: string): Observable<Stats> {
+    return this.http.get<Stats>(this.buildURL(RequestPath.PERSONAL_STATS));
+  }
+
+  public override stats(token: string): Observable<AssignedStats[]> {
+    return this.http.get<AssignedStats[]>(this.buildURL(RequestPath.STATS));
+  }
+
+  public override statLeaders(token: string): Observable<StatLeaders> {
+    return this.http.get<StatLeaders>(this.buildURL(RequestPath.STAT_LEADERS));
+  }
+
+  public override taskAmount(token: string): Observable<CategoryStats> {
+    return this.http.get<CategoryStats>(this.buildURL(RequestPath.TASK_AMOUNT));
+  }
+
+  public override averageTime(token: string): Observable<CategoryStats> {
+    return this.http.get<CategoryStats>(this.buildURL(RequestPath.AVERAGE_TIME));
+  }
+
+  public override wip(token: string): Observable<number> {
+    return this.http.get<number>(this.buildURL(RequestPath.WIP));
+  }
+
+  public override taskProgress(token: string): Observable<TaskProgress> {
+    return this.http.get<TaskProgress>(this.buildURL(RequestPath.TASK_PROGRESS));
+  }
+
+  public override projectRoadmap(token: string): Observable<ProjectRoadmap[]> {
+    return this.http.get<ProjectRoadmap[]>(this.buildURL(RequestPath.PROJECT_ROADMAP));
+  }
+
+  public override optimizeOrder(token: string): Observable<Response> {
+    return this.http.get<Response>(this.buildURL(RequestPath.OPTIMIZE_ORDER));
+  }
+
+
+  // ### TASK ###
   public override createTask(token: string, title: string, description: string, assigned: string, state: string): Observable<Response> {
     return this.http.get<Response>(this.buildURL(RequestPath.CREATE_TASK));
   }
@@ -179,43 +218,5 @@ export class MockService extends AdapterService {
 
   public override clearTrashBin(token: string): Observable<Response> {
     return this.http.get<Response>(this.buildURL(RequestPath.CLEAR_TRASH_BIN));
-  }
-
-
-  // ### STATS ###
-  public override personalStats(token: string): Observable<Stats> {
-    return this.http.get<Stats>(this.buildURL(RequestPath.PERSONAL_STATS));
-  }
-
-  public override stats(token: string): Observable<AssignedStats[]> {
-    return this.http.get<AssignedStats[]>(this.buildURL(RequestPath.STATS));
-  }
-
-  public override statLeaders(token: string): Observable<StatLeaders> {
-    return this.http.get<StatLeaders>(this.buildURL(RequestPath.STAT_LEADERS));
-  }
-
-  public override taskAmount(token: string): Observable<CategoryStats> {
-    return this.http.get<CategoryStats>(this.buildURL(RequestPath.TASK_AMOUNT));
-  }
-
-  public override averageTime(token: string): Observable<CategoryStats> {
-    return this.http.get<CategoryStats>(this.buildURL(RequestPath.AVERAGE_TIME));
-  }
-
-  public override wip(token: string): Observable<number> {
-    return this.http.get<number>(this.buildURL(RequestPath.WIP));
-  }
-
-  public override taskProgress(token: string): Observable<any> {
-    return this.http.get<any>(this.buildURL(RequestPath.TASK_PROGRESS));
-  }
-
-  public override projectRoadmap(token: string): Observable<any> {
-    return this.http.get<any>(this.buildURL(RequestPath.PROJECT_ROADMAP));
-  }
-
-  public override optimizeOrder(token: string): Observable<Response> {
-    return this.http.get<Response>(this.buildURL(RequestPath.OPTIMIZE_ORDER));
   }
 }
