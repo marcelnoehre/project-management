@@ -10,7 +10,6 @@ function post(req, res, next) {
 
 function jwtAuth(token, res, next) {
     try {
-        console.log(token);
         jwt.verify(token, '3R#q!ZuFb2sPn8yT^@5vLmN7jA*C6hG');
         next();
     } catch (err) {

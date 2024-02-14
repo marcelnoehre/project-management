@@ -18,8 +18,8 @@ export class RequestService {
         return this.get<T>(url, data);
       case RequestType.POST:
         return this.post<T>(url, data);
-      // case RequestType.PUT:
-      //   return this.put<T>(url, data);
+      case RequestType.PUT:
+        return this.put<T>(url, data);
       // case RequestType.DELETE:
       //   return this.delete<T>(url, data);
       default:
@@ -42,9 +42,9 @@ export class RequestService {
     return this.http.post<T>(url, body);
   }
 
-  // private put<T>(url: string, data?: any): Observable<T> {
-
-  // }
+  private put<T>(url: string, body: any): Observable<T> {
+    return this.http.put<T>(url, body);
+  }
 
   // private delete<T>(url: string, data?: any): Observable<T> {
 

@@ -69,12 +69,12 @@ export class DbService extends AdapterService {
   }
 
   public override updateUser(token: string, attribute: string, value: string): Observable<Response> {
-    const body = {
+    const data = {
       token: token,
       attribute: attribute,
       value: value
     }
-    return this.http.post<Response>(this.basePath + this.auth + 'updateUser', body);
+    return this.request.send(RequestType.PUT, this.basePath + this.auth + 'updateUser', data);
   }
 
   public override toggleNotifications(token: string, notificationsEnabled: boolean): Observable<Response> {
