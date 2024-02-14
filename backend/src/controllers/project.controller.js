@@ -6,6 +6,33 @@ const jwt = require('jsonwebtoken');
 const db = admin.firestore();
 
 /**
+ * Get a sorted list of team members.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @throws {Error} - Throws an error if retrieval fails.
+ * - 500: INTERNAL
+ *
+ * @returns {void}
+ */
+async function getTeamMembers(req, res, next) {
+    try {
+        const token = req.query.token;
+        const tokenUser = jwt.decode(token);
+        const members = await projectService.getTeamMembers(db, tokenUser.project);
+        if (members.length) {
+            res.json(members);
+        } else {
+            res.status(500).send({ message: 'ERROR.INTERNAL' });
+        }
+    } catch (err) {
+        next(err);
+    }
+}
+
+/**
  * Creates a project.
  *
  * @param {Object} req - Express request object.
@@ -39,33 +66,6 @@ async function createProject(req, res, next) {
             } else {
                 res.status(409).send({ message: 'ERROR.CREATE_PROJECT' });
             }
-        } else {
-            res.status(500).send({ message: 'ERROR.INTERNAL' });
-        }
-    } catch (err) {
-        next(err);
-    }
-}
-
-/**
- * Get a sorted list of team members.
- *
- * @param {Object} req - Express request object.
- * @param {Object} res - Express response object.
- * @param {Function} next - Express next middleware function.
- *
- * @throws {Error} - Throws an error if retrieval fails.
- * - 500: INTERNAL
- *
- * @returns {void}
- */
-async function getTeamMembers(req, res, next) {
-    try {
-        const token = req.query.token;
-        const tokenUser = jwt.decode(token);
-        const members = await projectService.getTeamMembers(db, tokenUser.project);
-        if (members.length) {
-            res.json(members);
         } else {
             res.status(500).send({ message: 'ERROR.INTERNAL' });
         }
@@ -309,8 +309,8 @@ async function leaveProject(req, res, next) {
 }
 
 module.exports = {
-    createProject,
     getTeamMembers,
+    createProject,
     inviteUser,
     handleInvite,
     updatePermission,

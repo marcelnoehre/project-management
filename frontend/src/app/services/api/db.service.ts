@@ -253,10 +253,10 @@ export class DbService extends AdapterService {
 
   // ### STATS ###
   public override optimizeOrder(token: string): Observable<Response> {
-    const data = {
+    const body = {
       token: token
     }
-    return this.request.send<Response>(RequestType.GET, this.basePath + this.statsRoute + 'optimizeOrder', data);
+    return this.request.send<Response>(RequestType.PUT, this.basePath + this.statsRoute + 'optimizeOrder', body);
   }
 
   public override personalStats(token: string): Observable<Stats> {

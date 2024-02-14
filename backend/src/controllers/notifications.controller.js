@@ -14,7 +14,7 @@ const db = admin.firestore();
  */
 async function getNotifications(req, res, next) {
     try {
-        const token = req.body.token;
+        const token = req.query.token;
         const tokenUser = jwt.decode(token);
         const notifiactions = await notificationsService.getNotifications(db, tokenUser.project, tokenUser.username);
         res.json(notifiactions);

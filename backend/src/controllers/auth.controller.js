@@ -5,6 +5,62 @@ const jwt = require('jsonwebtoken');
 const db = admin.firestore();
 
 /**
+ * Verifies a user.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @throws {Error} - Throws an error if user is invalid.
+ * - 403: INVALID_TOKEN
+ *
+ * @returns {void}
+ */
+async function verify(req, res, next) {
+    try {
+        const token = req.query.token;
+        const tokenUser = jwt.decode(token);
+        const user = await authService.singleUser(db, tokenUser.username);
+        if (user) {
+            user.token = token;
+            user.isLoggedIn = user.project !== '' && user.permission !== 'INVITED';
+            res.json(user);
+        } else {
+            res.status(403).send({ message: 'ERROR.INVALID_TOKEN' });
+        }
+    } catch(err) {
+        next(err);
+    }
+}
+
+/**
+ * Refreshes the token.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @throws {Error} - Throws an error if user is invalid.
+ * - 403: INVALID_TOKEN
+ *
+ * @returns {void}
+ */
+async function refreshToken(req, res, next) {
+    try {
+        const token = req.query.token;
+        const tokenUser = jwt.decode(token);
+        const user = await authService.singleUser(db, tokenUser.username);
+        if (user) {
+            res.json(jwt.sign(user, '3R#q!ZuFb2sPn8yT^@5vLmN7jA*C6hG', { expiresIn: '1h' }));
+        } else {
+            res.status(403).send({ message: 'ERROR.INVALID_TOKEN' });
+        }
+    } catch (err) {
+        next(err);
+    }
+}
+
+/**
  * Handles user authentication and login.
  *
  * @param {Object} req - Express request object.
@@ -61,62 +117,6 @@ async function register(req, res, next) {
             res.json({ message: "SUCCESS.REGISTRATION" });
         } else {
             res.status(402).send({ message: 'ERROR.USERNAME_TAKEN' });
-        }
-    } catch (err) {
-        next(err);
-    }
-}
-
-/**
- * Verifies a user.
- *
- * @param {Object} req - Express request object.
- * @param {Object} res - Express response object.
- * @param {Function} next - Express next middleware function.
- *
- * @throws {Error} - Throws an error if user is invalid.
- * - 403: INVALID_TOKEN
- *
- * @returns {void}
- */
-async function verify(req, res, next) {
-    try {
-        const token = req.body.token;
-        const tokenUser = jwt.decode(token);
-        const user = await authService.singleUser(db, tokenUser.username);
-        if (user) {
-            user.token = token;
-            user.isLoggedIn = user.project !== '' && user.permission !== 'INVITED';
-            res.json(user);
-        } else {
-            res.status(403).send({ message: 'ERROR.INVALID_TOKEN' });
-        }
-    } catch(err) {
-        next(err);
-    }
-}
-
-/**
- * Refreshes the token.
- *
- * @param {Object} req - Express request object.
- * @param {Object} res - Express response object.
- * @param {Function} next - Express next middleware function.
- *
- * @throws {Error} - Throws an error if user is invalid.
- * - 403: INVALID_TOKEN
- *
- * @returns {void}
- */
-async function refreshToken(req, res, next) {
-    try {
-        const token = req.body.token;
-        const tokenUser = jwt.decode(token);
-        const user = await authService.singleUser(db, tokenUser.username);
-        if (user) {
-            res.json(jwt.sign(user, '3R#q!ZuFb2sPn8yT^@5vLmN7jA*C6hG', { expiresIn: '1h' }));
-        } else {
-            res.status(403).send({ message: 'ERROR.INVALID_TOKEN' });
         }
     } catch (err) {
         next(err);
@@ -211,10 +211,10 @@ async function deleteUser(req, res, next) {
 }
 
 module.exports = {
-    login,
-    register,
     verify,
     refreshToken,
+    login,
+    register,
     updateUser,
     toggleNotifications,
     deleteUser
