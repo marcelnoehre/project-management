@@ -136,8 +136,8 @@ async function importTasks(req, res, next) {
 async function updateTask(req, res, next) {
     try {
         const token = req.body.token;
-        const tokenUser = jwt.decode(token);
         const task = req.body.task;
+        const tokenUser = jwt.decode(token);
         if (await taskService.singleTask(db, task.uid)) {
             const promises = [];
             promises.push(taskService.updateTask(db, task.uid, task));
@@ -257,8 +257,8 @@ async function moveToTrashBin(req, res, next) {
 async function restoreTask(req, res, next) {
     try {
         const token = req.body.token;
-        const tokenUser = jwt.decode(token);
         const uid = req.body.uid;
+        const tokenUser = jwt.decode(token);
         const task = await taskService.singleTask(db, uid);
         if (task) {
             const taskData = {
@@ -295,8 +295,8 @@ async function restoreTask(req, res, next) {
 async function deleteTask(req, res, next) {
     try {
         const token = req.query.token;
+        const uid = req.query.uid;
         const tokenUser = jwt.decode(token);
-        const uid = req.body.uid;
         const task = await taskService.singleTask(db, uid);
         if (task) {
             const promises = [];

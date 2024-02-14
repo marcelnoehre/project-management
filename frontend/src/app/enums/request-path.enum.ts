@@ -1,8 +1,8 @@
 const auth = 'auth/';
-const notifications = 'project/';
-const project = 'task/';
-const stats = 'notifications/';
-const task = 'stats/';
+const notifications = 'notifications/';
+const project = 'project/';
+const stats = 'stats/';
+const task = 'task/';
 
 export enum RequestPath {
     // AUTH
@@ -39,14 +39,14 @@ export enum RequestPath {
     OPTIMIZE_ORDER = stats + 'optimize-order',
 
     // TASK
-    GET_TASK_LIST = task + '/get-task-list',
-    GET_TRASH_BIN = task + '/get-trash-bin',
-    CREATE_TASK = task + '/create-task',
-    IMPORT_TASKS = task + '/import-tasks',
-    UPDATE_TASK = task + '/update-task',
-    UPDATE_POSITION = task + '/update-position',
-    MOVE_TO_TRASH_BIN = task + '/move-to-trash-bin',
-    RESTORE_TASK = task + '/restore-task',
-    DELETE_TASK = task + '/delete-task',
-    CLEAR_TRASH_BIN = task + '/clear-trash-bin'
+    GET_TASK_LIST = task + 'get-task-list',
+    GET_TRASH_BIN = task + 'get-trash-bin',
+    CREATE_TASK = task + 'create-task',
+    IMPORT_TASKS = task + 'import-tasks',
+    UPDATE_TASK = task + 'update-task',
+    UPDATE_POSITION = task + 'update-position',
+    MOVE_TO_TRASH_BIN = task + 'move-to-trash-bin',
+    RESTORE_TASK = task + 'restore-task',
+    DELETE_TASK = task + 'delete-task',
+    CLEAR_TRASH_BIN = task + 'clear-trash-bin'
 }

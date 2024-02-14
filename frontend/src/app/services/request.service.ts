@@ -49,6 +49,7 @@ export class RequestService {
       if (data.hasOwnProperty(key)) {
         url += first ? '?' : '&';
         url += (key + '=' + data[key]);
+        first = false;
       }
     }
     return url;
