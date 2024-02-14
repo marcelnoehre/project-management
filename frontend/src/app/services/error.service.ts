@@ -19,6 +19,8 @@ export class ErrorService {
   ) { }
 
   handleApiError(error: any) {
+    console.log(error);
+    
     if (error.status === 403) {
       this.handleInvalidUser();
     }

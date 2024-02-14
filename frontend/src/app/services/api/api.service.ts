@@ -16,6 +16,7 @@ import { AssignedStats } from 'src/app/interfaces/data/assigned-stats';
 import { StatLeaders } from 'src/app/interfaces/data/stat-leaders';
 import { CategoryStats } from 'src/app/interfaces/data/category-stats';
 import { Stats } from 'src/app/interfaces/data/stats';
+import { RequestService } from '../request.service';
 
 @Injectable({
   providedIn: 'root'

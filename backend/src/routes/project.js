@@ -1,14 +1,16 @@
 const express = require('express');
 const router = express.Router();
 const projectController = require('../controllers/project.controller');
-const { jwtAuth } = require('../auth/jwtAuth');
+const jwtAuth = require('../auth/jwtAuth');
 
-router.post('/create-project', jwtAuth, projectController.createProject);
-router.post('/get-team-members', jwtAuth, projectController.getTeamMembers);
-router.post('/invite', jwtAuth, projectController.inviteUser);
-router.post('/handleInvite', jwtAuth, projectController.handleInvite);
-router.post('/updatePermission', jwtAuth, projectController.updatePermission);
-router.post('/remove', jwtAuth, projectController.removeUser);
-router.post('/leave', jwtAuth, projectController.leaveProject);
+router.get('/get-team-members', jwtAuth.query, projectController.getTeamMembers);
+
+router.post('/create-project', jwtAuth.body, projectController.createProject);
+
+router.put('/invite', jwtAuth.body, projectController.inviteUser);
+router.put('/handle-invite', jwtAuth.body, projectController.handleInvite);
+router.put('/update-permission', jwtAuth.body, projectController.updatePermission);
+router.put('/remove', jwtAuth.body, projectController.removeUser);
+router.put('/leave', jwtAuth.body, projectController.leaveProject);
 
 module.exports = router;

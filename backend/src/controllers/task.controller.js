@@ -6,6 +6,46 @@ const jwt = require('jsonwebtoken');
 const db = admin.firestore();
 
 /**
+ * Get a list of tasks subdivided by state.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @returns {void}
+ */
+async function getTaskList(req, res, next) {
+    try {
+        const token = req.query.token;
+        const tokenUser = jwt.decode(token);
+        const taskList = await taskService.getTaskList(db, tokenUser.project);
+        res.json(taskList);
+    } catch (err) {
+        next(err);
+    }
+}
+
+/**
+ * Get a list of trashed tasks.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @returns {void}
+ */
+async function getTrashBin(req, res, next) {
+    try {
+        const token = req.query.token;
+        const tokenUser = jwt.decode(token);
+        const trashedList = await taskService.getTrashedList(db, tokenUser.project);
+        res.json(trashedList);
+    } catch (err) {
+        next(err);
+    }
+}
+
+/**
  * Creates a task.
  *
  * @param {Object} req - Express request object.
@@ -82,26 +122,6 @@ async function importTasks(req, res, next) {
 }
 
 /**
- * Get a list of tasks subdivided by state.
- *
- * @param {Object} req - Express request object.
- * @param {Object} res - Express response object.
- * @param {Function} next - Express next middleware function.
- *
- * @returns {void}
- */
-async function getTaskList(req, res, next) {
-    try {
-        const token = req.body.token;
-        const tokenUser = jwt.decode(token);
-        const taskList = await taskService.getTaskList(db, tokenUser.project);
-        res.json(taskList);
-    } catch (err) {
-        next(err);
-    }
-}
-
-/**
  * Updates a task.
  *
  * @param {Object} req - Express request object.
@@ -116,8 +136,8 @@ async function getTaskList(req, res, next) {
 async function updateTask(req, res, next) {
     try {
         const token = req.body.token;
-        const tokenUser = jwt.decode(token);
         const task = req.body.task;
+        const tokenUser = jwt.decode(token);
         if (await taskService.singleTask(db, task.uid)) {
             const promises = [];
             promises.push(taskService.updateTask(db, task.uid, task));
@@ -223,26 +243,6 @@ async function moveToTrashBin(req, res, next) {
 }
 
 /**
- * Get a list of trashed tasks.
- *
- * @param {Object} req - Express request object.
- * @param {Object} res - Express response object.
- * @param {Function} next - Express next middleware function.
- *
- * @returns {void}
- */
-async function getTrashBin(req, res, next) {
-    try {
-        const token = req.body.token;
-        const tokenUser = jwt.decode(token);
-        const trashedList = await taskService.getTrashedList(db, tokenUser.project);
-        res.json(trashedList);
-    } catch (err) {
-        next(err);
-    }
-}
-
-/**
  * Store a trashed task back in the previous state.
  *
  * @param {Object} req - Express request object.
@@ -257,8 +257,8 @@ async function getTrashBin(req, res, next) {
 async function restoreTask(req, res, next) {
     try {
         const token = req.body.token;
-        const tokenUser = jwt.decode(token);
         const uid = req.body.uid;
+        const tokenUser = jwt.decode(token);
         const task = await taskService.singleTask(db, uid);
         if (task) {
             const taskData = {
@@ -294,9 +294,9 @@ async function restoreTask(req, res, next) {
  */
 async function deleteTask(req, res, next) {
     try {
-        const token = req.body.token;
+        const token = req.query.token;
+        const uid = req.query.uid;
         const tokenUser = jwt.decode(token);
-        const uid = req.body.uid;
         const task = await taskService.singleTask(db, uid);
         if (task) {
             const promises = [];
@@ -329,7 +329,7 @@ async function deleteTask(req, res, next) {
  */
 async function clearTrashBin(req, res, next) {
     try {
-        const token = req.body.token;
+        const token = req.query.token;
         const tokenUser = jwt.decode(token);
         const tasks = await taskService.getTrashedList(db, tokenUser.project);
         if (tasks.length) {
@@ -355,13 +355,13 @@ async function clearTrashBin(req, res, next) {
 }
 
 module.exports = {
+    getTaskList,
+    getTrashBin,
     createTask,
     importTasks,
-    getTaskList,
     updateTask,
     updatePosition,
     moveToTrashBin,
-    getTrashBin,
     restoreTask,
     deleteTask,
     clearTrashBin

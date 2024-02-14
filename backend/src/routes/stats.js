@@ -1,16 +1,17 @@
 const express = require('express');
 const router = express.Router();
 const statsController = require('../controllers/stats.controller');
-const { jwtAuth } = require('../auth/jwtAuth');
+const jwtAuth = require('../auth/jwtAuth');
 
-router.post('/optimizeOrder', jwtAuth, statsController.optimizeOrder);
-router.post('/personalStats', jwtAuth, statsController.personalStats);
-router.post('/stats', jwtAuth, statsController.stats);
-router.post('/statLeaders', jwtAuth, statsController.statLeaders);
-router.post('/taskAmount', jwtAuth, statsController.taskAmount);
-router.post('/averageTime', jwtAuth, statsController.averageTime);
-router.post('/wip', jwtAuth, statsController.wip);
-router.post('/taskProgress', jwtAuth, statsController.taskProgress);
-router.post('/projectRoadmap', jwtAuth, statsController.projectRoadmap);
+router.get('/personal-stats', jwtAuth.query, statsController.personalStats);
+router.get('/stats', jwtAuth.query, statsController.stats);
+router.get('/stat-leaders', jwtAuth.query, statsController.statLeaders);
+router.get('/task-amount', jwtAuth.query, statsController.taskAmount);
+router.get('/average-time', jwtAuth.query, statsController.averageTime);
+router.get('/wip', jwtAuth.query, statsController.wip);
+router.get('/task-progress', jwtAuth.query, statsController.taskProgress);
+router.get('/project-roadmap', jwtAuth.query, statsController.projectRoadmap);
+
+router.put('/optimize-order', jwtAuth.body, statsController.optimizeOrder);
 
 module.exports = router;

@@ -6,27 +6,6 @@ const jwt = require('jsonwebtoken');
 const db = admin.firestore();
 
 /**
- * Optimizes the task order attributes.
- *
- * @param {Object} req - Express request object.
- * @param {Object} res - Express response object.
- * @param {Function} next - Express next middleware function.
- *
- * @returns {void}
- */
-async function optimizeOrder(req, res, next) {
-    try {
-        const token = req.body.token;
-        const tokenUser = jwt.decode(token);
-        const tasks = statsService.getTaskList(db, tokenUser.project);
-        await statsService.optimizeOrder(tasks);
-        res.json({message: 'SUCCESS.STATS.OPTIMIZE'});
-    } catch (err) {
-        next(err);
-    }
-}
-
-/**
  * Calculates the personal stats.
  *
  * @param {Object} req - Express request object.
@@ -37,7 +16,7 @@ async function optimizeOrder(req, res, next) {
  */
 async function personalStats(req, res, next) {
     try {
-        const token = req.body.token;
+        const token = req.query.token;
         const tokenUser = jwt.decode(token);
         const user = await authService.singleUser(db, tokenUser.username);
         if (user) {
@@ -70,7 +49,7 @@ async function personalStats(req, res, next) {
  */
 async function stats(req, res, next) {
     try {
-        const token = req.body.token;
+        const token = req.query.token;
         const tokenUser = jwt.decode(token);
         const project = await projectService.singleProject(db, tokenUser.project);
         const stats = await statsService.stats(db, project);
@@ -91,7 +70,7 @@ async function stats(req, res, next) {
  */
 async function statLeaders(req, res, next) {
     try {
-        const token = req.body.token;
+        const token = req.query.token;
         const tokenUser = jwt.decode(token);
         const statLeaders = await statsService.statLeaders(db, tokenUser.project);
         res.json(statLeaders);
@@ -111,7 +90,7 @@ async function statLeaders(req, res, next) {
  */
 async function taskAmount(req, res, next) {
     try {
-        const token = req.body.token;
+        const token = req.query.token;
         const tokenUser = jwt.decode(token);
         const tasks = await statsService.getTaskList(db, tokenUser.project);
         const states = {
@@ -139,7 +118,7 @@ async function taskAmount(req, res, next) {
  */
 async function averageTime(req, res, next) {
     try {
-        const token = req.body.token;
+        const token = req.query.token;
         const tokenUser = jwt.decode(token);
         const tasks = await statsService.getTaskList(db, tokenUser.project);
         const averageTime = await statsService.averageTime(tasks);
@@ -160,7 +139,7 @@ async function averageTime(req, res, next) {
  */
 async function wip(req, res, next) {
     try {
-        const token = req.body.token;
+        const token = req.query.token;
         const tokenUser = jwt.decode(token);
         const wip = await statsService.wip(db, tokenUser.project);
         res.json(wip);
@@ -180,7 +159,7 @@ async function wip(req, res, next) {
  */
 async function taskProgress(req, res, next) {
     try {
-        const token = req.body.token;
+        const token = req.query.token;
         const tokenUser = jwt.decode(token);
         const taskProgress = await statsService.taskProgress(db, tokenUser.project);
         res.json(taskProgress);
@@ -200,7 +179,7 @@ async function taskProgress(req, res, next) {
  */
 async function projectRoadmap(req, res, next) {
     try {
-        const token = req.body.token;
+        const token = req.query.token;
         const tokenUser = jwt.decode(token);
         const project = await projectService.singleProject(db, tokenUser.project);
         if (project) {
@@ -214,8 +193,28 @@ async function projectRoadmap(req, res, next) {
     }
 }
 
+/**
+ * Optimizes the task order attributes.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Express next middleware function.
+ *
+ * @returns {void}
+ */
+async function optimizeOrder(req, res, next) {
+    try {
+        const token = req.body.token;
+        const tokenUser = jwt.decode(token);
+        const tasks = statsService.getTaskList(db, tokenUser.project);
+        await statsService.optimizeOrder(tasks);
+        res.json({message: 'SUCCESS.STATS.OPTIMIZE'});
+    } catch (err) {
+        next(err);
+    }
+}
+
 module.exports = {
-    optimizeOrder,
     personalStats,
     stats,
     statLeaders,
@@ -223,5 +222,6 @@ module.exports = {
     averageTime,
     wip,
     taskProgress,
-    projectRoadmap
+    projectRoadmap,
+    optimizeOrder
 };
