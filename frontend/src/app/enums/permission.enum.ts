@@ -2,5 +2,6 @@ export enum Permission {
     OWNER = 'OWNER',
     ADMIN = 'ADMIN',
     MEMBER = 'MEMBER',
-    INVITED = 'INVITED'
+    INVITED = 'INVITED',
+    NONE = ''
 }

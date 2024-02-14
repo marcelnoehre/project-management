@@ -83,8 +83,8 @@ export class KanbanBoardComponent implements AfterViewInit {
         );      
       }
       const foundState = this.taskList.find((list) => list.state === event.event.target.id);
-      const previousIndex = foundState!.tasks[event.currentIndex - 1]?.order ? foundState!.tasks[event.currentIndex - 1].order : 0;
-      const nextIndex = foundState!.tasks[event.currentIndex + 1]?.order === undefined ? previousIndex + 2 : foundState!.tasks[event.currentIndex + 1].order;
+      const previousIndex = foundState?.tasks[event.currentIndex - 1]?.order ? foundState?.tasks[event.currentIndex - 1].order : 0;
+      const nextIndex = foundState?.tasks[event.currentIndex + 1]?.order === undefined ? previousIndex + 2 : foundState?.tasks[event.currentIndex + 1].order;
       this.api.updatePosition(this.user.token, foundState!.tasks[event.currentIndex].uid, foundState!.state, (previousIndex + nextIndex) / 2).subscribe(
         (tasklist) => {
           this.taskList = tasklist;

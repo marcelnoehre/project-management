@@ -6,6 +6,6 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./spinner-icon.component.scss']
 })
 export class SpinnerIconComponent {
-  @Input() icon: string = '';
-  @Input() spinning: boolean = false;
+  @Input() icon = '';
+  @Input() spinning = false;
 }

@@ -7,9 +7,29 @@ import { Permission } from '../enums/permission.enum';
 })
 export class UserService {
   private permissions: Permission[] = [Permission.INVITED, Permission.MEMBER, Permission.ADMIN, Permission.OWNER];
-  private userObj!: User;
-
-  constructor() { }
+  private userObj: User = {
+    token: '',
+    username: '',
+    fullName: '',
+    language: '',
+    profilePicture: '',
+    initials: '',
+    color: '',
+    project: '',
+    permission: Permission.NONE,
+    notificationsEnabled: true,
+    isLoggedIn: false,
+    stats: {
+        created: -1,
+        imported: -1,
+        updated: -1,
+        edited: -1,
+        trashed: -1,
+        restored: -1,
+        deleted: -1,
+        cleared: -1
+    }
+}
 
   get user(): User {
     return this.userObj;
@@ -43,7 +63,7 @@ export class UserService {
     return this.userObj.project;
   }
 
-  get permission(): string {
+  get permission(): Permission {
     return this.userObj.permission;
   }
 

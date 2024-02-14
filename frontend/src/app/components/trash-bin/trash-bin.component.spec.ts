@@ -3,8 +3,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TrashBinComponent } from './trash-bin.component';
 import { AppModule } from 'src/app/app.module';
 import { TranslateService } from '@ngx-translate/core';
-import { MockUserService } from 'src/app/mocks/user-mock.service';
-import { UserService } from 'src/app/services/user.service';
 
 describe('TrashBinComponent', () => {
   let component: TrashBinComponent;
@@ -15,8 +13,7 @@ describe('TrashBinComponent', () => {
       imports: [AppModule],
       declarations: [TrashBinComponent],
       providers: [
-        { provide: TranslateService, useClass: TranslateService },
-        { provide: UserService, useClass: MockUserService }
+        { provide: TranslateService, useClass: TranslateService }
       ]
     });
     fixture = TestBed.createComponent(TrashBinComponent);
