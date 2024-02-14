@@ -1,0 +1,34 @@
+{
+    "created":{
+        "username":["owner", "admin"],
+        "value":3
+    },
+    "imported":{
+        "username":["owner"],
+        "value":77
+    },
+    "updated":{
+        "username":["admin"],
+        "value":20
+    },
+    "edited":{
+        "username":["member"],
+        "value":1
+    },
+    "trashed":{
+        "username":["member"],
+        "value":9
+    },
+    "restored":{
+        "username":["owner"],
+        "value":1
+    },
+    "deleted":{
+        "username":["admin"],
+        "value":2
+    },
+    "cleared":{
+        "username":["admin"],
+        "value":1
+    }
+}

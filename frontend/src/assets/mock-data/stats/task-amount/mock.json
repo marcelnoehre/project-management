@@ -1,0 +1,8 @@
+{
+    "NONE":5,
+    "TODO":7,
+    "PROGRESS":2,
+    "REVIEW":6,
+    "DONE":10,
+    "DELETED":3
+}
