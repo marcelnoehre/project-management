@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { StatsComponent } from './stats.component';
+import { AppModule } from 'src/app/app.module';
 
 describe('StatsComponent', () => {
   let component: StatsComponent;
@@ -8,6 +9,7 @@ describe('StatsComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [AppModule],
       declarations: [StatsComponent]
     });
     fixture = TestBed.createComponent(StatsComponent);

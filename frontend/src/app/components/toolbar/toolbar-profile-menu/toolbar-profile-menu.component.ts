@@ -17,10 +17,10 @@ import { NotificationsService } from 'src/app/services/notifications.service';
 export class ToolbarProfileMenuComponent {
 	@ViewChild('menu', { static: false })	menu!: MatMenu;
 
-	public fullName;
-	public profilePicture;
-	public initials;
-	public color;
+	public fullName = '';
+	public profilePicture = '';
+	public initials = '';
+	public color = '';
 
 	constructor(
     private router: Router,

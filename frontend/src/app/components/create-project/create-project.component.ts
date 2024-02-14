@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
-import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Permission } from 'src/app/enums/permission.enum';
 import { ApiService } from 'src/app/services/api/api.service';
