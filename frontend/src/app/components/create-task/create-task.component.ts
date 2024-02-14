@@ -20,7 +20,7 @@ export class CreateTaskComponent implements OnInit {
   
   taskStates = [TaskState.TODO, TaskState.PROGRESS, TaskState.REVIEW, TaskState.DONE];
   createTaskForm!: FormGroup;
-  loading: boolean = false;
+  loading = false;
   members: User[] = [];
 
   constructor(

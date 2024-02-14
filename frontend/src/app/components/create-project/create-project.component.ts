@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
-import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Permission } from 'src/app/enums/permission.enum';
+import { User } from 'src/app/interfaces/data/user';
 import { ApiService } from 'src/app/services/api/api.service';
 import { ErrorService } from 'src/app/services/error.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
@@ -17,8 +17,8 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class CreateProjectComponent {
   projectForm!: FormGroup;
-  created: boolean = false;
-  loading: boolean = false;
+  created = false;
+  loading = false;
 
   constructor(
     private dialogRef: MatDialogRef<CreateProjectComponent>,
@@ -40,7 +40,7 @@ export class CreateProjectComponent {
 		return this.projectForm.get('projectFormControl')?.value;
 	}
 
-  get sessionUser(): any {
+  get sessionUser(): User {
     return this.storage.getSessionEntry('user');
   }
 

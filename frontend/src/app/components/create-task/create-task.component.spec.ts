@@ -13,7 +13,9 @@ describe('CreateTaskComponent', () => {
     TestBed.configureTestingModule({
       imports: [AppModule, TranslateModule.forRoot()],
       declarations: [CreateTaskComponent],
-      providers: [{ provide: TranslateService, useClass: TranslateService }]
+      providers: [
+        { provide: TranslateService, useClass: TranslateService }
+      ]
     });
     fixture = TestBed.createComponent(CreateTaskComponent);
     component = fixture.componentInstance;

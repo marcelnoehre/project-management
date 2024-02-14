@@ -15,9 +15,9 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class ImportTasksComponent {
   taskList: Task[] = [];
-  fileInput: string = '';
+  fileInput = '';
   result!: Progress | null;
-  loading: boolean = false;
+  loading = false;
 
   constructor(
     private parser: ParserService,

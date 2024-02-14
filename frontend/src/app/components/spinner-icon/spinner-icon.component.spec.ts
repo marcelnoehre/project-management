@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SpinnerIconComponent } from './spinner-icon.component';
+import { AppModule } from 'src/app/app.module';
 
 describe('SpinnerIconComponent', () => {
   let component: SpinnerIconComponent;
@@ -8,6 +9,7 @@ describe('SpinnerIconComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [AppModule],
       declarations: [SpinnerIconComponent]
     });
     fixture = TestBed.createComponent(SpinnerIconComponent);

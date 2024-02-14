@@ -108,14 +108,8 @@ export class MockService extends AdapterService {
   }
 
   public override getTeamMembers(token: string): Observable<User[]> {
-    // if (this.availableMockData.projects.includes(project)) {
-    //   const url = this.basePath + this.project + `get-team-members/${project}.json`;
-    //   return this.http.get<User[]>(url);
-    // } else {
-    //   this.snackbar.open(this.translate.instant('ERROR.INTERNAL'));
-    //   throw new Error(this.translate.instant('ERROR.INTERNAL'));
-    // }
-    throw new Error('Method not implemented!');
+    const url = this.basePath + this.project + `get-team-members/mockProject.json`;
+    return this.http.get<User[]>(url);
   }
 
   public override inviteUser(token: string, username: string): Observable<User> {
