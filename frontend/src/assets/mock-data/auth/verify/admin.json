@@ -1,13 +1,23 @@
 {
-    "token": "1234",
+    "token": "admin",
     "username": "admin",
     "fullName": "Mock Admin",
-    "language": "de",
-    "profilePicture": "",
     "initials": "MA",
     "color": "#FFFFFF",
-    "project": "mockProject",
+    "language": "en",
+    "project": "MockProject",
     "permission": "ADMIN",
+    "profilePicture": "",
     "notificationsEnabled": true,
-    "isLoggedIn": true
+    "isLoggedIn": true,
+    "stats": {
+        "created": 42,
+        "imported": 15,
+        "updated": 78,
+        "edited": 63,
+        "trashed": 29,
+        "restored": 51,
+        "deleted": 94,
+        "cleared": 12
+    }
 }

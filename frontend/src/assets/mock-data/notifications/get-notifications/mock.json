@@ -1,0 +1,18 @@
+[
+    {
+        "uid": "lPMZOH0Hxy6z0mhZ9shV", 
+        "message": "NOTIFICATIONS.NEW.JOINED", 
+        "data": ["admin"], 
+        "icon": "person_add", 
+        "timestamp": 1707948598239, 
+        "seen": false 
+    },
+    { 
+        "uid": "lk8id9WVL0N1o97vRDK6", 
+        "message": "NOTIFICATIONS.NEW.CREATE_TASK", 
+        "data": ["admin", "mock"], 
+        "icon": "note_add", 
+        "timestamp": 1707948640062, 
+        "seen": true 
+    }
+]

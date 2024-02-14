@@ -11,6 +11,8 @@ import { AssignedStats } from 'src/app/interfaces/data/assigned-stats';
 import { StatLeaders } from 'src/app/interfaces/data/stat-leaders';
 import { CategoryStats } from 'src/app/interfaces/data/category-stats';
 import { Stats } from 'src/app/interfaces/data/stats';
+import { TaskProgress } from 'src/app/interfaces/data/task-progress';
+import { ProjectRoadmap } from 'src/app/interfaces/data/project-roadmap';
 
 @Injectable({
   providedIn: 'root'
@@ -18,13 +20,13 @@ import { Stats } from 'src/app/interfaces/data/stats';
 export abstract class AdapterService {
 
   // ### AUTH ###
+  public abstract verify(token: string): Observable<User>;
+  
+  public abstract refreshToken(token: string): Observable<string>;
+
   public abstract login(username: string, password: string): Observable<User>;
 
   public abstract register(username: string, fullName: string, language: string, password: string): Observable<Response>;
-
-  public abstract verify(token: string): Observable<User>;
-
-  public abstract refreshToken(token: string): Observable<string>;
 
   public abstract updateUser(token: string, attribute: string, value: string): Observable<Response>;
 
@@ -32,11 +34,16 @@ export abstract class AdapterService {
 
   public abstract deleteUser(token: string): Observable<Response>;
 
+  // ### NOTIFICATIONS ###
+  public abstract getNotifications(token: string): Observable<Notification[]>;
+
+  public abstract updateNotifications(token: string, seen: string[], removed: string[]): Observable<Notification[]>;
+  
   
   // ### PROJECT ###
-  public abstract createProject(token: string, project: string): Observable<Response>;
-  
   public abstract getTeamMembers(token: string): Observable<User[]>;
+  
+  public abstract createProject(token: string, project: string): Observable<Response>;
 
   public abstract inviteUser(token: string, username: string): Observable<User>;
 
@@ -47,6 +54,28 @@ export abstract class AdapterService {
   public abstract removeUser(token: string, username: string): Observable<Response>;
 
   public abstract leaveProject(token: string): Observable<Response>;
+
+
+  // ### STATS ###
+  
+  public abstract personalStats(token: string): Observable<Stats>;
+  
+  public abstract stats(token: string): Observable<AssignedStats[]>;
+  
+  public abstract statLeaders(token: string): Observable<StatLeaders>;
+  
+  public abstract taskAmount(token: string): Observable<CategoryStats>;
+  
+  public abstract averageTime(token: string): Observable<CategoryStats>;
+  
+  public abstract wip(token: string): Observable<number>;
+  
+  public abstract taskProgress(token: string): Observable<TaskProgress>;
+  
+  public abstract projectRoadmap(token: string): Observable<ProjectRoadmap[]>;
+  
+  public abstract optimizeOrder(token: string): Observable<Response>;
+
 
 
   // ### TASKS ###
@@ -69,31 +98,4 @@ export abstract class AdapterService {
   public abstract restoreTask(token: string, uid: string): Observable<Task[]>;
 
   public abstract clearTrashBin(token: string): Observable<Response>;
-
-  // ### NOTIFICATIONS ###
-  public abstract getNotifications(token: string): Observable<Notification[]>;
-
-  public abstract updateNotifications(token: string, seen: string[], removed: string[]): Observable<Notification[]>;
-
-
-  // ### STATS ###
-  public abstract optimizeOrder(token: string): Observable<Response>;
-
-  public abstract personalStats(token: string): Observable<Stats>;
-
-  public abstract stats(token: string): Observable<AssignedStats[]>;
-
-  public abstract statLeaders(token: string): Observable<StatLeaders>;
-
-  public abstract taskAmount(token: string): Observable<CategoryStats>;
-
-  public abstract averageTime(token: string): Observable<CategoryStats>;
-
-  public abstract wip(token: string): Observable<number>;
-  
-  // TODO: refactor the response
-  public abstract taskProgress(token: string): Observable<any>;
-
-  public abstract projectRoadmap(token: string): Observable<any>;
-
 }

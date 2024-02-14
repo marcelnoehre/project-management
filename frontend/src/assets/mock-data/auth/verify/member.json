@@ -1,13 +1,23 @@
 {
-    "token": "1234",
+    "token": "member",
     "username": "member",
     "fullName": "Mock Member",
-    "language": "de",
-    "profilePicture": "",
     "initials": "MM",
     "color": "#FFFFFF",
+    "language": "de",
     "project": "mockProject",
     "permission": "MEMBER",
+    "profilePicture": "",
     "notificationsEnabled": false,
-    "isLoggedIn": true
+    "isLoggedIn": true,
+    "stats": {
+        "created": 64,
+        "imported": 27,
+        "updated": 89,
+        "edited": 14,
+        "trashed": 50,
+        "restored": 73,
+        "deleted": 3,
+        "cleared": 67
+    }
 }

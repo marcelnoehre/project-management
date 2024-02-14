@@ -17,6 +17,8 @@ import { StatLeaders } from 'src/app/interfaces/data/stat-leaders';
 import { CategoryStats } from 'src/app/interfaces/data/category-stats';
 import { Stats } from 'src/app/interfaces/data/stats';
 import { RequestService } from '../request.service';
+import { TaskProgress } from 'src/app/interfaces/data/task-progress';
+import { ProjectRoadmap } from 'src/app/interfaces/data/project-roadmap';
 
 @Injectable({
   providedIn: 'root'
@@ -47,20 +49,20 @@ export class ApiService {
 	}
 
 	// ### AUTH ###
-	public login(username: string, password: string): Observable<User> {
-		return this.adapter.login(username, password);
-	}
-
-	public register(username: string, fullName: string, language: string, password: string): Observable<Response> {
-		return this.adapter.register(username, fullName, language, password);
-	}
-
 	public verify(token: string): Observable<User> {
 		return this.adapter.verify(token);
 	}
 
 	public refreshToken(token: string): Observable<string> {
 		return this.adapter.refreshToken(token);
+	}
+
+	public login(username: string, password: string): Observable<User> {
+		return this.adapter.login(username, password);
+	}
+
+	public register(username: string, fullName: string, language: string, password: string): Observable<Response> {
+		return this.adapter.register(username, fullName, language, password);
 	}
 
 	public updateUser(token: string, attribute: string, value: string): Observable<Response> {
@@ -76,13 +78,23 @@ export class ApiService {
 	}
 
 
-	// ### PROJECT ###
-	public createProject(token: string, project: string): Observable<Response> {
-		return this.adapter.createProject(token, project);
+	// ### NOTIFICATIONS ###
+	public getNotifications(token: string): Observable<Notification[]> {
+		return this.adapter.getNotifications(token);
 	}
-	
+
+	public updateNotifications(token: string, seen: string[], removed: string[]): Observable<Notification[]> {
+		return this.adapter.updateNotifications(token, seen, removed);
+	}
+
+
+	// ### PROJECT ###
 	public getTeamMembers(token: string): Observable<User[]> {
 		return this.adapter.getTeamMembers(token);
+	}
+
+	public createProject(token: string, project: string): Observable<Response> {
+		return this.adapter.createProject(token, project);
 	}
 
 	public inviteUser(token: string, username: string): Observable<User> {
@@ -103,6 +115,44 @@ export class ApiService {
 
 	public leaveProject(token: string): Observable<Response> {
 		return this.adapter.leaveProject(token);
+	}
+
+
+  	// ### STATS ###
+	public personalStats(token: string): Observable<Stats> {
+		return this.adapter.personalStats(token);
+	}
+
+	public stats(token: string): Observable<AssignedStats[]> {
+		return this.adapter.stats(token);
+	}
+
+	public statLeaders(token: string): Observable<StatLeaders> {
+		return this.adapter.statLeaders(token);
+	}
+
+	public taskAmount(token: string): Observable<CategoryStats> {
+		return this.adapter.taskAmount(token);
+	}
+
+	public averageTime(token: string): Observable<CategoryStats> {
+		return this.adapter.averageTime(token);
+	}
+
+	public wip(token: string): Observable<number> {
+		return this.adapter.wip(token);
+	}
+
+	public taskProgress(token: string): Observable<TaskProgress> {
+		return this.adapter.taskProgress(token);
+	}
+
+	public projectRoadmap(token: string): Observable<ProjectRoadmap[]> {
+		return this.adapter.projectRoadmap(token);
+	}
+
+	public optimizeOrder(token: string): Observable<Response> {
+		return this.adapter.optimizeOrder(token);
 	}
 
 
@@ -146,52 +196,4 @@ export class ApiService {
 	public clearTrashBin(token: string): Observable<Response> {
 		return this.adapter.clearTrashBin(token);
 	}
-
-	// ### NOTIFICATIONS ###
-	public getNotifications(token: string): Observable<Notification[]> {
-		return this.adapter.getNotifications(token);
-	}
-
-	public updateNotifications(token: string, seen: string[], removed: string[]): Observable<Notification[]> {
-		return this.adapter.updateNotifications(token, seen, removed);
-	}
-
-
-  	// ### STATS ###
-  	public optimizeOrder(token: string): Observable<Response> {
-		return this.adapter.optimizeOrder(token);
-	}
-
-	public personalStats(token: string): Observable<Stats> {
-		return this.adapter.personalStats(token);
-	}
-
-	public stats(token: string): Observable<AssignedStats[]> {
-		return this.adapter.stats(token);
-	}
-
-	public statLeaders(token: string): Observable<StatLeaders> {
-		return this.adapter.statLeaders(token);
-	}
-
-	public taskAmount(token: string): Observable<CategoryStats> {
-		return this.adapter.taskAmount(token);
-	}
-
-	public averageTime(token: string): Observable<CategoryStats> {
-		return this.adapter.averageTime(token);
-	}
-
-	public wip(token: string): Observable<number> {
-		return this.adapter.wip(token);
-	}
-
-	public taskProgress(token: string): Observable<any> {
-		return this.adapter.taskProgress(token);
-	}
-
-	public projectRoadmap(token: string): Observable<any> {
-		return this.adapter.projectRoadmap(token);
-	}
-
 }

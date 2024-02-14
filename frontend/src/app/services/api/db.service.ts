@@ -17,6 +17,8 @@ import { Stats } from 'src/app/interfaces/data/stats';
 import { RequestService } from '../request.service';
 import { RequestType } from 'src/app/enums/request-type.enum';
 import { RequestPath } from 'src/app/enums/request-path.enum';
+import { TaskProgress } from 'src/app/interfaces/data/task-progress';
+import { ProjectRoadmap } from 'src/app/interfaces/data/project-roadmap';
 
 @Injectable({
   providedIn: 'root'
@@ -120,7 +122,7 @@ export class DbService extends AdapterService {
       token: token,
       project: project
     };
-    return this.request.send<Response>(RequestType.POST, this.basePath + RequestPath.CREATE_PROJECTR, body);
+    return this.request.send<Response>(RequestType.POST, this.basePath + RequestPath.CREATE_PROJECT, body);
   }
 
   public override inviteUser(token: string, username: string): Observable<User> {
@@ -207,18 +209,18 @@ export class DbService extends AdapterService {
     return this.request.send<number>(RequestType.GET, this.basePath + RequestPath.WIP, query);
   }
 
-  public override taskProgress(token: string): Observable<any> {
+  public override taskProgress(token: string): Observable<TaskProgress> {
     const query = {
       token: token
     }
-    return this.request.send<any>(RequestType.GET, this.basePath + RequestPath.TASK_PROGRESS, query);
+    return this.request.send<TaskProgress>(RequestType.GET, this.basePath + RequestPath.TASK_PROGRESS, query);
   }
 
-  public override projectRoadmap(token: string): Observable<any> {
+  public override projectRoadmap(token: string): Observable<ProjectRoadmap[]> {
     const query = {
       token: token
     }
-    return this.request.send<any>(RequestType.GET, this.basePath + RequestPath.PROJECT_ROADMAP, query);
+    return this.request.send<ProjectRoadmap[]>(RequestType.GET, this.basePath + RequestPath.PROJECT_ROADMAP, query);
   }
 
   public override optimizeOrder(token: string): Observable<Response> {
