@@ -61,7 +61,7 @@ async function createProject(req, res, next) {
  */
 async function getTeamMembers(req, res, next) {
     try {
-        const token = req.body.token;
+        const token = req.query.token;
         const tokenUser = jwt.decode(token);
         const members = await projectService.getTeamMembers(db, tokenUser.project);
         if (members.length) {

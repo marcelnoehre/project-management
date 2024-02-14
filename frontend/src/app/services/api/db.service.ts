@@ -37,11 +37,11 @@ export class DbService extends AdapterService {
 
   // ### AUTH ###
   public override login(username: string, password: string): Observable<User> {
-    const body = {
+    const data = {
       username: username,
       password: password
     };
-    return this.request.send<User>(this.basePath + this.auth + 'login', RequestType.POST, body);
+    return this.request.send<User>(RequestType.POST, this.basePath + this.auth + 'login', data);
 	}
 
   public override register(username: string, fullName: string, language: string, password: string): Observable<Response> {
@@ -103,10 +103,10 @@ export class DbService extends AdapterService {
   }
 
   public override getTeamMembers(token: string): Observable<User[]> {
-    const body = {
+    const data = {
       token: token
     };
-    return this.http.post<User[]>(this.basePath + this.project + 'get-team-members', body);
+    return this.request.send<User[]>(RequestType.GET, this.basePath + this.project + 'get-team-members', data);
   }
 
   public override inviteUser(token: string, username: string): Observable<User> {

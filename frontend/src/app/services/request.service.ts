@@ -12,10 +12,10 @@ export class RequestService {
     private http: HttpClient
   ) { }
 
-  public send<T>(url: string, type: RequestType, data: any): Observable<T> {
+  public send<T>(type: RequestType, url: string, data: any): Observable<T> {
     switch(type) {
-      // case RequestType.GET:
-      //   return this.get<T>(url, data);
+      case RequestType.GET:
+        return this.get<T>(url, data);
       case RequestType.POST:
         return this.post<T>(url, data);
       // case RequestType.PUT:
@@ -27,9 +27,16 @@ export class RequestService {
     }
   }
 
-  // private get<T>(url: string, data?: any): Observable<T> {
-
-  // }
+  private get<T>(url: string, data?: any): Observable<T> {
+    let first: boolean = true;
+    for (const key in data) {
+      if (data.hasOwnProperty(key)) {
+        url += first ? '?' : '&';
+        url += (key + '=' + data[key]);
+      }
+    }
+    return this.http.get<T>(url);
+  }
 
   private post<T>(url: string, body: any): Observable<T> {
     return this.http.post<T>(url, body);
