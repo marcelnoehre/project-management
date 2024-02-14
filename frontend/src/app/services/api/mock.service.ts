@@ -182,50 +182,40 @@ export class MockService extends AdapterService {
   }
 
 
-  // // ### STATS ###
-  // public override optimizeOrder(token: string): Observable<Response> {
-  //   const url = this.basePath + this.statsRoute + 'optimize-order/success.json';
-  //   return this.http.get<Response>(url);
-  // }
+  // ### STATS ###
+  public override personalStats(token: string): Observable<Stats> {
+    return this.http.get<Stats>(this.buildURL(RequestPath.PERSONAL_STATS));
+  }
 
-  // public override personalStats(token: string): Observable<Stats> {
-  //   const url = this.basePath + this.statsRoute + 'personal-stats/stats.json';
-  //   return this.http.get<Stats>(url);
-  // }
+  public override stats(token: string): Observable<AssignedStats[]> {
+    return this.http.get<AssignedStats[]>(this.buildURL(RequestPath.STATS));
+  }
 
-  // public override stats(token: string): Observable<AssignedStats[]> {
-  //   const url = this.basePath + this.statsRoute + 'stats/stats.json';
-  //   return this.http.get<AssignedStats[]>(url);
-  // }
+  public override statLeaders(token: string): Observable<StatLeaders> {
+    return this.http.get<StatLeaders>(this.buildURL(RequestPath.STAT_LEADERS));
+  }
 
-  // public override statLeaders(token: string): Observable<StatLeaders> {
-  //   const url = this.basePath + this.statsRoute + 'stat-leaders/stats.json';
-  //   return this.http.get<StatLeaders>(url);
-  // }
+  public override taskAmount(token: string): Observable<CategoryStats> {
+    return this.http.get<CategoryStats>(this.buildURL(RequestPath.TASK_AMOUNT));
+  }
 
-  // public override taskAmount(token: string): Observable<CategoryStats> {
-  //   const url = this.basePath + this.statsRoute + 'task-amount/stats.json';
-  //   return this.http.get<CategoryStats>(url);
-  // }
+  public override averageTime(token: string): Observable<CategoryStats> {
+    return this.http.get<CategoryStats>(this.buildURL(RequestPath.AVERAGE_TIME));
+  }
 
-  // public override averageTime(token: string): Observable<CategoryStats> {
-  //   const url = this.basePath + this.statsRoute + 'average-time/stats.json';
-  //   return this.http.get<CategoryStats>(url);
-  // }
+  public override wip(token: string): Observable<number> {
+    return this.http.get<number>(this.buildURL(RequestPath.WIP));
+  }
 
-  // public override wip(token: string): Observable<number> {
-  //   const url = this.basePath + this.statsRoute + 'wip/stats.json';
-  //   return this.http.get<number>(url);
-  // }
+  public override taskProgress(token: string): Observable<any> {
+    return this.http.get<any>(this.buildURL(RequestPath.TASK_PROGRESS));
+  }
 
-  // public override taskProgress(token: string): Observable<any> {
-  //   const url = this.basePath + this.statsRoute + 'taskProgress/stats.json';
-  //   return this.http.get<any>(url);
-  // }
+  public override projectRoadmap(token: string): Observable<any> {
+    return this.http.get<any>(this.buildURL(RequestPath.PROJECT_ROADMAP));
+  }
 
-  // public override projectRoadmap(token: string): Observable<any> {
-  //   const url = this.basePath + this.statsRoute + 'projectRoadmap/stats.json';
-  //   return this.http.get<any>(url);
-  // }
-
+  public override optimizeOrder(token: string): Observable<Response> {
+    return this.http.get<Response>(this.buildURL(RequestPath.OPTIMIZE_ORDER));
+  }
 }
