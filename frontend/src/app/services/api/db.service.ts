@@ -55,17 +55,17 @@ export class DbService extends AdapterService {
   }
 
   public override verify(token: string): Observable<User> {
-    const data = {
+    const query = {
       token: token
     }
-    return this.request.send<User>(RequestType.GET, this.basePath + this.auth + 'verify', data);
+    return this.request.send<User>(RequestType.GET, this.basePath + this.auth + 'verify', query);
   }
 
   public override refreshToken(token: string): Observable<string> {
-    const data = {
+    const query = {
       token: token
     }
-    return this.request.send<string>(RequestType.GET, this.basePath + this.auth + 'refreshToken', data);
+    return this.request.send<string>(RequestType.GET, this.basePath + this.auth + 'refreshToken', query);
   }
 
   public override updateUser(token: string, attribute: string, value: string): Observable<Response> {
@@ -86,10 +86,10 @@ export class DbService extends AdapterService {
   }
 
   public override deleteUser(token: string): Observable<Response> {
-    const data = {
+    const query = {
       token: token
     }
-    return this.request.send<Response>(RequestType.DELETE, this.basePath + this.auth + 'deleteUser', data);
+    return this.request.send<Response>(RequestType.DELETE, this.basePath + this.auth + 'deleteUser', query);
   }
 
 
@@ -103,10 +103,10 @@ export class DbService extends AdapterService {
   }
 
   public override getTeamMembers(token: string): Observable<User[]> {
-    const data = {
+    const query = {
       token: token
     };
-    return this.request.send<User[]>(RequestType.GET, this.basePath + this.project + 'get-team-members', data);
+    return this.request.send<User[]>(RequestType.GET, this.basePath + this.project + 'get-team-members', query);
   }
 
   public override inviteUser(token: string, username: string): Observable<User> {
@@ -171,10 +171,10 @@ export class DbService extends AdapterService {
   }
   
   public override getTaskList(token: string): Observable<State[]> {
-    const data = {
+    const query = {
       token: token
     };
-    return this.request.send<State[]>(RequestType.GET, this.basePath + this.task + 'getTaskList', data);
+    return this.request.send<State[]>(RequestType.GET, this.basePath + this.task + 'getTaskList', query);
   }
 
   public override updateTask(token: string, task: Task): Observable<State[]> {
@@ -204,18 +204,18 @@ export class DbService extends AdapterService {
   }
 
   public override getTrashBin(token: string): Observable<Task[]> {
-    const data = {
+    const query = {
       token: token
     }
-    return this.request.send<Task[]>(RequestType.GET, this.basePath + this.task + 'getTrashBin', data);
+    return this.request.send<Task[]>(RequestType.GET, this.basePath + this.task + 'getTrashBin', query);
   }
 
   public override deleteTask(token: string, uid: string): Observable<Task[]> {
-    const data = {
+    const query = {
       token: token,
       uid: uid
     }
-    return this.request.send<Task[]>(RequestType.DELETE, this.basePath + this.task + 'deleteTask', data);
+    return this.request.send<Task[]>(RequestType.DELETE, this.basePath + this.task + 'deleteTask', query);
   }
   
   public override restoreTask(token: string, uid: string): Observable<Task[]> {
@@ -227,18 +227,18 @@ export class DbService extends AdapterService {
   }
 
   public override clearTrashBin(token: string): Observable<Response> {
-    const data = {
+    const query = {
       token: token
     }
-    return this.request.send<Response>(RequestType.DELETE, this.basePath + this.task + 'clearTrashBin', data);
+    return this.request.send<Response>(RequestType.DELETE, this.basePath + this.task + 'clearTrashBin', query);
   }
 
   // ### NOTIFICATIONS ###
   public override getNotifications(token: string): Observable<Notification[]> {
-    const data = {
+    const query = {
       token: token
     }
-    return this.request.send<Notification[]>(RequestType.GET, this.basePath + this.notification + 'getNotifications', data);
+    return this.request.send<Notification[]>(RequestType.GET, this.basePath + this.notification + 'getNotifications', query);
   }
 
   public override updateNotifications(token: string, seen: string[], removed: string[]): Observable<Notification[]> {
@@ -260,59 +260,59 @@ export class DbService extends AdapterService {
   }
 
   public override personalStats(token: string): Observable<Stats> {
-    const data = {
+    const query = {
       token: token
     }
-    return this.request.send<Stats>(RequestType.GET, this.basePath + this.statsRoute + 'personalStats', data);
+    return this.request.send<Stats>(RequestType.GET, this.basePath + this.statsRoute + 'personalStats', query);
   }
 
   public override stats(token: string): Observable<AssignedStats[]> {
-    const data = {
+    const query = {
       token: token
     }
-    return this.request.send<AssignedStats[]>(RequestType.GET, this.basePath + this.statsRoute + 'stats', data);
+    return this.request.send<AssignedStats[]>(RequestType.GET, this.basePath + this.statsRoute + 'stats', query);
   }
 
   public override statLeaders(token: string): Observable<StatLeaders> {
-    const data = {
+    const query = {
       token: token
     }
-    return this.request.send<StatLeaders>(RequestType.GET, this.basePath + this.statsRoute + 'statLeaders', data);
+    return this.request.send<StatLeaders>(RequestType.GET, this.basePath + this.statsRoute + 'statLeaders', query);
   }
 
   public override taskAmount(token: string): Observable<CategoryStats> {
-    const data = {
+    const query = {
       token: token
     }
-    return this.request.send<CategoryStats>(RequestType.GET, this.basePath + this.statsRoute + 'taskAmount', data);
+    return this.request.send<CategoryStats>(RequestType.GET, this.basePath + this.statsRoute + 'taskAmount', query);
   }
 
   public override averageTime(token: string): Observable<CategoryStats> {
-    const data = {
+    const query = {
       token: token
     }
-    return this.request.send<CategoryStats>(RequestType.GET, this.basePath + this.statsRoute + 'averageTime', data);
+    return this.request.send<CategoryStats>(RequestType.GET, this.basePath + this.statsRoute + 'averageTime', query);
   }
 
   public override wip(token: string): Observable<number> {
-    const data = {
+    const query = {
       token: token
     }
-    return this.request.send<number>(RequestType.GET, this.basePath + this.statsRoute + 'wip', data);
+    return this.request.send<number>(RequestType.GET, this.basePath + this.statsRoute + 'wip', query);
   }
 
   public override taskProgress(token: string): Observable<any> {
-    const data = {
+    const query = {
       token: token
     }
-    return this.request.send<any>(RequestType.GET, this.basePath + this.statsRoute + 'taskProgress', data);
+    return this.request.send<any>(RequestType.GET, this.basePath + this.statsRoute + 'taskProgress', query);
   }
 
   public override projectRoadmap(token: string): Observable<any> {
-    const data = {
+    const query = {
       token: token
     }
-    return this.request.send<any>(RequestType.GET, this.basePath + this.statsRoute + 'projectRoadmap', data);
+    return this.request.send<any>(RequestType.GET, this.basePath + this.statsRoute + 'projectRoadmap', query);
   }
 
 }

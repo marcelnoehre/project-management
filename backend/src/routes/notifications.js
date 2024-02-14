@@ -3,8 +3,8 @@ const router = express.Router();
 const notificationsController = require('../controllers/notifications.controller');
 const jwtAuth = require('../auth/jwtAuth');
 
-router.get('/getNotifications', jwtAuth.get, notificationsController.getNotifications);
+router.get('/getNotifications', jwtAuth.query, notificationsController.getNotifications);
 
-router.put('/updateNotifications', jwtAuth.post, notificationsController.updateNotifications);
+router.put('/updateNotifications', jwtAuth.body, notificationsController.updateNotifications);
 
 module.exports = router;

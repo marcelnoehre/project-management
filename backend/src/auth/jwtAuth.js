@@ -1,10 +1,10 @@
 const jwt = require('jsonwebtoken');
 
-function get(req, res, next) {
+function query(req, res, next) {
     jwtAuth(req.query.token, res, next);
 }
 
-function post(req, res, next) {
+function body(req, res, next) {
     jwtAuth(req.body.token, res, next);
 }
 
@@ -18,6 +18,6 @@ function jwtAuth(token, res, next) {
 }
 
 module.exports = {
-    get,
-    post
+    query,
+    body
 };
