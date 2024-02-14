@@ -120,7 +120,7 @@ export class DbService extends AdapterService {
       token: token,
       project: project
     };
-    return this.request.send<Response>(RequestType.POST, this.basePath + RequestPath.CREATE_PROJECTR, body);
+    return this.request.send<Response>(RequestType.POST, this.basePath + RequestPath.CREATE_PROJECT, body);
   }
 
   public override inviteUser(token: string, username: string): Observable<User> {

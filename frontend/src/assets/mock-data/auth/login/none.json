@@ -1,0 +1,23 @@
+{
+    "token": "none",
+    "username": "none",
+    "fullName": "Mock None",
+    "initials": "MN",
+    "color": "#FFFFFF",
+    "language": "de",
+    "project": "",
+    "permission": "",
+    "profilePicture": "",
+    "notificationsEnabled": true,
+    "isLoggedIn": true,
+    "stats": {
+        "created": 0,
+        "imported": 0,
+        "updated": 0,
+        "edited": 0,
+        "trashed": 0,
+        "restored": 0,
+        "deleted": 0,
+        "cleared": 0
+    }
+}

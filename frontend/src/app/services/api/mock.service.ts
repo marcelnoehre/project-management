@@ -34,7 +34,7 @@ export class MockService extends AdapterService {
   private availableMockData = {
 		user: ['owner', 'admin', 'invited', 'member'],
     register: ['mock'],
-    invitable: ['user'],
+    invitable: ['invitedAnother'],
     projects: ['mockProject']
 	};
 
@@ -104,51 +104,40 @@ export class MockService extends AdapterService {
   }
 
 
-  // // ### PROJECT ###
-  // public override createProject(token: string, project: string): Observable<Response> {
-  //   if (this.availableMockData.projects.includes(project)) {
-  //     const url = this.basePath + this.project + `create-project/${project}.json`;
-  //     return this.http.get<Response>(url);
-  //   } else {
-  //     this.snackbar.open(this.translate.instant('ERROR.CREATE_PROJECT'));
-  //     throw new Error(this.translate.instant('ERROR.CREATE_PROJECT'));
-  //   }
-  // }
+  // ### PROJECT ###
+  public override getTeamMembers(token: string): Observable<User[]> {
+    return this.http.get<User[]>(this.buildURL(RequestPath.GET_TEAM_MEMBERS));
+  }
 
-  // public override getTeamMembers(token: string): Observable<User[]> {
-  //   const url = this.basePath + this.project + `get-team-members/mockProject.json`;
-  //   return this.http.get<User[]>(url);
-  // }
+  public override createProject(token: string, project: string): Observable<Response> {
+    return this.http.get<Response>(this.buildURL(RequestPath.CREATE_PROJECT));
+  }
 
-  // public override inviteUser(token: string, username: string): Observable<User> {
-  //   if (this.availableMockData.invitable.includes(username)) {
-  //     const url = this.basePath + this.project + `invite/${username}.json`;
-  //     return this.http.get<User>(url);
-  //   } else {
-  //     this.snackbar.open(this.translate.instant('ERROR.NO_ACCOUNT'));
-  //     throw new Error(this.translate.instant('ERROR.NO_ACCOUNT'));
-  //   }
-  // }
+  public override inviteUser(token: string, username: string): Observable<User> {
+    if (this.availableMockData.invitable.includes(username)) {
+      return this.http.get<User>(this.buildURL(RequestPath.INVITE, username));
+    } else {
+      this.snackbar.open(this.translate.instant('ERROR.NO_ACCOUNT'));
+      throw new Error(this.translate.instant('ERROR.NO_ACCOUNT'));
+    }
+  }
 
-  // public override handleInvite(token: string, decision: boolean): Observable<Response> {
-  //   const url = this.basePath + this.project + `handleInvite/${decision}.json`;
-  //   return this.http.get<Response>(url);
-  // }
+  public override handleInvite(token: string, decision: boolean): Observable<Response> {
+    const fileName = decision ? 'accepted' : 'rejected';
+    return this.http.get<Response>(this.buildURL(RequestPath.HANDLE_INVITE, fileName));
+  }
 
-  // public override updatePermission(token: string, username: string, permission: Permission): Observable<User[]> {
-  //   const url = this.basePath + this.project + `update-permission/${project}.json`;
-  //   return this.http.get<User[]>(url);
-  // }
+  public override updatePermission(token: string, username: string, permission: Permission): Observable<User[]> {
+    return this.http.get<User[]>(this.buildURL(RequestPath.UPDATE_PERMISSION));
+  }
 
-  // public override removeUser(token: string, username: string): Observable<Response> {
-  //   const url = this.basePath + this.project + 'remove/user.json';
-  //   return this.http.get<Response>(url);
-  // }
+  public override removeUser(token: string, username: string): Observable<Response> {
+    return this.http.get<Response>(this.buildURL(RequestPath.REMOVE));
+  }
 
-  // public override leaveProject(token: string): Observable<Response> {
-  //   const url = this.basePath + this.project + 'leave/success.json';
-  //   return this.http.get<Response>(url);
-  // }
+  public override leaveProject(token: string): Observable<Response> {
+    return this.http.get<Response>(this.buildURL(RequestPath.LEAVE));
+  }
 
 
   // // ### TASKS ###

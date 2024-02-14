@@ -20,7 +20,7 @@ export enum RequestPath {
 
     // PROJECT
     GET_TEAM_MEMBERS = project + 'get-team-members',
-    CREATE_PROJECTR = project + 'create-project',
+    CREATE_PROJECT = project + 'create-project',
     INVITE = project + 'invite',
     HANDLE_INVITE = project + 'handle-invite',
     UPDATE_PERMISSION = project + 'update-permission',
