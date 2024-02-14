@@ -1,13 +1,23 @@
 {
-    "token": "1234",
+    "token": "invited",
     "username": "invited",
-    "fullName": "Mock Invite",
-    "language": "de",
-    "profilePicture": "",
+    "fullName": "Mock Invited",
     "initials": "MI",
     "color": "#FFFFFF",
-    "project": "mockProject",
+    "language": "en",
+    "project": "MockProject",
     "permission": "INVITED",
+    "profilePicture": "",
     "notificationsEnabled": true,
-    "isLoggedIn": false
+    "isLoggedIn": true,
+    "stats": {
+        "created": 77,
+        "imported": 42,
+        "updated": 19,
+        "edited": 56,
+        "trashed": 83,
+        "restored": 5,
+        "deleted": 38,
+        "cleared": 91
+    }
 }

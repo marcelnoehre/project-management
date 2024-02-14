@@ -24,6 +24,7 @@
         "LOGOUT": "Logout"
     },
     "ERROR": {
+        "MOCK": "This is a Mock Error",
         "INTERNAL": "Internal Server Error!",
         "INVALID_TOKEN": "You have been logged out for security reasons!",
         "REQUIRED": {

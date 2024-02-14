@@ -1,13 +1,23 @@
 {
-    "token": "1234",
+    "token": "owner",
     "username": "owner",
     "fullName": "Mock Owner",
-    "language": "en",
-    "profilePicture": "",
     "initials": "MO",
     "color": "#FFFFFF",
-    "project": "mockProject",
+    "language": "en",
+    "project": "MockProject",
     "permission": "OWNER",
+    "profilePicture": "",
     "notificationsEnabled": true,
-    "isLoggedIn": true
+    "isLoggedIn": true,
+    "stats": {
+        "created": 91,
+        "imported": 10,
+        "updated": 45,
+        "edited": 78,
+        "trashed": 32,
+        "restored": 57,
+        "deleted": 23,
+        "cleared": 69
+    }
 }
