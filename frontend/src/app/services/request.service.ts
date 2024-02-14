@@ -1,42 +1,46 @@
 import { Injectable } from '@angular/core';
 import { RequestType } from '../enums/request-type.enum';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RequestService {
 
-  constructor() { }
+  constructor(
+    private http: HttpClient
+  ) { }
 
-  public send(url: string, type: RequestType, data?: any): any {
+  public send<T>(url: string, type: RequestType, data: any): Observable<T> {
     switch(type) {
-      case RequestType.GET:
-        return this.get(url, data);
+      // case RequestType.GET:
+      //   return this.get<T>(url, data);
       case RequestType.POST:
-        return this.post(url, data);
-      case RequestType.PUT:
-        return this.put(url, data);
-      case RequestType.DELETE:
-        return this.delete(url, data);
+        return this.post<T>(url, data);
+      // case RequestType.PUT:
+      //   return this.put<T>(url, data);
+      // case RequestType.DELETE:
+      //   return this.delete<T>(url, data);
       default:
         throw new Error('ERROR.REQUEST_TYPE');
     }
   }
 
-  private get(url: string, data?: any) {
-    
+  // private get<T>(url: string, data?: any): Observable<T> {
+
+  // }
+
+  private post<T>(url: string, body: any): Observable<T> {
+    return this.http.post<T>(url, body);
   }
 
-  private post(url: string, data?: any) {
+  // private put<T>(url: string, data?: any): Observable<T> {
 
-  }
+  // }
 
-  private put(url: string, data?: any) {
+  // private delete<T>(url: string, data?: any): Observable<T> {
 
-  }
-
-  private delete(url: string, data?: any) {
-
-  }
+  // }
 
 }

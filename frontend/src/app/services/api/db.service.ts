@@ -14,6 +14,8 @@ import { AssignedStats } from 'src/app/interfaces/data/assigned-stats';
 import { StatLeaders } from 'src/app/interfaces/data/stat-leaders';
 import { CategoryStats } from 'src/app/interfaces/data/category-stats';
 import { Stats } from 'src/app/interfaces/data/stats';
+import { RequestService } from '../request.service';
+import { RequestType } from 'src/app/enums/request-type.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +28,10 @@ export class DbService extends AdapterService {
   private notification = 'notifications/';
   private statsRoute = 'stats/';
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+	  private request: RequestService
+  ) {
     super();
   }
 
@@ -36,7 +41,7 @@ export class DbService extends AdapterService {
       username: username,
       password: password
     };
-		return this.http.post<User>(this.basePath + this.auth + 'login', body);
+    return this.request.send<User>(this.basePath + this.auth + 'login', RequestType.POST, body);
 	}
 
   public override register(username: string, fullName: string, language: string, password: string): Observable<Response> {
