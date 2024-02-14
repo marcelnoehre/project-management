@@ -33,11 +33,12 @@ export class MockService extends AdapterService {
 
   private availableMockData = {
 		user: ['owner', 'admin', 'invited', 'member'],
+    register: ['mock'],
     invitable: ['user'],
     projects: ['mockProject']
 	};
 
-  private buildURL(endpoint: string, file: string) {
+  private buildURL(endpoint: string, file: string = 'mock') {
     return `assets/mock-data/${endpoint}/${file}.json`;
   }
 
@@ -46,8 +47,8 @@ export class MockService extends AdapterService {
     if (this.availableMockData.user.includes(token)) {
       return this.http.get<User>(this.buildURL(RequestPath.VERIFY, token));
     } else {
-      this.snackbar.open(this.translate.instant('ERROR.MOCK'));
-      throw new Error(this.translate.instant('ERROR.MOCK'));
+      this.snackbar.open(this.translate.instant('ERROR.INVALID_TOKEN'));
+      throw new Error(this.translate.instant('ERROR.INVALID_TOKEN'));
     }
   }
 
@@ -55,8 +56,8 @@ export class MockService extends AdapterService {
     if (this.availableMockData.user.includes(token)) {
       return this.http.get<string>(this.buildURL(RequestPath.REFRESH_TOKEN, token));
     } else {
-      this.snackbar.open(this.translate.instant('ERROR.MOCK'));
-      throw new Error(this.translate.instant('ERROR.MOCK'));
+      this.snackbar.open(this.translate.instant('ERROR.INTERNAL'));
+      throw new Error(this.translate.instant('ERROR.INTERNAL'));
     }
   }
 
@@ -71,8 +72,8 @@ export class MockService extends AdapterService {
   }
 
   public override register(username: string, fullName: string, language: string, password: string): Observable<Response> {
-    if (username === 'mock') {
-      return this.http.get<Response>(this.buildURL(RequestPath.REGISTER, username))
+    if (this.availableMockData.register.includes(username)) {
+      return this.http.get<Response>(this.buildURL(RequestPath.REGISTER, username));
     } else {
       this.snackbar.open(this.translate.instant('ERROR.REGISTRATION'));
       throw new Error(this.translate.instant('ERROR.REGISTRATION'));
@@ -80,7 +81,7 @@ export class MockService extends AdapterService {
   }
 
   public override updateUser(token: string, attribute: string, value: string): Observable<Response> {
-    return this.http.get<Response>(this.buildURL(RequestPath.UPDATE_USER, 'mock'));
+    return this.http.get<Response>(this.buildURL(RequestPath.UPDATE_USER));
   }
 
   public override toggleNotifications(token: string, notificationsEnabled: boolean): Observable<Response> {
@@ -90,6 +91,16 @@ export class MockService extends AdapterService {
 
   public override deleteUser(token: string): Observable<Response> {
     return this.http.get<Response>(this.buildURL(RequestPath.DELETE_USER, 'delete'));
+  }
+
+
+  // ### NOTIFICATIONS ###
+  public override getNotifications(token: string): Observable<Notification[]> {
+    return this.http.get<Notification[]>(this.buildURL(RequestPath.GET_NOTIFICATIONS));
+  }
+  
+  public override updateNotifications(token: string, seen: string[], removed: string[]): Observable<Notification[]> {
+    return this.http.get<Notification[]>(this.buildURL(RequestPath.UPDATE_NOTIFICATIONS));
   }
 
 
@@ -190,17 +201,6 @@ export class MockService extends AdapterService {
   // public override clearTrashBin(token: string): Observable<Response> {
   //   const url = this.basePath + this.task + 'clear-trash-bin/clear.json';
   //   return this.http.get<Response>(url);
-  // }
-
-  // // ### NOTIFICATIONS ###
-  // public override getNotifications(token: string): Observable<Notification[]> {
-  //   const url = this.basePath + this.notification + 'get-notifications/notifications.json';
-  //   return this.http.get<Notification[]>(url);
-  // }
-
-  // public override updateNotifications(token: string, seen: string[], removed: string[]): Observable<Notification[]> {
-  //   const url = this.basePath + this.notification + 'update-notifications/success.json';
-  //   return this.http.get<Notification[]>(url);
   // }
 
   // // ### STATS ###
