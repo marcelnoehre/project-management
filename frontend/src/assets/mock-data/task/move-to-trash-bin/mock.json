@@ -1,116 +1,405 @@
 [
-    {
-      "state": "NONE",
-      "tasks": [
-        {
-          "uid": "task_1",
-          "author": "John Doe",
-          "project": "mockProject",
-          "state": "NONE",
-          "title": "Documentation",
-          "description": "Prepare comprehensive documentation for the project, including user manuals and technical guides."
-        },
-        {
-          "uid": "task_2",
-          "author": "Jane Smith",
-          "project": "mockProject",
-          "state": "NONE",
-          "title": "Finalize Project",
-          "description": "Review all aspects of the project and prepare for the final release."
-        }
-      ]
-    },
-    {
-      "state": "TODO",
-      "tasks": [
-        {
-          "uid": "task_3",
-          "author": "John Doe",
-          "project": "mockProject",
-          "state": "TODO",
-          "title": "Complete Project Proposal",
-          "description": "Draft a detailed project proposal outlining goals, scope, and deliverables."
-        },
-        {
-          "uid": "task_4",
-          "author": "Jane Smith",
-          "project": "mockProject",
-          "state": "TODO",
-          "title": "Revise User Interface",
-          "description": "Gather feedback on the prototype and make necessary revisions to the user interface."
-        },
-        {
-          "uid": "task_5",
-          "author": "John Doe",
-          "project": "mockProject",
-          "state": "TODO",
-          "title": "Client Presentation",
-          "description": "Prepare a presentation for the client showcasing the project progress and features."
-        }
-      ]
-    },
-    {
-      "state": "PROGRESS",
-      "tasks": [
-        {
-          "uid": "task_6",
-          "author": "Jane Smith",
-          "project": "mockProject",
-          "state": "PROGRESS",
-          "title": "Research Market Trends",
-          "description": "Conduct market research to identify current trends and customer preferences."
-        },
-        {
-          "uid": "task_7",
-          "author": "John Doe",
-          "project": "mockProject",
-          "state": "PROGRESS",
-          "title": "Code Refactoring",
-          "description": "Optimize and refactor existing codebase to improve performance and maintainability."
-        }
-      ]
-    },
-    {
-      "state": "REVIEW",
-      "tasks": [
-        {
-          "uid": "task_8",
-          "author": "Jane Smith",
-          "project": "mockProject",
-          "state": "REVIEW",
-          "title": "Develop Prototype",
-          "description": "Create a prototype for the new product feature based on the research findings."
-        },
-        {
-          "uid": "task_9",
-          "author": "John Doe",
-          "project": "mockProject",
-          "state": "REVIEW",
-          "title": "Quality Assurance Testing",
-          "description": "Conduct thorough testing to ensure the product meets quality standards."
-        }
-      ]
-    },
-    {
-      "state": "DONE",
-      "tasks": [
-        {
-          "uid": "task_10",
-          "author": "Jane Smith",
-          "project": "mockProject",
-          "state": "DONE",
-          "title": "Project Kickoff",
-          "description": "Hold a meeting to officially start the project."
-        },
-        {
-          "uid": "task_11",
-          "author": "John Doe",
-          "project": "mockProject",
-          "state": "DONE",
-          "title": "Release Version 1.0",
-          "description": "Publish the final version of the product."
-        }
-      ]
-    }
-  ]
-  
+  {
+    "state":"NONE",
+    "tasks":[
+      {
+        "uid":"DHfqbZ18jhH55SFWFGwO",
+        "author":"marcel",
+        "project":"works",
+        "description":"Prepare comprehensive documentation for the project, including user manuals and technical guides.",
+        "assigned":"",
+        "state":"NONE",
+        "history":[
+          {
+            "previous":null,
+            "state":"NONE",
+            "timestamp":1707706711326,
+            "username":"marcel"
+          }
+        ],
+        "title":"Documentation",
+        "order":1
+      },
+      {
+        "uid":"miOt2Q50MAV9onMGc00M",
+        "author":"marcel",
+        "project":"works",
+        "description":"Review all aspects of the project and prepare for the final release.",
+        "assigned":"",
+        "state":"NONE",
+        "history":[
+          {
+            "previous":null,
+            "state":"NONE",
+            "timestamp":1707706711547,
+            "username":"marcel"
+          }
+        ],
+        "title":"Finalize Project",
+        "order":2
+      },
+      {
+        "uid":"L0LJoChgGLAh36tmUip1",
+        "author":"marcel",
+        "project":"works",
+        "description":"Prepare comprehensive documentation for the project, including user manuals and technical guides.",
+        "assigned":"",
+        "state":"NONE",
+        "history":[
+          {
+            "previous":null,
+            "state":"NONE",
+            "timestamp":1707706984237,
+            "username":"marcel"
+          }
+        ],
+        "title":"Documentation",
+        "order":3
+      },
+      {
+        "uid":"9Iny1sv25Q66y7OE3fZI",
+        "author":"marcel",
+        "project":"works",
+        "description":"Review all aspects of the project and prepare for the final release.",
+        "assigned":"",
+        "state":"NONE",
+        "history":[
+          {
+            "previous":null,
+            "state":"NONE",
+            "timestamp":1707706984404,
+            "username":"marcel"
+          }
+        ],
+        "title":"Finalize Project",
+        "order":4
+      },
+      {
+        "uid":"wsDH9KPgDuoiQqEugq4e",
+        "author":"test",
+        "project":"works",
+        "description":"",
+        "assigned":"",
+        "state":"NONE",
+        "history":[
+          {
+            "previous":null,
+            "state":"NONE",
+            "timestamp":1707948639928,
+            "username":"test"
+          }
+        ],
+        "title":"TEST",
+        "order":5
+      }
+    ]
+  },
+  {
+    "state":"TODO",
+    "tasks":[
+      {
+        "uid":"fOJ45cgoAmxnUWIhBHrw",
+        "author":"marcel",
+        "project":"works",
+        "description":"Draft a detailed project proposal outlining goals, scope, and deliverables.",
+        "assigned":"",
+        "state":"TODO",
+        "history":[
+          {
+            "previous":null,
+            "state":"TODO",
+            "timestamp":1707706711761,
+            "username":"marcel"
+          }
+        ],
+        "title":"Complete Project Proposal",
+        "order":1
+      },
+      {
+        "uid":"FjkpaYdHyqrvIHM3z1wo",
+        "author":"marcel",
+        "project":"works",
+        "description":"Gather feedback on the prototype and make necessary revisions to the user interface.",
+        "assigned":"",
+        "state":"TODO",
+        "history":[
+          {
+            "previous":null,
+            "state":"TODO",
+            "timestamp":1707706711969,
+            "username":"marcel"
+          }
+        ],
+        "title":"Revise User Interface",
+        "order":2
+      },
+      {
+        "uid":"qa0IeDmEyV1C0ogSRdkV",
+        "author":"marcel",
+        "project":"works",
+        "description":"Prepare a presentation for the client showcasing the project progress and features.",
+        "assigned":"",
+        "state":"TODO",
+        "history":[
+          {
+            "previous":null,
+            "state":"TODO",
+            "timestamp":1707706712166,
+            "username":"marcel"
+          }
+        ],
+        "title":"Client Presentation",
+        "order":3
+      },
+      {
+        "uid":"PHASIp2YXGwKALHqnsVs",
+        "author":"marcel",
+        "project":"works",
+        "description":"Draft a detailed project proposal outlining goals, scope, and deliverables.",
+        "assigned":"",
+        "state":"TODO",
+        "history":[
+          {
+            "previous":null,
+            "state":"TODO",
+            "timestamp":1707706984558,
+            "username":"marcel"
+          }
+        ],
+        "title":"Complete Project Proposal",
+        "order":4
+      },
+      {
+        "uid":"TcxyseGyDpgTPPYHRn1l",
+        "author":"marcel",
+        "project":"works",
+        "description":"Gather feedback on the prototype and make necessary revisions to the user interface.",
+        "assigned":"",
+        "state":"TODO",
+        "history":[
+          {
+            "previous":null,
+            "state":"TODO",
+            "timestamp":1707706984701,
+            "username":"marcel"
+          }
+        ],
+        "title":"Revise User Interface",
+        "order":5
+      }
+    ]
+  },
+  {
+    "state":"PROGRESS",
+    "tasks":[
+      {
+        "uid":"ap1qmOAuMnzrAJLcb4Jd",
+        "author":"marcel",
+        "project":"works",
+        "description":"Conduct market research to identify current trends and customer preferences.",
+        "assigned":"",
+        "state":"PROGRESS",
+        "history":[
+          {
+            "previous":null,
+            "state":"PROGRESS",
+            "timestamp":1707706712367,
+            "username":"marcel"
+          }
+        ],
+        "title":"Research Market Trends",
+        "order":1
+      },
+      {
+        "uid":"TFo1AG123JyitAETS52A",
+        "author":"marcel",
+        "project":"works",
+        "description":"Optimize and refactor existing codebase to improve performance and maintainability.",
+        "assigned":"",
+        "state":"PROGRESS",
+        "history":[
+          {
+            "previous":null,
+            "state":"PROGRESS",
+            "timestamp":1707706712566,
+            "username":"marcel"
+          }
+        ],
+        "title":"Code Refactoring",
+        "order":2
+      },
+      {
+        "uid":"enm3q1D8bm0RuzYIFCjI",
+        "author":"marcel",
+        "project":"works",
+        "description":"Conduct market research to identify current trends and customer preferences.",
+        "assigned":"",
+        "state":"PROGRESS",
+        "history":[
+          {
+            "previous":null,
+            "state":"PROGRESS",
+            "timestamp":1707706984989,
+            "username":"marcel"
+          }
+        ],
+        "title":"Research Market Trends",
+        "order":3
+      },
+      {
+        "uid":"26kZkgg5BaAfqn25FZTP",
+        "author":"marcel",
+        "project":"works",
+        "description":"Optimize and refactor existing codebase to improve performance and maintainability.",
+        "assigned":"",
+        "state":"PROGRESS",
+        "history":[
+          {
+            "previous":null,
+            "state":"PROGRESS",
+            "timestamp":1707706985141,
+            "username":"marcel"
+          }
+        ],
+        "title":"Code Refactoring",
+        "order":4
+      }
+    ]
+  },
+  {
+    "state":"REVIEW",
+    "tasks":[
+      {
+        "uid":"ayfiZN4sAIUmr3hRPpvA",
+        "author":"marcel",
+        "project":"works",
+        "description":"Create a prototype for the new product feature based on the research findings.",
+        "assigned":"",
+        "state":"REVIEW",
+        "history":[
+          {
+            "previous":null,
+            "state":"REVIEW",
+            "timestamp":1707706712767,
+            "username":"marcel"
+          }
+        ],
+        "title":"Develop Prototype",
+        "order":1
+      },
+      {
+        "uid":"N8bxoEq4g012sY5Y83bf",
+        "author":"marcel",
+        "project":"works",
+        "description":"Conduct thorough testing to ensure the product meets quality standards.",
+        "assigned":"",
+        "state":"REVIEW",
+        "history":[
+          {
+            "previous":null,
+            "state":"REVIEW",
+            "timestamp":1707706712945,
+            "username":"marcel"
+          }
+        ],
+        "title":"Quality Assurance Testing",
+        "order":2
+      },
+      {
+        "uid":"dk8n2dxpQoybNkRp9kUE",
+        "author":"marcel",
+        "project":"works",
+        "description":"Create a prototype for the new product feature based on the research findings.",
+        "assigned":"",
+        "state":"REVIEW",
+        "history":[
+          {
+            "previous":null,
+            "state":"REVIEW",
+            "timestamp":1707706985307,
+            "username":"marcel"
+          }
+        ],
+        "title":"Develop Prototype",
+        "order":3
+      },
+      {
+        "uid":"o8TwVDf6sW57zJzcj4jS",
+        "author":"marcel",
+        "project":"works",
+        "description":"Conduct thorough testing to ensure the product meets quality standards.",
+        "assigned":"",
+        "state":"REVIEW",
+        "history":[
+          {
+            "previous":null,
+            "state":"REVIEW",
+            "timestamp":1707706985455,
+            "username":"marcel"
+          }
+        ],
+        "title":"Quality Assurance Testing",
+        "order":4
+      }
+    ]
+  },
+  {
+    "state":"DONE",
+    "tasks":[
+      {
+        "uid":"Ai1T0BCX4xRwLuD96fla",
+        "author":"marcel",
+        "project":"works",
+        "description":"Hold a meeting to officially start the project.",
+        "assigned":"",
+        "state":"DONE",
+        "history":[
+          {
+            "previous":null,
+            "state":"DONE",
+            "timestamp":1707706713118,
+            "username":"marcel"
+          }
+        ],
+        "title":"Project Kickoff",
+        "order":1
+      },
+      {
+        "uid":"Ji0Vet5TsrlO32iZpwgq",
+        "author":"marcel",
+        "project":"works",
+        "description":"Publish the final version of the product.",
+        "assigned":"",
+        "state":"DONE",
+        "history":[
+          {
+            "previous":null,
+            "state":"DONE",
+            "timestamp":1707706713301,
+            "username":"marcel"
+          }
+        ],
+        "title":"Release Version 1.0",
+        "order":2
+      },
+      {
+        "uid":"KNtKn3USQ8ULYkwmMxe7",
+        "author":"marcel",
+        "project":"works",
+        "description":"Hold a meeting to officially start the project.",
+        "assigned":"",
+        "state":"DONE",
+        "history":[
+          {
+            "previous":null,
+            "state":"DONE",
+            "timestamp":1707706985601,
+            "username":"marcel"
+          }
+        ],
+        "title":"Project Kickoff",
+        "order":3
+      }
+    ]
+  }
+]
