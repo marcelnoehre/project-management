@@ -140,57 +140,47 @@ export class MockService extends AdapterService {
   }
 
 
-  // // ### TASKS ###
-  // public override createTask(token: string, title: string, description: string, assigned: string, state: string): Observable<Response> {
-  //   const url = this.basePath + this.task + 'create-task/mockTask.json';
-  //   return this.http.get<Response>(url);
-  // }
+  // // ### TASK ###
+  public override createTask(token: string, title: string, description: string, assigned: string, state: string): Observable<Response> {
+    return this.http.get<Response>(this.buildURL(RequestPath.CREATE_TASK));
+  }
 
-  // public override importTasks(token: string, tasks: Task[]): Observable<Progress> {
-  //   const url = this.basePath + this.task + 'import-tasks/progress.json';
-  //   return this.http.get<Progress>(url);
-  // }
+  public override importTasks(token: string, tasks: Task[]): Observable<Progress> {
+    return this.http.get<Progress>(this.buildURL(RequestPath.IMPORT_TASKS));
+  }
 
-  // public override getTaskList(token: string): Observable<State[]> {
-  //   // const url = this.basePath + this.task + `get-task-list/${project}.json`;
-  //   // return this.http.get<State[]>(url);
-  //   throw new Error('Method not implemented!');
-  // }
+  public override getTaskList(token: string): Observable<State[]> {
+    return this.http.get<State[]>(this.buildURL(RequestPath.GET_TASK_LIST));
+  }
 
-  // public override updateTask(token: string, task: Task): Observable<State[]> {
-  //   const url = this.basePath + this.task + `update-task/${task.project}.json`;
-  //   return this.http.get<State[]>(url);
-  // }
+  public override updateTask(token: string, task: Task): Observable<State[]> {
+    return this.http.get<State[]>(this.buildURL(RequestPath.UPDATE_TASK));
+  }
 
-  // public override updatePosition(token: string, uid: string, state: string, order: number): Observable<State[]> {
-  //   const url = this.basePath + this.task + 'update-position/task.json';
-  //   return this.http.get<State[]>(url);
-  // }
+  public override updatePosition(token: string, uid: string, state: string, order: number): Observable<State[]> {
+    return this.http.get<State[]>(this.buildURL(RequestPath.UPDATE_POSITION));
+  }
 
-  // public override moveToTrashBin(token: string, uid: string): Observable<State[]> {
-  //   const url = this.basePath + this.task + 'move-to-trash-bin/moved.json';
-  //   return this.http.get<State[]>(url);
-  // }
+  public override moveToTrashBin(token: string, uid: string): Observable<State[]> {
+    return this.http.get<State[]>(this.buildURL(RequestPath.MOVE_TO_TRASH_BIN));
+  }
   
-  // public override getTrashBin(token: string): Observable<Task[]> {
-  //   const url = this.basePath + this.task + 'get-trash-bin/trash-bin.json';  
-  //   return this.http.get<Task[]>(url);
-  // }
+  public override getTrashBin(token: string): Observable<Task[]> {
+    return this.http.get<Task[]>(this.buildURL(RequestPath.GET_TRASH_BIN));
+  }
 
-  // public override deleteTask(token: string, uid: string): Observable<Task[]> {
-  //   const url = this.basePath + this.task + 'delete-task/delete.json';
-  //   return this.http.get<Task[]>(url);
-  // }
+  public override deleteTask(token: string, uid: string): Observable<Task[]> {
+    return this.http.get<Task[]>(this.buildURL(RequestPath.DELETE_TASK));
+  }
 
-  // public override restoreTask(token: string, uid: string): Observable<Task[]> {
-  //   const url = this.basePath + this.task + 'restore-task/restore.json';
-  //   return this.http.get<Task[]>(url);
-  // }
+  public override restoreTask(token: string, uid: string): Observable<Task[]> {
+    return this.http.get<Task[]>(this.buildURL(RequestPath.RESTORE_TASK));
+  }
 
-  // public override clearTrashBin(token: string): Observable<Response> {
-  //   const url = this.basePath + this.task + 'clear-trash-bin/clear.json';
-  //   return this.http.get<Response>(url);
-  // }
+  public override clearTrashBin(token: string): Observable<Response> {
+    return this.http.get<Response>(this.buildURL(RequestPath.CLEAR_TRASH_BIN));
+  }
+
 
   // // ### STATS ###
   // public override optimizeOrder(token: string): Observable<Response> {
