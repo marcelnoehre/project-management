@@ -20,22 +20,15 @@ export class RequestService {
         return this.post<T>(url, data);
       case RequestType.PUT:
         return this.put<T>(url, data);
-      // case RequestType.DELETE:
-      //   return this.delete<T>(url, data);
+      case RequestType.DELETE:
+        return this.delete<T>(url, data);
       default:
         throw new Error('ERROR.REQUEST_TYPE');
     }
   }
 
   private get<T>(url: string, data?: any): Observable<T> {
-    let first: boolean = true;
-    for (const key in data) {
-      if (data.hasOwnProperty(key)) {
-        url += first ? '?' : '&';
-        url += (key + '=' + data[key]);
-      }
-    }
-    return this.http.get<T>(url);
+    return this.http.get<T>(this.adjustUrl(url, data));
   }
 
   private post<T>(url: string, body: any): Observable<T> {
@@ -46,8 +39,19 @@ export class RequestService {
     return this.http.put<T>(url, body);
   }
 
-  // private delete<T>(url: string, data?: any): Observable<T> {
+  private delete<T>(url: string, data?: any): Observable<T> {
+    return this.http.delete<T>(this.adjustUrl(url, data));
+  }
 
-  // }
+  private adjustUrl(url: string, data: any) {
+    let first: boolean = true;
+    for (const key in data) {
+      if (data.hasOwnProperty(key)) {
+        url += first ? '?' : '&';
+        url += (key + '=' + data[key]);
+      }
+    }
+    return url;
+  }
 
 }

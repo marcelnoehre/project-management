@@ -86,10 +86,10 @@ export class DbService extends AdapterService {
   }
 
   public override deleteUser(token: string): Observable<Response> {
-    const body = {
+    const data = {
       token: token
     }
-    return this.http.post<Response>(this.basePath + this.auth + 'deleteUser', body);
+    return this.request.send<Response>(RequestType.DELETE, this.basePath + this.auth + 'deleteUser', data);
   }
 
 

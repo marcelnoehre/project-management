@@ -194,7 +194,7 @@ async function toggleNotifications(req, res, next) {
  */
 async function deleteUser(req, res, next) {
     try {
-        const token = req.body.token;
+        const token = req.query.token;
         const tokenUser = jwt.decode(token);
         if (await authService.deleteUser(db, tokenUser.username)) {
             const promises = [];
