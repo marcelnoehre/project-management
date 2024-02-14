@@ -1,203 +1,170 @@
 import { Injectable } from '@angular/core';
-import { AdapterService } from './adapter.service';
-import { DbService } from './db.service';
-import { MockService } from './mock.service';
-import { Adapter } from 'src/app/enums/adapter.enum';
-import { environment } from 'src/environments/environment';
+import { Stats } from 'mocha';
 import { Observable } from 'rxjs';
-import { User } from 'src/app/interfaces/data/user';
-import { State } from 'src/app/interfaces/data/state';
-import { Response } from 'src/app/interfaces/data/response';
-import { Task } from 'src/app/interfaces/data/task';
-import { Progress } from 'src/app/interfaces/data/progress';
-import { Notification } from 'src/app/interfaces/data/notification';
 import { Permission } from 'src/app/enums/permission.enum';
 import { AssignedStats } from 'src/app/interfaces/data/assigned-stats';
-import { StatLeaders } from 'src/app/interfaces/data/stat-leaders';
 import { CategoryStats } from 'src/app/interfaces/data/category-stats';
-import { Stats } from 'src/app/interfaces/data/stats';
-import { TaskProgress } from 'src/app/interfaces/data/task-progress';
+import { Progress } from 'src/app/interfaces/data/progress';
 import { ProjectRoadmap } from 'src/app/interfaces/data/project-roadmap';
-import { TestService } from './test.service';
+import { StatLeaders } from 'src/app/interfaces/data/stat-leaders';
+import { State } from 'src/app/interfaces/data/state';
+import { Task } from 'src/app/interfaces/data/task';
+import { TaskProgress } from 'src/app/interfaces/data/task-progress';
+import { User } from 'src/app/interfaces/data/user';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ApiService {
-  private adapter!: AdapterService;
-  private chosenAdapter = environment.selectedApi;
-  
-  constructor(
-    private db: DbService,
-    private mock: MockService,
-	private test: TestService
-  ) {
-    this.resolveAdapter();
-  }
+export class TestService {
 
-	private resolveAdapter() {
-		switch (this.chosenAdapter) {
-			case Adapter.db:
-				this.adapter = this.db;
-				break;
-			case Adapter.mock:
-				this.adapter = this.mock;
-				break;
-			case Adapter.test:
-				this.adapter = this.test;
-				break;
-			default:
-				console.error('No adapter!');
-				break;
-		}
-	}
+  constructor() { }
 
 	// ### AUTH ###
 	public verify(token: string): Observable<User> {
-		return this.adapter.verify(token);
+    throw Error('Method not implemented!');
 	}
 
 	public refreshToken(token: string): Observable<string> {
-		return this.adapter.refreshToken(token);
+    throw Error('Method not implemented!');
 	}
 
 	public login(username: string, password: string): Observable<User> {
-		return this.adapter.login(username, password);
+    throw Error('Method not implemented!');
 	}
 
 	public register(username: string, fullName: string, language: string, password: string): Observable<Response> {
-		return this.adapter.register(username, fullName, language, password);
+    throw Error('Method not implemented!');
 	}
 
 	public updateUser(token: string, attribute: string, value: string): Observable<Response> {
-		return this.adapter.updateUser(token, attribute, value);
+    throw Error('Method not implemented!');
 	}
 
 	public toggleNotifications(token: string, notificationsEnabled: boolean): Observable<Response> {
-		return this.adapter.toggleNotifications(token, notificationsEnabled);
+    throw Error('Method not implemented!');
 	}
 
 	public deleteUser(token: string): Observable<Response> {
-		return this.adapter.deleteUser(token);
+    throw Error('Method not implemented!');
 	}
 
 
 	// ### NOTIFICATIONS ###
 	public getNotifications(token: string): Observable<Notification[]> {
-		return this.adapter.getNotifications(token);
+    throw Error('Method not implemented!');
 	}
 
 	public updateNotifications(token: string, seen: string[], removed: string[]): Observable<Notification[]> {
-		return this.adapter.updateNotifications(token, seen, removed);
+    throw Error('Method not implemented!');
 	}
 
 
 	// ### PROJECT ###
 	public getTeamMembers(token: string): Observable<User[]> {
-		return this.adapter.getTeamMembers(token);
+    throw Error('Method not implemented!');
 	}
 
 	public createProject(token: string, project: string): Observable<Response> {
-		return this.adapter.createProject(token, project);
+    throw Error('Method not implemented!');
 	}
 
 	public inviteUser(token: string, username: string): Observable<User> {
-		return this.adapter.inviteUser(token, username);
+    throw Error('Method not implemented!');
 	}
 
 	public handleInvite(token: string, decision: boolean): Observable<Response> {
-		return this.adapter.handleInvite(token, decision);
+    throw Error('Method not implemented!');
 	}
 
 	public updatePermission(token: string, username: string, permission: Permission): Observable<User[]> {
-		return this.adapter.updatePermission(token, username, permission);
+    throw Error('Method not implemented!');
 	}
 
 	public removeUser(token: string, username: string): Observable<Response> {
-		return this.adapter.removeUser(token, username);
+    throw Error('Method not implemented!');
 	}
 
 	public leaveProject(token: string): Observable<Response> {
-		return this.adapter.leaveProject(token);
+    throw Error('Method not implemented!');
 	}
 
 
   	// ### STATS ###
 	public personalStats(token: string): Observable<Stats> {
-		return this.adapter.personalStats(token);
+    throw Error('Method not implemented!');
 	}
 
 	public stats(token: string): Observable<AssignedStats[]> {
-		return this.adapter.stats(token);
+    throw Error('Method not implemented!');
 	}
 
 	public statLeaders(token: string): Observable<StatLeaders> {
-		return this.adapter.statLeaders(token);
+    throw Error('Method not implemented!');
 	}
 
 	public taskAmount(token: string): Observable<CategoryStats> {
-		return this.adapter.taskAmount(token);
+    throw Error('Method not implemented!');
 	}
 
 	public averageTime(token: string): Observable<CategoryStats> {
-		return this.adapter.averageTime(token);
+    throw Error('Method not implemented!');
 	}
 
 	public wip(token: string): Observable<number> {
-		return this.adapter.wip(token);
+    throw Error('Method not implemented!');
 	}
 
 	public taskProgress(token: string): Observable<TaskProgress> {
-		return this.adapter.taskProgress(token);
+    throw Error('Method not implemented!');
 	}
 
 	public projectRoadmap(token: string): Observable<ProjectRoadmap[]> {
-		return this.adapter.projectRoadmap(token);
+    throw Error('Method not implemented!');
 	}
 
 	public optimizeOrder(token: string): Observable<Response> {
-		return this.adapter.optimizeOrder(token);
+    throw Error('Method not implemented!');
 	}
 
 
 	// ### TASKS ###
 	public createTask(token: string, title: string, description: string, assigned: string, state: string): Observable<Response> {
-		return this.adapter.createTask(token, title, description, assigned, state);
+    throw Error('Method not implemented!');
 	}
 
 	public importTasks(token: string, tasks: Task[]): Observable<Progress> {
-		return this.adapter.importTasks(token, tasks);
+    throw Error('Method not implemented!');
 	}
 
 	public getTaskList(token: string): Observable<State[]> {
-		return this.adapter.getTaskList(token);
+    throw Error('Method not implemented!');
 	}
 
 	public updateTask(token: string, task: Task): Observable<State[]> {
-		return this.adapter.updateTask(token, task);
+    throw Error('Method not implemented!');
 	}
 
 	public updatePosition(token: string, uid: string, state: string, order: number): Observable<State[]> {
-		return this.adapter.updatePosition(token, uid, state, order);
+    throw Error('Method not implemented!');
 	}
 
 	public moveToTrashBin(token: string, uid: string): Observable<State[]> {
-		return this.adapter.moveToTrashBin(token, uid);
+    throw Error('Method not implemented!');
 	}
 	
 	public getTrashBin(token: string): Observable<Task[]> {
-		return this.adapter.getTrashBin(token);
+    throw Error('Method not implemented!');
 	}
 
 	public deleteTask(token: string, uid: string): Observable<Task[]> {
-		return this.adapter.deleteTask(token, uid);
+    throw Error('Method not implemented!');
 	}
 
 	public restoreTask(token: string, uid: string): Observable<Task[]> {
-		return this.adapter.restoreTask(token, uid);
+    throw Error('Method not implemented!');
 	}
 
 	public clearTrashBin(token: string): Observable<Response> {
-		return this.adapter.clearTrashBin(token);
+    throw Error('Method not implemented!');
 	}
 }
