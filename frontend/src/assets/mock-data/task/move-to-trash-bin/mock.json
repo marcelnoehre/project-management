@@ -4,7 +4,7 @@
     "tasks":[
       {
         "uid":"DHfqbZ18jhH55SFWFGwO",
-        "author":"marcel",
+        "author":"mock",
         "project":"works",
         "description":"Prepare comprehensive documentation for the project, including user manuals and technical guides.",
         "assigned":"",
@@ -14,7 +14,7 @@
             "previous":null,
             "state":"NONE",
             "timestamp":1707706711326,
-            "username":"marcel"
+            "username":"mock"
           }
         ],
         "title":"Documentation",
@@ -22,7 +22,7 @@
       },
       {
         "uid":"miOt2Q50MAV9onMGc00M",
-        "author":"marcel",
+        "author":"mock",
         "project":"works",
         "description":"Review all aspects of the project and prepare for the final release.",
         "assigned":"",
@@ -32,7 +32,7 @@
             "previous":null,
             "state":"NONE",
             "timestamp":1707706711547,
-            "username":"marcel"
+            "username":"mock"
           }
         ],
         "title":"Finalize Project",
@@ -40,7 +40,7 @@
       },
       {
         "uid":"L0LJoChgGLAh36tmUip1",
-        "author":"marcel",
+        "author":"mock",
         "project":"works",
         "description":"Prepare comprehensive documentation for the project, including user manuals and technical guides.",
         "assigned":"",
@@ -50,7 +50,7 @@
             "previous":null,
             "state":"NONE",
             "timestamp":1707706984237,
-            "username":"marcel"
+            "username":"mock"
           }
         ],
         "title":"Documentation",
@@ -58,7 +58,7 @@
       },
       {
         "uid":"9Iny1sv25Q66y7OE3fZI",
-        "author":"marcel",
+        "author":"mock",
         "project":"works",
         "description":"Review all aspects of the project and prepare for the final release.",
         "assigned":"",
@@ -68,7 +68,7 @@
             "previous":null,
             "state":"NONE",
             "timestamp":1707706984404,
-            "username":"marcel"
+            "username":"mock"
           }
         ],
         "title":"Finalize Project",
@@ -99,7 +99,7 @@
     "tasks":[
       {
         "uid":"fOJ45cgoAmxnUWIhBHrw",
-        "author":"marcel",
+        "author":"mock",
         "project":"works",
         "description":"Draft a detailed project proposal outlining goals, scope, and deliverables.",
         "assigned":"",
@@ -109,7 +109,7 @@
             "previous":null,
             "state":"TODO",
             "timestamp":1707706711761,
-            "username":"marcel"
+            "username":"mock"
           }
         ],
         "title":"Complete Project Proposal",
@@ -117,7 +117,7 @@
       },
       {
         "uid":"FjkpaYdHyqrvIHM3z1wo",
-        "author":"marcel",
+        "author":"mock",
         "project":"works",
         "description":"Gather feedback on the prototype and make necessary revisions to the user interface.",
         "assigned":"",
@@ -127,7 +127,7 @@
             "previous":null,
             "state":"TODO",
             "timestamp":1707706711969,
-            "username":"marcel"
+            "username":"mock"
           }
         ],
         "title":"Revise User Interface",
@@ -135,7 +135,7 @@
       },
       {
         "uid":"qa0IeDmEyV1C0ogSRdkV",
-        "author":"marcel",
+        "author":"mock",
         "project":"works",
         "description":"Prepare a presentation for the client showcasing the project progress and features.",
         "assigned":"",
@@ -145,7 +145,7 @@
             "previous":null,
             "state":"TODO",
             "timestamp":1707706712166,
-            "username":"marcel"
+            "username":"mock"
           }
         ],
         "title":"Client Presentation",
@@ -153,7 +153,7 @@
       },
       {
         "uid":"PHASIp2YXGwKALHqnsVs",
-        "author":"marcel",
+        "author":"mock",
         "project":"works",
         "description":"Draft a detailed project proposal outlining goals, scope, and deliverables.",
         "assigned":"",
@@ -163,7 +163,7 @@
             "previous":null,
             "state":"TODO",
             "timestamp":1707706984558,
-            "username":"marcel"
+            "username":"mock"
           }
         ],
         "title":"Complete Project Proposal",
@@ -171,7 +171,7 @@
       },
       {
         "uid":"TcxyseGyDpgTPPYHRn1l",
-        "author":"marcel",
+        "author":"mock",
         "project":"works",
         "description":"Gather feedback on the prototype and make necessary revisions to the user interface.",
         "assigned":"",
@@ -181,7 +181,7 @@
             "previous":null,
             "state":"TODO",
             "timestamp":1707706984701,
-            "username":"marcel"
+            "username":"mock"
           }
         ],
         "title":"Revise User Interface",
@@ -194,7 +194,7 @@
     "tasks":[
       {
         "uid":"ap1qmOAuMnzrAJLcb4Jd",
-        "author":"marcel",
+        "author":"mock",
         "project":"works",
         "description":"Conduct market research to identify current trends and customer preferences.",
         "assigned":"",
@@ -204,7 +204,7 @@
             "previous":null,
             "state":"PROGRESS",
             "timestamp":1707706712367,
-            "username":"marcel"
+            "username":"mock"
           }
         ],
         "title":"Research Market Trends",
@@ -212,7 +212,7 @@
       },
       {
         "uid":"TFo1AG123JyitAETS52A",
-        "author":"marcel",
+        "author":"mock",
         "project":"works",
         "description":"Optimize and refactor existing codebase to improve performance and maintainability.",
         "assigned":"",
@@ -222,7 +222,7 @@
             "previous":null,
             "state":"PROGRESS",
             "timestamp":1707706712566,
-            "username":"marcel"
+            "username":"mock"
           }
         ],
         "title":"Code Refactoring",
@@ -230,7 +230,7 @@
       },
       {
         "uid":"enm3q1D8bm0RuzYIFCjI",
-        "author":"marcel",
+        "author":"mock",
         "project":"works",
         "description":"Conduct market research to identify current trends and customer preferences.",
         "assigned":"",
@@ -240,7 +240,7 @@
             "previous":null,
             "state":"PROGRESS",
             "timestamp":1707706984989,
-            "username":"marcel"
+            "username":"mock"
           }
         ],
         "title":"Research Market Trends",
@@ -248,7 +248,7 @@
       },
       {
         "uid":"26kZkgg5BaAfqn25FZTP",
-        "author":"marcel",
+        "author":"mock",
         "project":"works",
         "description":"Optimize and refactor existing codebase to improve performance and maintainability.",
         "assigned":"",
@@ -258,7 +258,7 @@
             "previous":null,
             "state":"PROGRESS",
             "timestamp":1707706985141,
-            "username":"marcel"
+            "username":"mock"
           }
         ],
         "title":"Code Refactoring",
@@ -271,7 +271,7 @@
     "tasks":[
       {
         "uid":"ayfiZN4sAIUmr3hRPpvA",
-        "author":"marcel",
+        "author":"mock",
         "project":"works",
         "description":"Create a prototype for the new product feature based on the research findings.",
         "assigned":"",
@@ -281,7 +281,7 @@
             "previous":null,
             "state":"REVIEW",
             "timestamp":1707706712767,
-            "username":"marcel"
+            "username":"mock"
           }
         ],
         "title":"Develop Prototype",
@@ -289,7 +289,7 @@
       },
       {
         "uid":"N8bxoEq4g012sY5Y83bf",
-        "author":"marcel",
+        "author":"mock",
         "project":"works",
         "description":"Conduct thorough testing to ensure the product meets quality standards.",
         "assigned":"",
@@ -299,7 +299,7 @@
             "previous":null,
             "state":"REVIEW",
             "timestamp":1707706712945,
-            "username":"marcel"
+            "username":"mock"
           }
         ],
         "title":"Quality Assurance Testing",
@@ -307,7 +307,7 @@
       },
       {
         "uid":"dk8n2dxpQoybNkRp9kUE",
-        "author":"marcel",
+        "author":"mock",
         "project":"works",
         "description":"Create a prototype for the new product feature based on the research findings.",
         "assigned":"",
@@ -317,7 +317,7 @@
             "previous":null,
             "state":"REVIEW",
             "timestamp":1707706985307,
-            "username":"marcel"
+            "username":"mock"
           }
         ],
         "title":"Develop Prototype",
@@ -325,7 +325,7 @@
       },
       {
         "uid":"o8TwVDf6sW57zJzcj4jS",
-        "author":"marcel",
+        "author":"mock",
         "project":"works",
         "description":"Conduct thorough testing to ensure the product meets quality standards.",
         "assigned":"",
@@ -335,7 +335,7 @@
             "previous":null,
             "state":"REVIEW",
             "timestamp":1707706985455,
-            "username":"marcel"
+            "username":"mock"
           }
         ],
         "title":"Quality Assurance Testing",
@@ -348,7 +348,7 @@
     "tasks":[
       {
         "uid":"Ai1T0BCX4xRwLuD96fla",
-        "author":"marcel",
+        "author":"mock",
         "project":"works",
         "description":"Hold a meeting to officially start the project.",
         "assigned":"",
@@ -358,7 +358,7 @@
             "previous":null,
             "state":"DONE",
             "timestamp":1707706713118,
-            "username":"marcel"
+            "username":"mock"
           }
         ],
         "title":"Project Kickoff",
@@ -366,7 +366,7 @@
       },
       {
         "uid":"Ji0Vet5TsrlO32iZpwgq",
-        "author":"marcel",
+        "author":"mock",
         "project":"works",
         "description":"Publish the final version of the product.",
         "assigned":"",
@@ -376,7 +376,7 @@
             "previous":null,
             "state":"DONE",
             "timestamp":1707706713301,
-            "username":"marcel"
+            "username":"mock"
           }
         ],
         "title":"Release Version 1.0",
@@ -384,7 +384,7 @@
       },
       {
         "uid":"KNtKn3USQ8ULYkwmMxe7",
-        "author":"marcel",
+        "author":"mock",
         "project":"works",
         "description":"Hold a meeting to officially start the project.",
         "assigned":"",
@@ -394,7 +394,7 @@
             "previous":null,
             "state":"DONE",
             "timestamp":1707706985601,
-            "username":"marcel"
+            "username":"mock"
           }
         ],
         "title":"Project Kickoff",

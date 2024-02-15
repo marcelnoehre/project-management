@@ -4,5 +4,5 @@ export interface TaskHistory {
     timestamp: number,
     username: string,
     state: TaskState,
-    type: string
+    previous: string | null
 }
