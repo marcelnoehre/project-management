@@ -5,6 +5,7 @@ import { Observable, of } from 'rxjs';
 import { Permission } from 'src/app/enums/permission.enum';
 import { AssignedStats } from 'src/app/interfaces/data/assigned-stats';
 import { CategoryStats } from 'src/app/interfaces/data/category-stats';
+import { Notification } from 'src/app/interfaces/data/notification';
 import { Progress } from 'src/app/interfaces/data/progress';
 import { ProjectRoadmap } from 'src/app/interfaces/data/project-roadmap';
 import { Response } from 'src/app/interfaces/data/response';
@@ -323,11 +324,45 @@ export class TestService {
 
 	// ### NOTIFICATIONS ###
 	public getNotifications(token: string): Observable<Notification[]> {
-    throw Error('Method not implemented!');
+		return of([
+			{
+				uid: 'lPMZOH0Hxy6z0mhZ9shV', 
+				message: 'NOTIFICATIONS.NEW.JOINED', 
+				data: ['admin'], 
+				icon: 'person_add', 
+				timestamp: 1707948598239, 
+				seen: false 
+			},
+			{ 
+				uid: 'lk8id9WVL0N1o97vRDK6', 
+				message: 'NOTIFICATIONS.NEW.CREATE_TASK', 
+				data: ['admin', 'mock'], 
+				icon: 'note_add', 
+				timestamp: 1707948640062, 
+				seen: true 
+			}
+		]);
 	}
 
 	public updateNotifications(token: string, seen: string[], removed: string[]): Observable<Notification[]> {
-    throw Error('Method not implemented!');
+		return of([
+			{
+				uid: 'lPMZOH0Hxy6z0mhZ9shV', 
+				message: 'NOTIFICATIONS.NEW.JOINED', 
+				data: ['admin'], 
+				icon: 'person_add', 
+				timestamp: 1707948598239, 
+				seen: false 
+			},
+			{ 
+				uid: 'lk8id9WVL0N1o97vRDK6', 
+				message: 'NOTIFICATIONS.NEW.CREATE_TASK', 
+				data: ['admin', 'mock'], 
+				icon: 'note_add', 
+				timestamp: 1707948640062, 
+				seen: true 
+			}
+		]);
 	}
 
 
