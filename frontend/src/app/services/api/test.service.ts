@@ -368,31 +368,257 @@ export class TestService {
 
 	// ### PROJECT ###
 	public getTeamMembers(token: string): Observable<User[]> {
-    throw Error('Method not implemented!');
+		return of([
+			{
+				token: 'owner',
+				username: 'owner',
+				fullName: 'Mock Owner',
+				initials: 'MO',
+				color: '#FFFFFF',
+				language: 'en',
+				project: 'MockProject',
+				permission: Permission.OWNER,
+				profilePicture: '',
+				notificationsEnabled: true,
+				isLoggedIn: true,
+				stats: {
+					created: 91,
+					imported: 10,
+					updated: 45,
+					edited: 78,
+					trashed: 32,
+					restored: 57,
+					deleted: 23,
+					cleared: 69
+				}
+			},    
+			{
+				token: 'admin',
+				username: 'admin',
+				fullName: 'Mock Admin',
+				initials: 'MA',
+				color: '#FFFFFF',
+				language: 'en',
+				project: 'MockProject',
+				permission: Permission.ADMIN,
+				profilePicture: '',
+				notificationsEnabled: true,
+				isLoggedIn: true,
+				stats: {
+					created: 42,
+					imported: 15,
+					updated: 78,
+					edited: 63,
+					trashed: 29,
+					restored: 51,
+					deleted: 94,
+					cleared: 12
+				}
+			},
+			{
+				token: 'member',
+				username: 'member',
+				fullName: 'Mock Member',
+				initials: 'MM',
+				color: '#FFFFFF',
+				language: 'de',
+				project: 'mockProject',
+				permission: Permission.MEMBER,
+				profilePicture: '',
+				notificationsEnabled: false,
+				isLoggedIn: true,
+				stats: {
+					created: 64,
+					imported: 27,
+					updated: 89,
+					edited: 14,
+					trashed: 50,
+					restored: 73,
+					deleted: 3,
+					cleared: 67
+				}
+			},
+			{
+				token: 'invited',
+				username: 'invited',
+				fullName: 'Mock Invited',
+				initials: 'MI',
+				color: '#FFFFFF',
+				language: 'en',
+				project: 'MockProject',
+				permission: Permission.INVITED,
+				profilePicture: '',
+				notificationsEnabled: true,
+				isLoggedIn: true,
+				stats: {
+					created: 77,
+					imported: 42,
+					updated: 19,
+					edited: 56,
+					trashed: 83,
+					restored: 5,
+					deleted: 38,
+					cleared: 91
+				}
+			}
+		]);
 	}
 
 	public createProject(token: string, project: string): Observable<Response> {
-    throw Error('Method not implemented!');
+		return of({
+			message: 'SUCCESS.CREATE_PROJECT'
+		});
 	}
 
 	public inviteUser(token: string, username: string): Observable<User> {
-    throw Error('Method not implemented!');
+		if (username === 'inviteAnother') {
+			return of({
+				token: 'invitedAnother',
+				username: 'invitedAnother',
+				fullName: 'Mock InvitedAnother',
+				initials: 'MI',
+				color: '#FFFFFF',
+				language: 'en',
+				project: 'MockProject',
+				permission: Permission.INVITED,
+				profilePicture: '',
+				notificationsEnabled: true,
+				isLoggedIn: true,
+				stats: {
+					created: 0,
+					imported: 0,
+					updated: 0,
+					edited: 0,
+					trashed: 0,
+					restored: 0,
+					deleted: 0,
+					cleared: 0
+				}
+			});
+		} else {
+			throw Error('ERROR.NO_ACCOUNT');
+		}
 	}
 
 	public handleInvite(token: string, decision: boolean): Observable<Response> {
-    throw Error('Method not implemented!');
+		if (decision) {
+			return of({
+				message: 'SUCCESS.INVITE_ACCEPTED'
+			});
+		} else {
+			return of({
+				message: 'SUCCESS.INVITE_REJECTED'
+			});
+		}
 	}
 
 	public updatePermission(token: string, username: string, permission: Permission): Observable<User[]> {
-    throw Error('Method not implemented!');
+		return of([
+			{
+				token: 'owner',
+				username: 'owner',
+				fullName: 'Mock Owner',
+				initials: 'MO',
+				color: '#FFFFFF',
+				language: 'en',
+				project: 'MockProject',
+				permission: Permission.OWNER,
+				profilePicture: '',
+				notificationsEnabled: true,
+				isLoggedIn: true,
+				stats: {
+					created: 91,
+					imported: 10,
+					updated: 45,
+					edited: 78,
+					trashed: 32,
+					restored: 57,
+					deleted: 23,
+					cleared: 69
+				}
+			},    
+			{
+				token: 'admin',
+				username: 'admin',
+				fullName: 'Mock Admin',
+				initials: 'MA',
+				color: '#FFFFFF',
+				language: 'en',
+				project: 'MockProject',
+				permission: Permission.ADMIN,
+				profilePicture: '',
+				notificationsEnabled: true,
+				isLoggedIn: true,
+				stats: {
+					created: 42,
+					imported: 15,
+					updated: 78,
+					edited: 63,
+					trashed: 29,
+					restored: 51,
+					deleted: 94,
+					cleared: 12
+				}
+			},
+			{
+				token: 'member',
+				username: 'member',
+				fullName: 'Mock Member',
+				initials: 'MM',
+				color: '#FFFFFF',
+				language: 'de',
+				project: 'mockProject',
+				permission: Permission.MEMBER,
+				profilePicture: '',
+				notificationsEnabled: false,
+				isLoggedIn: true,
+				stats: {
+					created: 64,
+					imported: 27,
+					updated: 89,
+					edited: 14,
+					trashed: 50,
+					restored: 73,
+					deleted: 3,
+					cleared: 67
+				}
+			},
+			{
+				token: 'invited',
+				username: 'invited',
+				fullName: 'Mock Invited',
+				initials: 'MI',
+				color: '#FFFFFF',
+				language: 'en',
+				project: 'MockProject',
+				permission: Permission.INVITED,
+				profilePicture: '',
+				notificationsEnabled: true,
+				isLoggedIn: true,
+				stats: {
+					created: 77,
+					imported: 42,
+					updated: 19,
+					edited: 56,
+					trashed: 83,
+					restored: 5,
+					deleted: 38,
+					cleared: 91
+				}
+			}
+		]);
 	}
 
 	public removeUser(token: string, username: string): Observable<Response> {
-    throw Error('Method not implemented!');
+		return of({
+			message: 'SUCCESS.REMOVE_MEMBER'
+		});
 	}
 
 	public leaveProject(token: string): Observable<Response> {
-    throw Error('Method not implemented!');
+		return of({
+			message: 'SUCCESS.LEAVE_PROJECT'
+		});
 	}
 
 
