@@ -16,9 +16,9 @@ import { AssignedStats } from 'src/app/interfaces/data/assigned-stats';
 import { StatLeaders } from 'src/app/interfaces/data/stat-leaders';
 import { CategoryStats } from 'src/app/interfaces/data/category-stats';
 import { Stats } from 'src/app/interfaces/data/stats';
-import { RequestService } from '../request.service';
 import { TaskProgress } from 'src/app/interfaces/data/task-progress';
 import { ProjectRoadmap } from 'src/app/interfaces/data/project-roadmap';
+import { TestService } from './test.service';
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +29,8 @@ export class ApiService {
   
   constructor(
     private db: DbService,
-    private mock: MockService
+    private mock: MockService,
+	private test: TestService
   ) {
     this.resolveAdapter();
   }
@@ -41,6 +42,9 @@ export class ApiService {
 				break;
 			case Adapter.mock:
 				this.adapter = this.mock;
+				break;
+			case Adapter.test:
+				this.adapter = this.test;
 				break;
 			default:
 				console.error('No adapter!');

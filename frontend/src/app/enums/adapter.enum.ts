@@ -1,4 +1,5 @@
 export enum Adapter {
 	db = 'db',
-	mock = 'mock'
+	mock = 'mock',
+	test = 'test'
 }
