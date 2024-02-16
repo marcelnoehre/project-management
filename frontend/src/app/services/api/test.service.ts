@@ -44,80 +44,32 @@ export class TestService {
 
 	public register(username: string, fullName: string, language: string, password: string): Observable<Response> {
 		if (username === '') {
-			return of({
-				message: 'SUCCESS.REGISTRATION'
-			});
+			return this.response('SUCCESS.REGISTRATION');
 		} else {
 			throw new Error('ERROR.REGISTRATION');
 		}
 	}
 
 	public updateUser(token: string, attribute: string, value: string): Observable<Response> {
-		return of({
-			message: 'SUCCESS.UPDATE_ACCOUNT'
-		});
+		return this.response('SUCCESS.UPDATE_ACCOUNT');
 	}
 
 	public toggleNotifications(token: string, notificationsEnabled: boolean): Observable<Response> {
-		if (notificationsEnabled) {
-			return of({
-				message: 'SUCCESS.NOTIFICATIONS_ON'
-			});
-		} else {
-			return of({
-				message: 'SUCCESS.NOTIFICATIONS_OFF'
-			});
-		}
+		return this.response(notificationsEnabled ? 'SUCCESS.NOTIFICATIONS_ON' : 'SUCCESS.NOTIFICATIONS_OFF');
 	}
 
 	public deleteUser(token: string): Observable<Response> {
-    	return of({
-			message: 'SUCCESS.DELETE_ACCOUNT'
-		});
+		return this.response('SUCCESS.DELETE_ACCOUNT');
 	}
 
 
 	// ### NOTIFICATIONS ###
 	public getNotifications(token: string): Observable<Notification[]> {
-		return of([
-			{
-				uid: 'lPMZOH0Hxy6z0mhZ9shV', 
-				message: 'NOTIFICATIONS.NEW.JOINED', 
-				data: ['admin'], 
-				icon: 'person_add', 
-				timestamp: 1707948598239, 
-				seen: false 
-			},
-			{ 
-				uid: 'lk8id9WVL0N1o97vRDK6', 
-				message: 'NOTIFICATIONS.NEW.CREATE_TASK', 
-				data: ['admin', 'mock'], 
-				icon: 'note_add', 
-				timestamp: 1707948640062, 
-				seen: true 
-			}
-		]);
+		return of(this.notifications());
 	}
 
 	public updateNotifications(token: string, seen: string[], removed: string[]): Observable<Notification[]> {
-		return of([
-			{
-				uid: 'lPMZOH0Hxy6z0mhZ9shV', 
-				message: 'NOTIFICATIONS.NEW.JOINED', 
-				data: ['admin'], 
-				icon: 'person_add', 
-				timestamp: 1707948598239, 
-				seen: false 
-			},
-			{ 
-				uid: 'lk8id9WVL0N1o97vRDK6', 
-				message: 'NOTIFICATIONS.NEW.CREATE_TASK', 
-				data: ['admin', 'mock'], 
-				icon: 'note_add', 
-				timestamp: 1707948640062, 
-				seen: true 
-			}
-		]);
+		return of(this.notifications());
 	}
 
 
@@ -127,160 +79,27 @@ export class TestService {
 	}
 
 	public createProject(token: string, project: string): Observable<Response> {
-		return of({
-			message: 'SUCCESS.CREATE_PROJECT'
-		});
+		return this.response('SUCCESS.CREATE_PROJECT');
 	}
 
 	public inviteUser(token: string, username: string): Observable<User> {
-		if (username === 'inviteAnother') {
-			return of({
-				token: 'invitedAnother',
-				username: 'invitedAnother',
-				fullName: 'Mock InvitedAnother',
-				initials: 'MI',
-				color: '#FFFFFF',
-				language: 'en',
-				project: 'MockProject',
-				permission: Permission.INVITED,
-				profilePicture: '',
-				notificationsEnabled: true,
-				isLoggedIn: true,
-				stats: {
-					created: 0,
-					imported: 0,
-					updated: 0,
-					edited: 0,
-					trashed: 0,
-					restored: 0,
-					deleted: 0,
-					cleared: 0
-				}
-			});
-		} else {
-			throw Error('ERROR.NO_ACCOUNT');
-		}
+		return this.invite(username);
 	}
 
 	public handleInvite(token: string, decision: boolean): Observable<Response> {
-		if (decision) {
-			return of({
-				message: 'SUCCESS.INVITE_ACCEPTED'
-			});
-		} else {
-			return of({
-				message: 'SUCCESS.INVITE_REJECTED'
-			});
-		}
+		return this.response(decision ? 'SUCCESS.INVITE_ACCEPTED' : 'SUCCESS.INVITE_REJECTED');
 	}
 
 	public updatePermission(token: string, username: string, permission: Permission): Observable<User[]> {
-		return of([
-			{
-				token: 'owner',
-				username: 'owner',
-				fullName: 'Mock Owner',
-				initials: 'MO',
-				color: '#FFFFFF',
-				language: 'en',
-				project: 'MockProject',
-				permission: Permission.OWNER,
-				profilePicture: '',
-				notificationsEnabled: true,
-				isLoggedIn: true,
-				stats: {
-					created: 91,
-					imported: 10,
-					updated: 45,
-					edited: 78,
-					trashed: 32,
-					restored: 57,
-					deleted: 23,
-					cleared: 69
-				}
-			},    
-			{
-				token: 'admin',
-				username: 'admin',
-				fullName: 'Mock Admin',
-				initials: 'MA',
-				color: '#FFFFFF',
-				language: 'en',
-				project: 'MockProject',
-				permission: Permission.ADMIN,
-				profilePicture: '',
-				notificationsEnabled: true,
-				isLoggedIn: true,
-				stats: {
-					created: 42,
-					imported: 15,
-					updated: 78,
-					edited: 63,
-					trashed: 29,
-					restored: 51,
-					deleted: 94,
-					cleared: 12
-				}
-			},
-			{
-				token: 'member',
-				username: 'member',
-				fullName: 'Mock Member',
-				initials: 'MM',
-				color: '#FFFFFF',
-				language: 'de',
-				project: 'mockProject',
-				permission: Permission.MEMBER,
-				profilePicture: '',
-				notificationsEnabled: false,
-				isLoggedIn: true,
-				stats: {
-					created: 64,
-					imported: 27,
-					updated: 89,
-					edited: 14,
-					trashed: 50,
-					restored: 73,
-					deleted: 3,
-					cleared: 67
-				}
-			},
-			{
-				token: 'invited',
-				username: 'invited',
-				fullName: 'Mock Invited',
-				initials: 'MI',
-				color: '#FFFFFF',
-				language: 'en',
-				project: 'MockProject',
-				permission: Permission.INVITED,
-				profilePicture: '',
-				notificationsEnabled: true,
-				isLoggedIn: true,
-				stats: {
-					created: 77,
-					imported: 42,
-					updated: 19,
-					edited: 56,
-					trashed: 83,
-					restored: 5,
-					deleted: 38,
-					cleared: 91
-				}
-			}
-		]);
+		return of(this.member());
 	}
 
 	public removeUser(token: string, username: string): Observable<Response> {
-		return of({
-			message: 'SUCCESS.REMOVE_MEMBER'
-		});
+		return this.response('SUCCESS.REMOVE_MEMBER');
 	}
 
 	public leaveProject(token: string): Observable<Response> {
-		return of({
-			message: 'SUCCESS.LEAVE_PROJECT'
-		});
+		return this.response('SUCCESS.LEAVE_PROJECT');
 	}
 
 
@@ -324,85 +143,11 @@ export class TestService {
 
 	// ### TASK ###
 	public createTask(token: string, title: string, description: string, assigned: string, state: string): Observable<Response> {
-		return of({
-			message: 'SUCCESS.CREATE_TASK'
-		});
+		return this.response('SUCCESS.CREATE_TASK');
 	}
 
 	public importTasks(token: string, tasks: Task[]): Observable<Progress> {
-		return of({
-			amount: 11,
-			success: 11,
-			fail: 0,
-			taskList: [
-			  {
-				title: 'Documentation',
-				description: 'Prepare comprehensive documentation for the project, including user manuals and technical guides.',
-				state: TaskState.NONE,
-				author: 'mock'
-			  },
-			  {
-				title: 'Finalize Project',
-				description: 'Review all aspects of the project and prepare for the final release.',
-				state: TaskState.NONE,
-				author: 'mock'
-			  },
-			  {
-				title: 'Complete Project Proposal',
-				description: 'Draft a detailed project proposal outlining goals, scope, and deliverables.',
-				state: TaskState.TODO,
-				author: 'mock'
-			  },
-			  {
-				title: 'Revise User Interface',
-				description: 'Gather feedback on the prototype and make necessary revisions to the user interface.',
-				state: TaskState.TODO,
-				author: 'mock'
-			  },
-			  {
-				title: 'Client Presentation',
-				description: 'Prepare a presentation for the client showcasing the project progress and features.',
-				state: TaskState.TODO,
-				author: 'mock'
-			  },
-			  {
-				title: 'Research Market Trends',
-				description: 'Conduct market research to identify current trends and customer preferences.',
-				state: TaskState.PROGRESS,
-				author: 'mock'
-			  },
-			  {
-				title: 'Code Refactoring',
-				description: 'Optimize and refactor existing codebase to improve performance and maintainability.',
-				state: TaskState.PROGRESS,
-				author: 'mock'
-			  },
-			  {
-				title: 'Develop Prototype',
-				description: 'Create a prototype for the new product feature based on the research findings.',
-				state: TaskState.REVIEW,
-				author: 'mock'
-			  },
-			  {
-				title: 'Quality Assurance Testing',
-				description: 'Conduct thorough testing to ensure the product meets quality standards.',
-				state: TaskState.REVIEW,
-				author: 'mock'
-			  },
-			  {
-				title: 'Project Kickoff',
-				description: 'Hold a meeting to officially start the project.',
-				state: TaskState.DONE,
-				author: 'mock'
-			  },
-			  {
-				title: 'Release Version 1.0',
-				description: 'Publish the final version of the product.',
-				state: TaskState.DONE,
-				author: 'mock'
-			  }
-			]
-		  });
+		return of(this.import());
 	}
 
 	public getTaskList(token: string): Observable<State[]> {
@@ -434,12 +179,16 @@ export class TestService {
 	}
 
 	public clearTrashBin(token: string): Observable<Response> {
-		return of({
-			message: 'SUCCESS.CLEAR_TRASH_BIN'
-		});
+		return this.response('SUCCESS.CLEAR_TRASH_BIN');
 	}
 
 	// ### UTILS ###
+	private response(msg: string): Observable<Response> {
+		return of({
+			message: msg
+		});
+	}
+
 	private user(id: string): Observable<User> {
 		switch (id) {
 			case 'owner':
@@ -567,6 +316,36 @@ export class TestService {
 		}
 	}
 
+	private invite(username: string): Observable<User> {
+		if (username === 'inviteAnother') {
+			return of({
+				token: 'invitedAnother',
+				username: 'invitedAnother',
+				fullName: 'Mock InvitedAnother',
+				initials: 'MI',
+				color: '#FFFFFF',
+				language: 'en',
+				project: 'MockProject',
+				permission: Permission.INVITED,
+				profilePicture: '',
+				notificationsEnabled: true,
+				isLoggedIn: true,
+				stats: {
+					created: 0,
+					imported: 0,
+					updated: 0,
+					edited: 0,
+					trashed: 0,
+					restored: 0,
+					deleted: 0,
+					cleared: 0
+				}
+			});
+		} else {
+			throw Error('ERROR.NO_ACCOUNT');
+		}
+	}
+
 	private member(): User[] {
 		return [
 			{
@@ -660,6 +439,27 @@ export class TestService {
 					deleted: 38,
 					cleared: 91
 				}
+			}
+		];
+	}
+
+	private notifications(): Notification[] {
+		return [
+			{
+				uid: 'lPMZOH0Hxy6z0mhZ9shV', 
+				message: 'NOTIFICATIONS.NEW.JOINED', 
+				data: ['admin'], 
+				icon: 'person_add', 
+				timestamp: 1707948598239, 
+				seen: false 
+			},
+			{ 
+				uid: 'lk8id9WVL0N1o97vRDK6', 
+				message: 'NOTIFICATIONS.NEW.CREATE_TASK', 
+				data: ['admin', 'mock'], 
+				icon: 'note_add', 
+				timestamp: 1707948640062, 
+				seen: true 
 			}
 		];
 	}
@@ -1147,5 +947,81 @@ export class TestService {
 			  state: TaskState.DELETED
 			}
 		  ]
+	}
+
+	private import(): Progress {
+		return {
+			amount: 11,
+			success: 11,
+			fail: 0,
+			taskList: [
+			  {
+				title: 'Documentation',
+				description: 'Prepare comprehensive documentation for the project, including user manuals and technical guides.',
+				state: TaskState.NONE,
+				author: 'mock'
+			  },
+			  {
+				title: 'Finalize Project',
+				description: 'Review all aspects of the project and prepare for the final release.',
+				state: TaskState.NONE,
+				author: 'mock'
+			  },
+			  {
+				title: 'Complete Project Proposal',
+				description: 'Draft a detailed project proposal outlining goals, scope, and deliverables.',
+				state: TaskState.TODO,
+				author: 'mock'
+			  },
+			  {
+				title: 'Revise User Interface',
+				description: 'Gather feedback on the prototype and make necessary revisions to the user interface.',
+				state: TaskState.TODO,
+				author: 'mock'
+			  },
+			  {
+				title: 'Client Presentation',
+				description: 'Prepare a presentation for the client showcasing the project progress and features.',
+				state: TaskState.TODO,
+				author: 'mock'
+			  },
+			  {
+				title: 'Research Market Trends',
+				description: 'Conduct market research to identify current trends and customer preferences.',
+				state: TaskState.PROGRESS,
+				author: 'mock'
+			  },
+			  {
+				title: 'Code Refactoring',
+				description: 'Optimize and refactor existing codebase to improve performance and maintainability.',
+				state: TaskState.PROGRESS,
+				author: 'mock'
+			  },
+			  {
+				title: 'Develop Prototype',
+				description: 'Create a prototype for the new product feature based on the research findings.',
+				state: TaskState.REVIEW,
+				author: 'mock'
+			  },
+			  {
+				title: 'Quality Assurance Testing',
+				description: 'Conduct thorough testing to ensure the product meets quality standards.',
+				state: TaskState.REVIEW,
+				author: 'mock'
+			  },
+			  {
+				title: 'Project Kickoff',
+				description: 'Hold a meeting to officially start the project.',
+				state: TaskState.DONE,
+				author: 'mock'
+			  },
+			  {
+				title: 'Release Version 1.0',
+				description: 'Publish the final version of the product.',
+				state: TaskState.DONE,
+				author: 'mock'
+			  }
+			]
+		}
 	}
 }
