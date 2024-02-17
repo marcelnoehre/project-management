@@ -3,6 +3,12 @@
     justify-content: center;
     width: 100%;
     min-height: 100%;
+    background: #e8f8ff;
+}
+
+mat-card {
+    height: 90%;
+    width: 75%;
 }
 
 form {
@@ -10,10 +16,9 @@ form {
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
-    height: 90%;
-    width: 75%;
+    height: 100%;
+    width: 100%;
     gap: 2.5%;
-    margin-top: 5%;
 }
 
 .form-container {
@@ -59,4 +64,10 @@ form {
     width: 100%;
     display: flex;
     justify-content: flex-start;
+}
+
+@media (max-width: 576px) {
+    mat-card {
+        width: 100%;
+    }
 }
