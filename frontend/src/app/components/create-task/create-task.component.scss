@@ -1,20 +1,26 @@
 .create-task-container {
     top: 7.5vh;
-    height: 92.5vh;
+    min-height: 92.5vh;
     width: 100%;
-    background-color: lightgray;
+    background: #e8f8ff;
     display: flex;
     justify-content: center;
+}
+
+
+mat-card {
+    width: 90%;
+    height: 100%;
 }
 
 .create-task-form {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    width: 80%;
 }
 
 .header {
+    width: 100%;
     text-align: center;
 }
 
