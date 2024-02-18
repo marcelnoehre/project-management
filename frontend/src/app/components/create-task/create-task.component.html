@@ -7,7 +7,7 @@
         </mat-card-header>
         <mat-card-content>
             <form class="create-task-form" [formGroup]="createTaskForm">
-                <mat-form-field>
+                <mat-form-field appearance="outline" MatInput>
                     <mat-label>{{ 'TASK.TITLE' | translate }}</mat-label>
                     <input 
                         #inputTitle 
@@ -19,7 +19,7 @@
                     >
                     <mat-error *ngIf="!isValid()"> {{ 'ERROR.REQUIRED.TITLE' | translate }} </mat-error>
                 </mat-form-field>
-                <mat-form-field>
+                <mat-form-field appearance="outline" MatInput>
                     <mat-label>{{ 'TASK.DESCRIPTION' | translate }}</mat-label>
                     <textarea 
                         matInput 
@@ -29,7 +29,7 @@
                         maxlength="1000"
                     ></textarea>
                 </mat-form-field>
-                <mat-form-field>
+                <mat-form-field appearance="outline" MatInput>
                     <mat-label>{{ 'TASK.ASSIGN' | translate }}</mat-label>
                     <mat-select formControlName="assignFormControl">
                         <mat-option *ngFor="let user of members" [value]="user.username">
@@ -37,7 +37,7 @@
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
-                <mat-form-field>
+                <mat-form-field appearance="outline" MatInput>
                     <mat-label>{{ 'TASK.STATE' | translate }}</mat-label>
                     <mat-select formControlName="stateFormControl">
                         <mat-option

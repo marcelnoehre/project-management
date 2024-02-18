@@ -4,7 +4,8 @@ import {
     ApexXAxis,
     ApexDataLabels,
     ApexTooltip,
-    ApexStroke
+    ApexStroke,
+    ApexFill
   } from "ng-apexcharts";
 
 export interface ChartOptions {
@@ -14,4 +15,6 @@ export interface ChartOptions {
     stroke: ApexStroke;
     tooltip: ApexTooltip;
     dataLabels: ApexDataLabels;
+    colors: string[],
+    fill: ApexFill,
   };

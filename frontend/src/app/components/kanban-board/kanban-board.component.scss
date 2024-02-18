@@ -39,9 +39,9 @@
     flex-direction: column;
     justify-content: center;
     text-align: center;
-    color: white;
     background-color: var(--color);
     border-bottom: 2px solid #000;
+    font-weight: bold;
 }
 
 .tasks {
@@ -54,8 +54,8 @@
     width: 90%;
     text-align: center;
     margin-left: 5%;
-    background-color: darkslategray;
-    color: white;
+    background-color: #e8f8ff;
+    border: 1px solid skyblue;
     display: flex;
     flex-direction: column;
     justify-content: center;

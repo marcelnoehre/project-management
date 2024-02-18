@@ -6,6 +6,7 @@ import { TaskStateColor } from 'src/app/enums/task-state-color.enum';
 import { TranslateService } from '@ngx-translate/core';
 import { ChartOptions } from 'src/app/interfaces/chart-options';
 import { ApexAxisChartSeries, ChartComponent } from 'ng-apexcharts';
+import { ImportTasksComponent } from '../import-tasks/import-tasks.component';
 
 @Component({
   selector: 'app-stats',
@@ -83,7 +84,12 @@ export class StatsComponent implements OnInit {
       x: {
         format: 'yyyy-MM-dd HH:mm:ss'
       }
-    }
+    },
+    colors: [TaskStateColor.NONE, TaskStateColor.TODO, TaskStateColor.PROGRESS, TaskStateColor.REVIEW, TaskStateColor.DONE],
+    fill: {
+      type: 'solid',
+      colors: [TaskStateColor.NONE, TaskStateColor.TODO, TaskStateColor.PROGRESS, TaskStateColor.REVIEW, TaskStateColor.DONE]
+    },
   };
 
   constructor(

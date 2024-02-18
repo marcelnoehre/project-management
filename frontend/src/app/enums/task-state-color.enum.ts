@@ -1,8 +1,8 @@
 export enum TaskStateColor {
-    NONE = 'red',
-    TODO = 'blue',
-    PROGRESS = 'green',
-    REVIEW = 'orange',
-    DONE = 'magenta',
-    DELETED = 'black'
+    NONE = 'lightgray',
+    TODO = 'lightsalmon',
+    PROGRESS = 'lightblue',
+    REVIEW = 'plum',
+    DONE = 'lightgreen',
+    DELETED = 'dimgray'
 }

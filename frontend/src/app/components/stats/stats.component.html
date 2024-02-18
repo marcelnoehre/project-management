@@ -109,7 +109,7 @@
                         <button 
                             class="col-2" 
                             mat-stroked-button 
-                            [ngStyle]="{'background-color': highlightActiveUnit(unit) ? 'lightblue' : ''}"
+                            [ngStyle]="{'background-color': highlightActiveUnit(unit) ? 'skyblue' : ''}"
                             (click)="setUnit(unit)"
                         >
                             {{unit}}
@@ -149,6 +149,8 @@
                     [stroke]="chartOptions.stroke"
                     [tooltip]="chartOptions.tooltip"
                     [dataLabels]="chartOptions.dataLabels"
+                    [colors]="chartOptions.colors"
+                    [fill]="chartOptions.fill"
                 ></apx-chart>
             </mat-card-content>
         </mat-card>
