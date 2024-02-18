@@ -15,7 +15,9 @@ mat-dialog-content {
 }
 
 .actions {
+	display: flex;
 	justify-content: center;
+	gap: 2rem;
 	& > button {
 		padding-block: 1rem;
 	}
@@ -25,4 +27,14 @@ mat-dialog-content {
 	width: 100%;
 	margin-bottom: 10px;
 	font-size: 15px;
+}
+
+@media (max-width: 576px) {
+	.actions {
+		flex-direction: column;
+		gap: 1rem;
+		& > button {
+			width: 100%;
+		}
+	}
 }

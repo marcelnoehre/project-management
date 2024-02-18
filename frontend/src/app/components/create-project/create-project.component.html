@@ -19,7 +19,7 @@
 			</mat-form-field>
 		</form>
 	</mat-dialog-content>
-	<mat-dialog-actions class="actions">
+	<div class="actions">
 		<button
 			(click)="closeDialog(false)"
 			[mat-dialog-close]="false"
@@ -39,5 +39,5 @@
 			<ng-container *ngIf="loading">&nbsp;</ng-container>
 			{{ 'APP.CREATE' | translate }}
 		</button>
-	</mat-dialog-actions>
+	</div>
 </div>

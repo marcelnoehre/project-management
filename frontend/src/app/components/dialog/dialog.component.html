@@ -3,7 +3,7 @@
 	<mat-dialog-content class="mat-typography">
 			{{ description }}
 	</mat-dialog-content>
-	<mat-dialog-actions class="actions">
+	<div class="actions">
 		<button
 			(click)="closeDialog(false)"
 			[mat-dialog-close]="false"
@@ -22,5 +22,5 @@
 			{{ trueButton }}
 			<mat-icon>done</mat-icon>
 		</button>
-	</mat-dialog-actions>
+	</div>
 </div>
