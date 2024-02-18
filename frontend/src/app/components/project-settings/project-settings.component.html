@@ -2,44 +2,48 @@
     <mat-card class="p-4 m-4">
         <div class="content">
             <table>
-                <tr class="header py-2">
-                    <th>{{ 'USER.FULLNAME' | translate }}</th>
-                    <th>{{ 'USER.USERNAME' | translate }}</th>
-                    <th>{{ 'USER.LANGUAGE' | translate }}</th>
-                    <th>{{ 'USER.PERMISSION' | translate }}</th>
-                    <th>{{ 'PROJECT.ACTIONS' | translate }}</th>
-                </tr>
-                <tr *ngFor="let member of members; index as i">
-                    <td>{{ member.fullName }}</td>
-                    <td>{{ member.username }}</td>
-                    <td>{{ getLanguage(member.language) }}</td>
-                    <td *ngIf="!editable(member.permission)">{{ member.permission }}</td>
-                    <td *ngIf="editable(member.permission)">
-                        <mat-select 
-                            id="permission-select"
-                            name="permission"
-                            placeholder="{{'USER.PERMISSION'|translate}}"
-                            [(ngModel)]="member.permission"
-                            (selectionChange)="updatePermission(member.username, $event)"
-                            appearance="outline"
-                            matInput
-                        >
-                            <mat-option
-                                *ngFor="let permission of permissions"
-                                [value]="permission"
+                <thead class="sticky-header">
+                    <tr class="header py-2">
+                        <th>{{ 'USER.FULLNAME' | translate }}</th>
+                        <th>{{ 'USER.USERNAME' | translate }}</th>
+                        <th>{{ 'USER.LANGUAGE' | translate }}</th>
+                        <th>{{ 'USER.PERMISSION' | translate }}</th>
+                        <th>{{ 'PROJECT.ACTIONS' | translate }}</th>
+                    </tr>
+                </thead>
+                <tbody class="content">
+                    <tr *ngFor="let member of members; index as i">
+                        <td>{{ member.fullName }}</td>
+                        <td>{{ member.username }}</td>
+                        <td>{{ getLanguage(member.language) }}</td>
+                        <td *ngIf="!editable(member.permission)">{{ member.permission }}</td>
+                        <td *ngIf="editable(member.permission)">
+                            <mat-select 
+                                id="permission-select"
+                                name="permission"
+                                placeholder="{{'USER.PERMISSION'|translate}}"
+                                [(ngModel)]="member.permission"
+                                (selectionChange)="updatePermission(member.username, $event)"
+                                appearance="outline"
+                                matInput
                             >
-                                {{ permission }}
-                            </mat-option>
-                        </mat-select>
-                    </td>
-                    <td>
-                        <div>
-                            <button mat-fab color="warn" (click)="removeUser(member.username, i)" [disabled]="disableRemove(member.permission)">
-                                <app-spinner-icon class="material-icons" icon="delete" [spinning]="deleteLoading(member.username)"></app-spinner-icon>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
+                                <mat-option
+                                    *ngFor="let permission of permissions"
+                                    [value]="permission"
+                                >
+                                    {{ permission }}
+                                </mat-option>
+                            </mat-select>
+                        </td>
+                        <td>
+                            <div>
+                                <button mat-fab color="warn" (click)="removeUser(member.username, i)" [disabled]="disableRemove(member.permission)">
+                                    <app-spinner-icon class="material-icons" icon="delete" [spinning]="deleteLoading(member.username)"></app-spinner-icon>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
             </table>
         </div>
         <div class="actions mt-5">
