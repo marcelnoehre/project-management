@@ -1,32 +1,38 @@
 <div class="trash-bin-container">
-    <table class="mb-3">
-        <tr class="header py-2">
-            <th>{{ 'TASK.TITLE' | translate }}</th>
-            <th>{{ 'TASK.DESCRIPTION' | translate }}</th>
-            <th>{{ 'PROJECT.ACTIONS' | translate }}</th>
-        </tr>
-        <div class="content">
-            <tr *ngFor="let task of taskList">
-                <td>{{ task.title }}</td>
-                <td>{{ task.description }}</td>
-                <td>
-                    <div>
-                        <button mat-fab color="primary" (click)="restore(task.uid, task.title)">
-                            <app-spinner-icon class="material-icons" icon="undo" [spinning]="restoreLoading(task.uid)"></app-spinner-icon>
-                        </button>
-                        <button mat-fab color="warn" [disabled]="disableDelete()" (click)="delete(task.uid, task.title)">
-                            <app-spinner-icon class="material-icons" icon="delete" [spinning]="deleteLoading(task.uid)"></app-spinner-icon>
-                        </button>
-                    </div>
-                </td>
-            </tr>
+    <mat-card class="p-4 m-4">
+        <div class="content mb-3">
+            <table>
+                <thead class="sticky-header">
+                    <tr class="header py-2">
+                        <th>{{ 'TASK.TITLE' | translate }}</th>
+                        <th>{{ 'TASK.DESCRIPTION' | translate }}</th>
+                        <th>{{ 'PROJECT.ACTIONS' | translate }}</th>
+                    </tr>
+                </thead>
+                <tbody class="sticky-content">
+                    <tr *ngFor="let task of taskList">
+                        <td>{{ task.title }}</td>
+                        <td>{{ task.description }}</td>
+                        <td>
+                            <div>
+                                <button mat-fab color="primary" (click)="restore(task.uid, task.title)">
+                                    <app-spinner-icon class="material-icons" icon="undo" [spinning]="restoreLoading(task.uid)"></app-spinner-icon>
+                                </button>
+                                <button mat-fab color="warn" [disabled]="disableDelete()" (click)="delete(task.uid, task.title)">
+                                    <app-spinner-icon class="material-icons" icon="delete" [spinning]="deleteLoading(task.uid)"></app-spinner-icon>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-    </table>
-    <div class="clear" *ngIf="showClear()">
-        <button color="warn" mat-raised-button (click)="clear()" [disabled]="disableClear()">
-            <app-spinner-icon class="material-icons" icon="delete_forever" [spinning]="loadingClear"></app-spinner-icon>
-            <ng-container *ngIf="loadingClear"></ng-container>
-            {{ 'APP.CLEAR' | translate }}
-        </button>
-    </div>
+        <div class="clear" *ngIf="showClear()">
+            <button color="warn" mat-raised-button (click)="clear()" [disabled]="disableClear()">
+                <app-spinner-icon class="material-icons" icon="delete_forever" [spinning]="loadingClear"></app-spinner-icon>
+                <ng-container *ngIf="loadingClear"></ng-container>
+                {{ 'APP.CLEAR' | translate }}
+            </button>
+        </div>
+    </mat-card>
 </div>

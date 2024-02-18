@@ -1,34 +1,58 @@
 .project-settings-container {
     width: 100%;
-    height: 100%;
+    min-height: 92.5vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 5%;
+    background: #e8f8ff;
+}
+
+mat-card {
+    width: 90%;
+    max-height: 75vh;
+}
+
+.content {
+    width: 100%;
+    overflow-x: scroll;
+    border: 0.5px solid black;
 }
 
 table {
-    width: 90%;
+    width: 100%;
     font-size: medium;
+    
+    .sticky-header {
+        position: sticky; 
+        top: 0;
+        z-index: 2;
+    }
+
+    .sticky-content {
+        max-height: 50vh;
+        overflow-y: scroll;
+    }
+
     tr {
         display: flex;
         justify-content: space-evenly;
         text-align: center;
-        background-color: lightgray;
+        border-top: 1px solid black;
     }
     td, th {
-        width: 100%;
         display: flex;
         flex-direction: column;
         justify-content: center;
+        min-width: 175px;
     }
     th {
         background-color: black;
         color: white;
     }
     tr:nth-child(odd) {
-        background-color: gray;
+        background-color: lightgray;
     }
     button {
         scale: 0.75;
@@ -39,13 +63,8 @@ table {
     background-color: black !important;
 }
 
-.content {
-    height: 50vh;
-    overflow: scroll;
-}
-
 .actions {
-    width: 90%;
+    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -61,4 +80,15 @@ table {
     & > button {
 		padding-block: 1rem;
 	}
+}
+
+@media (max-width: 576px) {
+    .actions {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    form {
+        width: 100%;
+    }
 }

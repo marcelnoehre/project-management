@@ -1,6 +1,6 @@
 <button mat-button class="dropdown-menu-button" [matMenuTriggerFor]="menu">
 	<div class="user" style="--color: {{color}}">
-		{{ fullName }}
+		<ng-container *ngIf="!isSmallScreen()">{{ fullName }}</ng-container>
 		<div class="user-icon">
 			<img [src]="profilePicture">
 			<p *ngIf="!profilePicture" class="initials"> {{ initials }} </p>

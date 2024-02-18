@@ -8,10 +8,27 @@ mat-dialog-content {
 	justify-content: flex-start;
 	text-align: center;
     width: 75vw;
-    height: 75vh;
     table {
         width: 100%;
         border-collapse: collapse;
+    }
+
+    .sticky-header {
+        position: sticky; 
+        top: 0;
+        z-index: 2;
+        th {
+            border: 1px solid #ddd;
+        }
+    }
+
+    .content {
+        max-height: 50vh;
+        overflow-y: scroll;
+    }
+
+    tr {
+        width: 100%;
     }
       
     th, td {
@@ -19,14 +36,20 @@ mat-dialog-content {
         border: 1px solid #ddd;
         padding: 8px;
     }
+    
+    td {
+        z-index: 1;
+    }
       
     th {
-        background-color: #f2f2f2;
+        background-color: black;
+        color: white;
+        border: 1px solid black;
     }
 
     .new {
         border: 2px solid lightskyblue;
-        background-color: lightcyan;
+        background-color: #e8f8ff;;
         cursor: pointer;
     }
 }

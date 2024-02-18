@@ -6,6 +6,7 @@ import { TaskStateColor } from 'src/app/enums/task-state-color.enum';
 import { TranslateService } from '@ngx-translate/core';
 import { ChartOptions } from 'src/app/interfaces/chart-options';
 import { ApexAxisChartSeries, ChartComponent } from 'ng-apexcharts';
+import { ImportTasksComponent } from '../import-tasks/import-tasks.component';
 
 @Component({
   selector: 'app-stats',
@@ -51,13 +52,13 @@ export class StatsComponent implements OnInit {
     cleared: 'clear'
   }
   activeUnit = 'h';
-  units = ['ms', 's', 'min', 'h', 'day'];
+  units = ['ms', 's', 'min', 'h', 'days'];
   unitFactor: any = {
     ms: 1,
     s: 0.001,
     min: 0.001 / 60,
     h: 0.001 / 3600,
-    day: 0.001 / (3600 * 24)
+    days: 0.001 / (3600 * 24)
   };  
   barChartOptions = {
     scaleShowVerticalLines: false,
@@ -83,7 +84,12 @@ export class StatsComponent implements OnInit {
       x: {
         format: 'yyyy-MM-dd HH:mm:ss'
       }
-    }
+    },
+    colors: [TaskStateColor.NONE, TaskStateColor.TODO, TaskStateColor.PROGRESS, TaskStateColor.REVIEW, TaskStateColor.DONE],
+    fill: {
+      type: 'solid',
+      colors: [TaskStateColor.NONE, TaskStateColor.TODO, TaskStateColor.PROGRESS, TaskStateColor.REVIEW, TaskStateColor.DONE]
+    },
   };
 
   constructor(
@@ -211,6 +217,10 @@ export class StatsComponent implements OnInit {
 
   isLoading(stat: string): boolean {
     return this.reload[stat];
+  }
+
+  highlightActiveUnit(unit: string): boolean {
+    return this.activeUnit === unit;
   }
 
   regenerateAll() {

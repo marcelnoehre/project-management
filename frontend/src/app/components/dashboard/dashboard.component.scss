@@ -4,8 +4,10 @@
 	justify-content: left;
     align-items: center;
 	width: 100vw;
+	min-height: 100%;
     padding: 1.5rem;
     gap: 2rem;
+    background: #e8f8ff;
 }
 
 .row {
@@ -14,7 +16,8 @@
     gap: 1.5rem;
 	border-radius: 25px;
     padding: 1rem;
-	background-color: lightgray;
+	background-color: white;
+	border: 1px solid skyblue;
 }
 
 .item {
@@ -36,10 +39,41 @@
 		background-color: var(--item-bg, mediumslateblue);
 		color: white;
 		cursor: pointer;
+		border: 1px solid white;
 	}
 
 	.label {
 		font-weight: bold;
 		font-size: 1rem;
+	}
+}
+
+@media (max-width: 768px) {
+	.item {
+		width: 6.5rem;
+		mat-icon {
+			width: 6.5rem;
+			height: 6.5rem;
+			font-size: 4rem;
+			border-radius: 20px;
+		}
+		.label {
+			font-size: 0.9rem;
+		}
+	}
+}
+
+@media (max-width: 576px) {
+	.item {
+		width: 5rem;
+		mat-icon {
+			width: 5rem;
+			height: 5rem;
+			font-size: 3rem;
+			border-radius: 15px;
+		}
+		.label {
+			font-size: 0.8rem;
+		}
 	}
 }
