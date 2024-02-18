@@ -51,13 +51,13 @@ export class StatsComponent implements OnInit {
     cleared: 'clear'
   }
   activeUnit = 'h';
-  units = ['ms', 's', 'min', 'h', 'day'];
+  units = ['ms', 's', 'min', 'h', 'days'];
   unitFactor: any = {
     ms: 1,
     s: 0.001,
     min: 0.001 / 60,
     h: 0.001 / 3600,
-    day: 0.001 / (3600 * 24)
+    days: 0.001 / (3600 * 24)
   };  
   barChartOptions = {
     scaleShowVerticalLines: false,
@@ -211,6 +211,10 @@ export class StatsComponent implements OnInit {
 
   isLoading(stat: string): boolean {
     return this.reload[stat];
+  }
+
+  highlightActiveUnit(unit: string): boolean {
+    return this.activeUnit === unit;
   }
 
   regenerateAll() {
