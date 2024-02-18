@@ -22,13 +22,14 @@ table {
         display: flex;
         flex-direction: column;
         justify-content: center;
+        border: 1px solid black;
     }
     th {
         background-color: black;
         color: white;
     }
     tr:nth-child(odd) {
-        background-color: gray;
+        background-color: lightgray;
     }
     button {
         scale: 0.75;
@@ -45,7 +46,7 @@ table {
 }
 
 .actions {
-    width: 90%;
+    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
