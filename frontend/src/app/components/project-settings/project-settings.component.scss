@@ -6,23 +6,33 @@
     justify-content: center;
     align-items: center;
     gap: 5%;
+    background: #e8f8ff;
+}
+
+mat-card {
+    width: 90%;
+}
+
+.content {
+    width: 100%;
+    overflow-x: scroll;
 }
 
 table {
-    width: 90%;
+    width: 100%;
     font-size: medium;
     tr {
         display: flex;
         justify-content: space-evenly;
         text-align: center;
-        background-color: lightgray;
+        border: 1px solid black;
+        border-top: 0;
     }
     td, th {
-        width: 100%;
         display: flex;
         flex-direction: column;
         justify-content: center;
-        border: 1px solid black;
+        min-width: 175px;
     }
     th {
         background-color: black;
@@ -38,11 +48,6 @@ table {
 
 .header {
     background-color: black !important;
-}
-
-.content {
-    height: 50vh;
-    overflow: scroll;
 }
 
 .actions {
@@ -62,4 +67,15 @@ table {
     & > button {
 		padding-block: 1rem;
 	}
+}
+
+@media (max-width: 576px) {
+    .actions {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    form {
+        width: 100%;
+    }
 }

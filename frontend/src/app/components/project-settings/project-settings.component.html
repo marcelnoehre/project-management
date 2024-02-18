@@ -1,76 +1,78 @@
 <div class="project-settings-container">
-    <table>
-        <tr class="header py-2">
-            <th>{{ 'USER.FULLNAME' | translate }}</th>
-            <th>{{ 'USER.USERNAME' | translate }}</th>
-            <th>{{ 'USER.LANGUAGE' | translate }}</th>
-            <th>{{ 'USER.PERMISSION' | translate }}</th>
-            <th>{{ 'PROJECT.ACTIONS' | translate }}</th>
-        </tr>
+    <mat-card class="p-4 m-4">
         <div class="content">
-            <tr *ngFor="let member of members; index as i">
-                <td>{{ member.fullName }}</td>
-                <td>{{ member.username }}</td>
-                <td>{{ getLanguage(member.language) }}</td>
-                <td *ngIf="!editable(member.permission)">{{ member.permission }}</td>
-                <td *ngIf="editable(member.permission)">
-                    <mat-select 
-                        id="permission-select"
-                        name="permission"
-                        placeholder="{{'USER.PERMISSION'|translate}}"
-                        [(ngModel)]="member.permission"
-                        (selectionChange)="updatePermission(member.username, $event)"
-                        appearance="outline"
-                        matInput
-                    >
-                        <mat-option
-                            *ngFor="let permission of permissions"
-                            [value]="permission"
+            <table>
+                <tr class="header py-2">
+                    <th>{{ 'USER.FULLNAME' | translate }}</th>
+                    <th>{{ 'USER.USERNAME' | translate }}</th>
+                    <th>{{ 'USER.LANGUAGE' | translate }}</th>
+                    <th>{{ 'USER.PERMISSION' | translate }}</th>
+                    <th>{{ 'PROJECT.ACTIONS' | translate }}</th>
+                </tr>
+                <tr *ngFor="let member of members; index as i">
+                    <td>{{ member.fullName }}</td>
+                    <td>{{ member.username }}</td>
+                    <td>{{ getLanguage(member.language) }}</td>
+                    <td *ngIf="!editable(member.permission)">{{ member.permission }}</td>
+                    <td *ngIf="editable(member.permission)">
+                        <mat-select 
+                            id="permission-select"
+                            name="permission"
+                            placeholder="{{'USER.PERMISSION'|translate}}"
+                            [(ngModel)]="member.permission"
+                            (selectionChange)="updatePermission(member.username, $event)"
+                            appearance="outline"
+                            matInput
                         >
-                            {{ permission }}
-                        </mat-option>
-                    </mat-select>
-                </td>
-                <td>
-                    <div>
-                        <button mat-fab color="warn" (click)="removeUser(member.username, i)" [disabled]="disableRemove(member.permission)">
-                            <app-spinner-icon class="material-icons" icon="delete" [spinning]="deleteLoading(member.username)"></app-spinner-icon>
-                        </button>
-                    </div>
-                </td>
-            </tr>
+                            <mat-option
+                                *ngFor="let permission of permissions"
+                                [value]="permission"
+                            >
+                                {{ permission }}
+                            </mat-option>
+                        </mat-select>
+                    </td>
+                    <td>
+                        <div>
+                            <button mat-fab color="warn" (click)="removeUser(member.username, i)" [disabled]="disableRemove(member.permission)">
+                                <app-spinner-icon class="material-icons" icon="delete" [spinning]="deleteLoading(member.username)"></app-spinner-icon>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </table>
         </div>
-    </table>
-    <div class="actions">
-        <form [formGroup]="inviteForm" *ngIf="showInvite()">
-            <p>{{ 'PROJECT.INVITE' | translate }}</p>
-            <div class="invite">
-                <mat-form-field appearance="outline" class="username-form-field" MatInput>
-                    <mat-label> {{ 'USER.USERNAME' | translate }} </mat-label>
-                    <input
-                        id="username-input"
-                        name="username"
-                        class="username-form-field"
-                        formControlName="usernameFormControl"
-                        placeholder="{{'USER.USERNAME'|translate}}"
-                        matInput
-                        required
-                        minlength="4"
-                        maxlength="16"
-                    />
-                    <mat-icon matPrefix> group_add </mat-icon>
-                    <mat-error *ngIf="hasError('usernameFormControl', 'required')"> {{ 'ERROR.REQUIRED.USERNAME' | translate }} </mat-error>
-                    <mat-error *ngIf="hasError('usernameFormControl', 'minlength')">{{ 'ERROR.MINLENGTH.USERNAME' | translate }}</mat-error>
-                </mat-form-field>
-                <button mat-fab color="primary" (click)="inviteUser()" [disabled]="!usernameValid()">
-                    <app-spinner-icon class="material-icons" icon="add" [spinning]="loadingInvite"></app-spinner-icon>
-                </button>
-            </div>
-        </form>
-        <button (click)="leaveProject()" [disabled]="leavable()" color="warn" mat-raised-button>
-            <app-spinner-icon class="material-icons" icon="exit_to_app" [spinning]="loadingLeave"></app-spinner-icon>
-            <ng-container *ngIf="loadingLeave">&nbsp;</ng-container>
-            {{ 'PROJECT.LEAVE' | translate }}
-        </button>
-    </div>
+        <div class="actions mt-5">
+            <form [formGroup]="inviteForm" *ngIf="showInvite()">
+                <p>{{ 'PROJECT.INVITE' | translate }}</p>
+                <div class="invite">
+                    <mat-form-field appearance="outline" class="username-form-field" MatInput>
+                        <mat-label> {{ 'USER.USERNAME' | translate }} </mat-label>
+                        <input
+                            id="username-input"
+                            name="username"
+                            class="username-form-field"
+                            formControlName="usernameFormControl"
+                            placeholder="{{'USER.USERNAME'|translate}}"
+                            matInput
+                            required
+                            minlength="4"
+                            maxlength="16"
+                        />
+                        <mat-icon matPrefix> group_add </mat-icon>
+                        <mat-error *ngIf="hasError('usernameFormControl', 'required')"> {{ 'ERROR.REQUIRED.USERNAME' | translate }} </mat-error>
+                        <mat-error *ngIf="hasError('usernameFormControl', 'minlength')">{{ 'ERROR.MINLENGTH.USERNAME' | translate }}</mat-error>
+                    </mat-form-field>
+                    <button mat-fab color="primary" (click)="inviteUser()" [disabled]="!usernameValid()">
+                        <app-spinner-icon class="material-icons" icon="add" [spinning]="loadingInvite"></app-spinner-icon>
+                    </button>
+                </div>
+            </form>
+            <button (click)="leaveProject()" [disabled]="leavable()" color="warn" mat-raised-button>
+                <app-spinner-icon class="material-icons" icon="exit_to_app" [spinning]="loadingLeave"></app-spinner-icon>
+                <ng-container *ngIf="loadingLeave">&nbsp;</ng-container>
+                {{ 'PROJECT.LEAVE' | translate }}
+            </button>
+        </div>
+    </mat-card>
 </div>
