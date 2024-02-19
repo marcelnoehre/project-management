@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { NavigationEnd, Router, Event as RouterEvent } from '@angular/router';
 import { filter, fromEvent, Observable, Subscription } from 'rxjs';
 import { Viewport } from '../enums/viewport.enum';
@@ -6,45 +6,43 @@ import { Viewport } from '../enums/viewport.enum';
 @Injectable({
 	providedIn: 'root'
 })
-export class DeviceService {
-	public width: number;
-	public height: number;
-	public resizeObservable$: Observable<Event>;
-	public resizeSubscription$: Subscription;
-	public activeRoute: string = '/';
+export class DeviceService implements OnDestroy {
+	private _width: number;
+	private _activeRoute: string = '/';
+	private _resizeSubscription$: Subscription;
+	private _resizeObservable$: Observable<Event>;
 
 	constructor(
-		private router: Router
+		private _router: Router
 	) {
-		this.width = window.innerWidth;
-		this.height = window.innerHeight;
-		this.resizeObservable$ = fromEvent(window, 'resize');
-		this.resizeSubscription$ = this.resizeObservable$.subscribe(() => {
-			this.width = window.innerWidth;
-			this.height = window.innerHeight;
+		this._width = window.innerWidth;
+		this._resizeObservable$ = fromEvent(window, 'resize');
+		this._resizeSubscription$ = this._resizeObservable$.subscribe(() => {
+			this._width = window.innerWidth;
 		});
 	}
 
-	public init() {
-		this.width = window.innerWidth;
-		this.height = window.innerHeight;
-		this.router.events
-		this.router.events.pipe(
-		filter((event: RouterEvent): event is NavigationEnd => event instanceof NavigationEnd)
-		).subscribe((event: NavigationEnd) => {
-			this.activeRoute = event.urlAfterRedirects;
-		});
+	ngOnDestroy(): void {
+		this._resizeSubscription$.unsubscribe();
 	}
 
-	public destroy() {
-		this.resizeSubscription$.unsubscribe();
+	public init(): void {
+		this._width = window.innerWidth;
+		this._router.events
+			.pipe(
+				filter((event: RouterEvent): event is NavigationEnd => event instanceof NavigationEnd)
+			)
+			.subscribe((event: NavigationEnd) => {
+				this._activeRoute = event.urlAfterRedirects;
+			}
+		);
 	}
 
-  	public getActiveRoute() {
-		return this.activeRoute;
+	public get activeRoute(): string {
+		return this._activeRoute;
 	}
 
 	public isSmallScreen(): boolean {
-		return this.width < Viewport.MD;
+		return this._width < Viewport.MD;
 	}
 }

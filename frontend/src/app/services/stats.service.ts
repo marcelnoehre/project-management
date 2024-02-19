@@ -5,6 +5,13 @@ import { Observable, Subject, lastValueFrom } from 'rxjs';
 import { Loading } from '../interfaces/loading';
 import { StorageService } from './storage.service';
 import { ErrorService } from './error.service';
+import { Response } from '../interfaces/data/response';
+import { Stats } from '../interfaces/data/stats';
+import { AssignedStats } from '../interfaces/data/assigned-stats';
+import { StatLeaders } from '../interfaces/data/stat-leaders';
+import { CategoryStats } from '../interfaces/data/category-stats';
+import { TaskProgress } from '../interfaces/data/task-progress';
+import { ProjectRoadmap } from '../interfaces/data/project-roadmap';
 
 @Injectable({
   providedIn: 'root'
@@ -44,7 +51,7 @@ export class StatsService {
     private _error: ErrorService
   ) { }
 
-  async init() {
+  async init(): Promise<void> {
     this._data = {
       optimizeOrder: null,
       personalStats: null,
@@ -69,11 +76,11 @@ export class StatsService {
     }
   }
 
-  private _submitUpdate(update: Loading) {
+  private _submitUpdate(update: Loading): void {
     this._updateSubject.next(update);
   }
 
-  private async _getOptimizeOrder() {
+  private async _getOptimizeOrder(): Promise<Response | null> {
     try {
       this._data['optimizeOrder'] = await lastValueFrom(this._api.optimizeOrder(this._user.token));
       return this._data['optimizeOrder'];
@@ -83,7 +90,7 @@ export class StatsService {
     }
   }
 
-  private async _getPersonalStats() {
+  private async _getPersonalStats(): Promise<Stats | null> {
     try {
       this._data['personalStats'] = await lastValueFrom(this._api.personalStats(this._user.token));
       return this._data['personalStats'];
@@ -93,7 +100,7 @@ export class StatsService {
     }
   }
 
-  private async _getStats() {
+  private async _getStats(): Promise<AssignedStats[] | null> {
     try {
       this._data['stats'] = await lastValueFrom(this._api.stats(this._user.token));
       return this._data['stats'];
@@ -103,7 +110,7 @@ export class StatsService {
     }
   }
 
-  private async _getStatLeaders() {
+  private async _getStatLeaders(): Promise<StatLeaders | null> {
     try {
       this._data['statLeaders'] = await lastValueFrom(this._api.statLeaders(this._user.token));
       return this._data['statLeaders'];
@@ -113,7 +120,7 @@ export class StatsService {
     }
   }
 
-  private async _getTaskAmount() {
+  private async _getTaskAmount(): Promise<CategoryStats | null> {
     try {
       this._data['taskAmount'] = await lastValueFrom(this._api.taskAmount(this._user.token));
       return this._data['taskAmount'];
@@ -123,7 +130,7 @@ export class StatsService {
     }
   }
 
-  private async _getAverageTime() {
+  private async _getAverageTime(): Promise<CategoryStats | null> {
     try {
       this._data['averageTime'] = await lastValueFrom(this._api.averageTime(this._user.token));
       return this._data['averageTime'];
@@ -133,7 +140,7 @@ export class StatsService {
     }
   }
 
-  private async _getWip() {
+  private async _getWip(): Promise<number | null> {
     try {
       this._data['wip'] = await lastValueFrom(this._api.wip(this._user.token));
       return this._data['wip'];
@@ -143,7 +150,7 @@ export class StatsService {
     }
   }
 
-  private async _getTaskProgress() {
+  private async _getTaskProgress(): Promise<TaskProgress | null> {
     try {
       this._data['taskProgress'] = await lastValueFrom(this._api.taskProgress(this._user.token));
       return this._data['taskProgress'];
@@ -153,7 +160,7 @@ export class StatsService {
     }
   }
 
-  private async _getProjectRoadmap() {
+  private async _getProjectRoadmap(): Promise<ProjectRoadmap[] | null> {
     try {
       this._data['projectRoadmap'] = await lastValueFrom(this._api.projectRoadmap(this._user.token));
       return this._data['projectRoadmap'];
@@ -167,13 +174,13 @@ export class StatsService {
     return this._updateSubject.asObservable();
   }
 
-  public async regenerateAll() {
+  public async regenerateAll(): Promise<void> {
     this._storage.deleteSessionEntry('stats');
     this._storage.deleteSessionEntry('statsRetrieval');
     this.init();
   }
 
-  public async regenerateStat(stat: string) {
+  public async regenerateStat(stat: string): Promise<any> {
     return this._stats[stat]();
   }
 }

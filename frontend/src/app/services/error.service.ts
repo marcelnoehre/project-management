@@ -11,28 +11,26 @@ import { TranslateService } from '@ngx-translate/core';
 export class ErrorService {
 
   constructor(
-    private user: UserService,
-    private storage: StorageService,
-    private router: Router,
-    private snackbar: SnackbarService,
-    private translate: TranslateService
+    private _user: UserService,
+    private _storage: StorageService,
+    private _router: Router,
+    private _snackbar: SnackbarService,
+    private _translate: TranslateService
   ) { }
 
-  handleApiError(error: any) {
-    console.log(error);
-    
+  public handleApiError(error: any) {
     if (error.status === 403) {
       this.handleInvalidUser();
     }
-    this.snackbar.open(this.translate.instant(error.error.message));
+    this._snackbar.open(this._translate.instant(error.error.message));
     if (!error.error.message) {
-      this.snackbar.open(error.statusText);
+      this._snackbar.open(error.statusText);
     }
   }
 
-  handleInvalidUser() {
-    this.storage.clearSession();
-    this.user.user = this.storage.getSessionEntry('user');
-    this.router.navigateByUrl('/login');
+  public handleInvalidUser() {
+    this._storage.clearSession();
+    this._user.user = this._storage.getSessionEntry('user');
+    this._router.navigateByUrl('/login');
   }
 }

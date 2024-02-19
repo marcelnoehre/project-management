@@ -104,7 +104,7 @@ export class SidenavComponent implements OnInit, OnDestroy {
 	}
 
 	isActive(route: string): string {
-		return route === this.device.getActiveRoute()  ? 'active-route' : '';
+		return route === this.device.activeRoute  ? 'active-route' : '';
 	}
 
 	toggleSidebar(newState?: boolean) {
@@ -124,6 +124,6 @@ export class SidenavComponent implements OnInit, OnDestroy {
 	}
 
 	showBackground() {
-		return this.device.getActiveRoute() === '/login' || this.device.getActiveRoute() === '/registration';
+		return this.device.activeRoute === '/login' || this.device.activeRoute === '/registration';
 	}
 }

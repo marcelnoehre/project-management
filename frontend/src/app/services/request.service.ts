@@ -28,8 +28,8 @@ export class RequestService {
     return this._http.delete<T>(this._adjustUrl(url, data));
   }
 
-  private _adjustUrl(url: string, data: any) {
-    let first: boolean = true;
+  private _adjustUrl(url: string, data: any): string {
+    let first = true;
     for (const key in data) {
       if (data.hasOwnProperty(key)) {
         url += first ? '?' : '&';
