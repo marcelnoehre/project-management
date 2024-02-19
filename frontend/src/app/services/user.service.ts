@@ -29,109 +29,109 @@ export class UserService {
         deleted: -1,
         cleared: -1
     }
-}
+  }
 
-  get user(): User {
+  public get user(): User {
     return this._user;
   }
 
-  get token(): string {
+  public get token(): string {
     return this._user.token;
   }
 
-  get username(): string {
+  public get username(): string {
     return this._user.username;
   }
 
-  get fullName(): string {
+  public get fullName(): string {
     return this._user.fullName;
   }
 
-  get initials(): string {
+  public get initials(): string {
     return this._user.initials;
   }
 
-  get color(): string {
+  public get color(): string {
     return this._user.color;
   }
 
-  get language(): string {
+  public get language(): string {
     return this._user.language;
   }
 
-  get project(): string {
+  public get project(): string {
     return this._user.project;
   }
 
-  get permission(): Permission {
+  public get permission(): Permission {
     return this._user.permission;
   }
 
-  get profilePicture(): string {
+  public get profilePicture(): string {
     return this._user.profilePicture;
   }
 
-  get notificationsEnabled(): boolean {
+  public get notificationsEnabled(): boolean {
     return this._user.notificationsEnabled;
   }
 
-  get isLoggedIn(): boolean {
+  public get isLoggedIn(): boolean {
     return this._user.isLoggedIn;
   }
 
-  set user(user: User) {
+  public set user(user: User) {
     this._user = user;
   }
 
-  set token(token: string) {
+  public set token(token: string) {
     this._user.token = token;
   }
 
-  set username(username: string) {
+  public set username(username: string) {
     this._user.username = username;
   }
 
-  set fullName(fullName: string) {
+  public set fullName(fullName: string) {
     this._user.fullName = fullName;
   }
 
-  set initials(initials: string) {
+  public set initials(initials: string) {
     this._user.initials = initials;
   }
 
-  set color(color: string) {
+  public set color(color: string) {
     this._user.color = color;
   }
 
-  set language(language: string) {
+  public set language(language: string) {
     this._user.language = language;
   }
 
-  set project(project: string) {
+  public set project(project: string) {
     this._user.project = project;
   }
 
-  set permission(permission: Permission) {
+  public set permission(permission: Permission) {
     this._user.permission = permission;
   }
 
-  set profilePicture(profilePicture: string) {
+  public set profilePicture(profilePicture: string) {
     this._user.profilePicture = profilePicture;
   }
 
-  set notificationsEnabled(notificationsEnabled: boolean) {
+  public set notificationsEnabled(notificationsEnabled: boolean) {
     this._user.notificationsEnabled = notificationsEnabled;
   }
 
-  set isLoggedIn(isLoggedIn: boolean) {
+  public set isLoggedIn(isLoggedIn: boolean) {
     this._user.isLoggedIn = isLoggedIn;
   }
 
-  update(attribute: string, value: string): void {
+  public update(attribute: string, value: string): void {
     this._user[attribute] = value;
   }
 
-  hasPermission(required: Permission): boolean {
+  public hasPermission(required: Permission): boolean {
     return this._permissions.indexOf(this.permission as Permission) >= this._permissions.indexOf(required);
   }
 }

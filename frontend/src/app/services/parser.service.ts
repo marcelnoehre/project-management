@@ -9,28 +9,26 @@ import * as YAML from 'yaml';
 })
 export class ParserService {
 
-  constructor() { }
-
-  readStates(list: State[]) {
+  public readStates(list: State[]) {
     return list.map((item) => ({
       state: item.state,
       tasks: item.tasks.map(({ uid, project, state, ...task }) => task)
     }));
   }
 
-  statesToJSON(taskList: State[]): Blob {
+  public statesToJSON(taskList: State[]): Blob {
     return new Blob([JSON.stringify(this.readStates(taskList), null, 2)], { type: 'application/json' });
   }
 
-  statesToXML(taskList: State[]): Blob {
+  public statesToXML(taskList: State[]): Blob {
     return new Blob([JsonToXML.parse('root', this.readStates(taskList))], { type: 'application/xml' });
   }
 
-  statesToYAML(taskList: State[]): Blob {
+  public statesToYAML(taskList: State[]): Blob {
     return new Blob([YAML.stringify(this.readStates(taskList))], { type: 'text/yaml' });
   }
 
-  encodeFileInput(fileInput: string, fileExtension: string) {
+  public encodeFileInput(fileInput: string, fileExtension: string) {
     let taskList;
     const rawInput = atob(fileInput.split(',')[1]);
     switch (fileExtension) {
