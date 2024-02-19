@@ -37,13 +37,13 @@ export class ApiService {
 
 	private _resolveAdapter() {
 		switch (this._chosenAdapter) {
-			case Adapter.db:
+			case Adapter.DB:
 				this._adapter = this._db;
 				break;
-			case Adapter.mock:
+			case Adapter.MOCK:
 				this._adapter = this._mock;
 				break;
-			case Adapter.test:
+			case Adapter.TEST:
 				this._adapter = this._test;
 				break;
 			default:

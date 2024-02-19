@@ -13,46 +13,46 @@ import { App } from 'src/app/interfaces/app';
 export class DashboardComponent {
 	public appItems: App[][] = [
 		[{
-			name: AppItem.Board,
-			route: AppRoute.Board,
-			icon: AppIcon.Board,
-			color: AppColor.Board
+			name: AppItem.BOARD,
+			route: AppRoute.BOARD,
+			icon: AppIcon.BOARD,
+			color: AppColor.BOARD
 		},
 		{
-			name: AppItem.Stats,
-			route: AppRoute.Stats,
-			icon: AppIcon.Stats,
-			color: AppColor.Stats
+			name: AppItem.STATS,
+			route: AppRoute.STATS,
+			icon: AppIcon.STATS,
+			color: AppColor.STATS
 		}],
 		[{
-			name: AppItem.CreateTask,
-			route: AppRoute.CreateTask,
-			icon: AppIcon.CreateTask,
-			color: AppColor.CreateTask
+			name: AppItem.CREATE_TASK,
+			route: AppRoute.CREATE_TASK,
+			icon: AppIcon.CREATE_TASK,
+			color: AppColor.CREATE_TASK
 		},
 		{
-			name: AppItem.ImportTasks,
-			route: AppRoute.ImportTasks,
-			icon: AppIcon.ImportTasks,
-			color: AppColor.ImportTasks
+			name: AppItem.IMPORT_TASKS,
+			route: AppRoute.IMPORT_TASKS,
+			icon: AppIcon.IMPORT_TASKS,
+			color: AppColor.IMPORT_TASKS
 		},
 		{
-			name: AppItem.TrashBin,
-			route: AppRoute.TrashBin,
-			icon: AppIcon.TrashBin,
-			color: AppColor.TrashBin
+			name: AppItem.TRASH_BIN,
+			route: AppRoute.TRASH_BIN,
+			icon: AppIcon.TRASH_BIN,
+			color: AppColor.TRASH_BIN
 		}],
 		[{
-			name: AppItem.ProjectSettings,
-			route: AppRoute.ProjectSettings,
-			icon: AppIcon.ProjectSettings,
-			color: AppColor.ProjectSettings
+			name: AppItem.PROJECT_SETTINGS,
+			route: AppRoute.PROJECT_SETTINGS,
+			icon: AppIcon.PROJECT_SETTINGS,
+			color: AppColor.PROJECT_SETTINGS
 		},
 		{
-			name: AppItem.UserSettings,
-			route: AppRoute.UserSettings,
-			icon: AppIcon.UserSettings,
-			color: AppColor.UserSettings
+			name: AppItem.USER_SETTINGS,
+			route: AppRoute.USER_SETTINGS,
+			icon: AppIcon.USER_SETTINGS,
+			color: AppColor.USER_SETTINGS
 		}]
 	];
 }

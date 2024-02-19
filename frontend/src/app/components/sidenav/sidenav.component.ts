@@ -28,34 +28,34 @@ export class SidenavComponent implements OnInit, OnDestroy {
 
 	public appItems: App[] = [
 		{
-			name: AppItem.Dashboard,
-			route: AppRoute.Dashboard,
-			icon: AppIcon.Dashboard
+			name: AppItem.DASHBOARD,
+			route: AppRoute.DASHBOARD,
+			icon: AppIcon.DASHBOARD
 		},
 		{
-			name: AppItem.CreateTask,
-			route: AppRoute.CreateTask,
-			icon: AppIcon.CreateTask
+			name: AppItem.CREATE_TASK,
+			route: AppRoute.CREATE_TASK,
+			icon: AppIcon.CREATE_TASK
 		},
 		{
-			name: AppItem.Board,
-			route: AppRoute.Board,
-			icon: AppIcon.Board
+			name: AppItem.BOARD,
+			route: AppRoute.BOARD,
+			icon: AppIcon.BOARD
 		},
 		{
-			name: AppItem.ImportTasks,
-			route: AppRoute.ImportTasks,
-			icon: AppIcon.ImportTasks
+			name: AppItem.IMPORT_TASKS,
+			route: AppRoute.IMPORT_TASKS,
+			icon: AppIcon.IMPORT_TASKS
 		},
 		{
-			name: AppItem.TrashBin,
-			route: AppRoute.TrashBin,
-			icon: AppIcon.TrashBin
+			name: AppItem.TRASH_BIN,
+			route: AppRoute.TRASH_BIN,
+			icon: AppIcon.TRASH_BIN
 		},
 		{
-			name: AppItem.Stats,
-			route: AppRoute.Stats,
-			icon: AppIcon.Stats
+			name: AppItem.STATS,
+			route: AppRoute.STATS,
+			icon: AppIcon.STATS
 		}
 	]
 	clickEvent$!: Subscription;
