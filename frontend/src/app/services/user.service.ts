@@ -6,8 +6,8 @@ import { Permission } from '../enums/permission.enum';
   providedIn: 'root'
 })
 export class UserService {
-  private permissions: Permission[] = [Permission.INVITED, Permission.MEMBER, Permission.ADMIN, Permission.OWNER];
-  private userObj: User = {
+  private _permissions: Permission[] = [Permission.INVITED, Permission.MEMBER, Permission.ADMIN, Permission.OWNER];
+  private _user: User = {
     token: '',
     username: '',
     fullName: '',
@@ -32,106 +32,106 @@ export class UserService {
 }
 
   get user(): User {
-    return this.userObj;
+    return this._user;
   }
 
   get token(): string {
-    return this.userObj.token;
+    return this._user.token;
   }
 
   get username(): string {
-    return this.userObj.username;
+    return this._user.username;
   }
 
   get fullName(): string {
-    return this.userObj.fullName;
+    return this._user.fullName;
   }
 
   get initials(): string {
-    return this.userObj.initials;
+    return this._user.initials;
   }
 
   get color(): string {
-    return this.userObj.color;
+    return this._user.color;
   }
 
   get language(): string {
-    return this.userObj.language;
+    return this._user.language;
   }
 
   get project(): string {
-    return this.userObj.project;
+    return this._user.project;
   }
 
   get permission(): Permission {
-    return this.userObj.permission;
+    return this._user.permission;
   }
 
   get profilePicture(): string {
-    return this.userObj.profilePicture;
+    return this._user.profilePicture;
   }
 
   get notificationsEnabled(): boolean {
-    return this.userObj.notificationsEnabled;
+    return this._user.notificationsEnabled;
   }
 
   get isLoggedIn(): boolean {
-    return this.userObj.isLoggedIn;
+    return this._user.isLoggedIn;
   }
 
   set user(user: User) {
-    this.userObj = user;
+    this._user = user;
   }
 
   set token(token: string) {
-    this.userObj.token = token;
+    this._user.token = token;
   }
 
   set username(username: string) {
-    this.userObj.username = username;
+    this._user.username = username;
   }
 
   set fullName(fullName: string) {
-    this.userObj.fullName = fullName;
+    this._user.fullName = fullName;
   }
 
   set initials(initials: string) {
-    this.userObj.initials = initials;
+    this._user.initials = initials;
   }
 
   set color(color: string) {
-    this.userObj.color = color;
+    this._user.color = color;
   }
 
   set language(language: string) {
-    this.userObj.language = language;
+    this._user.language = language;
   }
 
   set project(project: string) {
-    this.userObj.project = project;
+    this._user.project = project;
   }
 
   set permission(permission: Permission) {
-    this.userObj.permission = permission;
+    this._user.permission = permission;
   }
 
   set profilePicture(profilePicture: string) {
-    this.userObj.profilePicture = profilePicture;
+    this._user.profilePicture = profilePicture;
   }
 
   set notificationsEnabled(notificationsEnabled: boolean) {
-    this.userObj.notificationsEnabled = notificationsEnabled;
+    this._user.notificationsEnabled = notificationsEnabled;
   }
 
   set isLoggedIn(isLoggedIn: boolean) {
-    this.userObj.isLoggedIn = isLoggedIn;
+    this._user.isLoggedIn = isLoggedIn;
   }
 
-  update(attribute: string, value: string) {
-    this.userObj[attribute] = value;
+  update(attribute: string, value: string): void {
+    this._user[attribute] = value;
   }
 
-  hasPermission(required: Permission) {
-    return this.permissions.indexOf(this.permission as Permission) >= this.permissions.indexOf(required);
+  hasPermission(required: Permission): boolean {
+    return this._permissions.indexOf(this.permission as Permission) >= this._permissions.indexOf(required);
   }
 }
