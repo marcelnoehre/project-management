@@ -1,7 +1,7 @@
 .kanban-container {
     top: 7.5vh;
-    min-height: 92.5vh;
     width: 100%;
+    min-height: 92.5vh;
     background-color: #e8f8ff;
 }
 
@@ -10,22 +10,22 @@
 }
 
 .board {
+    display: flex;
     width: 95%;
     height: 77.5vh;
     margin-left: 2.5%;
-    display: flex;
-    background-color: white;
     border: 2px solid #000;
     border-radius: 5px;
     overflow-x: scroll;
+    background-color: white;
 }
 
 .column {
+    box-sizing: border-box;
     width: calc(85% / 4);
     min-width: 250px;
     height: 100%;
     border-right: 2px solid #000;
-    box-sizing: border-box;
 }
 
 .column:last-child {
@@ -33,15 +33,15 @@
 }
 
 .state {
-    width: 100%;
-    height: 7.5%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     text-align: center;
-    background-color: var(--color);
+    width: 100%;
+    height: 7.5%;
     border-bottom: 2px solid #000;
     font-weight: bold;
+    background-color: var(--color);
 }
 
 .tasks {
@@ -51,15 +51,15 @@
 }
 
 .task {
-    width: 90%;
-    text-align: center;
-    margin-left: 5%;
-    background-color: #e8f8ff;
-    border: 1px solid skyblue;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    text-align: center;
+    width: 90%;
+    margin-left: 5%;
+    border: 1px solid skyblue;
     border-radius: 5px;
+    background-color: #e8f8ff;
     cursor: move;
 }
 
@@ -67,8 +67,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 3rem;
     width: 95%;
+    height: 3rem;
     margin-left: 2.5%;
 
     .trash-bin {
@@ -77,9 +77,9 @@
         flex-direction: column;
         justify-content: center;
         align-items: flex-start;
-        border: 1px dashed black;
-        height: 100%;
         width: 50%;
+        height: 100%;
+        border: 1px dashed black;
         border-radius: 5px;
         background: white;
 
@@ -108,16 +108,19 @@
     .board {
         height: 70vh;
     }
+
     .tools {
-        height: 6rem;
         flex-direction: column;
+        height: 6rem;
         gap: 1rem;
+
         .actions {
-            width: 100%;
             justify-content: space-evenly;
+            width: 100%;
             margin-left: 0;
         }
     }
+
     .trash-bin {
         height: 10rem;
     }

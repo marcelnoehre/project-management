@@ -14,6 +14,7 @@
 	justify-content: center;
 	margin-bottom: 40px;
 	color: #4054b4;
+
 	h1 {
 		font-size: x-large;
 		font-weight: bolder;
@@ -21,9 +22,9 @@
 }
 
 .submit-button {
+	display: flex;
 	width: 100%;
 	height: 50px;
-	display: flex;
 	margin: 10px auto auto;
 	font-size: 15px;
 }
@@ -46,9 +47,11 @@
 
 mat-card-footer {
     text-align: center;
+
     .clickable {
         color: #4054b4;
     }
+	
     .clickable:hover {
         text-decoration: underline;
         cursor: pointer

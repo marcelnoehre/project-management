@@ -40,11 +40,8 @@
                 <mat-form-field appearance="outline" MatInput>
                     <mat-label>{{ 'TASK.STATE' | translate }}</mat-label>
                     <mat-select formControlName="stateFormControl">
-                        <mat-option
-                        *ngFor="let state of taskStates"
-                        [value]="state"
-                        >
-                        {{ state | translate }}
+                        <mat-option *ngFor="let state of taskStates" [value]="state">
+                            {{ state | translate }}
                         </mat-option>
                     </mat-select>
                 </mat-form-field>

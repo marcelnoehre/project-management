@@ -1,10 +1,10 @@
 .project-settings-container {
-    width: 100%;
-    min-height: 92.5vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    width: 100%;
+    min-height: 92.5vh;
     gap: 5%;
     background: #e8f8ff;
 }
@@ -64,10 +64,11 @@ table {
 }
 
 .actions {
-    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 100%;
+    
     p {
         font-size: medium;
     }
