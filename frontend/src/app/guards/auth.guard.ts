@@ -3,15 +3,15 @@ import { StorageService } from './../services/storage.service';
 import { Router } from '@angular/router';
 
 export const authGuard: CanActivateFn = () => {
-  const router = new Router();
-  const storage = new StorageService();
-  const user = storage.getSessionEntry('user');
+  const _router = new Router();
+  const _storage = new StorageService();
+  const _user = _storage.getSessionEntry('user');
   
-  if (user?.isLoggedIn && user?.project !== '') {
+  if (_user?.isLoggedIn && _user?.project !== '') {
     return true;
   }
   
-  router.navigate(['/login']);
-  storage.clearSession();
+  _router.navigate(['/login']);
+  _storage.clearSession();
   return false;
 };
