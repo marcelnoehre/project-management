@@ -14,21 +14,21 @@ export class DialogComponent implements OnInit {
   public trueButton = '';
 
   constructor(
-    private dialogRef: MatDialogRef<DialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData
+    private _dialogRef: MatDialogRef<DialogComponent>,
+    @Inject(MAT_DIALOG_DATA) private _data: DialogData
   ) {
 
   }
 
   ngOnInit(): void {
-    this.headline = this.data.headline;
-    this.description = this.data.description;
-    this.falseButton = this.data.falseButton;
-    this.trueButton = this.data.trueButton;
+    this.headline = this._data.headline;
+    this.description = this._data.description;
+    this.falseButton = this._data.falseButton;
+    this.trueButton = this._data.trueButton;
   }
 
   closeDialog(res: boolean): void {
-		this.dialogRef.close(res);
+		this._dialogRef.close(res);
 	}
 
 }

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { lastValueFrom } from 'rxjs';
 import { Progress } from 'src/app/interfaces/data/progress';
 import { Task } from 'src/app/interfaces/data/task';
 import { ApiService } from 'src/app/services/api/api.service';
@@ -14,23 +15,20 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./import-tasks.component.scss']
 })
 export class ImportTasksComponent {
-  taskList: Task[] = [];
-  fileInput = '';
-  result!: Progress | null;
-  loading = false;
+  public taskList: Task[] = [];
+  public result!: Progress | null;
+  public loading = false;
 
   constructor(
-    private parser: ParserService,
-    private api: ApiService,
-    private user: UserService,
-    private translate: TranslateService,
-    private snackbar: SnackbarService,
+    private _parser: ParserService,
+    private _api: ApiService,
+    private _user: UserService,
+    private _translate: TranslateService,
+    private _snackbar: SnackbarService,
     private _error: ErrorService
-  ) {
+  ) { }
 
-  }
-
-  onFileSelected(event: Event) {
+  public onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length) {
       const file = input.files[0];
@@ -38,34 +36,31 @@ export class ImportTasksComponent {
       if(['json', 'xml', 'yaml', 'yml'].includes(fileExtension)) {
         const reader = new FileReader;
         reader.onload = (e) => {
-          this.taskList = this.parser.encodeFileInput(e.target?.result as string, fileExtension);
+          this.taskList = this._parser.encodeFileInput(e.target?.result as string, fileExtension);
         };
         reader.readAsDataURL(file);
       }
     }
   }
 
-  hasTaskList() {
+  public hasTaskList(): boolean {
     return this.taskList?.length > 0;
   }
 
-  importTasks() {
+  public async importTasks(): Promise<void> {
     this.loading = true;
-    this.api.importTasks(this.user.token, this.taskList).subscribe(
-      (response) => {
-        this.loading = false;
-        this.result = response;
-        this.taskList = response.taskList;
-        this.snackbar.open(this.translate.instant('SUCCESS.IMPORT_TASKS'));
-      },
-      (error) => {
-        this.loading = false;
-        this._error.handleApiError(error);
-      }
-    );
+    try {
+      this.result = await lastValueFrom(this._api.importTasks(this._user.token, this.taskList));
+      this.taskList = this.result.taskList;
+      this.loading = false;
+      this._snackbar.open(this._translate.instant('SUCCESS.IMPORT_TASKS'));
+    } catch (error) {
+      this.loading = false;
+      this._error.handleApiError(error);
+    }
   }
 
-  reset() {
+  public reset(): void {
     this.taskList = [];
     this.result = null;
   }

@@ -2,6 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { TranslateService } from '@ngx-translate/core';
+import { lastValueFrom } from 'rxjs';
 import { TaskState } from 'src/app/enums/task-state.enum';
 import { User } from 'src/app/interfaces/data/user';
 import { ApiService } from 'src/app/services/api/api.service';
@@ -18,80 +19,74 @@ export class CreateTaskComponent implements OnInit {
 	@ViewChild('inputTitle') inputTitle!: ElementRef;
   @ViewChild('submitCreateTask') submitCreateTask!: MatButton;
   
-  taskStates = [TaskState.TODO, TaskState.PROGRESS, TaskState.REVIEW, TaskState.DONE];
-  createTaskForm!: FormGroup;
-  loading = false;
-  members: User[] = [];
+  public createTaskForm!: FormGroup;
+  public taskStates = [TaskState.TODO, TaskState.PROGRESS, TaskState.REVIEW, TaskState.DONE];
+  public members: User[] = [];
+  public loading = false;
 
   constructor(
-    private api: ApiService,
-    private snackbar: SnackbarService,
-    private translate: TranslateService,
-    private user: UserService,
+    private _api: ApiService,
+    private _snackbar: SnackbarService,
+    private _translate: TranslateService,
+    private _user: UserService,
     private _error: ErrorService
   ) {
-    this.createForm();
+    this._createForm();
   }
 
-  ngOnInit(): void {
-    this.api.getTeamMembers(this.user.token).subscribe(
-      (users) => {
-        this.members = users;
-      },
-      (error) => {
-        this._error.handleApiError(error);
-      }
-    );
+  async ngOnInit(): Promise<void> {
+    try {
+      this.members = await lastValueFrom(this._api.getTeamMembers(this._user.token));
+    } catch (error) {
+      this._error.handleApiError(error);
+    }
 		setTimeout(() => this.inputTitle.nativeElement.focus());
 	}
 
-  private createForm(): void {
+  private _createForm(): void {
     this.createTaskForm = new FormGroup(
       {
-        titleFormControl: new FormControl('', { validators: [Validators.required] }),
+        titleFormControl: new FormControl('', { validators: [Validators.required, Validators.maxLength(32)] }),
         descriptionFormControl: new FormControl('', { validators: [] }),
         assignFormControl: new FormControl('', { validators: [] }),
         stateFormControl: new FormControl('', { validators: [] })
-      },
-      {}
+      }, { }
     );
   }
 
-  get title(): string {
+  private get _title(): string {
 		return this.createTaskForm.get('titleFormControl')?.value;
 	}
 
-	get description(): string {
+	private get _description(): string {
 		return this.createTaskForm.get('descriptionFormControl')?.value;
 	}
 
-  get assigned(): string {
+  private get _assigned(): string {
     return this.createTaskForm.get('assignFormControl')?.value;
   }
 
-  get state(): string {
+  private get _state(): string {
     return this.createTaskForm.get('stateFormControl')?.value;
+  }
+
+  public async createTask(): Promise<void> {
+    this.loading = true;
+    const assigned = this._assigned === '' || this._assigned === null ? '' : this._assigned;
+    const state = this._state === '' || this._state === null ? TaskState.NONE : this._state;
+    try {
+      const response = await lastValueFrom(this._api.createTask(this._user.token, this._title, this._description, assigned, state));
+      this.loading = false;
+      this.createTaskForm.reset();
+      setTimeout(() => this.inputTitle.nativeElement.focus());
+      this._snackbar.open(this._translate.instant(response.message));
+    } catch (error) {
+      this.loading = false;
+      this._error.handleApiError(error);
+    }
   }
 
   public isValid(): boolean {
     return this.createTaskForm.controls['titleFormControl']?.valid;
-  }
-
-  public createTask() {
-    this.loading = true;
-    const assigned = this.assigned === '' || this.assigned === null ? '' : this.assigned;
-    const state = this.state === '' || this.state === null ? TaskState.NONE : this.state;
-    this.api.createTask(this.user.token, this.title, this.description, assigned, state).subscribe(
-      (response) => {
-        this.loading = false;
-        this.createTaskForm.reset();
-        setTimeout(() => this.inputTitle.nativeElement.focus());
-        this.snackbar.open(this.translate.instant(response.message));
-      },
-      (error) => {
-        this.loading = false;
-        this._error.handleApiError(error);
-      }
-    );
   }
 }

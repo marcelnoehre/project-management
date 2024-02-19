@@ -14,6 +14,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { TaskDetailViewComponent } from '../task-detail-view/task-detail-view.component';
 import { Task } from 'src/app/interfaces/data/task';
 import { ErrorService } from 'src/app/services/error.service';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-kanban-board',
@@ -21,55 +22,54 @@ import { ErrorService } from 'src/app/services/error.service';
   styleUrls: ['./kanban-board.component.scss']
 })
 export class KanbanBoardComponent implements AfterViewInit {
-  taskList: State[] = [];
-  stateList: string[] = [TaskState.NONE, TaskState.TODO, TaskState.PROGRESS, TaskState.REVIEW, TaskState.DONE, TaskState.DELETED];
-  loadingDelete: boolean = false;
+  private _targets = [TaskState.NONE, TaskState.TODO, TaskState.PROGRESS, TaskState.REVIEW, TaskState.DONE, TaskState.DELETED];
+  public stateList: string[] = [TaskState.NONE, TaskState.TODO, TaskState.PROGRESS, TaskState.REVIEW, TaskState.DONE, TaskState.DELETED];
+  public taskList: State[] = [];
+  public loadingDelete: boolean = false;
 
   constructor(
-    private api: ApiService,
-    private storage: StorageService,
-    private router: Router,
-    private snackbar: SnackbarService,
-    private translate: TranslateService,
-    private user: UserService,
-    private parser: ParserService,
-    private dialog: MatDialog,
+    private _api: ApiService,
+    private _snackbar: SnackbarService,
+    private _translate: TranslateService,
+    private _user: UserService,
+    private _parser: ParserService,
+    private _dialog: MatDialog,
     private _error: ErrorService
   ) {
 
   }
 
   async ngAfterViewInit(): Promise<void> {
-    while (this.user.project === undefined) await new Promise<void>(done => setTimeout(() => done(), 5));
-    this.api.getTaskList(this.user.token).subscribe(
-      (taskList) => {
-        this.taskList = taskList;        
-      },
-      (error) => {
-        this._error.handleApiError(error);
-      }
-    );
+    while (this._user.project === undefined) await new Promise<void>(done => setTimeout(() => done(), 5));
+    try {
+      this.taskList = await lastValueFrom(this._api.getTaskList(this._user.token));
+    } catch (error) {
+      this._error.handleApiError(error);
+    }
   }
 
-  drop(event: any) {
+  private _export(blob: Blob, fileExtension: string): void {
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'export-' + this._user.project + '-tasks' + fileExtension;
+    link.click();
+  }
+
+  public async drop(event: any): Promise<void> {
     try {
-      const targets = [TaskState.NONE, TaskState.TODO, TaskState.PROGRESS, TaskState.REVIEW, TaskState.DONE, TaskState.DELETED];
-      if (!targets.includes(event.event.target.id)) {
+      if (!this._targets.includes(event.event.target.id)) {
         return;
       }
       if (event.event.target.id === TaskState.DELETED) {
         this.loadingDelete = true;
-        this.api.moveToTrashBin(this.user.token, event.previousContainer.data[event.previousIndex].uid).subscribe(
-          (tasklist) => {
-            this.loadingDelete = false;
-            this.taskList = tasklist;
-            this.snackbar.open(this.translate.instant('SUCCESS.MOVE_TO_TRASH'));
-          },
-          (error) => {
-            this.loadingDelete = false;
-            this._error.handleApiError(error);
-          }
-        );
+        try {
+          this.taskList = await lastValueFrom(this._api.moveToTrashBin(this._user.token, event.previousContainer.data[event.previousIndex].uid));
+          this.loadingDelete = false;
+          this._snackbar.open(this._translate.instant('SUCCESS.MOVE_TO_TRASH'));
+        } catch (error) {
+          this.loadingDelete = false;
+          this._error.handleApiError(error);
+        }
         return;
       }      
       if (event.previousContainer === event.container) {
@@ -85,43 +85,33 @@ export class KanbanBoardComponent implements AfterViewInit {
       const foundState = this.taskList.find((list) => list.state === event.event.target.id);
       const previousIndex = foundState?.tasks[event.currentIndex - 1]?.order ? foundState?.tasks[event.currentIndex - 1].order : 0;
       const nextIndex = foundState?.tasks[event.currentIndex + 1]?.order === undefined ? previousIndex + 2 : foundState?.tasks[event.currentIndex + 1].order;
-      this.api.updatePosition(this.user.token, foundState!.tasks[event.currentIndex].uid, foundState!.state, (previousIndex + nextIndex) / 2).subscribe(
-        (tasklist) => {
-          this.taskList = tasklist;
-        },
-        (error) => {
-          this._error.handleApiError(error);
-        }
-      );
+      try {
+        this.taskList = await lastValueFrom(this._api.updatePosition(this._user.token, foundState!.tasks[event.currentIndex].uid, foundState!.state, (previousIndex + nextIndex) / 2));
+      } catch (error) {
+        this._error.handleApiError(error);
+      }
     } catch (err) {
-      this.snackbar.open(this.translate.instant('ERROR.NO_VALID_SECTION'));
+      this._snackbar.open(this._translate.instant('ERROR.NO_VALID_SECTION'));
     }
   }
 
-  getColor(state: string) {
+  public json(): void {
+    this._export(this._parser.statesToJSON(this.taskList), '.json');
+  }
+
+  public xml(): void {
+    this._export(this._parser.statesToXML(this.taskList), '.xml');
+  }
+
+  public yaml(): void {
+    this._export(this._parser.statesToYAML(this.taskList), '.yaml');
+  }
+
+  public getColor(state: string): TaskStateColor {
     return TaskStateColor[state as keyof typeof TaskStateColor];
   }
 
-  json() {
-    this.export(this.parser.statesToJSON(this.taskList), '.json');
-  }
-
-  xml() {
-    this.export(this.parser.statesToXML(this.taskList), '.xml');
-  }
-
-  yaml() {
-    this.export(this.parser.statesToYAML(this.taskList), '.yaml');
-  }
-
-  export(blob: Blob, fileExtension: string) {
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = 'export-' + this.user.project + '-tasks' + fileExtension;
-    link.click();
-  }
-
-  showDetails(task: Task) {
+  public showDetails(task: Task): void {
     const data = {
       uid: task.uid,
       author: task.author,
@@ -133,7 +123,7 @@ export class KanbanBoardComponent implements AfterViewInit {
       order: task.order,
       history: task.history
     };
-    this.dialog.open(TaskDetailViewComponent, { data, ...{} }).afterClosed().subscribe(
+    this._dialog.open(TaskDetailViewComponent, { data, ...{} }).afterClosed().subscribe(
       async (updated) => {
         if (updated) {
           this.taskList = [...updated];

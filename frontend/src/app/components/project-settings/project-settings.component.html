@@ -16,8 +16,8 @@
                         <td>{{ member.fullName }}</td>
                         <td>{{ member.username }}</td>
                         <td>{{ getLanguage(member.language) }}</td>
-                        <td *ngIf="!editable(member.permission)">{{ member.permission }}</td>
-                        <td *ngIf="editable(member.permission)">
+                        <td *ngIf="!isEditable(member.permission)">{{ member.permission }}</td>
+                        <td *ngIf="isEditable(member.permission)">
                             <mat-select 
                                 id="permission-select"
                                 name="permission"
@@ -72,7 +72,7 @@
                     </button>
                 </div>
             </form>
-            <button (click)="leaveProject()" [disabled]="leavable()" color="warn" mat-raised-button>
+            <button (click)="leaveProject()" [disabled]="isLeavable()" color="warn" mat-raised-button>
                 <app-spinner-icon class="material-icons" icon="exit_to_app" [spinning]="loadingLeave"></app-spinner-icon>
                 <ng-container *ngIf="loadingLeave">&nbsp;</ng-container>
                 {{ 'PROJECT.LEAVE' | translate }}

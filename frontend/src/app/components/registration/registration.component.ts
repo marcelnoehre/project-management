@@ -3,9 +3,11 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { lastValueFrom } from 'rxjs';
 import { Language } from 'src/app/interfaces/language';
 import { ApiService } from 'src/app/services/api/api.service';
 import { ErrorService } from 'src/app/services/error.service';
+import { ParserService } from 'src/app/services/parser.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { StorageService } from 'src/app/services/storage.service';
 import { UserService } from 'src/app/services/user.service';
@@ -18,12 +20,12 @@ import { UserService } from 'src/app/services/user.service';
 export class RegistrationComponent implements OnInit {
   @ViewChild('inputUser') inputUser!: ElementRef;
   @ViewChild('submitRegistration') submitLogin!: MatButton;
-
-  hidePassword = true;
-  hidePasswordRepeat = true;
-  loading: boolean = false;
-  registrationForm!: FormGroup;
-  languages: Language[] = [
+  
+  public registrationForm!: FormGroup;
+  public hidePassword = true;
+  public hidePasswordRepeat = true;
+  public loading: boolean = false;
+  public languages: Language[] = [
     {
       key: 'en',
       label: 'English'
@@ -35,26 +37,27 @@ export class RegistrationComponent implements OnInit {
   ];
 
   constructor(
-    private router: Router,
-    private storage: StorageService,
-    private snackbar: SnackbarService,
-    private translate: TranslateService,
-    private api: ApiService,
-    private user: UserService,
-    private _error: ErrorService
+    private _router: Router,
+    private _storage: StorageService,
+    private _snackbar: SnackbarService,
+    private _translate: TranslateService,
+    private _api: ApiService,
+    private _user: UserService,
+    private _error: ErrorService,
+    private _parser: ParserService
     ) {
-      this.createForm();
+      this._createForm();
     }
 
   ngOnInit(): void {
-    this.user.user = this.storage.getSessionEntry('user');
-    if (this.user.isLoggedIn) {
-			this.router.navigateByUrl('/');
+    this._user.user = this._storage.getSessionEntry('user');
+    if (this._user.isLoggedIn) {
+			this._router.navigateByUrl('/');
 		}
 		setTimeout(() => this.inputUser.nativeElement.focus());
   }
 
-  private createForm(): void {
+  private _createForm(): void {
     this.registrationForm = new FormGroup(
       {
         usernameFormControl: new FormControl('', {validators: [Validators.required] }),
@@ -67,23 +70,23 @@ export class RegistrationComponent implements OnInit {
     );
   }
 
-	get username(): string {
+	private get _username(): string {
 		return this.registrationForm.get('usernameFormControl')?.value;
 	}
   
-  get fullName(): string {
+  private get _fullName(): string {
     return this.registrationForm.get('fullnameFormControl')?.value;
   }
 
-  get language(): string {
+  private get _language(): string {
     return this.registrationForm.get('languageFormControl')?.value;
   }
 
-	get password(): string {
+	private get _password(): string {
 		return this.registrationForm.get('passwordFormControl')?.value;
 	}
 
-  get passwordRepeat(): string {
+  private get _passwordRepeat(): string {
 		return this.registrationForm.get('passwordRepeatFormControl')?.value;
 	}
 
@@ -107,40 +110,28 @@ export class RegistrationComponent implements OnInit {
     return this.registrationForm.controls[formControl].hasError(type);
   }
 
-  passwordInformation(): string {
-    return this.translate.instant('REGISTRATION.PASSWORD_FORMAT');
+  public passwordInformation(): string {
+    return this._translate.instant('REGISTRATION.PASSWORD_FORMAT');
   }
 
-  async register() {
-    if (this.password !== this.passwordRepeat) {
-      this.snackbar.open(this.translate.instant('ERROR.PASSWORDS_MATCH'));
+  public async register(): Promise<void> {
+    if (this._password !== this._passwordRepeat) {
+      this._snackbar.open(this._translate.instant('ERROR.PASSWORDS_MATCH'));
     } else {
-      this.loading = true;
-      const hashedPassword = await this.sha256(this.password);
-      this.api.register(this.username, this.fullName, this.language, hashedPassword).subscribe(
-        (response) => {
-          this.loading = false;
-          this.snackbar.open(this.translate.instant(response.message));
-          this.router.navigateByUrl('/login');
-        },
-        (error) => {
-          this.loading = false;
-          this._error.handleApiError(error);
-        }
-      );
+      try {
+        this.loading = true;
+        const response = await lastValueFrom(this._api.register(this._username, this._fullName, this._language, await this._parser.sha256(this._password)));
+        this.loading = false;
+        this._snackbar.open(this._translate.instant(response.message));
+        this._router.navigateByUrl('/login');
+      } catch (error) {
+        this.loading = false;
+        this._error.handleApiError(error);
+      }
     }
   }
 
-  login() {
-    this.router.navigateByUrl('/login');
-  }
-
-  async sha256(message: string): Promise<string> {
-    const encoder = new TextEncoder();
-    const data = encoder.encode(message);
-    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    const hashHex = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
-    return hashHex;
+  public login(): void {
+    this._router.navigateByUrl('/login');
   }
 }

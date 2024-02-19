@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
+import { lastValueFrom } from 'rxjs';
 import { Permission } from 'src/app/enums/permission.enum';
 import { User } from 'src/app/interfaces/data/user';
 import { ApiService } from 'src/app/services/api/api.service';
@@ -16,68 +17,56 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./create-project.component.scss']
 })
 export class CreateProjectComponent {
-  projectForm!: FormGroup;
-  created = false;
-  loading = false;
+  public projectForm!: FormGroup;
+  public loading = false;
 
   constructor(
-    private dialogRef: MatDialogRef<CreateProjectComponent>,
-    private api: ApiService,
-    private storage: StorageService,
-    private snackbar: SnackbarService,
-    private translate: TranslateService,
-    private user: UserService,
+    private _dialogRef: MatDialogRef<CreateProjectComponent>,
+    private _api: ApiService,
+    private _storage: StorageService,
+    private _snackbar: SnackbarService,
+    private _translate: TranslateService,
+    private _user: UserService,
     private _error: ErrorService
   ) {
-    this.createForm();
+    this._createForm();
   }
 
-  closeDialog(res: boolean): void {
-		this.dialogRef.close(res);
-	}
-
-	get project(): string {
-		return this.projectForm.get('projectFormControl')?.value;
-	}
-
-  get sessionUser(): User {
-    return this.storage.getSessionEntry('user');
-  }
-
-  createProject() {
-    this.loading = true;
-    this.api.createProject(this.sessionUser.token, this.project).subscribe(
-      (response) => {
-        const message = response.message;
-        this.api.refreshToken(this.user.token).subscribe(
-          (response) => {
-            this.loading = false;
-            this.snackbar.open(this.translate.instant(message));
-            this.user.user = this.sessionUser;
-            this.user.token = response;
-            this.user.project = this.project;
-            this.user.permission = Permission.OWNER;
-            this.user.isLoggedIn = true;
-            this.storage.setSessionEntry('user', this.user.user);
-            this.dialogRef.close(true);
-          },
-          (error) => {
-            this.loading = false;
-            this._error.handleApiError(error);
-          }
-        );
-      },
-      (error) => {
-        this.loading = false;
-        this._error.handleApiError(error);
-      }
-    );
-  }
-
-  createForm() {
+  private _createForm(): void {
     this.projectForm = new FormGroup({
       projectFormControl: new FormControl('', {validators: [Validators.required] })
     });
+  }
+
+	private get _project(): string {
+		return this.projectForm.get('projectFormControl')?.value;
+	}
+
+  private get _sessionUser(): User {
+    return this._storage.getSessionEntry('user');
+  }
+
+  public closeDialog(res: boolean): void {
+		this._dialogRef.close(res);
+	}
+
+  public async createProject(): Promise<void> {
+    try {
+      const response = await lastValueFrom(this._api.createProject(this._sessionUser.token, this._project));
+      const token = await lastValueFrom(this._api.refreshToken(this._sessionUser.token));
+      this._user.user = this._sessionUser;
+      this._user.token = token;
+      this._user.project = this._project;
+      this._user.permission = Permission.OWNER;
+      this._user.isLoggedIn = true;
+      this._storage.setSessionEntry('user', this._user.user);
+      this.loading = false;
+      this._snackbar.open(this._translate.instant(response.message));
+      this._dialogRef.close(true);
+    } catch (error) {
+      this.loading = false;
+      this._error.handleApiError(error);
+    }
   }
 
   public projectValid(): boolean {

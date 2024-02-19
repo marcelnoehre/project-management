@@ -13,6 +13,8 @@ import { DialogComponent } from '../dialog/dialog.component';
 import { UserService } from 'src/app/services/user.service';
 import { NotificationsService } from 'src/app/services/notifications.service';
 import { ErrorService } from 'src/app/services/error.service';
+import { lastValueFrom } from 'rxjs';
+import { ParserService } from 'src/app/services/parser.service';
 
 @Component({
 	selector: 'app-login',
@@ -28,113 +30,116 @@ export class LoginComponent implements OnInit {
 	public loading: boolean = false;
 
 	constructor(
-		private snackbar: SnackbarService,
-		private storage: StorageService,
-		private router: Router,
-		private translate: TranslateService,
-		private api: ApiService,
-		private dialog: MatDialog,
-		private user: UserService,
-		private notifications: NotificationsService,
-		private _error: ErrorService
+		private _snackbar: SnackbarService,
+		private _storage: StorageService,
+		private _router: Router,
+		private _translate: TranslateService,
+		private _api: ApiService,
+		private _dialog: MatDialog,
+		private _user: UserService,
+		private _notifications: NotificationsService,
+		private _error: ErrorService,
+		private _parser: ParserService
 	) {
-		this.createForm();
+		this._createForm();
 	}
 
 	ngOnInit(): void {
-		this.user.user = this.storage.getSessionEntry('user');
-		if (this.user?.['isLoggedIn'] && this.user?.['project'] !== '') {
-			this.router.navigateByUrl('/');
+		this._user.user = this._storage.getSessionEntry('user');
+		if (this._user?.['isLoggedIn'] && this._user?.['project'] !== '') {
+			this._router.navigateByUrl('/');
 		}
 		setTimeout(() => this.inputUser.nativeElement.focus());
 	}
 
-	private createForm(): void {
+	private _createForm(): void {
 		this.loginForm = new FormGroup(
 			{
 				usernameFormControl: new FormControl('', { validators: [Validators.required] }),
 				passwordFormControl: new FormControl('', { validators: [Validators.required] })
-			},
-			{}
+			}, { }
 		);
 	}
 
-	get username(): string {
+	private get _username(): string {
 		return this.loginForm.get('usernameFormControl')?.value;
 	}
 
-	get password(): string {
+	private get _password(): string {
 		return this.loginForm.get('passwordFormControl')?.value;
 	}
 
+	private updateLanguage(): void {
+		if (this._user.language) {
+			this._translate.use(this._user.language);
+		}
+	}
+
 	public async login(): Promise<void> {
-		const hashedPassword = await this.sha256(this.password);
 		this.loading = true;
-		this.api.login(this.username, hashedPassword).subscribe(
-			(user) => {
-				this.loading = false;
-				this.storage.setSessionEntry('user', user);
-				if (user.project === '') {
-					this.dialog.open(CreateProjectComponent).afterClosed().subscribe((created) => {
-						if (created) {
-							this.notifications.init();
-							this.updateLanguage();
-							this.router.navigateByUrl('/');
-						} else {
-							this.storage.deleteSessionEntry('user');
-						}
-					});
-				} else if (user.permission === Permission.INVITED) {
-					const data = {
-						headline: this.translate.instant('DIALOG.HEADLINE.INVITE'),
-						description: this.translate.instant('DIALOG.INFO.INVITE', { project: user.project}),
-						falseButton: this.translate.instant('APP.REJECT'),
-						trueButton: this.translate.instant('APP.ACCEPT')
-					};
-					this.dialog.open(DialogComponent, { data, ...{} }).afterClosed().subscribe((accept) => {
-						this.api.handleInvite(user.token, accept).subscribe(
-							(response) => {
-								if(accept) {
-									this.user.user = user
-									this.api.refreshToken(this.user.token).subscribe(
-										(response) => {
-											this.user.token = response;
-											this.user.permission = Permission.MEMBER;
-											this.user.project = user.project;
-											this.user.isLoggedIn = true;
-											this.notifications.init();
-											this.storage.setSessionEntry('user', this.user.user);
-											this.updateLanguage();
-											this.router.navigateByUrl('/');
-										},
-										(error) => {
-											this._error.handleApiError(error);
-										}
-									);
-								} else {
-									this.storage.deleteSessionEntry('user');
-								}
-								this.snackbar.open(this.translate.instant(response.message));
-							},
-							(error) => {
-								this._error.handleApiError(error);
+		try {
+			const user = await lastValueFrom(this._api.login(this._username, await this._parser.sha256(this._password)));
+			this.loading = false;
+			this._storage.setSessionEntry('user', user);
+			if (user.project === '') {
+				this._dialog.open(CreateProjectComponent).afterClosed().subscribe((created) => {
+					if (created) {
+						this._notifications.init();
+						this.updateLanguage();
+						this._router.navigateByUrl('/');
+					} else {
+						this._storage.deleteSessionEntry('user');
+					}
+				});
+			} else if (user.permission === Permission.INVITED) {
+				const data = {
+					headline: this._translate.instant('DIALOG.HEADLINE.INVITE'),
+					description: this._translate.instant('DIALOG.INFO.INVITE', { project: user.project}),
+					falseButton: this._translate.instant('APP.REJECT'),
+					trueButton: this._translate.instant('APP.ACCEPT')
+				};
+				this._dialog.open(DialogComponent, { data, ...{} }).afterClosed().subscribe(async (accept) => {
+					try {
+						const response = await lastValueFrom(this._api.handleInvite(user.token, accept));
+						if(accept) {
+							this._user.user = user
+							try {
+								const token = await lastValueFrom(this._api.refreshToken(this._user.token));
+								this._user.token = token;
+								this._user.permission = Permission.MEMBER;
+								this._user.project = user.project;
+								this._user.isLoggedIn = true;
+								this._notifications.init();
+								this._storage.setSessionEntry('user', this._user.user);
+								this.updateLanguage();
+								this._router.navigateByUrl('/');
+							} catch (err) {
+								this._error.handleApiError(err);
 							}
-						)
-					});
-				} else {
-					this.user.user = user;
-					this.user.isLoggedIn = true;
-					this.notifications.init();
-					this.storage.setSessionEntry('user', this.user.user);
-					this.updateLanguage();
-					this.router.navigateByUrl('/');
-				}
-			},
-			(error) => {
-				this.loading = false;
-				this._error.handleApiError(error);
+						} else {
+							this._storage.deleteSessionEntry('user');
+						}
+						this._snackbar.open(this._translate.instant(response.message));
+					} catch (error) {
+						this._error.handleApiError(error);
+					}
+				});
+			} else {
+				this._user.user = user;
+				this._user.isLoggedIn = true;
+				this._notifications.init();
+				this._storage.setSessionEntry('user', this._user.user);
+				this.updateLanguage();
+				this._router.navigateByUrl('/');
 			}
-		);
+		} catch (loginError) {
+			this.loading = false;
+			this._error.handleApiError(loginError);
+		}
+	}
+
+	public registration(): void {
+		this._router.navigate(['/registration']);
 	}
 
 	public userValid(): boolean {
@@ -143,24 +148,5 @@ export class LoginComponent implements OnInit {
 
 	public passwordValid(): boolean {
 		return this.loginForm.controls['passwordFormControl'].valid;
-	}
-
-	public updateLanguage(): void {
-		if (this.user.language) {
-			this.translate.use(this.user.language);
-		}
-	}
-
-	public registration(): void {
-		this.router.navigate(['/registration']);
-	}
-
-	async sha256(message: string): Promise<string> {
-		const encoder = new TextEncoder();
-		const data = encoder.encode(message);
-		const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-		const hashArray = Array.from(new Uint8Array(hashBuffer));
-		const hashHex = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
-		return hashHex;
 	}
 }
