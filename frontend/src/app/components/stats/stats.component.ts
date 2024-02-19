@@ -6,7 +6,6 @@ import { TaskStateColor } from 'src/app/enums/task-state-color.enum';
 import { TranslateService } from '@ngx-translate/core';
 import { ChartOptions } from 'src/app/interfaces/chart-options';
 import { ApexAxisChartSeries, ChartComponent } from 'ng-apexcharts';
-import { ImportTasksComponent } from '../import-tasks/import-tasks.component';
 
 @Component({
   selector: 'app-stats',
@@ -15,10 +14,9 @@ import { ImportTasksComponent } from '../import-tasks/import-tasks.component';
 })
 export class StatsComponent implements OnInit {
   @ViewChild('chart') chart!: ChartComponent;
-  information = 'INIT';
-  mode: ProgressBarMode = 'determinate';
-  loading = 0;
-  reload: any = {
+
+  private _activeUnit = 'h';
+  private _reload: any = {
     all: false,
     personalStats: false,
     stats: false,
@@ -29,7 +27,29 @@ export class StatsComponent implements OnInit {
     taskProgress: false,
     projectRoadmap: false
   };
-  data: any = {
+  private _unitFactor: any = {
+    ms: 1,
+    s: 0.001,
+    min: 0.001 / 60,
+    h: 0.001 / 3600,
+    days: 0.001 / (3600 * 24)
+  };  
+  public information = 'INIT';
+  public mode: ProgressBarMode = 'determinate';
+  public loading = 0;
+  public units = ['ms', 's', 'min', 'h', 'days'];
+  public statLabels = ['created', 'imported', 'updated', 'edited', 'trashed', 'restored', 'deleted', 'cleared'];
+  public icons: any = {
+    created: 'add',
+    imported: 'upload_file',
+    updated: 'view_kanban',
+    edited: 'edit',
+    trashed: 'delete',
+    restored: 'undo',
+    deleted: 'delete_forever',
+    cleared: 'clear'
+  }
+  public data: any = {
     optimizeOrder: null,
     personalStats: null,
     stats: null,
@@ -40,31 +60,11 @@ export class StatsComponent implements OnInit {
     taskProgress: null,
     projectRoadmap: null
   }
-  statLabels = ['created', 'imported', 'updated', 'edited', 'trashed', 'restored', 'deleted', 'cleared'];
-  icons: any = {
-    created: 'add',
-    imported: 'upload_file',
-    updated: 'view_kanban',
-    edited: 'edit',
-    trashed: 'delete',
-    restored: 'undo',
-    deleted: 'delete_forever',
-    cleared: 'clear'
-  }
-  activeUnit = 'h';
-  units = ['ms', 's', 'min', 'h', 'days'];
-  unitFactor: any = {
-    ms: 1,
-    s: 0.001,
-    min: 0.001 / 60,
-    h: 0.001 / 3600,
-    days: 0.001 / (3600 * 24)
-  };  
-  barChartOptions = {
+  public barChartOptions = {
     scaleShowVerticalLines: false,
     responsive: true
   };
-  chartOptions: ChartOptions = {
+  public chartOptions: ChartOptions = {
     series: [],
     chart: {
       height: 350,
@@ -93,16 +93,14 @@ export class StatsComponent implements OnInit {
   };
 
   constructor(
-    private stats: StatsService,
-    private translate: TranslateService
-  ) {
-    
-  }
+    private _stats: StatsService,
+    private _translate: TranslateService
+  ) { }
 
   async ngOnInit(): Promise<void> {
     await new Promise<void>(done => setTimeout(() => done(), 500));
-    this.stats.init();
-    this.stats.getUpdateSubject().subscribe(async (res) => {
+    this._stats.init();
+    this._stats.getUpdateSubject().subscribe(async (res) => {
       if (res.step === 'storage') {
         this.data = res.data;
         this.setupTaskProgress();
@@ -122,11 +120,7 @@ export class StatsComponent implements OnInit {
     });
   }
 
-  loaded(): boolean {
-    return this.loading === 100;
-  }
-
-  taskAmountData() {
+  public taskAmountData() {
     return {
       data: [
         {
@@ -161,19 +155,15 @@ export class StatsComponent implements OnInit {
    }
   }
 
-  setUnit(unit: string) {
-    this.activeUnit = unit;
-  }
-
-  averageTimeData() {
+  public averageTimeData() {
     return {
       data: [
         {
           data: [
-            this.data.averageTime.NONE * this.unitFactor[this.activeUnit],
-            this.data.averageTime.TODO * this.unitFactor[this.activeUnit],
-            this.data.averageTime.PROGRESS * this.unitFactor[this.activeUnit],
-            this.data.averageTime.REVIEW * this.unitFactor[this.activeUnit]
+            this.data.averageTime.NONE * this._unitFactor[this._activeUnit],
+            this.data.averageTime.TODO * this._unitFactor[this._activeUnit],
+            this.data.averageTime.PROGRESS * this._unitFactor[this._activeUnit],
+            this.data.averageTime.REVIEW * this._unitFactor[this._activeUnit]
           ],
           label: 'Task Amount',
           backgroundColor: [
@@ -193,18 +183,18 @@ export class StatsComponent implements OnInit {
       ]
    }
   }
-
-  getWipInfo() {
+  
+  public getWipInfo(): string {
     if (this.data.wip > 1) {
-      return this.translate.instant('STATS.WIP_INFO', { wip: this.data.wip });
+      return this._translate.instant('STATS.WIP_INFO', { wip: this.data.wip });
     } else if (this.data.wip == 1) {
-      return this.translate.instant('STATS.WIP_INFO_SINGLE');
+      return this._translate.instant('STATS.WIP_INFO_SINGLE');
     } else {
-      return this.translate.instant('STATS.WIP_INFO_NONE');
+      return this._translate.instant('STATS.WIP_INFO_NONE');
     }
   }
 
-  setupTaskProgress() {
+  public setupTaskProgress(): void {
     const states = [TaskState.NONE, TaskState.TODO, TaskState.PROGRESS, TaskState.REVIEW, TaskState.DONE];
     states.forEach((state) => {
       this.chartOptions.series.push({
@@ -215,20 +205,16 @@ export class StatsComponent implements OnInit {
     this.chartOptions.xaxis = this.data.taskProgress.timestamp;
   }
 
-  isLoading(stat: string): boolean {
-    return this.reload[stat];
+  public setUnit(unit: string): void {
+    this._activeUnit = unit;
   }
 
-  highlightActiveUnit(unit: string): boolean {
-    return this.activeUnit === unit;
+  public regenerateAll(): void {
+    this._stats.regenerateAll();
   }
 
-  regenerateAll() {
-    this.stats.regenerateAll();
-  }
-
-  async regenerateStat(stat: string) {
-    this.data[stat] = await this.stats.regenerateStat(stat);
+  public async regenerateStat(stat: string): Promise<void> {
+    this.data[stat] = await this._stats.regenerateStat(stat);
     if (stat === 'taskProgress') {
       const series: ApexAxisChartSeries = [];
       const states = [TaskState.NONE, TaskState.TODO, TaskState.PROGRESS, TaskState.REVIEW, TaskState.DONE];
@@ -242,4 +228,15 @@ export class StatsComponent implements OnInit {
     }
   }
 
+  public isLoaded(): boolean {
+    return this.loading === 100;
+  }
+  
+  public isLoading(stat: string): boolean {
+    return this._reload[stat];
+  }
+  
+  public highlightActiveUnit(unit: string): boolean {
+    return this._activeUnit === unit;
+  }
 }

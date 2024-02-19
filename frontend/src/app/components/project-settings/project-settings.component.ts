@@ -12,6 +12,7 @@ import { DialogComponent } from '../dialog/dialog.component';
 import { Language } from 'src/app/interfaces/language';
 import { UserService } from 'src/app/services/user.service';
 import { ErrorService } from 'src/app/services/error.service';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-project-settings',
@@ -19,13 +20,8 @@ import { ErrorService } from 'src/app/services/error.service';
   styleUrls: ['./project-settings.component.scss']
 })
 export class ProjectSettingsComponent implements OnInit {
-  permissions: Permission[] = [Permission.MEMBER, Permission.ADMIN];
-  loadingInvite: boolean = false;
-  loadingLeave: boolean = false;
-  loadingDelete: string = '';
-  inviteForm!: FormGroup;
-  members: User[] = [];
-  languages: Language[] = [
+  private _loadingDelete: string = '';
+  private _languages: Language[] = [
     {
       key: 'en',
       label: 'English'
@@ -35,164 +31,157 @@ export class ProjectSettingsComponent implements OnInit {
       label: 'Deutsch'
     }
   ];
+  public permissions: Permission[] = [Permission.MEMBER, Permission.ADMIN];
+  public loadingInvite = false;
+  public loadingLeave = false;
+  public inviteForm!: FormGroup;
+  public members: User[] = [];
 
   constructor(
-    private api: ApiService,
-    private storage: StorageService,
-    private snackbar: SnackbarService,
-    private translate: TranslateService,
-    private dialog: MatDialog,
-    private router: Router,
-    private user: UserService,
+    private _api: ApiService,
+    private _storage: StorageService,
+    private _snackbar: SnackbarService,
+    private _translate: TranslateService,
+    private _dialog: MatDialog,
+    private _router: Router,
+    private _user: UserService,
     private _error: ErrorService
   ) {
-    this.createForm();
+    this._createForm();
   }
 
-  ngOnInit(): void {
-    this.api.getTeamMembers(this.user.token).subscribe(
-      (users) => {
-        this.members = users;
-      },
-      (error) => {
-        this._error.handleApiError(error);
-      }
-    );
+  async ngOnInit(): Promise<void> {
+    try {
+      this.members = await lastValueFrom(this._api.getTeamMembers(this._user.token));
+    } catch (error) {
+      this._error.handleApiError(error);
+    }
   }
   
-  createForm() {
+  private _createForm() {
     this.inviteForm = new FormGroup({
       usernameFormControl: new FormControl('', {validators: [Validators.required] })
     });
   }
 
-  get username(): string {
+  private get _username(): string {
 		return this.inviteForm.get('usernameFormControl')?.value;
 	}
 
-  getLanguage(key: string): string {
-    const language = this.languages.find(lang => lang.key === key);
-    return language ? language.label : key;
-  }
-
-  usernameValid(): boolean {
-    return this.inviteForm.controls['usernameFormControl'].valid;
-  }
-
-  inviteUser(): void {
-    if (this.members.some(member => member.username === this.username)) {
-      this.snackbar.open(this.translate.instant('ERROR.IN_PROJECT'));
+  public async inviteUser(): Promise<void> {
+    if (this.members.some(member => member.username === this._username)) {
+      this._snackbar.open(this._translate.instant('ERROR.IN_PROJECT'));
     } else {
       this.loadingInvite = true;
-      this.api.inviteUser(this.user.token, this.username).subscribe(
-        (user) => {
-          this.loadingInvite = false;
-          this.members.push(user);
-          this.inviteForm.controls['usernameFormControl'].reset();
-          this.snackbar.open(this.translate.instant('SUCCESS.INVITE_DELIVERD'));
-        },
-        (error) => {
-          this.loadingInvite = false;
-          this._error.handleApiError(error);
-        }
-      );
+      try {
+        const user = await lastValueFrom(this._api.inviteUser(this._user.token, this._username));
+        this.members.push(user);
+        this.loadingInvite = false;
+        this.inviteForm.controls['usernameFormControl'].reset();
+        this._snackbar.open(this._translate.instant('SUCCESS.INVITE_DELIVERD'));
+      } catch (error) {
+        this.loadingInvite = false;
+        this._error.handleApiError(error);
+      }
     } 
   }
 
-  removeUser(username: string, index: number): void {
+  public removeUser(username: string, index: number): void {
     const data = {
-      headline: this.translate.instant('DIALOG.HEADLINE.REMOVE_MEMBER', { username: username }),
-      description: this.translate.instant('DIALOG.INFO.REMOVE_MEMBER'),
-      falseButton: this.translate.instant('APP.CANCEL'),
-      trueButton: this.translate.instant('APP.REMOVE')
+      headline: this._translate.instant('DIALOG.HEADLINE.REMOVE_MEMBER', { username: username }),
+      description: this._translate.instant('DIALOG.INFO.REMOVE_MEMBER'),
+      falseButton: this._translate.instant('APP.CANCEL'),
+      trueButton: this._translate.instant('APP.REMOVE')
     };
-    this.dialog.open(DialogComponent, { data, ...{} }).afterClosed().subscribe((remove) => {
+    this._dialog.open(DialogComponent, { data, ...{} }).afterClosed().subscribe(async (remove) => {
       if (remove) {
-        this.loadingDelete = username;
-        this.api.removeUser(this.user.token, username).subscribe(
-          (response) => {
-            this.loadingDelete = '';
-            this.members.splice(index, 1);
-            this.snackbar.open(this.translate.instant(response.message));
-          },
-          (error) => {
-            this.loadingDelete = '';
-            this._error.handleApiError(error);
-          }
-        )
+        this._loadingDelete = username;
+        try {
+          const response = await lastValueFrom(this._api.removeUser(this._user.token, username));
+          this._loadingDelete = '';
+          this.members.splice(index, 1);
+          this._snackbar.open(this._translate.instant(response.message));
+        } catch (error) {
+          this._loadingDelete = '';
+          this._error.handleApiError(error);
+        }
       }
     });
   }
 
-  leaveProject() {
+  public leaveProject(): void {
     const data = {
-      headline: this.translate.instant('DIALOG.HEADLINE.LEAVE_PROJECT'),
-      description: this.translate.instant('DIALOG.INFO.LEAVE_PROJECT'),
-      falseButton: this.translate.instant('APP.CANCEL'),
-      trueButton: this.translate.instant('APP.CONFIRM')
+      headline: this._translate.instant('DIALOG.HEADLINE.LEAVE_PROJECT'),
+      description: this._translate.instant('DIALOG.INFO.LEAVE_PROJECT'),
+      falseButton: this._translate.instant('APP.CANCEL'),
+      trueButton: this._translate.instant('APP.CONFIRM')
     };
-    this.dialog.open(DialogComponent, { data, ...{} }).afterClosed().subscribe(
+    this._dialog.open(DialogComponent, { data, ...{} }).afterClosed().subscribe(
       async (confirmed) => {
         if (confirmed) {
           this.loadingLeave = true;
-          this.api.leaveProject(this.user.token).subscribe(
-            (response) => {
-              this.loadingLeave = false;
-              this.storage.deleteSessionEntry('user');
-              this.user.user = this.storage.getSessionEntry('user');
-              this.snackbar.open(this.translate.instant(response.message));
-              this.router.navigateByUrl('/login');
-            },
-            (error) => {
-              this.loadingLeave = false;
-              this._error.handleApiError(error);
-            }
-          );
+          try {
+            const response = await lastValueFrom(this._api.leaveProject(this._user.token));
+            this.loadingLeave = false;
+            this._storage.deleteSessionEntry('user');
+            this._user.user = this._storage.getSessionEntry('user');
+            this._snackbar.open(this._translate.instant(response.message));
+            this._router.navigateByUrl('/login');
+          } catch (error) {
+            this.loadingLeave = false;
+            this._error.handleApiError(error);
+          }
         }
-      });
+    });
   }
 
-  updatePermission(username: string, event: any) {
-    this.api.updatePermission(this.user.token, username, event.value).subscribe(
-      (response) => {
-        this.snackbar.open(this.translate.instant('SUCCESS.PERMISSION_UPDATED'));
-        this.members = response;
-      },
-      (error) => {
-        this._error.handleApiError(error);
-      }
-    );
+  public async updatePermission(username: string, event: any): Promise<void> {
+    try {
+      this.members = await lastValueFrom(this._api.updatePermission(this._user.token, username, event.value));
+      this._snackbar.open(this._translate.instant('SUCCESS.PERMISSION_UPDATED'));
+    } catch (error) {
+      this._error.handleApiError(error);
+    }
   }
 
-  editable(permission: Permission) {
+  public deleteLoading(username: string): boolean {
+    return username === this._loadingDelete;
+  }
+
+  public getLanguage(key: string): string {
+    const language = this._languages.find(lang => lang.key === key);
+    return language ? language.label : key;
+  }
+
+  public usernameValid(): boolean {
+    return this.inviteForm.controls['usernameFormControl'].valid;
+  }
+
+  public isEditable(permission: Permission): boolean {
     if (permission === Permission.ADMIN) {
-      return this.user.hasPermission(Permission.OWNER);
+      return this._user.hasPermission(Permission.OWNER);
     } else if (permission === Permission.MEMBER) {
-      return this.user.hasPermission(Permission.ADMIN);
+      return this._user.hasPermission(Permission.ADMIN);
     } else {
       return false;
     }
   }
 
-  showInvite() {
-    return this.user.hasPermission(Permission.ADMIN);
+  public isLeavable(): boolean {
+    return this._user.hasPermission(Permission.OWNER);
   }
 
-  disableRemove(permission: string) {
+  public showInvite(): boolean {
+    return this._user.hasPermission(Permission.ADMIN);
+  }
+
+  public disableRemove(permission: string): boolean {
     permission = permission as Permission;
     const required: Permission = permission === Permission.ADMIN ? Permission.OWNER : Permission.ADMIN;
-    return !this.user.hasPermission(required) || permission === Permission.OWNER;
+    return !this._user.hasPermission(required) || permission === Permission.OWNER;
   }
 
   public hasError(formControl: string, type: string): boolean {
     return this.inviteForm.controls[formControl].hasError(type);
-  }
-
-  deleteLoading(username: string) {
-    return username === this.loadingDelete;
-  }
-
-  leavable(): boolean {
-    return this.user.hasPermission(Permission.OWNER);
   }
 }

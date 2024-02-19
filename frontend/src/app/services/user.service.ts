@@ -6,8 +6,8 @@ import { Permission } from '../enums/permission.enum';
   providedIn: 'root'
 })
 export class UserService {
-  private permissions: Permission[] = [Permission.INVITED, Permission.MEMBER, Permission.ADMIN, Permission.OWNER];
-  private userObj: User = {
+  private _permissions: Permission[] = [Permission.INVITED, Permission.MEMBER, Permission.ADMIN, Permission.OWNER];
+  private _user: User = {
     token: '',
     username: '',
     fullName: '',
@@ -29,109 +29,109 @@ export class UserService {
         deleted: -1,
         cleared: -1
     }
-}
-
-  get user(): User {
-    return this.userObj;
   }
 
-  get token(): string {
-    return this.userObj.token;
+  public get user(): User {
+    return this._user;
   }
 
-  get username(): string {
-    return this.userObj.username;
+  public get token(): string {
+    return this._user.token;
   }
 
-  get fullName(): string {
-    return this.userObj.fullName;
+  public get username(): string {
+    return this._user.username;
   }
 
-  get initials(): string {
-    return this.userObj.initials;
+  public get fullName(): string {
+    return this._user.fullName;
   }
 
-  get color(): string {
-    return this.userObj.color;
+  public get initials(): string {
+    return this._user.initials;
   }
 
-  get language(): string {
-    return this.userObj.language;
+  public get color(): string {
+    return this._user.color;
   }
 
-  get project(): string {
-    return this.userObj.project;
+  public get language(): string {
+    return this._user.language;
   }
 
-  get permission(): Permission {
-    return this.userObj.permission;
+  public get project(): string {
+    return this._user.project;
   }
 
-  get profilePicture(): string {
-    return this.userObj.profilePicture;
+  public get permission(): Permission {
+    return this._user.permission;
   }
 
-  get notificationsEnabled(): boolean {
-    return this.userObj.notificationsEnabled;
+  public get profilePicture(): string {
+    return this._user.profilePicture;
   }
 
-  get isLoggedIn(): boolean {
-    return this.userObj.isLoggedIn;
+  public get notificationsEnabled(): boolean {
+    return this._user.notificationsEnabled;
   }
 
-  set user(user: User) {
-    this.userObj = user;
+  public get isLoggedIn(): boolean {
+    return this._user.isLoggedIn;
   }
 
-  set token(token: string) {
-    this.userObj.token = token;
+  public set user(user: User) {
+    this._user = user;
   }
 
-  set username(username: string) {
-    this.userObj.username = username;
+  public set token(token: string) {
+    this._user.token = token;
   }
 
-  set fullName(fullName: string) {
-    this.userObj.fullName = fullName;
+  public set username(username: string) {
+    this._user.username = username;
   }
 
-  set initials(initials: string) {
-    this.userObj.initials = initials;
+  public set fullName(fullName: string) {
+    this._user.fullName = fullName;
   }
 
-  set color(color: string) {
-    this.userObj.color = color;
+  public set initials(initials: string) {
+    this._user.initials = initials;
   }
 
-  set language(language: string) {
-    this.userObj.language = language;
+  public set color(color: string) {
+    this._user.color = color;
   }
 
-  set project(project: string) {
-    this.userObj.project = project;
+  public set language(language: string) {
+    this._user.language = language;
   }
 
-  set permission(permission: Permission) {
-    this.userObj.permission = permission;
+  public set project(project: string) {
+    this._user.project = project;
   }
 
-  set profilePicture(profilePicture: string) {
-    this.userObj.profilePicture = profilePicture;
+  public set permission(permission: Permission) {
+    this._user.permission = permission;
   }
 
-  set notificationsEnabled(notificationsEnabled: boolean) {
-    this.userObj.notificationsEnabled = notificationsEnabled;
+  public set profilePicture(profilePicture: string) {
+    this._user.profilePicture = profilePicture;
   }
 
-  set isLoggedIn(isLoggedIn: boolean) {
-    this.userObj.isLoggedIn = isLoggedIn;
+  public set notificationsEnabled(notificationsEnabled: boolean) {
+    this._user.notificationsEnabled = notificationsEnabled;
   }
 
-  update(attribute: string, value: string) {
-    this.userObj[attribute] = value;
+  public set isLoggedIn(isLoggedIn: boolean) {
+    this._user.isLoggedIn = isLoggedIn;
   }
 
-  hasPermission(required: Permission) {
-    return this.permissions.indexOf(this.permission as Permission) >= this.permissions.indexOf(required);
+  public update(attribute: string, value: string): void {
+    this._user[attribute] = value;
+  }
+
+  public hasPermission(required: Permission): boolean {
+    return this._permissions.indexOf(this.permission as Permission) >= this._permissions.indexOf(required);
   }
 }

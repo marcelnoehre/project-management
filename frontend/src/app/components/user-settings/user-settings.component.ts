@@ -12,6 +12,8 @@ import { UserService } from 'src/app/services/user.service';
 import { ErrorService } from 'src/app/services/error.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Permission } from 'src/app/enums/permission.enum';
+import { ParserService } from 'src/app/services/parser.service';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-user-settings',
@@ -19,8 +21,21 @@ import { Permission } from 'src/app/enums/permission.enum';
   styleUrls: ['./user-settings.component.scss']
 })
 export class UserSettingsComponent {
-  userSettingsForm!: FormGroup;
-  languages: Language[] = [
+  private _initialUser: User = this._user.user;
+  private _loadingAttribute = {
+    username: false,
+    fullName: false,
+    language: false,
+    password: false,
+    initials: false,
+    color: false,
+    profilePicture: false
+  }
+  public userSettingsForm!: FormGroup;
+  public loadingDelete = false;
+  public hidePassword = true;
+  public color!: string;
+  public languages: Language[] = [
     {
       key: 'en',
       label: 'English'
@@ -30,34 +45,22 @@ export class UserSettingsComponent {
       label: 'Deutsch'
     }
   ];
-  initialUser: User = this.user.user;
-  hidePassword = true;
-  color!: string;
-  loadingDelete: boolean = false;
-  loadingAttribute = {
-    username: false,
-    fullName: false,
-    language: false,
-    password: false,
-    initials: false,
-    color: false,
-    profilePicture: false
-  }
 
   constructor(
-    private storage: StorageService,
-    private api: ApiService,
-    private router: Router,
-    private snackbar: SnackbarService,
-    private translate: TranslateService,
-    private dialog: MatDialog,
-    private user: UserService,
-    private _error: ErrorService
+    private _storage: StorageService,
+    private _api: ApiService,
+    private _router: Router,
+    private _snackbar: SnackbarService,
+    private _translate: TranslateService,
+    private _dialog: MatDialog,
+    private _user: UserService,
+    private _error: ErrorService,
+    private _parser: ParserService
   ) {
-    this.createForm();
+    this._createForm();
   }
 
-  private createForm(): void {
+  private _createForm(): void {
     this.userSettingsForm = new FormGroup(
       {
         usernameFormControl: new FormControl('', {validators: [Validators.required] }),
@@ -70,102 +73,98 @@ export class UserSettingsComponent {
       },
       { }
     );
-      const controls = ['username', 'fullName', 'initials', 'language', 'color', 'password', 'profilePicture'];
-      controls.forEach((control) => {
-        this.userSettingsForm.get(control + 'FormControl')?.setValue(this.initialUser[control]);
-      });
-      this.color = this.initialUser.color;
+    const controls = ['username', 'fullName', 'initials', 'language', 'color', 'password', 'profilePicture'];
+    controls.forEach((control) => {
+      this.userSettingsForm.get(control + 'FormControl')?.setValue(this._initialUser[control]);
+    });
+    this.color = this._initialUser.color;
   }
 
-  onFileSelected(event: Event) {
+  public onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length) {
       const file = input.files[0];
       if(file.type.startsWith("image/")) {
         const reader = new FileReader;
         reader.onload = (e) => {
-            this.userSettingsForm.get('profilePictureFormControl')?.setValue(e.target?.result as string);
+          this.userSettingsForm.get('profilePictureFormControl')?.setValue(e.target?.result as string);
         };
         reader.readAsDataURL(file);
       }
     }
   }
 
-  removeFile() {
+  public removeFile(): void {
     this.userSettingsForm.get('profilePictureFormControl')?.setValue('');
   }
 
-  updateUser(attribute: string) {
+  public async updateUser(attribute: string): Promise<void> {
     let value = attribute === 'color' ? this.color : this.userSettingsForm.get(attribute + 'FormControl')?.value;
-    const key = this.translate.instant('USER.' + attribute.toUpperCase());
+    const key = this._translate.instant('USER.' + attribute.toUpperCase());
     const data = {
-      headline: this.translate.instant('DIALOG.HEADLINE.CHANGE_ATTRIBUTE', { attribute: key}),
-      description: this.translate.instant('DIALOG.INFO.CHANGE_ATTRIBUTE', { attribute: key}),
-      falseButton: this.translate.instant('APP.CANCEL'),
-      trueButton: this.translate.instant('APP.CONFIRM')
+      headline: this._translate.instant('DIALOG.HEADLINE.CHANGE_ATTRIBUTE', { attribute: key}),
+      description: this._translate.instant('DIALOG.INFO.CHANGE_ATTRIBUTE', { attribute: key}),
+      falseButton: this._translate.instant('APP.CANCEL'),
+      trueButton: this._translate.instant('APP.CONFIRM')
     };
-    this.dialog.open(DialogComponent, { data, ...{} }).afterClosed().subscribe(
+    this._dialog.open(DialogComponent, { data, ...{} }).afterClosed().subscribe(
       async (confirmed) => {
         if (confirmed) {
-          if (attribute === 'password') value = await this.sha256(value);
-          (this.loadingAttribute as any)[attribute] = true;          
-          this.api.updateUser(this.user.token, attribute, value).subscribe(
-            (response) => {
-              (this.loadingAttribute as any)[attribute] = false;
-              this.snackbar.open(this.translate.instant(response.message));
-              this.user.update(attribute, value);
-              this.initialUser = this.user.user;
-              this.storage.setSessionEntry('user', this.user.user);
-              if (attribute === 'password') {
-                this.userSettingsForm.get('passwordFormControl')?.setValue('');
-              } else if (attribute === 'language') {
-                this.translate.use(value);
-              } else if (attribute === 'username') {
-                this.storage.clearSession();
-                this.user.user = this.storage.getSessionEntry('user');
-                this.router.navigateByUrl('/login');
-              }
-            },
-            (error) => {
-              (this.loadingAttribute as any)[attribute] = false;
-              this._error.handleApiError(error);
+          if (attribute === 'password') value = await this._parser.sha256(value);
+          (this._loadingAttribute as any)[attribute] = true;          
+          try {
+            const response = await lastValueFrom(this._api.updateUser(this._user.token, attribute, value));
+            (this._loadingAttribute as any)[attribute] = false;
+            this._snackbar.open(this._translate.instant(response.message));
+            this._user.update(attribute, value);
+            this._initialUser = this._user.user;
+            this._storage.setSessionEntry('user', this._user.user);
+            if (attribute === 'password') {
+              this.userSettingsForm.get('passwordFormControl')?.setValue('');
+            } else if (attribute === 'language') {
+              this._translate.use(value);
+            } else if (attribute === 'username') {
+              this._storage.clearSession();
+              this._user.user = this._storage.getSessionEntry('user');
+              this._router.navigateByUrl('/login');
             }
-          );
+          } catch (error) {
+            (this._loadingAttribute as any)[attribute] = false;
+            this._error.handleApiError(error);
+          }
         }
       }
     );
   }
 
-  async deleteUser() {
+  public async deleteUser(): Promise<void> {
     const data = {
-      headline: this.translate.instant('DIALOG.HEADLINE.DELETE_ACCOUNT'),
-      description: this.translate.instant('DIALOG.INFO.DELETE_ACCOUNT'),
-      falseButton: this.translate.instant('APP.CANCEL'),
-      trueButton: this.translate.instant('APP.CONFIRM')
+      headline: this._translate.instant('DIALOG.HEADLINE.DELETE_ACCOUNT'),
+      description: this._translate.instant('DIALOG.INFO.DELETE_ACCOUNT'),
+      falseButton: this._translate.instant('APP.CANCEL'),
+      trueButton: this._translate.instant('APP.CONFIRM')
     };
-    this.dialog.open(DialogComponent, { data, ...{} }).afterClosed().subscribe(
+    this._dialog.open(DialogComponent, { data, ...{} }).afterClosed().subscribe(
       async (confirmed) => {
         if (confirmed) {
           this.loadingDelete = true;
-          this.api.deleteUser(this.user.token).subscribe(
-            (response) => {
-              this.loadingDelete = false;
-              this.storage.clearSession();
-              this.user.user = this.storage.getSessionEntry('user');
-              this.router.navigateByUrl('/login');
-              this.snackbar.open(this.translate.instant(response.message));
-            },
-            (error) => {
-              this.loadingDelete = false;
-              this._error.handleApiError(error);
-            }
-          );
+          try {
+            const response = await lastValueFrom(this._api.deleteUser(this._user.token));
+            this.loadingDelete = false;
+            this._storage.clearSession();
+            this._user.user = this._storage.getSessionEntry('user');
+            this._router.navigateByUrl('/login');
+            this._snackbar.open(this._translate.instant(response.message));
+          } catch (error) {
+            this.loadingDelete = false;
+            this._error.handleApiError(error);
+          }
         }
       }
     );
   }
 
-  get profilePicture() {
+  public get profilePicture(): string {
     return this.userSettingsForm.get('profilePictureFormControl')?.value;
   }
 
@@ -173,30 +172,21 @@ export class UserSettingsComponent {
     return this.userSettingsForm.controls[formControl].hasError(type);
   }
 
-  isDisabled(attribute: string) {
+  public isDisabled(attribute: string): boolean {
     const value = attribute === 'color' ? this.color : this.userSettingsForm.get(attribute + 'FormControl')?.value;
-    if (attribute === 'profilePicture') return this.initialUser[attribute] === value;
-    return !this.userSettingsForm.get(attribute + 'FormControl')?.valid || this.initialUser[attribute] === value || value === '' || value === null;
+    if (attribute === 'profilePicture') return this._initialUser[attribute] === value;
+    return !this.userSettingsForm.get(attribute + 'FormControl')?.valid || this._initialUser[attribute] === value || value === '' || value === null;
   }
 
-  hasProfilePicture() {
+  public hasProfilePicture(): boolean {
     return this.userSettingsForm.get('profilePictureFormControl')?.value;
   }
 
-  showDelete() {
-    return !this.user.hasPermission(Permission.OWNER);
+  public showDelete(): boolean {
+    return !this._user.hasPermission(Permission.OWNER);
   }
 
-  async sha256(message: string): Promise<string> {
-		const encoder = new TextEncoder();
-		const data = encoder.encode(message);
-		const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-		const hashArray = Array.from(new Uint8Array(hashBuffer));
-		const hashHex = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
-		return hashHex;
-	}
-
-  isLoading(attribute: string): boolean {
-    return (this.loadingAttribute as any)[attribute]
+  public isLoading(attribute: string): boolean {
+    return (this._loadingAttribute as any)[attribute]
   }
 }

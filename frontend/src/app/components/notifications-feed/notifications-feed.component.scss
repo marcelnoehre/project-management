@@ -8,6 +8,7 @@ mat-dialog-content {
 	justify-content: flex-start;
 	text-align: center;
     width: 75vw;
+
     table {
         width: 100%;
         border-collapse: collapse;
@@ -17,6 +18,7 @@ mat-dialog-content {
         position: sticky; 
         top: 0;
         z-index: 2;
+
         th {
             border: 1px solid #ddd;
         }
@@ -61,6 +63,7 @@ mat-dialog-content {
 
 .actions {
 	justify-content: center;
+    
 	& > button {
 		padding-block: 1rem;
 	}

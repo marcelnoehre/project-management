@@ -16,10 +16,10 @@ export class AppComponent implements OnInit {
   constructor(
     private _translate: TranslateService,
     private _event: EventService,
-    private device: DeviceService,
-    private storage: StorageService
+    private _device: DeviceService,
+    private _storage: StorageService
   ) {
-		const user = this.storage.getSessionEntry('user');
+		const user = this._storage.getSessionEntry('user');
 		_translate.setDefaultLang(environment.defaultLanguage);
 		if (user?.language) {
       _translate.use(user.language);
@@ -29,7 +29,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.device.init();
+    this._device.init();
   }
 
   @HostListener('document:click', ['$event'])

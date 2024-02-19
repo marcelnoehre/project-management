@@ -24,41 +24,41 @@ export class ToolbarProfileMenuComponent {
 	public color = '';
 
 	constructor(
-    private router: Router,
-		private storage: StorageService,
-		private user: UserService,
-		private dialog: MatDialog,
-		private snackbar: SnackbarService,
-		private translate: TranslateService,
-		private notifications: NotificationsService,
-		private device: DeviceService
+    	private _router: Router,
+		private _storage: StorageService,
+		private _user: UserService,
+		private _dialog: MatDialog,
+		private _snackbar: SnackbarService,
+		private _translate: TranslateService,
+		private _notifications: NotificationsService,
+		private _device: DeviceService
 	) {
-		this.fullName = this.user.fullName;
-		this.profilePicture = this.user.profilePicture;
-		this.initials = this.user.initials;
-		this.color = this.user.color;
+		this.fullName = this._user.fullName;
+		this.profilePicture = this._user.profilePicture;
+		this.initials = this._user.initials;
+		this.color = this._user.color;
 	}
 
 	public logout(): void {
-		this.storage.clearSession();
-		this.user.user = this.storage.getSessionEntry('user');
-		this.snackbar.open(this.translate.instant('SUCCESS.LOGOUT'));
-		this.router.navigateByUrl('/login');
+		this._storage.clearSession();
+		this._user.user = this._storage.getSessionEntry('user');
+		this._snackbar.open(this._translate.instant('SUCCESS.LOGOUT'));
+		this._router.navigateByUrl('/login');
 	}
 
-	public showNotificationsFeed() {
-		this.dialog.open(NotificationsFeedComponent);
+	public showNotificationsFeed(): void {
+		this._dialog.open(NotificationsFeedComponent);
 	}
 
-	public showNotifications() {
-		return this.user.notificationsEnabled;
+	public unseenNotifications(): number | string {
+		return this._notifications.unseenNotifications >= 10 ? '+' : this._notifications.unseenNotifications;
 	}
 
-	public unseenNotifications() {
-		return this.notifications.unseenNotifications >= 10 ? '+' : this.notifications.unseenNotifications;
+	public showNotifications(): boolean {
+		return this._user.notificationsEnabled;
 	}
 
 	public isSmallScreen(): boolean {
-		return this.device.isSmallScreen();
+		return this._device.isSmallScreen();
 	}
 }

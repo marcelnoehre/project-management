@@ -1,5 +1,3 @@
-import { StatLeader } from "./stat-leader"
-
 export interface StatLeaders {
     created: StatLeader
     imported: StatLeader
@@ -8,4 +6,9 @@ export interface StatLeaders {
     restored: StatLeader
     deleted: StatLeader
     cleared: StatLeader
+}
+
+interface StatLeader {
+    username: string[],
+    value: number
 }

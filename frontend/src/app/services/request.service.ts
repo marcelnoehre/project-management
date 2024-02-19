@@ -9,42 +9,27 @@ import { Observable } from 'rxjs';
 export class RequestService {
 
   constructor(
-    private http: HttpClient
+    private _http: HttpClient
   ) { }
 
-  public send<T>(type: RequestType, url: string, data: any): Observable<T> {
-    switch(type) {
-      case RequestType.GET:
-        return this.get<T>(url, data);
-      case RequestType.POST:
-        return this.post<T>(url, data);
-      case RequestType.PUT:
-        return this.put<T>(url, data);
-      case RequestType.DELETE:
-        return this.delete<T>(url, data);
-      default:
-        throw new Error('ERROR.REQUEST_TYPE');
-    }
+  private _get<T>(url: string, data?: any): Observable<T> {
+    return this._http.get<T>(this._adjustUrl(url, data));
   }
 
-  private get<T>(url: string, data?: any): Observable<T> {
-    return this.http.get<T>(this.adjustUrl(url, data));
+  private _post<T>(url: string, body: any): Observable<T> {
+    return this._http.post<T>(url, body);
   }
 
-  private post<T>(url: string, body: any): Observable<T> {
-    return this.http.post<T>(url, body);
+  private _put<T>(url: string, body: any): Observable<T> {
+    return this._http.put<T>(url, body);
   }
 
-  private put<T>(url: string, body: any): Observable<T> {
-    return this.http.put<T>(url, body);
+  private _delete<T>(url: string, data?: any): Observable<T> {
+    return this._http.delete<T>(this._adjustUrl(url, data));
   }
 
-  private delete<T>(url: string, data?: any): Observable<T> {
-    return this.http.delete<T>(this.adjustUrl(url, data));
-  }
-
-  private adjustUrl(url: string, data: any) {
-    let first: boolean = true;
+  private _adjustUrl(url: string, data: any): string {
+    let first = true;
     for (const key in data) {
       if (data.hasOwnProperty(key)) {
         url += first ? '?' : '&';
@@ -53,6 +38,21 @@ export class RequestService {
       }
     }
     return url;
+  }
+
+  public send<T>(type: RequestType, url: string, data: any): Observable<T> {
+    switch(type) {
+      case RequestType.GET:
+        return this._get<T>(url, data);
+      case RequestType.POST:
+        return this._post<T>(url, data);
+      case RequestType.PUT:
+        return this._put<T>(url, data);
+      case RequestType.DELETE:
+        return this._delete<T>(url, data);
+      default:
+        throw new Error('ERROR.REQUEST_TYPE');
+    }
   }
 
 }

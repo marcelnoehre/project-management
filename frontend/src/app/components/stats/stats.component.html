@@ -1,4 +1,4 @@
-<div class="stats-container" *ngIf="loaded()">
+<div class="stats-container" *ngIf="isLoaded()">
     <div class="stats-row">
         <mat-card class="stats-module">
             <mat-card-header>
@@ -183,7 +183,7 @@
         </button>
     </div>
 </div>
-<div class="loading-container" *ngIf="!loaded()">
+<div class="loading-container" *ngIf="!isLoaded()">
     <p class="information">{{ 'STATS.LOADING.' + information | translate }}...</p>
     <mat-progress-bar [mode]="mode" [value]="loading"></mat-progress-bar>
 </div>

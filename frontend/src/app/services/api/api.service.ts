@@ -24,180 +24,179 @@ import { TestService } from './test.service';
   providedIn: 'root'
 })
 export class ApiService {
-  private adapter!: AdapterService;
-  private chosenAdapter = environment.selectedApi;
+  private _adapter: AdapterService = this._db;
+  private _chosenAdapter = environment.selectedApi;
   
   constructor(
-    private db: DbService,
-    private mock: MockService,
-	private test: TestService
+    private _db: DbService,
+    private _mock: MockService,
+	private _test: TestService
   ) {
-    this.resolveAdapter();
+    this._resolveAdapter();
   }
 
-	private resolveAdapter() {
-		switch (this.chosenAdapter) {
-			case Adapter.db:
-				this.adapter = this.db;
+	private _resolveAdapter() {
+		switch (this._chosenAdapter) {
+			case Adapter.DB:
+				this._adapter = this._db;
 				break;
-			case Adapter.mock:
-				this.adapter = this.mock;
+			case Adapter.MOCK:
+				this._adapter = this._mock;
 				break;
-			case Adapter.test:
-				this.adapter = this.test;
+			case Adapter.TEST:
+				this._adapter = this._test;
 				break;
 			default:
-				console.error('No adapter!');
 				break;
 		}
 	}
 
 	// ### AUTH ###
 	public verify(token: string): Observable<User> {
-		return this.adapter.verify(token);
+		return this._adapter.verify(token);
 	}
 
 	public refreshToken(token: string): Observable<string> {
-		return this.adapter.refreshToken(token);
+		return this._adapter.refreshToken(token);
 	}
 
 	public login(username: string, password: string): Observable<User> {
-		return this.adapter.login(username, password);
+		return this._adapter.login(username, password);
 	}
 
 	public register(username: string, fullName: string, language: string, password: string): Observable<Response> {
-		return this.adapter.register(username, fullName, language, password);
+		return this._adapter.register(username, fullName, language, password);
 	}
 
 	public updateUser(token: string, attribute: string, value: string): Observable<Response> {
-		return this.adapter.updateUser(token, attribute, value);
+		return this._adapter.updateUser(token, attribute, value);
 	}
 
 	public toggleNotifications(token: string, notificationsEnabled: boolean): Observable<Response> {
-		return this.adapter.toggleNotifications(token, notificationsEnabled);
+		return this._adapter.toggleNotifications(token, notificationsEnabled);
 	}
 
 	public deleteUser(token: string): Observable<Response> {
-		return this.adapter.deleteUser(token);
+		return this._adapter.deleteUser(token);
 	}
 
 
 	// ### NOTIFICATIONS ###
 	public getNotifications(token: string): Observable<Notification[]> {
-		return this.adapter.getNotifications(token);
+		return this._adapter.getNotifications(token);
 	}
 
 	public updateNotifications(token: string, seen: string[], removed: string[]): Observable<Notification[]> {
-		return this.adapter.updateNotifications(token, seen, removed);
+		return this._adapter.updateNotifications(token, seen, removed);
 	}
 
 
 	// ### PROJECT ###
 	public getTeamMembers(token: string): Observable<User[]> {
-		return this.adapter.getTeamMembers(token);
+		return this._adapter.getTeamMembers(token);
 	}
 
 	public createProject(token: string, project: string): Observable<Response> {
-		return this.adapter.createProject(token, project);
+		return this._adapter.createProject(token, project);
 	}
 
 	public inviteUser(token: string, username: string): Observable<User> {
-		return this.adapter.inviteUser(token, username);
+		return this._adapter.inviteUser(token, username);
 	}
 
 	public handleInvite(token: string, decision: boolean): Observable<Response> {
-		return this.adapter.handleInvite(token, decision);
+		return this._adapter.handleInvite(token, decision);
 	}
 
 	public updatePermission(token: string, username: string, permission: Permission): Observable<User[]> {
-		return this.adapter.updatePermission(token, username, permission);
+		return this._adapter.updatePermission(token, username, permission);
 	}
 
 	public removeUser(token: string, username: string): Observable<Response> {
-		return this.adapter.removeUser(token, username);
+		return this._adapter.removeUser(token, username);
 	}
 
 	public leaveProject(token: string): Observable<Response> {
-		return this.adapter.leaveProject(token);
+		return this._adapter.leaveProject(token);
 	}
 
 
   	// ### STATS ###
 	public personalStats(token: string): Observable<Stats> {
-		return this.adapter.personalStats(token);
+		return this._adapter.personalStats(token);
 	}
 
 	public stats(token: string): Observable<AssignedStats[]> {
-		return this.adapter.stats(token);
+		return this._adapter.stats(token);
 	}
 
 	public statLeaders(token: string): Observable<StatLeaders> {
-		return this.adapter.statLeaders(token);
+		return this._adapter.statLeaders(token);
 	}
 
 	public taskAmount(token: string): Observable<CategoryStats> {
-		return this.adapter.taskAmount(token);
+		return this._adapter.taskAmount(token);
 	}
 
 	public averageTime(token: string): Observable<CategoryStats> {
-		return this.adapter.averageTime(token);
+		return this._adapter.averageTime(token);
 	}
 
 	public wip(token: string): Observable<number> {
-		return this.adapter.wip(token);
+		return this._adapter.wip(token);
 	}
 
 	public taskProgress(token: string): Observable<TaskProgress> {
-		return this.adapter.taskProgress(token);
+		return this._adapter.taskProgress(token);
 	}
 
 	public projectRoadmap(token: string): Observable<ProjectRoadmap[]> {
-		return this.adapter.projectRoadmap(token);
+		return this._adapter.projectRoadmap(token);
 	}
 
 	public optimizeOrder(token: string): Observable<Response> {
-		return this.adapter.optimizeOrder(token);
+		return this._adapter.optimizeOrder(token);
 	}
 
 
 	// ### TASKS ###
 	public createTask(token: string, title: string, description: string, assigned: string, state: string): Observable<Response> {
-		return this.adapter.createTask(token, title, description, assigned, state);
+		return this._adapter.createTask(token, title, description, assigned, state);
 	}
 
 	public importTasks(token: string, tasks: Task[]): Observable<Progress> {
-		return this.adapter.importTasks(token, tasks);
+		return this._adapter.importTasks(token, tasks);
 	}
 
 	public getTaskList(token: string): Observable<State[]> {
-		return this.adapter.getTaskList(token);
+		return this._adapter.getTaskList(token);
 	}
 
 	public updateTask(token: string, task: Task): Observable<State[]> {
-		return this.adapter.updateTask(token, task);
+		return this._adapter.updateTask(token, task);
 	}
 
 	public updatePosition(token: string, uid: string, state: string, order: number): Observable<State[]> {
-		return this.adapter.updatePosition(token, uid, state, order);
+		return this._adapter.updatePosition(token, uid, state, order);
 	}
 
 	public moveToTrashBin(token: string, uid: string): Observable<State[]> {
-		return this.adapter.moveToTrashBin(token, uid);
+		return this._adapter.moveToTrashBin(token, uid);
 	}
 	
 	public getTrashBin(token: string): Observable<Task[]> {
-		return this.adapter.getTrashBin(token);
+		return this._adapter.getTrashBin(token);
 	}
 
 	public deleteTask(token: string, uid: string): Observable<Task[]> {
-		return this.adapter.deleteTask(token, uid);
+		return this._adapter.deleteTask(token, uid);
 	}
 
 	public restoreTask(token: string, uid: string): Observable<Task[]> {
-		return this.adapter.restoreTask(token, uid);
+		return this._adapter.restoreTask(token, uid);
 	}
 
 	public clearTrashBin(token: string): Observable<Response> {
-		return this.adapter.clearTrashBin(token);
+		return this._adapter.clearTrashBin(token);
 	}
 }

@@ -8,12 +8,12 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class SnackbarService {
 	constructor(
-		private translate: TranslateService,
-		public snackbar: MatSnackBar,
-		private zone: NgZone
+		private _zone: NgZone,
+		private _snackbar: MatSnackBar,
+		private _translate: TranslateService
 	) { }
 
-	public open(message: string, action = this.translate.instant('APP.OK'), type: SnackbarType = SnackbarType.INFO, duration = 7000): void {
-		this.zone.run(() => this.snackbar.open(message, action, { duration, panelClass: type }));
+	public open(message: string, action = this._translate.instant('APP.OK'), type: SnackbarType = SnackbarType.INFO, duration = 7000): void {
+		this._zone.run(() => this._snackbar.open(message, action, { duration, panelClass: type }));
 	}
 }

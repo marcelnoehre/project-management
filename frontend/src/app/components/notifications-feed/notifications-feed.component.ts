@@ -9,45 +9,45 @@ import { NotificationsService } from 'src/app/services/notifications.service';
   styleUrls: ['./notifications-feed.component.scss']
 })
 export class NotificationsFeedComponent implements OnInit, OnDestroy {
-  notifications: Notification[] = [];
-  updateSeen: string[] = [];
-  updateRemove: string[] = [];
+  public notifications: Notification[] = [];
+  private _updateSeen: string[] = [];
+  private _updateRemove: string[] = [];
   
   constructor(
-    private notification: NotificationsService,
-    private translate: TranslateService
+    private _notification: NotificationsService,
+    private _translate: TranslateService
   ) {
 
   }
 
   ngOnInit(): void {
-    this.notifications = this.notification.getNotifications;
+    this.notifications = this._notification.getNotifications;
 5  }
 
   ngOnDestroy(): void {
-    if (this.updateSeen.length || this.updateRemove.length) {
-      this.updateSeen = this.updateSeen.filter(item => !this.updateRemove.includes(item));
-      this.notification.update(this.updateSeen, this.updateRemove);
+    if (this._updateSeen.length || this._updateRemove.length) {
+      this._updateSeen = this._updateSeen.filter(item => !this._updateRemove.includes(item));
+      this._notification.update(this._updateSeen, this._updateRemove);
     }
   }
 
-  viewed(index: number, uid: string): void {
+  public seen(index: number, uid: string): void {
     if (!this.notifications[index].seen) {
       this.notifications[index].seen = true;
-      this.updateSeen.push(uid);
+      this._updateSeen.push(uid);
     }
   }
 
-  remove(index: number, uid: string): void {
+  public remove(index: number, uid: string): void {
     this.notifications.splice(index, 1);
-    this.updateRemove.push(uid);
+    this._updateRemove.push(uid);
   }
 
-  encryptMessage(message: string, data: string[]) {
-    return this.translate.instant(message, {data_0: data[0], data_1: data[1]});
+  public encryptMessage(message: string, data: string[]): string {
+    return this._translate.instant(message, {data_0: data[0], data_1: data[1]});
   }
 
-  isNew(seen: boolean)  {
+  public isNew(seen: boolean): string  {
     return seen ? '' : 'new';
   }
 }
