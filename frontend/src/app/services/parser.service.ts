@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { State } from '../interfaces/data/state';
+import { Export } from '../interfaces/export';
 import * as JsonToXML from "js2xmlparser";
 import * as XML from 'xml-js';
 import * as YAML from 'yaml';
@@ -9,23 +10,32 @@ import * as YAML from 'yaml';
 })
 export class ParserService {
 
-  public readStates(list: State[]) {
-    return list.map((item) => ({
-      state: item.state,
-      tasks: item.tasks.map(({ uid, project, state, ...task }) => task)
-    }));
+  public exportFormat(list: State[]): Export[] {
+    const exportList: Export[] = [];
+    list.forEach((state) => {
+      state.tasks.forEach((task) => {
+        exportList.push({
+          title: task.title, 
+          description: task.description, 
+          author: task.author,
+          assigned: task.assigned,
+          state: task.state 
+        })
+      });
+    });
+    return exportList;
   }
 
-  public statesToJSON(taskList: State[]): Blob {
-    return new Blob([JSON.stringify(this.readStates(taskList), null, 2)], { type: 'application/json' });
+  public tasksToJSON(taskList: Export[]): Blob {
+    return new Blob([JSON.stringify(taskList, null, 2)], { type: 'application/json' });
   }
 
-  public statesToXML(taskList: State[]): Blob {
-    return new Blob([JsonToXML.parse('root', this.readStates(taskList))], { type: 'application/xml' });
+  public tasksToXML(taskList: State[]): Blob {
+    return new Blob([JsonToXML.parse('root', taskList)], { type: 'application/xml' });
   }
 
-  public statesToYAML(taskList: State[]): Blob {
-    return new Blob([YAML.stringify(this.readStates(taskList))], { type: 'text/yaml' });
+  public tasksToYAML(taskList: State[]): Blob {
+    return new Blob([YAML.stringify(taskList)], { type: 'text/yaml' });
   }
 
   public encodeFileInput(fileInput: string, fileExtension: string) {

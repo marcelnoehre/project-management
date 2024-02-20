@@ -5,8 +5,6 @@ import { TaskState } from 'src/app/enums/task-state.enum';
 import { moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { TranslateService } from '@ngx-translate/core';
-import { StorageService } from 'src/app/services/storage.service';
-import { Router } from '@angular/router';
 import { TaskStateColor } from 'src/app/enums/task-state-color.enum';
 import { UserService } from 'src/app/services/user.service';
 import { ParserService } from 'src/app/services/parser.service';
@@ -96,15 +94,15 @@ export class KanbanBoardComponent implements AfterViewInit {
   }
 
   public json(): void {
-    this._export(this._parser.statesToJSON(this.taskList), '.json');
+    this._export(this._parser.tasksToJSON(this._parser.exportFormat(this.taskList)), '.json');
   }
 
   public xml(): void {
-    this._export(this._parser.statesToXML(this.taskList), '.xml');
+    this._export(this._parser.tasksToXML(this.taskList), '.xml');
   }
 
   public yaml(): void {
-    this._export(this._parser.statesToYAML(this.taskList), '.yaml');
+    this._export(this._parser.tasksToYAML(this.taskList), '.yaml');
   }
 
   public getColor(state: string): TaskStateColor {
