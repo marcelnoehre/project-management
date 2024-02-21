@@ -51,6 +51,7 @@ async function refreshToken(req, res, next) {
         const tokenUser = jwt.decode(token);
         const user = await authService.singleUser(db, tokenUser.username);
         if (user) {
+            user.profilePicture = '';
             res.json(jwt.sign(user, '3R#q!ZuFb2sPn8yT^@5vLmN7jA*C6hG', { expiresIn: '1h' }));
         } else {
             res.status(403).send({ message: 'ERROR.INVALID_TOKEN' });
@@ -80,7 +81,10 @@ async function login(req, res, next) {
         if (await authService.passwordValid(db, username, password)) {
             const user = await authService.singleUser(db, username);
             if (user) {
+                const profilePicture = user.profilePicture;
+                user.profilePicture = '';
                 user.token = jwt.sign(user, '3R#q!ZuFb2sPn8yT^@5vLmN7jA*C6hG', { expiresIn: '1h' });
+                user.profilePicture = profilePicture;
                 user.isLoggedIn = user.project !== '' && user.permission !== 'INVITED';
                 res.json(user);
             } else {
