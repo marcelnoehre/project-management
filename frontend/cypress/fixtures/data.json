@@ -1,0 +1,12 @@
+{
+    "waitTime": 750,
+    "username": {
+        "owner": "owner",
+        "admin": "admin",
+        "member": "member",
+        "invited": "invited",
+        "none": "none"
+    },
+    "password": "1234",
+    "invalid": "invalid"
+}
