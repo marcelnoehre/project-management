@@ -1,1 +1,1 @@
-import './commands'
+import './specs/commands-login'
