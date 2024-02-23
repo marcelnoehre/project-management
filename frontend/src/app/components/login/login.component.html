@@ -15,6 +15,7 @@
 							placeholder="{{'USER.USERNAME'|translate}}"
 							matInput
 							required
+							data-cy="login-username"
 						/>
 						<mat-icon matPrefix> person </mat-icon>
 						<mat-error *ngIf="!userValid()"> {{ 'ERROR.REQUIRED.USERNAME' | translate }} </mat-error>
@@ -31,6 +32,7 @@
 							[type]="hidePassword ? 'password' : 'text'"
 							matInput
 							required
+							data-cy="login-password"
 						/>
 						<mat-icon matPrefix> lock </mat-icon>
 						<button
@@ -41,6 +43,7 @@
 							(click)="hidePassword = !hidePassword"
 							matSuffix
 							mat-icon-button
+							data-cy="login-hide-password"
 						>
 							<mat-icon> {{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
 						</button>
@@ -57,6 +60,7 @@
 						tabindex="0"
 						(click)="login()"
 						mat-raised-button
+						data-cy="login-submit"
 					>
 						<app-spinner-icon class="material-icons" icon="login" [spinning]="loading"></app-spinner-icon>
 						<ng-container *ngIf="loading">&nbsp;</ng-container>
@@ -67,7 +71,15 @@
 		</mat-card-content>
 		<mat-card-footer class="pt-2">
             <div>{{'LOGIN.NOT_REGISTERED'|translate}}&nbsp;
-                <div class="clickable" (click)="registration()" (keyup.enter)="registration()" tabindex="0">{{'LOGIN.REGISTRATION'|translate}}</div>
+                <div 
+					class="clickable" 
+					(click)="registration()" 
+					(keyup.enter)="registration()" 
+					tabindex="0"
+					data-cy="registration-link"
+				>
+					{{'LOGIN.REGISTRATION'|translate}}
+				</div>
             </div>
         </mat-card-footer>
 	</mat-card>

@@ -1,1 +1,2 @@
-import './commands'
+import './specs/commands-login';
+import './specs/commands-registration';
