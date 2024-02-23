@@ -4,7 +4,7 @@ describe('Login process error cases', () => {
     sessionStorage.clear();
     it('Should block invalid username', () => {
         cy.viewport(1600, 900);
-        cy.invalidUsername();
+        cy.loginInvalidUsername();
         cy.url().should('include', '/login');
     })
 
@@ -12,7 +12,7 @@ describe('Login process error cases', () => {
     sessionStorage.clear();
     it('Should block invalid password', () => {
         cy.viewport(1600, 900);
-        cy.invalidPassword ();
+        cy.loginInvalidPassword ();
         cy.url().should('include', '/login');
     })
 });
@@ -24,7 +24,7 @@ describe('Login process valid', () => {
         cy.viewport(1600, 900);
         cy.loginCorrect();
         cy.url().should('include', '');
-    })
+    });
 });
 
 // Redirect ot registration
@@ -32,7 +32,7 @@ describe('Redirect to registration', () => {
     sessionStorage.clear();
     it('Should redirect to registration', () => {
         cy.viewport(1600, 900);
-        cy.redirectRegistration();
+        cy.loginRedirectRegistration();
         cy.url().should('include', '/registration');
     });
 });

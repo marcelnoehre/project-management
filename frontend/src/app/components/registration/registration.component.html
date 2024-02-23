@@ -17,6 +17,7 @@
 							required
 							minlength="4"
 							maxlength="16"
+							data-cy="registration-username"
 						/>
 						<mat-icon matPrefix> person </mat-icon>
 						<mat-error *ngIf="hasError('usernameFormControl', 'required')"> {{ 'ERROR.REQUIRED.USERNAME' | translate }} </mat-error>
@@ -34,6 +35,7 @@
 							matInput
 							required
 							maxlength="32"
+							data-cy="registration-fullName"
 						/>
 						<mat-icon matPrefix> badge </mat-icon>
 						<mat-error *ngIf="hasError('fullnameFormControl', 'required')">{{ 'ERROR.REQUIRED.FULLNAME' | translate }}</mat-error>
@@ -47,6 +49,7 @@
 							name="language"
 							formControlName="languageFormControl"
 							placeholder="{{'USER.LANGUAGE'|translate}}"
+							data-cy="registration-language"
 						>
 							<mat-option
 								*ngFor="let lang of languages"
@@ -72,6 +75,7 @@
 							required
 							minlength="8"
 							pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@#$%^&+=*]).{8,}$"
+							data-cy="registration-password"
 						/>
 						<mat-icon matPrefix> lock </mat-icon>
 						<button
@@ -82,6 +86,7 @@
 							(click)="hidePassword = !hidePassword"
 							matSuffix
 							mat-icon-button
+							data-cy="registration-hide-password"
 						>
 							<mat-icon> {{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
 						</button>
@@ -103,6 +108,7 @@
 							required
 							minlength="8"
 							pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@#$%^&+=*]).{8,}$"
+							data-cy="registration-password-repeat"
 						/>
 						<mat-icon matPrefix> lock </mat-icon>
 						<button
@@ -113,6 +119,7 @@
 							(click)="hidePasswordRepeat = !hidePasswordRepeat"
 							matSuffix
 							mat-icon-button
+							data-cy="registration-hide-password-repeat"
 						>
 							<mat-icon> {{ hidePasswordRepeat ? 'visibility_off' : 'visibility' }}</mat-icon>
 						</button>
@@ -131,6 +138,7 @@
 						tabindex="0"
 						(click)="register()"
 						mat-raised-button
+						data-cy="registration-submit"
 					>
 						<app-spinner-icon class="material-icons" icon="login" [spinning]="loading"></app-spinner-icon>
 						<ng-container *ngIf="loading">&nbsp;</ng-container>
@@ -140,7 +148,15 @@
 			</form>
 		</mat-card-content>
 		<mat-card-footer class="pt-2">
-            <div class="clickable" (click)="login()" (keyup.enter)="login()" tabindex="0">{{'REGISTRATION.BACK'|translate}}</div>
+            <div 
+				class="clickable" 
+				(click)="login()" 
+				(keyup.enter)="login()" 
+				tabindex="0"
+				data-cy="login-link"
+			>
+				{{'REGISTRATION.BACK'|translate}}
+			</div>
         </mat-card-footer>
 	</mat-card>
 </div>

@@ -18,7 +18,7 @@ const password = data.user.password.mock;
 const invalid = data.invalid;
 
 // login with invalid credentials
-Cypress.Commands.add('invalidUsername', () => {
+Cypress.Commands.add('loginInvalidUsername', () => {
     cy.visit(loginRoute);
     // username wrong
     cy.get(usernameInput).click({force: true}).type(invalid).wait(waitTime);
@@ -27,7 +27,7 @@ Cypress.Commands.add('invalidUsername', () => {
     cy.get(loginButton).should(beEnabled).wait(waitTime);
 });
 
-Cypress.Commands.add('invalidPassword', () => {
+Cypress.Commands.add('loginInvalidPassword', () => {
     cy.visit(loginRoute);
     // password wrong
     cy.get(usernameInput).click({force: true}).type(username).wait(waitTime);
@@ -48,7 +48,7 @@ Cypress.Commands.add('loginCorrect', () => {
 });
 
 // Registration
-Cypress.Commands.add('redirectRegistration', () => {
+Cypress.Commands.add('loginRedirectRegistration', () => {
     cy.visit(loginRoute);
     // redirect to registration 
     cy.get(registrationLink).click().wait(waitTime);

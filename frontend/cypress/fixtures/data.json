@@ -1,7 +1,9 @@
 {
     "waitTime": 750,
+    "enter": "{enter}",
     "mock": "mock",
     "invalid": "invalid",
+    "tooShort": "x",
     "user": {
         "username": {
             "owner": "owner",
@@ -12,7 +14,10 @@
         },
         "password": {
             "mock": "1234",
-            "valid": "test*0TEST"
-        }
+            "valid": "test*0TEST",
+            "invalid": "invalidPassword"
+        },
+        "fullName": "full name",
+        "language": "en"
     }
 }

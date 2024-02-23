@@ -71,7 +71,15 @@
 		</mat-card-content>
 		<mat-card-footer class="pt-2">
             <div>{{'LOGIN.NOT_REGISTERED'|translate}}&nbsp;
-                <div class="clickable" (click)="registration()" (keyup.enter)="registration()" tabindex="0">{{'LOGIN.REGISTRATION'|translate}}</div>
+                <div 
+					class="clickable" 
+					(click)="registration()" 
+					(keyup.enter)="registration()" 
+					tabindex="0"
+					data-cy="registration-link"
+				>
+					{{'LOGIN.REGISTRATION'|translate}}
+				</div>
             </div>
         </mat-card-footer>
 	</mat-card>
