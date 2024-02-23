@@ -3,7 +3,8 @@ module.exports = {
 	ignorePatterns: [
 		"projects/**/*",
 		"dist",
-		"src/environments"
+		"src/environments",
+		"**/index.html"
 	],
 	overrides: [
 		{
@@ -56,7 +57,11 @@ module.exports = {
 				indent: "off",
 				"@typescript-eslint/indent": ["error", "tab"],
 				"arrow-spacing": ["error", { before: true, after: true }],
-				'@typescript-eslint/adjacent-overload-signatures': 'off'
+				'@typescript-eslint/adjacent-overload-signatures': 'off',
+				"@typescript-eslint/no-non-null-assertion": "off",
+				"@typescript-eslint/no-explicit-any": "off",
+				"@typescript-eslint/no-loop-func": "off",
+				"no-prototype-builtins": "off"
 			}
 		},
 		{

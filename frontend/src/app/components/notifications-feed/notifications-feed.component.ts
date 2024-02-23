@@ -22,7 +22,6 @@ export class NotificationsFeedComponent implements OnInit, OnDestroy {
 
 	ngOnInit(): void {
 		this.notifications = this._notification.getNotifications;
-		5;  
 	}
 
 	ngOnDestroy(): void {

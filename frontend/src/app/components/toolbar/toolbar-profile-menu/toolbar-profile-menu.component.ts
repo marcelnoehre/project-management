@@ -31,7 +31,7 @@ export class ToolbarProfileMenuComponent implements OnInit, OnDestroy {
 	public color = '';
 
 	constructor(
-    	private _router: Router,
+		private _router: Router,
 		private _storage: StorageService,
 		private _user: UserService,
 		private _dialog: MatDialog,

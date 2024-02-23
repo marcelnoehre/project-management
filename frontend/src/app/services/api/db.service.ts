@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AdapterService } from './adapter.service';
@@ -27,7 +26,7 @@ export class DbService extends AdapterService {
 	private _basePath = environment.apiBasePath;
 
 	constructor(
-	  private request: RequestService
+		private request: RequestService
 	) {
 		super();
 	}

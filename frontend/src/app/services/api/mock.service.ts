@@ -256,11 +256,11 @@ export class MockService extends AdapterService {
 	}
 
 	private _logRequest(request: string, ...data: [string, any][]): void {
-	    const obj: { [key: string]: any } = {};
+		const obj: { [key: string]: any } = {};
 		data.forEach(([key, value]) => {
-       		obj[key] = value;
-    	});
-    	console.log('##### ' + request.toUpperCase() + ' #####');
-		console.dir(obj);
+			obj[key] = value;
+		});
+		console.log('##### ' + request.toUpperCase() + ' #####'); // eslint-disable-line no-console
+		console.dir(obj); // eslint-disable-line no-console
 	}
 }

@@ -121,7 +121,7 @@ export class ApiService {
 	}
 
 
-  	// ### STATS ###
+	// ### STATS ###
 	public personalStats(token: string): Observable<Stats> {
 		return this._adapter.personalStats(token);
 	}
