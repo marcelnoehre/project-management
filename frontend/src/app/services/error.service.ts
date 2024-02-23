@@ -19,12 +19,16 @@ export class ErrorService {
 	) { }
 
 	public handleApiError(error: any) {
-		if (error.status === 403) {
+		if (error?.status === 403) {
 			this.handleInvalidUser();
 		}
-		this._snackbar.open(this._translate.instant(error.error.message));
-		if (!error.error.message) {
-			this._snackbar.open(error.statusText);
+		if (error?.error?.message) this._snackbar.open(this._translate.instant(error.error.message));
+		if (!error?.error?.message) {
+			if (error?.statusText) {
+				this._snackbar.open(error.statusText);
+			} else {
+				if(error) this._snackbar.open(error);
+			}
 		}
 	}
 

@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 import { Permission } from 'src/app/enums/permission.enum';
 import { TaskState } from 'src/app/enums/task-state.enum';
@@ -20,7 +19,6 @@ import { User } from 'src/app/interfaces/data/user';
 	providedIn: 'root',
 })
 export class TestService {
-	constructor(private translate: TranslateService) {}
 
 	// ### AUTH ###
 	public verify(token: string): Observable<User> {
@@ -33,7 +31,7 @@ export class TestService {
 			this._logRequest('refreshToken', ['token', token]);
 			return of(token);
 		} else {
-			throw new Error(this.translate.instant('ERROR.INVALID_TOKEN'));
+			throw new Error('ERROR.INVALID_TOKEN');
 		}
 	}
 
@@ -135,9 +133,7 @@ export class TestService {
 
 	public handleInvite(token: string, decision: boolean): Observable<Response> {
 		this._logRequest('handleInvite', ['token', token], ['decision', decision]);
-		return this.response(
-			decision ? 'SUCCESS.INVITE_ACCEPTED' : 'SUCCESS.INVITE_REJECTED'
-		);
+		return this.response(decision ? 'SUCCESS.INVITE_ACCEPTED' : 'SUCCESS.INVITE_REJECTED');
 	}
 
 	public updatePermission(
@@ -628,7 +624,7 @@ export class TestService {
 					},
 				});
 			default:
-				throw new Error(this.translate.instant('ERROR.INVALID_TOKEN'));
+				throw new Error('ERROR.INVALID_TOKEN');
 		}
 	}
 

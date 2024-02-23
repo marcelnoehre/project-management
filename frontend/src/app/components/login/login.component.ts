@@ -69,7 +69,7 @@ export class LoginComponent implements OnInit {
 		return this.loginForm.get('passwordFormControl')?.value;
 	}
 
-	private updateLanguage(): void {
+	public updateLanguage(): void {
 		if (this._user.language) {
 			this._translate.use(this._user.language);
 		}
