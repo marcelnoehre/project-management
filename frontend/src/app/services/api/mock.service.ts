@@ -33,7 +33,7 @@ export class MockService extends AdapterService {
 	}
 
 	private _availableMockData = {
-		user: ['owner', 'admin', 'invited', 'member'],
+		user: ['owner', 'admin', 'member', 'invited', 'none'],
 		register: ['mock'],
 		invitable: ['invitedAnother'],
 		projects: ['mockProject']

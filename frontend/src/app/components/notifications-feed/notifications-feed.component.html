@@ -11,14 +11,14 @@
         </tr>
       </thead>
       <tbody class="content">
-        <tr *ngFor="let notification of notifications; index as i" [ngClass]="isNew(notification.seen)" (click)="seen(i, notification.uid)">
+        <tr *ngFor="let notification of notifications; index as i" [ngClass]="isNew(notification.seen)" (click)="seen(i, notification.uid)" tabindex="0" (keyup.enter)="seen(i, notification.uid)">
           <td>
             <mat-icon>{{ notification.icon }}</mat-icon>
           </td>
           <td>{{ notification.timestamp | date: "YYYY-MM-dd HH:mm:ss" }}</td>
           <td>{{ encryptMessage(notification.message, notification.data) }}</td>
           <td>
-            <button mat-mini-fab color="warn" (click)="remove(i, notification.uid)">
+            <button mat-mini-fab color="warn" (click)="remove(i, notification.uid)" tabindex="0">
               <mat-icon>delete</mat-icon>
             </button>
           </td>

@@ -12,7 +12,7 @@
     <mat-nav-list>
       <div>
         <div *ngFor="let item of appItems; index as i">
-          <mat-list-item (click)="toggleSidebar(false)" class="p-1" [ngClass]="isActive(item.route)" [routerLink]="item.route">
+          <mat-list-item (click)="toggleSidebar(false)" class="p-1" [ngClass]="isActive(item.route)" [routerLink]="item.route" tabindex="0" (keyup.enter)="redirectTo(item.route)">
             <div class="sidenav-center">
               <mat-icon class="mat-nav-list-icon m-0">{{ item.icon }}</mat-icon>
               <span *ngIf="isExpanded" class="hidden-text">{{ "NAV." + item.name | translate }}</span>
@@ -23,14 +23,14 @@
       </div>
       <div>
         <mat-divider></mat-divider>
-        <mat-list-item class="p-1" [ngClass]="isActive('/settings/project')" [routerLink]="'/settings/project'">
+        <mat-list-item class="p-1" [ngClass]="isActive('/settings/project')" [routerLink]="'/settings/project'" tabindex="0" (keyup.enter)="redirectTo('/settings/project')">
           <div class="sidenav-center">
             <mat-icon class="mat-nav-list-icon m-0">group_add</mat-icon>
             <span *ngIf="isExpanded" class="hidden-text">{{ "NAV.PROJECT_SETTINGS" | translate }}</span>
           </div>
         </mat-list-item>
         <mat-divider></mat-divider>
-        <mat-list-item class="p-1" [ngClass]="isActive('/settings/user')" [routerLink]="'/settings/user'">
+        <mat-list-item class="p-1" [ngClass]="isActive('/settings/user')" [routerLink]="'/settings/user'" tabindex="0" (keyup.enter)="redirectTo('/settings/user')">
           <div class="sidenav-center">
             <mat-icon class="mat-nav-list-icon m-0">settings</mat-icon>
             <span *ngIf="isExpanded" class="hidden-text">{{ "NAV.ACCOUNT_SETTINGS" | translate }}</span>

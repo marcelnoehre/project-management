@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { AppColor } from 'src/app/enums/app-color.enum';
 import { AppIcon } from 'src/app/enums/app-icon.enum';
 import { AppItem } from 'src/app/enums/app-item.enum';
@@ -11,6 +12,11 @@ import { App } from 'src/app/interfaces/app';
 	styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent {
+
+	constructor(
+		private _router: Router
+	) { }
+
 	public appItems: App[][] = [
 		[{
 			name: AppItem.BOARD,
@@ -55,4 +61,8 @@ export class DashboardComponent {
 			color: AppColor.USER_SETTINGS
 		}]
 	];
+
+	public redirectTo(route: string): void {
+		this._router.navigateByUrl(route);
+	}
 }

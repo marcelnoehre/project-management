@@ -3,16 +3,16 @@
     <mat-toolbar-row>
       <div class="toolbar-section">
         <div class="col-auto">
-          <button *ngIf="!hideSidenav()" mat-icon-button (click)="toggleSidenav()">
+          <button *ngIf="!hideSidenav()" mat-icon-button (click)="toggleSidenav()" tabindex="0">
             <mat-icon>menu</mat-icon>
           </button>
         </div>
       </div>
       <div class="toolbar-section">
-        <button *ngIf="notificationsEnabled" mat-icon-button (click)="toggleNotifcations()">
+        <button *ngIf="notificationsEnabled" mat-icon-button (click)="toggleNotifcations()" tabindex="0">
           <mat-icon>notifications_active</mat-icon>
         </button>
-        <button *ngIf="!notificationsEnabled" color="warn" mat-icon-button (click)="toggleNotifcations()">
+        <button *ngIf="!notificationsEnabled" color="warn" mat-icon-button (click)="toggleNotifcations()" tabindex="0">
           <mat-icon>notifications_off</mat-icon>
         </button>
         <app-toolbar-profile-menu></app-toolbar-profile-menu>

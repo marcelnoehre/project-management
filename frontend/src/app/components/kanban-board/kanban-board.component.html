@@ -12,7 +12,7 @@
         [cdkDropListData]="state.tasks"
         (cdkDropListDropped)="drop($event)"
       >
-        <div cdkDrag class="task p-2 my-2" *ngFor="let task of state.tasks" (click)="showDetails(task)">
+        <div cdkDrag class="task p-2 my-2" *ngFor="let task of state.tasks" (click)="showDetails(task)" tabindex="0" (keyup.enter)="showDetails(task)">
           <div [id]="task.uid">
             {{ task.title }}
           </div>
@@ -25,15 +25,15 @@
       <app-spinner-icon class="material-icons" icon="delete" [spinning]="loadingDelete"></app-spinner-icon>
     </div>
     <div class="actions">
-      <button mat-raised-button (click)="json()">
+      <button mat-raised-button (click)="json()" tabindex="0">
         JSON
         <mat-icon>download</mat-icon>
       </button>
-      <button mat-raised-button (click)="xml()">
+      <button mat-raised-button (click)="xml()" tabindex="0">
         XML
         <mat-icon>download</mat-icon>
       </button>
-      <button mat-raised-button (click)="yaml()">
+      <button mat-raised-button (click)="yaml()" tabindex="0">
         YAML
         <mat-icon>download</mat-icon>
       </button>
