@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
+import { Router } from '@angular/router';
 import { Subscription, lastValueFrom } from 'rxjs';
 import { AppIcon } from 'src/app/enums/app-icon.enum';
 import { AppItem } from 'src/app/enums/app-item.enum';
@@ -63,7 +64,8 @@ export class SidenavComponent implements OnInit, OnDestroy {
 		private _user: UserService,
 		private _device: DeviceService,
 		private _notifications: NotificationsService,
-		private _error: ErrorService
+		private _error: ErrorService,
+		private _router: Router
 	) {
 	}
 
@@ -116,5 +118,9 @@ export class SidenavComponent implements OnInit, OnDestroy {
 
 	public showBackground(): boolean {
 		return this._device.activeRoute === '/login' || this._device.activeRoute === '/registration';
+	}
+
+	public redirectTo(route: string): void {
+		this._router.navigateByUrl(route);
 	}
 }

@@ -20,11 +20,11 @@
     </form>
   </mat-dialog-content>
   <div class="actions">
-    <button (click)="closeDialog(false)" [mat-dialog-close]="false" color="dark" mat-raised-button>
+    <button (click)="closeDialog(false)" [mat-dialog-close]="false" color="dark" mat-raised-button tabindex="0">
       <mat-icon>clear</mat-icon>
       {{ "APP.CANCEL" | translate }}
     </button>
-    <button (click)="createProject()" color="dark" [disabled]="!projectValid()" mat-raised-button>
+    <button (click)="createProject()" color="dark" [disabled]="!projectValid()" mat-raised-button tabindex="0">
       <app-spinner-icon class="material-icons" icon="add" [spinning]="loading"></app-spinner-icon>
       <ng-container *ngIf="loading">&nbsp;</ng-container>
       {{ "APP.CREATE" | translate }}

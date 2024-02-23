@@ -23,6 +23,7 @@
           [ngClass]="{ 'submit-button': !isDisabled('username') }"
           (click)="updateUser('username')"
           [disabled]="isDisabled('username')"
+          tabindex="0"
           matSuffix
           mat-icon-button
         >
@@ -49,6 +50,7 @@
           [ngClass]="{ 'submit-button': !isDisabled('fullName') }"
           (click)="updateUser('fullName')"
           [disabled]="isDisabled('fullName')"
+          tabindex="0"
           matSuffix
           mat-icon-button
         >
@@ -70,6 +72,7 @@
           [ngClass]="{ 'submit-button': !isDisabled('language') }"
           (click)="updateUser('language')"
           [disabled]="isDisabled('language')"
+          tabindex="0"
           matSuffix
           mat-icon-button
         >
@@ -97,6 +100,7 @@
             [attr.aria-label]="'Hide password'"
             [attr.aria-pressed]="hidePassword"
             (click)="hidePassword = !hidePassword"
+            tabindex="0"
             matSuffix
             mat-icon-button
           >
@@ -114,6 +118,7 @@
           [ngClass]="{ 'submit-button': !isDisabled('password') }"
           (click)="updateUser('password')"
           [disabled]="isDisabled('password')"
+          tabindex="0"
           matSuffix
           mat-icon-button
         >
@@ -142,6 +147,7 @@
           [ngClass]="{ 'submit-button': !isDisabled('initials') }"
           (click)="updateUser('initials')"
           [disabled]="isDisabled('initials')"
+          tabindex="0"
           matSuffix
           mat-icon-button
         >
@@ -168,6 +174,7 @@
           [ngClass]="{ 'submit-button': !isDisabled('color') }"
           (click)="updateUser('color')"
           [disabled]="isDisabled('color')"
+          tabindex="0"
           matSuffix
           mat-icon-button
         >
@@ -186,7 +193,7 @@
         <div class="file-preview" *ngIf="hasProfilePicture()">
           <img [src]="profilePicture" />
           <div>
-            <button mat-fab color="warn" (click)="removeFile()">
+            <button mat-fab color="warn" (click)="removeFile()" tabindex="0">
               <mat-icon>delete</mat-icon>
             </button>
           </div>
@@ -196,6 +203,7 @@
           [ngClass]="{ 'submit-button': !isDisabled('profilePicture') }"
           (click)="updateUser('profilePicture')"
           [disabled]="isDisabled('profilePicture')"
+          tabindex="0"
           matSuffix
           mat-icon-button
         >
@@ -203,7 +211,7 @@
         </button>
       </div>
       <div class="delete" *ngIf="showDelete()">
-        <button color="warn" mat-raised-button (click)="deleteUser()">
+        <button color="warn" mat-raised-button (click)="deleteUser()" tabindex="0">
           {{ "USER.DELETE" | translate }}
           <app-spinner-icon class="material-icons" icon="delete" [spinning]="loadingDelete"></app-spinner-icon>
         </button>

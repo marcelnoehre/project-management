@@ -36,12 +36,12 @@
                 <p>Success: {{ result.success }}</p>
                 <p>Failed: {{ result.fail }}</p>
               </ng-container>
-              <button mat-raised-button *ngIf="!result" color="accent" (click)="importTasks()">
+              <button mat-raised-button *ngIf="!result" color="accent" (click)="importTasks()" tabindex="0">
                 <app-spinner-icon class="material-icons" icon="upload" [spinning]="loading"></app-spinner-icon>
                 <ng-container *ngIf="loading">&nbsp;</ng-container>
                 {{ "APP.IMPORT" | translate }}
               </button>
-              <button mat-raised-button *ngIf="result" color="accent" (click)="reset()">
+              <button mat-raised-button *ngIf="result" color="accent" (click)="reset()" tabindex="0">
                 <mat-icon>refresh</mat-icon>
                 {{ "APP.RESET" | translate }}
               </button>

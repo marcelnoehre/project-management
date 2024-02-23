@@ -82,6 +82,7 @@
               [attr.aria-label]="'Hide password'"
               [attr.aria-pressed]="hidePassword"
               (click)="hidePassword = !hidePassword"
+              tabindex="0"
               matSuffix
               mat-icon-button
               data-cy="registration-hide-password"
@@ -117,6 +118,7 @@
               [attr.aria-label]="'Hide password'"
               [attr.aria-pressed]="hidePasswordRepeat"
               (click)="hidePasswordRepeat = !hidePasswordRepeat"
+              tabindex="0"
               matSuffix
               mat-icon-button
               data-cy="registration-hide-password-repeat"
