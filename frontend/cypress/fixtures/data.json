@@ -1,12 +1,18 @@
 {
     "waitTime": 750,
-    "username": {
-        "owner": "owner",
-        "admin": "admin",
-        "member": "member",
-        "invited": "invited",
-        "none": "none"
-    },
-    "password": "1234",
-    "invalid": "invalid"
+    "mock": "mock",
+    "invalid": "invalid",
+    "user": {
+        "username": {
+            "owner": "owner",
+            "admin": "admin",
+            "member": "member",
+            "invited": "invited",
+            "none": "none"
+        },
+        "password": {
+            "mock": "1234",
+            "valid": "test*0TEST"
+        }
+    }
 }

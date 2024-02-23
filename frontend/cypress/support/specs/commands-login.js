@@ -10,10 +10,11 @@ const usernameInput = '[data-cy="login-username"]';
 const passwordInput = '[data-cy="login-password"]';
 const hidePassword = '[data-cy="login-hide-password"]';
 const loginButton = '[data-cy="login-submit"]';
+const registrationLink = '[data-cy="registration-link"]';
 
 // constants for user input
-const username = data.username.owner;
-const password = data.password;
+const username = data.user.username.owner;
+const password = data.user.password.mock;
 const invalid = data.invalid;
 
 // login with invalid credentials
@@ -44,4 +45,11 @@ Cypress.Commands.add('loginCorrect', () => {
     cy.get(hidePassword).click().wait(waitTime);
     cy.get(loginButton).should(beEnabled);
     cy.get(loginButton).click().wait(waitTime);
+});
+
+// Registration
+Cypress.Commands.add('redirectRegistration', () => {
+    cy.visit(loginRoute);
+    // redirect to registration 
+    cy.get(registrationLink).click().wait(waitTime);
 });
