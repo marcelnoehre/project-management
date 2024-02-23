@@ -22,8 +22,9 @@ export class ErrorService {
 		if (error?.status === 403) {
 			this.handleInvalidUser();
 		}
-		if (error?.error?.message) this._snackbar.open(this._translate.instant(error.error.message));
-		if (!error?.error?.message) {
+		if (error?.error?.message) {
+			this._snackbar.open(this._translate.instant(error.error.message));
+		} else if (!error?.error?.message) {
 			if (error?.statusText) {
 				this._snackbar.open(error.statusText);
 			} else {

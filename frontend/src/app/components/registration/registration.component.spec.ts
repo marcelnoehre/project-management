@@ -6,6 +6,7 @@ import { environment } from 'src/environments/environment';
 import { DashboardComponent } from '../dashboard/dashboard.component';
 import { LoginComponent } from '../login/login.component';
 import { Router, RouterModule, ROUTES } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 describe('RegistrationComponent', () => {
 	const mockRoutes = [
@@ -25,13 +26,16 @@ describe('RegistrationComponent', () => {
 	let component: RegistrationComponent;
 	let fixture: ComponentFixture<RegistrationComponent>;
 	let router: Router;
+	let snackbarSpy: jasmine.SpyObj<MatSnackBar>;
 
 	beforeEach(() => {
+		snackbarSpy = jasmine.createSpyObj('MatSnackBar', ['open']);
 		TestBed.configureTestingModule({
 			imports: [AppModule, RouterModule.forRoot(mockRoutes)],
 			declarations: [RegistrationComponent],
 			providers: [
-				{ provide: ROUTES, multi: true, useValue: [] }
+				{ provide: ROUTES, multi: true, useValue: [] },
+				{ provide: MatSnackBar, useValue: snackbarSpy },
 			]
 		});
 		fixture = TestBed.createComponent(RegistrationComponent);
@@ -178,6 +182,19 @@ describe('RegistrationComponent', () => {
 			component.registrationForm.controls['passwordRepeatFormControl'].setValue('test*0TEST');
 			await component.register();
 			expect(router.url).toBe('/login');
+		});
+
+		it('should display error for password missmatch', async () => {
+			component.registrationForm.controls['passwordFormControl'].setValue('test*0TEST');
+			component.registrationForm.controls['passwordRepeatFormControl'].setValue('TEST*0test');
+			await component.register();
+			expect(snackbarSpy.open).toHaveBeenCalledWith('ERROR.PASSWORDS_MATCH', 'APP.OK', Object({ duration: 7000, panelClass: 'info' }));
+		});
+
+		it('shoudl display error for invalid registration', async () => {
+			component.registrationForm.get('usernameFormControl')?.setValue('invalid');	
+			await component.register();
+			expect(snackbarSpy.open).toHaveBeenCalledWith('ERROR.REGISTRATION', 'APP.OK', Object({ duration: 7000, panelClass: 'info' }));
 		});
 	});
 
