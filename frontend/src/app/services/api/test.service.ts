@@ -27,11 +27,13 @@ export class TestService {
 
 	// ### AUTH ###
 	public verify(token: string): Observable<User> {
+		this._logRequest('verify', ['token', token]);
 		return this.user(token);
 	}
 
 	public refreshToken(token: string): Observable<string> {
 		if (['owner', 'admin', 'member', 'invited', 'none'].includes(token)) {
+			this._logRequest('refreshToken', ['token', token]);
 			return of(token);
 		} else {
 			throw new Error(this.translate.instant('ERROR.INVALID_TOKEN'));
@@ -39,11 +41,13 @@ export class TestService {
 	}
 
 	public login(username: string, password: string): Observable<User> {
+		this._logRequest('login', ['username', username], ['password', password]);
 		return this.user(username);
 	}
 
 	public register(username: string, fullName: string, language: string, password: string): Observable<Response> {
 		if (username === '') {
+			this._logRequest('register', ['username', username], ['fullName', fullName], ['language', language], ['password', password]);
 			return this.response('SUCCESS.REGISTRATION');
 		} else {
 			throw new Error('ERROR.REGISTRATION');
@@ -51,60 +55,73 @@ export class TestService {
 	}
 
 	public updateUser(token: string, attribute: string, value: string): Observable<Response> {
+		this._logRequest('updateUser', ['token', token], ['attribute', attribute], ['value', value]);
 		return this.response('SUCCESS.UPDATE_ACCOUNT');
 	}
 
 	public toggleNotifications(token: string, notificationsEnabled: boolean): Observable<Response> {
+		this._logRequest('toggleNotifications', ['token', token], ['notificationsEnabled', notificationsEnabled]);
 		return this.response(notificationsEnabled ? 'SUCCESS.NOTIFICATIONS_ON' : 'SUCCESS.NOTIFICATIONS_OFF');
 	}
 
 	public deleteUser(token: string): Observable<Response> {
+		this._logRequest('deleteUser', ['token', token]);
 		return this.response('SUCCESS.DELETE_ACCOUNT');
 	}
 
 
 	// ### NOTIFICATIONS ###
 	public getNotifications(token: string): Observable<Notification[]> {
+		this._logRequest('getNotifications', ['token', token]);
 		return of(this.notifications());
 	}
 
 	public updateNotifications(token: string, seen: string[], removed: string[]): Observable<Notification[]> {
+		this._logRequest('updateNotifications', ['token', token], ['seen', seen], ['removed', removed]);
 		return of(this.notifications());
 	}
 
 
 	// ### PROJECT ###
 	public getTeamMembers(token: string): Observable<User[]> {
+		this._logRequest('getTeamMembers', ['token', token]);
 		return of(this.member());	
 	}
 
 	public createProject(token: string, project: string): Observable<Response> {
+		this._logRequest('createProject', ['token', token], ['project', project]);
 		return this.response('SUCCESS.CREATE_PROJECT');
 	}
 
 	public inviteUser(token: string, username: string): Observable<User> {
+		this._logRequest('inviteUser', ['token', token], ['username', username]);
 		return this.invite(username);
 	}
 
 	public handleInvite(token: string, decision: boolean): Observable<Response> {
+		this._logRequest('handleInvite', ['token', token], ['decision', decision]);
 		return this.response(decision ? 'SUCCESS.INVITE_ACCEPTED' : 'SUCCESS.INVITE_REJECTED');
 	}
 
 	public updatePermission(token: string, username: string, permission: Permission): Observable<User[]> {
+		this._logRequest('updatePermission', ['token', token], ['username', username], ['permission', permission]);
 		return of(this.member());
 	}
 
 	public removeUser(token: string, username: string): Observable<Response> {
+		this._logRequest('removeUser', ['token', token], ['username', username]);
 		return this.response('SUCCESS.REMOVE_MEMBER');
 	}
 
 	public leaveProject(token: string): Observable<Response> {
+		this._logRequest('leaveProject', ['token', token]);
 		return this.response('SUCCESS.LEAVE_PROJECT');
 	}
 
 
   	// ### STATS ###
 	public personalStats(token: string): Observable<Stats> {
+		this._logRequest('personalStats', ['token', token]);
 		return of({
 			deleted: 1,
 			edited: 1,
@@ -118,6 +135,7 @@ export class TestService {
 	}
 
 	public stats(token: string): Observable<AssignedStats[]> {
+		this._logRequest('stats', ['token', token]);
 		return of([
 			{
 				id: 'STATS.PROJECT',
@@ -188,6 +206,7 @@ export class TestService {
 	}
 
 	public statLeaders(token: string): Observable<StatLeaders> {
+		this._logRequest('statLeaders', ['token', token]);
 		return of({
 			created: {
 				username: ['owner', 'admin'],
@@ -225,6 +244,7 @@ export class TestService {
 	}
 
 	public taskAmount(token: string): Observable<CategoryStats> {
+		this._logRequest('taskAmount', ['token', token]);
 		return of({
 			NONE: 5,
 			TODO: 7,
@@ -236,6 +256,7 @@ export class TestService {
 	}
 
 	public averageTime(token: string): Observable<CategoryStats> {
+		this._logRequest('averageTime', ['token', token]);
 		return of({
 			NONE: 138785180.7142857,
 			TODO: 151694419.625,
@@ -247,10 +268,12 @@ export class TestService {
 	}
 
 	public wip(token: string): Observable<number> {
+		this._logRequest('wip', ['token', token]);
 		return of(2);
 	}
 
 	public taskProgress(token: string): Observable<TaskProgress> {
+		this._logRequest('taskProgress', ['token', token]);
 		return of({
 			timestamps: [
 			  1707706711326,
@@ -290,6 +313,7 @@ export class TestService {
 	}
 
 	public projectRoadmap(token: string): Observable<ProjectRoadmap[]> {
+		this._logRequest('projectRoadmap', ['token', token]);
 		return of([
 			{
 			  type: 'STATS.PROJECT_ROADMAP.CREATED',
@@ -355,48 +379,59 @@ export class TestService {
 	}
 
 	public optimizeOrder(token: string): Observable<Response> {
+		this._logRequest('optimizeOrder', ['token', token]);
 		return this.response('SUCCESS.STATS.OPTIMIZE');
 	}
 
 
 	// ### TASK ###
 	public createTask(token: string, title: string, description: string, assigned: string, state: string): Observable<Response> {
+		this._logRequest('createTask', ['token', token], ['title', title], ['description', description], ['assigned', assigned], ['state', state]);
 		return this.response('SUCCESS.CREATE_TASK');
 	}
 
 	public importTasks(token: string, tasks: Task[]): Observable<Progress> {
+		this._logRequest('importTasks', ['token', token], ['tasks', tasks]);
 		return of(this.import());
 	}
 
 	public getTaskList(token: string): Observable<State[]> {
+		this._logRequest('getTaskList', ['token', token]);
 		return of(this.taskList());
 	}
 
 	public updateTask(token: string, task: Task): Observable<State[]> {
+		this._logRequest('updateTask', ['token', token], ['task', task]);
 		return of(this.taskList());
 	}
 
 	public updatePosition(token: string, uid: string, state: string, order: number): Observable<State[]> {
+		this._logRequest('updatePosition', ['token', token], ['uid', uid], ['state', state], ['order', order]);
 		return of(this.taskList());
 	}
 
 	public moveToTrashBin(token: string, uid: string): Observable<State[]> {
+		this._logRequest('moveToTrashBin', ['token', token], ['uid', uid]);
 		return of(this.taskList());
 	}
 	
 	public getTrashBin(token: string): Observable<Task[]> {
+		this._logRequest('getTrashBin', ['token', token]);
 		return of(this.trashed());
 	}
 
 	public deleteTask(token: string, uid: string): Observable<Task[]> {
+		this._logRequest('deleteTask', ['token', token], ['uid', uid]);
 		return of(this.trashed());
 	}
 
 	public restoreTask(token: string, uid: string): Observable<Task[]> {
+		this._logRequest('restoreTask', ['token', token], ['uid', uid]);
 		return of(this.trashed());
 	}
 
 	public clearTrashBin(token: string): Observable<Response> {
+		this._logRequest('clearTrashBin', ['token', token]);
 		return this.response('SUCCESS.CLEAR_TRASH_BIN');
 	}
 
@@ -1241,5 +1276,14 @@ export class TestService {
 			  }
 			]
 		};
+	}
+
+	private _logRequest(request: string, ...data: [string, any][]): void {
+		const obj: { [key: string]: any } = {};
+		data.forEach(([key, value]) => {
+	   		obj[key] = value;
+		});
+		console.log('##### ' + request.toUpperCase() + ' #####');
+		console.dir(obj);
 	}
 }
