@@ -46,7 +46,7 @@ export class TestService {
 		language: string,
 		password: string
 	): Observable<Response> {
-		if (username === '') {
+		if (username === 'mock') {
 			this._logRequest(
 				'register',
 				['username', username],
