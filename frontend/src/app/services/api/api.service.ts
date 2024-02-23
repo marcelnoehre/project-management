@@ -21,19 +21,19 @@ import { ProjectRoadmap } from 'src/app/interfaces/data/project-roadmap';
 import { TestService } from './test.service';
 
 @Injectable({
-  providedIn: 'root'
+	providedIn: 'root'
 })
 export class ApiService {
-  private _adapter: AdapterService = this._db;
-  private _chosenAdapter = environment.selectedApi;
+	private _adapter: AdapterService = this._db;
+	private _chosenAdapter = environment.selectedApi;
   
-  constructor(
-    private _db: DbService,
-    private _mock: MockService,
-	private _test: TestService
-  ) {
-    this._resolveAdapter();
-  }
+	constructor(
+		private _db: DbService,
+		private _mock: MockService,
+		private _test: TestService
+	) {
+		this._resolveAdapter();
+	}
 
 	private _resolveAdapter() {
 		switch (this._chosenAdapter) {
@@ -121,7 +121,7 @@ export class ApiService {
 	}
 
 
-  	// ### STATS ###
+	// ### STATS ###
 	public personalStats(token: string): Observable<Stats> {
 		return this._adapter.personalStats(token);
 	}

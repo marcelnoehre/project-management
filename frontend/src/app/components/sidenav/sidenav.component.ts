@@ -14,9 +14,9 @@ import { StorageService } from 'src/app/services/storage.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
-  selector: 'app-sidenav',
-  templateUrl: './sidenav.component.html',
-  styleUrls: ['./sidenav.component.scss']
+	selector: 'app-sidenav',
+	templateUrl: './sidenav.component.html',
+	styleUrls: ['./sidenav.component.scss']
 })
 export class SidenavComponent implements OnInit, OnDestroy {
 	@ViewChild('sidenav', { static: false }) sidenav!: MatSidenav;
@@ -54,7 +54,7 @@ export class SidenavComponent implements OnInit, OnDestroy {
 			route: AppRoute.STATS,
 			icon: AppIcon.STATS
 		}
-	]
+	];
 
 	constructor(
 		private _storage: StorageService,

@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit {
 
 	public loginForm!: FormGroup;
 	public hidePassword = true;
-	public loading: boolean = false;
+	public loading = false;
 
 	constructor(
 		private _snackbar: SnackbarService,
@@ -46,7 +46,7 @@ export class LoginComponent implements OnInit {
 
 	ngOnInit(): void {
 		this._user.user = this._storage.getSessionEntry('user');
-		if (this._user?.['isLoggedIn'] && this._user?.['project'] !== '') {
+		if (this._user?.isLoggedIn && this._user?.project !== '') {
 			this._router.navigateByUrl('/');
 		}
 		setTimeout(() => this.inputUser.nativeElement.focus());
@@ -94,15 +94,15 @@ export class LoginComponent implements OnInit {
 			} else if (user.permission === Permission.INVITED) {
 				const data = {
 					headline: this._translate.instant('DIALOG.HEADLINE.INVITE'),
-					description: this._translate.instant('DIALOG.INFO.INVITE', { project: user.project}),
+					description: this._translate.instant('DIALOG.INFO.INVITE', { project: user.project }),
 					falseButton: this._translate.instant('APP.REJECT'),
 					trueButton: this._translate.instant('APP.ACCEPT')
 				};
 				this._dialog.open(DialogComponent, { data, ...{} }).afterClosed().subscribe(async (accept) => {
 					try {
 						const response = await lastValueFrom(this._api.handleInvite(user.token, accept));
-						if(accept) {
-							this._user.user = user
+						if (accept) {
+							this._user.user = user;
 							try {
 								const token = await lastValueFrom(this._api.refreshToken(this._user.token));
 								this._user.token = token;

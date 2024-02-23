@@ -5,24 +5,24 @@ import { ToolbarProfileMenuComponent } from './toolbar-profile-menu.component';
 import { environment } from 'src/environments/environment';
 
 describe('ToolbarProfileMenuComponent', () => {
-  let component: ToolbarProfileMenuComponent;
-  let fixture: ComponentFixture<ToolbarProfileMenuComponent>;
+	let component: ToolbarProfileMenuComponent;
+	let fixture: ComponentFixture<ToolbarProfileMenuComponent>;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [AppModule],
-      declarations: [ToolbarProfileMenuComponent]
-    });
-    fixture = TestBed.createComponent(ToolbarProfileMenuComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+	beforeEach(() => {
+		TestBed.configureTestingModule({
+			imports: [AppModule],
+			declarations: [ToolbarProfileMenuComponent]
+		});
+		fixture = TestBed.createComponent(ToolbarProfileMenuComponent);
+		component = fixture.componentInstance;
+		fixture.detectChanges();
+	});
 
-  it('should load test environment', () => {
+	it('should load test environment', () => {
 		expect(environment.environement).toBe('test');
 	});
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+	it('should create', () => {
+		expect(component).toBeTruthy();
+	});
 });

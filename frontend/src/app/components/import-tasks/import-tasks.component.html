@@ -1,54 +1,54 @@
 <div class="import-tasks-container p-4">
-    <mat-card appearance="outlined">
-        <mat-card-header>
-            <h1 class="header">
-                {{ 'NAV.IMPORT_TASKS' | translate }}
-            </h1>
-        </mat-card-header>
-        <mat-card-content>
-            <form class="import-tasks-form">
-                <div class="form-container center">
-                    <input
-                        id="task-list-input"
-                        name="task-list-input"
-                        *ngIf="!hasTaskList()"
-                        type="file"
-                        class="file-input p-5 mt-4"
-                        (change)="onFileSelected($event)"
-                    >
-                    <div *ngIf="hasTaskList()" class="import-preview">
-                        <table>
-                            <tr>
-                                <th>title</th>
-                                <th>description</th>
-                                <th>state</th>
-                                <th>author</th>
-                            </tr>
-                            <tr *ngFor="let task of taskList">
-                                <td>{{ task.title }}</td>
-                                <td>{{ task.description }}</td>
-                                <td>{{ task.state }}</td>
-                                <td>{{ task.author }}</td>
-                            </tr>
-                        </table>
-                        <div class="import-submission p-2">
-                            <ng-container *ngIf="result">
-                                <p>Success: {{ result.success }}</p>
-                                <p>Failed: {{ result.fail }}</p>
-                            </ng-container>
-                            <button mat-raised-button *ngIf="!result" color="accent" (click)="importTasks()">
-                                <app-spinner-icon class="material-icons" icon="upload" [spinning]="loading"></app-spinner-icon>
-                                <ng-container *ngIf="loading">&nbsp;</ng-container>
-                                {{ 'APP.IMPORT' | translate }}
-                            </button>
-                            <button mat-raised-button *ngIf="result" color="accent" (click)="reset()">
-                                <mat-icon>refresh</mat-icon>
-                                {{ 'APP.RESET' | translate }}
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </mat-card-content>
-    </mat-card>
+  <mat-card appearance="outlined">
+    <mat-card-header>
+      <h1 class="header">
+        {{ "NAV.IMPORT_TASKS" | translate }}
+      </h1>
+    </mat-card-header>
+    <mat-card-content>
+      <form class="import-tasks-form">
+        <div class="form-container center">
+          <input
+            id="task-list-input"
+            name="task-list-input"
+            *ngIf="!hasTaskList()"
+            type="file"
+            class="file-input p-5 mt-4"
+            (change)="onFileSelected($event)"
+          />
+          <div *ngIf="hasTaskList()" class="import-preview">
+            <table>
+              <tr>
+                <th>title</th>
+                <th>description</th>
+                <th>state</th>
+                <th>author</th>
+              </tr>
+              <tr *ngFor="let task of taskList">
+                <td>{{ task.title }}</td>
+                <td>{{ task.description }}</td>
+                <td>{{ task.state }}</td>
+                <td>{{ task.author }}</td>
+              </tr>
+            </table>
+            <div class="import-submission p-2">
+              <ng-container *ngIf="result">
+                <p>Success: {{ result.success }}</p>
+                <p>Failed: {{ result.fail }}</p>
+              </ng-container>
+              <button mat-raised-button *ngIf="!result" color="accent" (click)="importTasks()">
+                <app-spinner-icon class="material-icons" icon="upload" [spinning]="loading"></app-spinner-icon>
+                <ng-container *ngIf="loading">&nbsp;</ng-container>
+                {{ "APP.IMPORT" | translate }}
+              </button>
+              <button mat-raised-button *ngIf="result" color="accent" (click)="reset()">
+                <mat-icon>refresh</mat-icon>
+                {{ "APP.RESET" | translate }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
 </div>

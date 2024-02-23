@@ -5,24 +5,24 @@ import { AppModule } from 'src/app/app.module';
 import { environment } from 'src/environments/environment';
 
 describe('ToolbarComponent', () => {
-  let component: ToolbarComponent;
-  let fixture: ComponentFixture<ToolbarComponent>;
+	let component: ToolbarComponent;
+	let fixture: ComponentFixture<ToolbarComponent>;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [AppModule],
-      declarations: [ToolbarComponent]
-    });
-    fixture = TestBed.createComponent(ToolbarComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+	beforeEach(() => {
+		TestBed.configureTestingModule({
+			imports: [AppModule],
+			declarations: [ToolbarComponent]
+		});
+		fixture = TestBed.createComponent(ToolbarComponent);
+		component = fixture.componentInstance;
+		fixture.detectChanges();
+	});
 
-  it('should load test environment', () => {
+	it('should load test environment', () => {
 		expect(environment.environement).toBe('test');
 	});
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+	it('should create', () => {
+		expect(component).toBeTruthy();
+	});
 });

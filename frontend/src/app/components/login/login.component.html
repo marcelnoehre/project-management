@@ -1,86 +1,83 @@
 <div class="login-container">
-	<mat-card appearance="outlined" class="login-card">
-		<mat-card-header class="login-card-header">
-            <h1>{{ 'LOGIN.HEADER' | translate }}</h1>
-        </mat-card-header>
-		<mat-card-content class="p-0">
-			<form [formGroup]="loginForm">
-				<div>
-					<mat-form-field appearance="outline" class="login-form-field" MatInput>
-						<mat-label> {{ 'USER.USERNAME' | translate }} </mat-label>
-						<input #inputUser
-							id="username-input"
-                            name="username"
-							formControlName="usernameFormControl"
-							placeholder="{{'USER.USERNAME'|translate}}"
-							matInput
-							required
-							data-cy="login-username"
-						/>
-						<mat-icon matPrefix> person </mat-icon>
-						<mat-error *ngIf="!userValid()"> {{ 'ERROR.REQUIRED.USERNAME' | translate }} </mat-error>
-					</mat-form-field>
-				</div>
-				<div>
-					<mat-form-field appearance="outline" class="login-form-field">
-						<mat-label> {{ 'USER.PASSWORD' | translate }}</mat-label>
-						<input
-							id="password-input"
-							name="password"
-							formControlName="passwordFormControl"
-							placeholder="{{'USER.PASSWORD'|translate}}"
-							[type]="hidePassword ? 'password' : 'text'"
-							matInput
-							required
-							data-cy="login-password"
-						/>
-						<mat-icon matPrefix> lock </mat-icon>
-						<button
-							id="hide-password-button"
-							type="button"
-							[attr.aria-label]="'Hide password'"
-							[attr.aria-pressed]="hidePassword"
-							(click)="hidePassword = !hidePassword"
-							matSuffix
-							mat-icon-button
-							data-cy="login-hide-password"
-						>
-							<mat-icon> {{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
-						</button>
-						<mat-error *ngIf="!passwordValid()"> {{ 'ERROR.REQUIRED.PASSWORD' | translate }} </mat-error>
-					</mat-form-field>
-				</div>
-				<div>
-					<button #submitLogin
-						id="login-button"
-						type="submit"
-						class="submit-button align-center"
-						color="primary"
-						[disabled]="!loginForm.valid"
-						tabindex="0"
-						(click)="login()"
-						mat-raised-button
-						data-cy="login-submit"
-					>
-						<app-spinner-icon class="material-icons" icon="login" [spinning]="loading"></app-spinner-icon>
-						<ng-container *ngIf="loading">&nbsp;</ng-container>
-						{{ 'LOGIN.LOGIN' | translate }}
-					</button>
-				</div>
-			</form>
-		</mat-card-content>
-		<mat-card-footer class="pt-2">
-            <div>{{'LOGIN.NOT_REGISTERED'|translate}}&nbsp;
-                <div 
-					class="clickable" 
-					(click)="registration()" 
-					(keyup.enter)="registration()" 
-					tabindex="0"
-					data-cy="registration-link"
-				>
-					{{'LOGIN.REGISTRATION'|translate}}
-				</div>
-            </div>
-        </mat-card-footer>
-	</mat-card>
+  <mat-card appearance="outlined" class="login-card">
+    <mat-card-header class="login-card-header">
+      <h1>{{ "LOGIN.HEADER" | translate }}</h1>
+    </mat-card-header>
+    <mat-card-content class="p-0">
+      <form [formGroup]="loginForm">
+        <div>
+          <mat-form-field appearance="outline" class="login-form-field" MatInput>
+            <mat-label> {{ "USER.USERNAME" | translate }} </mat-label>
+            <input
+              #inputUser
+              id="username-input"
+              name="username"
+              formControlName="usernameFormControl"
+              placeholder="{{ 'USER.USERNAME' | translate }}"
+              matInput
+              required
+              data-cy="login-username"
+            />
+            <mat-icon matPrefix> person </mat-icon>
+            <mat-error *ngIf="!userValid()"> {{ "ERROR.REQUIRED.USERNAME" | translate }} </mat-error>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field appearance="outline" class="login-form-field">
+            <mat-label> {{ "USER.PASSWORD" | translate }}</mat-label>
+            <input
+              id="password-input"
+              name="password"
+              formControlName="passwordFormControl"
+              placeholder="{{ 'USER.PASSWORD' | translate }}"
+              [type]="hidePassword ? 'password' : 'text'"
+              matInput
+              required
+              data-cy="login-password"
+            />
+            <mat-icon matPrefix> lock </mat-icon>
+            <button
+              id="hide-password-button"
+              type="button"
+              [attr.aria-label]="'Hide password'"
+              [attr.aria-pressed]="hidePassword"
+              (click)="hidePassword = !hidePassword"
+              matSuffix
+              mat-icon-button
+              data-cy="login-hide-password"
+            >
+              <mat-icon> {{ hidePassword ? "visibility_off" : "visibility" }}</mat-icon>
+            </button>
+            <mat-error *ngIf="!passwordValid()"> {{ "ERROR.REQUIRED.PASSWORD" | translate }} </mat-error>
+          </mat-form-field>
+        </div>
+        <div>
+          <button
+            #submitLogin
+            id="login-button"
+            type="submit"
+            class="submit-button align-center"
+            color="primary"
+            [disabled]="!loginForm.valid"
+            tabindex="0"
+            (click)="login()"
+            mat-raised-button
+            data-cy="login-submit"
+          >
+            <app-spinner-icon class="material-icons" icon="login" [spinning]="loading"></app-spinner-icon>
+            <ng-container *ngIf="loading">&nbsp;</ng-container>
+            {{ "LOGIN.LOGIN" | translate }}
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+    <mat-card-footer class="pt-2">
+      <div>
+        {{ "LOGIN.NOT_REGISTERED" | translate }}&nbsp;
+        <div class="clickable" (click)="registration()" (keyup.enter)="registration()" tabindex="0" data-cy="registration-link">
+          {{ "LOGIN.REGISTRATION" | translate }}
+        </div>
+      </div>
+    </mat-card-footer>
+  </mat-card>
 </div>

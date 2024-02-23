@@ -1,8 +1,8 @@
 <div class="dashboard-container">
-	<div class="row" *ngFor="let row of appItems">
-		<div class="item m-2" *ngFor="let item of row" >
-			<mat-icon style="--item-bg: {{item.color}}" [routerLink]="item.route">{{ item.icon }}</mat-icon>
-			<div class="label">{{ 'NAV.' + item.name | translate }}</div>
-		</div>
-	</div>
+  <div class="row" *ngFor="let row of appItems">
+    <div class="item m-2" *ngFor="let item of row">
+      <mat-icon style="--item-bg: {{ item.color }}" [routerLink]="item.route">{{ item.icon }}</mat-icon>
+      <div class="label">{{ "NAV." + item.name | translate }}</div>
+    </div>
+  </div>
 </div>

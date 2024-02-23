@@ -5,20 +5,20 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { environment } from 'src/environments/environment';
 
 describe('DbService', () => {
-  let service: DbService;
+	let service: DbService;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule]
-    });
-    service = TestBed.inject(DbService);
-  });
+	beforeEach(() => {
+		TestBed.configureTestingModule({
+			imports: [HttpClientTestingModule]
+		});
+		service = TestBed.inject(DbService);
+	});
 
-  it('should load test environment', () => {
+	it('should load test environment', () => {
 		expect(environment.environement).toBe('test');
 	});
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
+	it('should be created', () => {
+		expect(service).toBeTruthy();
+	});
 });

@@ -6,9 +6,9 @@ import { AppRoute } from 'src/app/enums/app-route.enum';
 import { App } from 'src/app/interfaces/app';
 
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+	selector: 'app-dashboard',
+	templateUrl: './dashboard.component.html',
+	styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent {
 	public appItems: App[][] = [

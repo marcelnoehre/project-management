@@ -1,6 +1,6 @@
-import { Task } from "./task";
+import { Task } from './task';
 
 export interface State {
-    state: string,
-    tasks: Task[]
+	state: string,
+	tasks: Task[]
 }

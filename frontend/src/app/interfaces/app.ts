@@ -1,5 +1,5 @@
 export interface App {
-    name: string;
+	name: string;
 	icon: string;
 	route: string;
 	color?: string;

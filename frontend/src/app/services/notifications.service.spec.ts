@@ -4,16 +4,16 @@ import { NotificationsService } from './notifications.service';
 import { AppModule } from '../app.module';
 
 describe('NotificationsService', () => {
-  let service: NotificationsService;
+	let service: NotificationsService;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [AppModule]
-    });
-    service = TestBed.inject(NotificationsService);
-  });
+	beforeEach(() => {
+		TestBed.configureTestingModule({
+			imports: [AppModule]
+		});
+		service = TestBed.inject(NotificationsService);
+	});
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
+	it('should be created', () => {
+		expect(service).toBeTruthy();
+	});
 });

@@ -8,28 +8,28 @@ import { environment } from 'src/environments/environment';
 class ApiMock { }
 
 describe('LoginComponent', () => {
-  let component: LoginComponent;
-  let fixture: ComponentFixture<LoginComponent>;
+	let component: LoginComponent;
+	let fixture: ComponentFixture<LoginComponent>;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [AppModule],
-      declarations: [LoginComponent],
-      providers: [
+	beforeEach(() => {
+		TestBed.configureTestingModule({
+			imports: [AppModule],
+			declarations: [LoginComponent],
+			providers: [
 				{ provide: TranslateService, useClass: TranslateService },
-        { provide: ApiService, useClass: ApiMock }
+				{ provide: ApiService, useClass: ApiMock }
 			]
-    });
-    fixture = TestBed.createComponent(LoginComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+		});
+		fixture = TestBed.createComponent(LoginComponent);
+		component = fixture.componentInstance;
+		fixture.detectChanges();
+	});
 
-  it('should load test environment', () => {
+	it('should load test environment', () => {
 		expect(environment.environement).toBe('test');
 	});
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+	it('should create', () => {
+		expect(component).toBeTruthy();
+	});
 });

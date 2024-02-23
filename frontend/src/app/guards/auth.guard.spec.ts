@@ -5,18 +5,18 @@ import { authGuard } from './auth.guard';
 import { environment } from 'src/environments/environment';
 
 describe('authGuard', () => {
-  const executeGuard: CanActivateFn = (...guardParameters) => 
-      TestBed.runInInjectionContext(() => authGuard(...guardParameters));
+	const executeGuard: CanActivateFn = (...guardParameters) => 
+		TestBed.runInInjectionContext(() => authGuard(...guardParameters));
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-  });
+	beforeEach(() => {
+		TestBed.configureTestingModule({});
+	});
 
-  it('should load test environment', () => {
+	it('should load test environment', () => {
 		expect(environment.environement).toBe('test');
 	});
 
-  it('should be created', () => {
-    expect(executeGuard).toBeTruthy();
-  });
+	it('should be created', () => {
+		expect(executeGuard).toBeTruthy();
+	});
 });

@@ -1,8 +1,8 @@
 export enum TaskState {
-    NONE = 'NONE',
-    TODO = 'TODO',
-    PROGRESS = 'PROGRESS',
-    REVIEW = 'REVIEW',
-    DONE = 'DONE',
-    DELETED = 'DELETED'
+	NONE = 'NONE',
+	TODO = 'TODO',
+	PROGRESS = 'PROGRESS',
+	REVIEW = 'REVIEW',
+	DONE = 'DONE',
+	DELETED = 'DELETED'
 }
