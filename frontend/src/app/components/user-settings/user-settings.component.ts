@@ -14,6 +14,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Permission } from 'src/app/enums/permission.enum';
 import { ParserService } from 'src/app/services/parser.service';
 import { lastValueFrom } from 'rxjs';
+import { EventService } from 'src/app/services/event.service';
 
 @Component({
   selector: 'app-user-settings',
@@ -55,7 +56,8 @@ export class UserSettingsComponent {
     private _dialog: MatDialog,
     private _user: UserService,
     private _error: ErrorService,
-    private _parser: ParserService
+    private _parser: ParserService,
+    private _event: EventService
   ) {
     this._createForm();
   }
@@ -119,14 +121,32 @@ export class UserSettingsComponent {
             this._user.update(attribute, value);
             this._initialUser = this._user.user;
             this._storage.setSessionEntry('user', this._user.user);
-            if (attribute === 'password') {
-              this.userSettingsForm.get('passwordFormControl')?.setValue('');
-            } else if (attribute === 'language') {
-              this._translate.use(value);
-            } else if (attribute === 'username') {
-              this._storage.clearSession();
-              this._user.user = this._storage.getSessionEntry('user');
-              this._router.navigateByUrl('/login');
+            switch (attribute) {
+              case 'username':
+                this._storage.clearSession();
+                this._user.user = this._storage.getSessionEntry('user');
+                this._router.navigateByUrl('/login');  
+                break;
+              case 'fullName':
+                this._event.updateFullName$.next(value);
+                break;
+              case 'language':
+                this._translate.use(value);
+                break;
+              case 'password':
+                this.userSettingsForm.get('passwordFormControl')?.setValue('');
+                break;
+              case 'initials':
+                this._event.updateInitials$.next(value);
+                break;
+              case 'color':
+                this._event.updateColor$.next(value);
+                break;
+              case 'profilePicture':
+                this._event.updateProfilePicture$.next(value);
+                break;
+              default:
+                break;
             }
           } catch (error) {
             (this._loadingAttribute as any)[attribute] = false;

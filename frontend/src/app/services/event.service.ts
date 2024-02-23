@@ -7,5 +7,9 @@ import { Subject } from 'rxjs';
 export class EventService {
 
   public documentClick$ = new Subject<Element>();
+  public updateFullName$ = new Subject<Element>();
+  public updateInitials$ = new Subject<Element>();
+  public updateColor$ = new Subject<Element>();
+  public updateProfilePicture$ = new Subject<Element>();
 
 }
