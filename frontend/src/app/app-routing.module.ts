@@ -13,62 +13,62 @@ import { TrashBinComponent } from './components/trash-bin/trash-bin.component';
 import { StatsComponent } from './components/stats/stats.component';
 
 const routes: Routes = [
-  {
-    path: 'login',
-    component: LoginComponent
-  },
-  {
-    path: 'registration',
-    component: RegistrationComponent,
-  },
-  {
-    path: 'settings/user',
-    component: UserSettingsComponent,
-    canActivate: [authGuard]
-  },
-  {
-    path: 'settings/project',
-    component: ProjectSettingsComponent,
-    canActivate: [authGuard]
-  },
-  {
-    path: 'task/create',
-    component: CreateTaskComponent,
-    canActivate: [authGuard]
-  },
-  {
-    path: 'tasks/board',
-    component: KanbanBoardComponent,
-    canActivate: [authGuard]
-  },
-  {
-    path: 'tasks/import',
-    component: ImportTasksComponent,
-    canActivate: [authGuard]
-  },
-  {
-    path: 'tasks/trash-bin',
-    component: TrashBinComponent,
-    canActivate: [authGuard]
-  },
-  {
-    path: 'stats',
-    component: StatsComponent,
-    canActivate: [authGuard]
-  },
-  {
-    path: '',
-    component: DashboardComponent,
-    canActivate: [authGuard]
-  },
-  {
-    path: '**',
-    redirectTo: ''
-  }
+	{
+		path: 'login',
+		component: LoginComponent
+	},
+	{
+		path: 'registration',
+		component: RegistrationComponent,
+	},
+	{
+		path: 'settings/user',
+		component: UserSettingsComponent,
+		canActivate: [authGuard]
+	},
+	{
+		path: 'settings/project',
+		component: ProjectSettingsComponent,
+		canActivate: [authGuard]
+	},
+	{
+		path: 'task/create',
+		component: CreateTaskComponent,
+		canActivate: [authGuard]
+	},
+	{
+		path: 'tasks/board',
+		component: KanbanBoardComponent,
+		canActivate: [authGuard]
+	},
+	{
+		path: 'tasks/import',
+		component: ImportTasksComponent,
+		canActivate: [authGuard]
+	},
+	{
+		path: 'tasks/trash-bin',
+		component: TrashBinComponent,
+		canActivate: [authGuard]
+	},
+	{
+		path: 'stats',
+		component: StatsComponent,
+		canActivate: [authGuard]
+	},
+	{
+		path: '',
+		component: DashboardComponent,
+		canActivate: [authGuard]
+	},
+	{
+		path: '**',
+		redirectTo: ''
+	}
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+	imports: [RouterModule.forRoot(routes)],
+	exports: [RouterModule]
 })
 export class AppRoutingModule { }

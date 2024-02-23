@@ -15,118 +15,118 @@ import { ErrorService } from 'src/app/services/error.service';
 import { lastValueFrom } from 'rxjs';
 
 @Component({
-  selector: 'app-kanban-board',
-  templateUrl: './kanban-board.component.html',
-  styleUrls: ['./kanban-board.component.scss']
+	selector: 'app-kanban-board',
+	templateUrl: './kanban-board.component.html',
+	styleUrls: ['./kanban-board.component.scss']
 })
 export class KanbanBoardComponent implements AfterViewInit {
-  private _targets = [TaskState.NONE, TaskState.TODO, TaskState.PROGRESS, TaskState.REVIEW, TaskState.DONE, TaskState.DELETED];
-  public stateList: string[] = [TaskState.NONE, TaskState.TODO, TaskState.PROGRESS, TaskState.REVIEW, TaskState.DONE, TaskState.DELETED];
-  public taskList: State[] = [];
-  public loadingDelete = false;
+	private _targets = [TaskState.NONE, TaskState.TODO, TaskState.PROGRESS, TaskState.REVIEW, TaskState.DONE, TaskState.DELETED];
+	public stateList: string[] = [TaskState.NONE, TaskState.TODO, TaskState.PROGRESS, TaskState.REVIEW, TaskState.DONE, TaskState.DELETED];
+	public taskList: State[] = [];
+	public loadingDelete = false;
 
-  constructor(
-    private _api: ApiService,
-    private _snackbar: SnackbarService,
-    private _translate: TranslateService,
-    private _user: UserService,
-    private _parser: ParserService,
-    private _dialog: MatDialog,
-    private _error: ErrorService
-  ) {
+	constructor(
+		private _api: ApiService,
+		private _snackbar: SnackbarService,
+		private _translate: TranslateService,
+		private _user: UserService,
+		private _parser: ParserService,
+		private _dialog: MatDialog,
+		private _error: ErrorService
+	) {
 
-  }
+	}
 
-  async ngAfterViewInit(): Promise<void> {
-    while (this._user.project === undefined) await new Promise<void>(done => setTimeout(() => done(), 5));
-    try {
-      this.taskList = await lastValueFrom(this._api.getTaskList(this._user.token));
-    } catch (error) {
-      this._error.handleApiError(error);
-    }
-  }
+	async ngAfterViewInit(): Promise<void> {
+		while (this._user.project === undefined) await new Promise<void>(done => setTimeout(() => done(), 5));
+		try {
+			this.taskList = await lastValueFrom(this._api.getTaskList(this._user.token));
+		} catch (error) {
+			this._error.handleApiError(error);
+		}
+	}
 
-  private _export(blob: Blob, fileExtension: string): void {
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = 'export-' + this._user.project + '-tasks' + fileExtension;
-    link.click();
-  }
+	private _export(blob: Blob, fileExtension: string): void {
+		const link = document.createElement('a');
+		link.href = URL.createObjectURL(blob);
+		link.download = 'export-' + this._user.project + '-tasks' + fileExtension;
+		link.click();
+	}
 
-  public async drop(event: any): Promise<void> {
-    try {
-      if (!this._targets.includes(event.event.target.id)) {
-        return;
-      }
-      if (event.event.target.id === TaskState.DELETED) {
-        this.loadingDelete = true;
-        try {
-          this.taskList = await lastValueFrom(this._api.moveToTrashBin(this._user.token, event.previousContainer.data[event.previousIndex].uid));
-          this.loadingDelete = false;
-          this._snackbar.open(this._translate.instant('SUCCESS.MOVE_TO_TRASH'));
-        } catch (error) {
-          this.loadingDelete = false;
-          this._error.handleApiError(error);
-        }
-        return;
-      }      
-      if (event.previousContainer === event.container) {
-        moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-      } else {
-        transferArrayItem(
-          event.previousContainer.data,
-          event.container.data,
-          event.previousIndex,
-          event.currentIndex
-        );      
-      }
-      const foundState = this.taskList.find((list) => list.state === event.event.target.id);
-      const previousIndex = foundState?.tasks[event.currentIndex - 1]?.order ? foundState?.tasks[event.currentIndex - 1].order : 0;
-      const nextIndex = foundState?.tasks[event.currentIndex + 1]?.order === undefined ? previousIndex + 2 : foundState?.tasks[event.currentIndex + 1].order;
-      try {
-        this.taskList = await lastValueFrom(this._api.updatePosition(this._user.token, foundState!.tasks[event.currentIndex].uid, foundState!.state, (previousIndex + nextIndex) / 2));
-      } catch (error) {
-        this._error.handleApiError(error);
-      }
-    } catch (err) {
-      this._snackbar.open(this._translate.instant('ERROR.NO_VALID_SECTION'));
-    }
-  }
+	public async drop(event: any): Promise<void> {
+		try {
+			if (!this._targets.includes(event.event.target.id)) {
+				return;
+			}
+			if (event.event.target.id === TaskState.DELETED) {
+				this.loadingDelete = true;
+				try {
+					this.taskList = await lastValueFrom(this._api.moveToTrashBin(this._user.token, event.previousContainer.data[event.previousIndex].uid));
+					this.loadingDelete = false;
+					this._snackbar.open(this._translate.instant('SUCCESS.MOVE_TO_TRASH'));
+				} catch (error) {
+					this.loadingDelete = false;
+					this._error.handleApiError(error);
+				}
+				return;
+			}      
+			if (event.previousContainer === event.container) {
+				moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+			} else {
+				transferArrayItem(
+					event.previousContainer.data,
+					event.container.data,
+					event.previousIndex,
+					event.currentIndex
+				);      
+			}
+			const foundState = this.taskList.find((list) => list.state === event.event.target.id);
+			const previousIndex = foundState?.tasks[event.currentIndex - 1]?.order ? foundState?.tasks[event.currentIndex - 1].order : 0;
+			const nextIndex = foundState?.tasks[event.currentIndex + 1]?.order === undefined ? previousIndex + 2 : foundState?.tasks[event.currentIndex + 1].order;
+			try {
+				this.taskList = await lastValueFrom(this._api.updatePosition(this._user.token, foundState!.tasks[event.currentIndex].uid, foundState!.state, (previousIndex + nextIndex) / 2));
+			} catch (error) {
+				this._error.handleApiError(error);
+			}
+		} catch (err) {
+			this._snackbar.open(this._translate.instant('ERROR.NO_VALID_SECTION'));
+		}
+	}
 
-  public json(): void {
-    this._export(this._parser.tasksToJSON(this._parser.exportFormat(this.taskList)), '.json');
-  }
+	public json(): void {
+		this._export(this._parser.tasksToJSON(this._parser.exportFormat(this.taskList)), '.json');
+	}
 
-  public xml(): void {
-    this._export(this._parser.tasksToXML(this.taskList), '.xml');
-  }
+	public xml(): void {
+		this._export(this._parser.tasksToXML(this.taskList), '.xml');
+	}
 
-  public yaml(): void {
-    this._export(this._parser.tasksToYAML(this.taskList), '.yaml');
-  }
+	public yaml(): void {
+		this._export(this._parser.tasksToYAML(this.taskList), '.yaml');
+	}
 
-  public getColor(state: string): TaskStateColor {
-    return TaskStateColor[state as keyof typeof TaskStateColor];
-  }
+	public getColor(state: string): TaskStateColor {
+		return TaskStateColor[state as keyof typeof TaskStateColor];
+	}
 
-  public showDetails(task: Task): void {
-    const data = {
-      uid: task.uid,
-      author: task.author,
-      project: task.project,
-      title: task.title,
-      description: task.description,
-      assigned: task.assigned,
-      state: task.state,
-      order: task.order,
-      history: task.history
-    };
-    this._dialog.open(TaskDetailViewComponent, { data, ...{} }).afterClosed().subscribe(
-      async (updated) => {
-        if (updated) {
-          this.taskList = [...updated];
-        }
-      }
-    );
-  }
+	public showDetails(task: Task): void {
+		const data = {
+			uid: task.uid,
+			author: task.author,
+			project: task.project,
+			title: task.title,
+			description: task.description,
+			assigned: task.assigned,
+			state: task.state,
+			order: task.order,
+			history: task.history
+		};
+		this._dialog.open(TaskDetailViewComponent, { data, ...{} }).afterClosed().subscribe(
+			async (updated) => {
+				if (updated) {
+					this.taskList = [...updated];
+				}
+			}
+		);
+	}
 }

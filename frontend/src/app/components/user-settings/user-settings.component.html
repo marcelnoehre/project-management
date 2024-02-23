@@ -1,222 +1,213 @@
 <div class="user-settings-component">
-    <mat-card class="p-4 m-4">
-        <form [formGroup]="userSettingsForm">
-            <div class="form-container">
-                <mat-form-field appearance="outline" class="user-settings-form-field" MatInput>
-                    <mat-label> {{ 'USER.USERNAME' | translate }}</mat-label>
-                    <input
-                        id="username-input"
-                        name="username"
-                        formControlName="usernameFormControl"
-                        placeholder="{{'USER.USERNAME' | translate}}"
-                        matInput
-                        required
-                        minlength="4"
-                        maxlength="16"
-                    />
-                    <mat-icon matPrefix> person </mat-icon>
-                    <mat-error *ngIf="hasError('usernameFormControl', 'required')"> {{ 'ERROR.REQUIRED.USERNAME' | translate }} </mat-error>
-                    <mat-error *ngIf="hasError('usernameFormControl', 'minlength')">{{ 'ERROR.MINLENGTH.USERNAME' | translate }}</mat-error>
-                </mat-form-field>
-                <button
-                    type="button"
-                    [ngClass]="{'submit-button': !isDisabled('username')}"
-                    (click) = "updateUser('username')"
-                    [disabled] = "isDisabled('username')"
-                    matSuffix
-                    mat-icon-button
-                >
-                    <app-spinner-icon class="material-icons" icon="done_all" [spinning]="isLoading('username')"></app-spinner-icon>
-                </button>
-            </div>
-            <div class="form-container">
-                <mat-form-field appearance="outline" class="user-settings-form-field" MatInput>
-                    <mat-label> {{ 'USER.FULLNAME' | translate }}</mat-label>
-                    <input
-                        id="fullname-input"
-                        name="fullName"
-                        formControlName="fullNameFormControl"
-                        placeholder="{{'USER.FULLNAME' | translate}}"
-                        matInput
-                        required
-                        maxlength="32"
-                    />
-                    <mat-icon matPrefix> badge </mat-icon>
-                    <mat-error *ngIf="hasError('fullNameFormControl', 'required')"> {{ 'ERROR.REQUIRED.FULLNAME' | translate }} </mat-error>
-                </mat-form-field>
-                <button
-                    type="button"
-                    [ngClass]="{'submit-button': !isDisabled('fullName')}"
-                    (click) = "updateUser('fullName')"
-                    [disabled] = "isDisabled('fullName')"
-                    matSuffix
-                    mat-icon-button
-                >
-                    <app-spinner-icon class="material-icons" icon="done_all" [spinning]="isLoading('fullName')"></app-spinner-icon>
-                </button>
-            </div>
-            <div class="form-container">
-                <mat-form-field appearance="outline" class="user-settings-form-field">
-                    <mat-label>{{ 'USER.LANGUAGE' | translate }}</mat-label>
-                    <mat-select 
-                        id="language-select"
-                        name="language"
-                        formControlName="languageFormControl"
-                        placeholder="{{'USER.LANGUAGE'|translate}}"
-                    >
-                        <mat-option
-                            *ngFor="let lang of languages"
-                            [value]="lang.key"
-                        >
-                            {{ lang.label }}
-                        </mat-option>
-                    </mat-select>
-                    <mat-icon matPrefix> language </mat-icon>
-                </mat-form-field>
-                <button
-                    type="button"
-                    [ngClass]="{'submit-button': !isDisabled('language')}"
-                    (click) = "updateUser('language')"
-                    [disabled] = "isDisabled('language')"
-                    matSuffix
-                    mat-icon-button
-                >
-                    <app-spinner-icon class="material-icons" icon="done_all" [spinning]="isLoading('language')"></app-spinner-icon>
-                </button>
-            </div>
-            <div class="form-container">
-                <mat-form-field appearance="outline" class="user-settings-form-field" MatInput>
-                    <mat-label> {{ 'USER.NEW_PASSWORD' | translate }}</mat-label>
-                    <input
-                        id="password-input"
-                        name="password"
-                        formControlName="passwordFormControl"
-                        placeholder="{{'USER.NEW_PASSWORD'|translate}}"
-                        [type]="hidePassword ? 'password' : 'text'"
-                        matInput
-                        required
-                        minlength="8"
-                        pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@#$%^&+=*]).{8,}$"
-                    />
-                    <mat-icon matPrefix> lock </mat-icon>
-                    <button
-                        id="hide-password-button"
-                        type="button"
-                        [attr.aria-label]="'Hide password'"
-                        [attr.aria-pressed]="hidePassword"
-                        (click)="hidePassword = !hidePassword"
-                        matSuffix
-                        mat-icon-button
-                    >
-                        <mat-icon> {{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
-                    </button>
-                    <mat-error *ngIf="hasError('passwordFormControl', 'required')"> {{ 'ERROR.REQUIRED.PASSWORD' | translate }} </mat-error>
-                    <mat-error *ngIf="hasError('passwordFormControl', 'minlength')"> {{ 'ERROR.MINLENGTH.PASSWORD' | translate }} </mat-error>
-                    <mat-error *ngIf="!hasError('passwordFormControl', 'minlength') && hasError('passwordFormControl', 'pattern')"> {{ 'ERROR.PATTERN' | translate }} </mat-error>
-                </mat-form-field>
-                <button
-                    class="submit-button"
-                    type="button"
-                    [ngClass]="{'submit-button': !isDisabled('password')}"
-                    (click) = "updateUser('password')"
-                    [disabled] = "isDisabled('password')"
-                    matSuffix
-                    mat-icon-button
-                >
-                    <app-spinner-icon class="material-icons" icon="done_all" [spinning]="isLoading('password')"></app-spinner-icon>
-                </button>
-            </div>
-            <div class="form-container">
-                <mat-form-field appearance="outline" class="user-settings-form-field" MatInput>
-                    <mat-label> {{ 'USER.INITIALS' | translate }}</mat-label>
-                    <input
-                        id="initials-input"
-                        name="initials"
-                        formControlName="initialsFormControl"
-                        placeholder="{{ 'USER.INITIALS' | translate }}"
-                        matInput
-                        required
-                        minlength="2"
-                        maxlength="2"
-                    />
-                    <mat-icon matPrefix> image </mat-icon>
-                    <mat-error *ngIf="hasError('initialsFormControl', 'required')"> {{ 'ERROR.REQUIRED.INITIALS' | translate }} </mat-error>
-                    <mat-error *ngIf="hasError('initialsFormControl', 'minlength')"> {{ 'ERROR.MINLENGTH.INITIALS' | translate }} </mat-error>
-                </mat-form-field>
-                <button
-                    type="button"
-                    [ngClass]="{'submit-button': !isDisabled('initials')}"
-                    (click) = "updateUser('initials')"
-                    [disabled] = "isDisabled('initials')"
-                    matSuffix
-                    mat-icon-button
-                >
-                    <app-spinner-icon class="material-icons" icon="done_all" [spinning]="isLoading('initials')"></app-spinner-icon>
-                </button>
-            </div>
-            <div class="form-container">
-                <mat-form-field appearance="outline" class="user-settings-form-field" MatInput>
-                    <mat-label> {{ 'USER.COLOR' | translate }}</mat-label>
-                    <input
-                        id="color-input"
-                        [(colorPicker)]="color"
-                        [style.background]="color"
-                        cpPosition="top"
-                        name="color"
-                        formControlName="colorFormControl"
-                        readonly
-                        matInput
-                    />
-                    <mat-icon matPrefix> palette </mat-icon>
-                </mat-form-field>
-                <button
-                    type="button"
-                    [ngClass]="{'submit-button': !isDisabled('color')}"
-                    (click) = "updateUser('color')"
-                    [disabled] = "isDisabled('color')"
-                    matSuffix
-                    mat-icon-button
-                >
-                    <app-spinner-icon class="material-icons" icon="done_all" [spinning]="isLoading('color')"></app-spinner-icon>
-                </button>
-            </div>
-            <div class="form-container center mb-5">
-                <input
-                    id="profile-picture-input" 
-                    name="profile-picture"
-                    *ngIf="!hasProfilePicture()"
-                    type="file" 
-                    (change)="onFileSelected($event)"
-                    class="file-input p-5"
-                >
-                <div class="file-preview" *ngIf="hasProfilePicture()">
-                    <img [src]="profilePicture">
-                    <div>
-                        <button 
-                            mat-fab
-                            color="warn"
-                            (click)="removeFile()">
-                            <mat-icon>delete</mat-icon>
-                        </button>  
-                    </div>
-                </div>
-                <button
-                    type="button"
-                    [ngClass]="{'submit-button': !isDisabled('profilePicture')}"
-                    (click) = "updateUser('profilePicture')"
-                    [disabled] = "isDisabled('profilePicture')"
-                    matSuffix
-                    mat-icon-button
-                >
-                    <app-spinner-icon class="material-icons" icon="done_all" [spinning]="isLoading('profilePicture')"></app-spinner-icon>
-                </button>
-            </div>
-            <div class="delete" *ngIf="showDelete()">
-                <button color="warn" mat-raised-button (click)="deleteUser()">
-                    {{ 'USER.DELETE' | translate }}
-                    <app-spinner-icon class="material-icons" icon="delete" [spinning]="loadingDelete"></app-spinner-icon>
-                </button>
-            </div>
-        </form>
-    </mat-card>
+  <mat-card class="p-4 m-4">
+    <form [formGroup]="userSettingsForm">
+      <div class="form-container">
+        <mat-form-field appearance="outline" class="user-settings-form-field" MatInput>
+          <mat-label> {{ "USER.USERNAME" | translate }}</mat-label>
+          <input
+            id="username-input"
+            name="username"
+            formControlName="usernameFormControl"
+            placeholder="{{ 'USER.USERNAME' | translate }}"
+            matInput
+            required
+            minlength="4"
+            maxlength="16"
+          />
+          <mat-icon matPrefix> person </mat-icon>
+          <mat-error *ngIf="hasError('usernameFormControl', 'required')"> {{ "ERROR.REQUIRED.USERNAME" | translate }} </mat-error>
+          <mat-error *ngIf="hasError('usernameFormControl', 'minlength')">{{ "ERROR.MINLENGTH.USERNAME" | translate }}</mat-error>
+        </mat-form-field>
+        <button
+          type="button"
+          [ngClass]="{ 'submit-button': !isDisabled('username') }"
+          (click)="updateUser('username')"
+          [disabled]="isDisabled('username')"
+          matSuffix
+          mat-icon-button
+        >
+          <app-spinner-icon class="material-icons" icon="done_all" [spinning]="isLoading('username')"></app-spinner-icon>
+        </button>
+      </div>
+      <div class="form-container">
+        <mat-form-field appearance="outline" class="user-settings-form-field" MatInput>
+          <mat-label> {{ "USER.FULLNAME" | translate }}</mat-label>
+          <input
+            id="fullname-input"
+            name="fullName"
+            formControlName="fullNameFormControl"
+            placeholder="{{ 'USER.FULLNAME' | translate }}"
+            matInput
+            required
+            maxlength="32"
+          />
+          <mat-icon matPrefix> badge </mat-icon>
+          <mat-error *ngIf="hasError('fullNameFormControl', 'required')"> {{ "ERROR.REQUIRED.FULLNAME" | translate }} </mat-error>
+        </mat-form-field>
+        <button
+          type="button"
+          [ngClass]="{ 'submit-button': !isDisabled('fullName') }"
+          (click)="updateUser('fullName')"
+          [disabled]="isDisabled('fullName')"
+          matSuffix
+          mat-icon-button
+        >
+          <app-spinner-icon class="material-icons" icon="done_all" [spinning]="isLoading('fullName')"></app-spinner-icon>
+        </button>
+      </div>
+      <div class="form-container">
+        <mat-form-field appearance="outline" class="user-settings-form-field">
+          <mat-label>{{ "USER.LANGUAGE" | translate }}</mat-label>
+          <mat-select id="language-select" name="language" formControlName="languageFormControl" placeholder="{{ 'USER.LANGUAGE' | translate }}">
+            <mat-option *ngFor="let lang of languages" [value]="lang.key">
+              {{ lang.label }}
+            </mat-option>
+          </mat-select>
+          <mat-icon matPrefix> language </mat-icon>
+        </mat-form-field>
+        <button
+          type="button"
+          [ngClass]="{ 'submit-button': !isDisabled('language') }"
+          (click)="updateUser('language')"
+          [disabled]="isDisabled('language')"
+          matSuffix
+          mat-icon-button
+        >
+          <app-spinner-icon class="material-icons" icon="done_all" [spinning]="isLoading('language')"></app-spinner-icon>
+        </button>
+      </div>
+      <div class="form-container">
+        <mat-form-field appearance="outline" class="user-settings-form-field" MatInput>
+          <mat-label> {{ "USER.NEW_PASSWORD" | translate }}</mat-label>
+          <input
+            id="password-input"
+            name="password"
+            formControlName="passwordFormControl"
+            placeholder="{{ 'USER.NEW_PASSWORD' | translate }}"
+            [type]="hidePassword ? 'password' : 'text'"
+            matInput
+            required
+            minlength="8"
+            pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@#$%^&+=*]).{8,}$"
+          />
+          <mat-icon matPrefix> lock </mat-icon>
+          <button
+            id="hide-password-button"
+            type="button"
+            [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hidePassword"
+            (click)="hidePassword = !hidePassword"
+            matSuffix
+            mat-icon-button
+          >
+            <mat-icon> {{ hidePassword ? "visibility_off" : "visibility" }}</mat-icon>
+          </button>
+          <mat-error *ngIf="hasError('passwordFormControl', 'required')"> {{ "ERROR.REQUIRED.PASSWORD" | translate }} </mat-error>
+          <mat-error *ngIf="hasError('passwordFormControl', 'minlength')"> {{ "ERROR.MINLENGTH.PASSWORD" | translate }} </mat-error>
+          <mat-error *ngIf="!hasError('passwordFormControl', 'minlength') && hasError('passwordFormControl', 'pattern')">
+            {{ "ERROR.PATTERN" | translate }}
+          </mat-error>
+        </mat-form-field>
+        <button
+          class="submit-button"
+          type="button"
+          [ngClass]="{ 'submit-button': !isDisabled('password') }"
+          (click)="updateUser('password')"
+          [disabled]="isDisabled('password')"
+          matSuffix
+          mat-icon-button
+        >
+          <app-spinner-icon class="material-icons" icon="done_all" [spinning]="isLoading('password')"></app-spinner-icon>
+        </button>
+      </div>
+      <div class="form-container">
+        <mat-form-field appearance="outline" class="user-settings-form-field" MatInput>
+          <mat-label> {{ "USER.INITIALS" | translate }}</mat-label>
+          <input
+            id="initials-input"
+            name="initials"
+            formControlName="initialsFormControl"
+            placeholder="{{ 'USER.INITIALS' | translate }}"
+            matInput
+            required
+            minlength="2"
+            maxlength="2"
+          />
+          <mat-icon matPrefix> image </mat-icon>
+          <mat-error *ngIf="hasError('initialsFormControl', 'required')"> {{ "ERROR.REQUIRED.INITIALS" | translate }} </mat-error>
+          <mat-error *ngIf="hasError('initialsFormControl', 'minlength')"> {{ "ERROR.MINLENGTH.INITIALS" | translate }} </mat-error>
+        </mat-form-field>
+        <button
+          type="button"
+          [ngClass]="{ 'submit-button': !isDisabled('initials') }"
+          (click)="updateUser('initials')"
+          [disabled]="isDisabled('initials')"
+          matSuffix
+          mat-icon-button
+        >
+          <app-spinner-icon class="material-icons" icon="done_all" [spinning]="isLoading('initials')"></app-spinner-icon>
+        </button>
+      </div>
+      <div class="form-container">
+        <mat-form-field appearance="outline" class="user-settings-form-field" MatInput>
+          <mat-label> {{ "USER.COLOR" | translate }}</mat-label>
+          <input
+            id="color-input"
+            [(colorPicker)]="color"
+            [style.background]="color"
+            cpPosition="top"
+            name="color"
+            formControlName="colorFormControl"
+            readonly
+            matInput
+          />
+          <mat-icon matPrefix> palette </mat-icon>
+        </mat-form-field>
+        <button
+          type="button"
+          [ngClass]="{ 'submit-button': !isDisabled('color') }"
+          (click)="updateUser('color')"
+          [disabled]="isDisabled('color')"
+          matSuffix
+          mat-icon-button
+        >
+          <app-spinner-icon class="material-icons" icon="done_all" [spinning]="isLoading('color')"></app-spinner-icon>
+        </button>
+      </div>
+      <div class="form-container center mb-5">
+        <input
+          id="profile-picture-input"
+          name="profile-picture"
+          *ngIf="!hasProfilePicture()"
+          type="file"
+          (change)="onFileSelected($event)"
+          class="file-input p-5"
+        />
+        <div class="file-preview" *ngIf="hasProfilePicture()">
+          <img [src]="profilePicture" />
+          <div>
+            <button mat-fab color="warn" (click)="removeFile()">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </div>
+        <button
+          type="button"
+          [ngClass]="{ 'submit-button': !isDisabled('profilePicture') }"
+          (click)="updateUser('profilePicture')"
+          [disabled]="isDisabled('profilePicture')"
+          matSuffix
+          mat-icon-button
+        >
+          <app-spinner-icon class="material-icons" icon="done_all" [spinning]="isLoading('profilePicture')"></app-spinner-icon>
+        </button>
+      </div>
+      <div class="delete" *ngIf="showDelete()">
+        <button color="warn" mat-raised-button (click)="deleteUser()">
+          {{ "USER.DELETE" | translate }}
+          <app-spinner-icon class="material-icons" icon="delete" [spinning]="loadingDelete"></app-spinner-icon>
+        </button>
+      </div>
+    </form>
+  </mat-card>
 </div>

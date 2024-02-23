@@ -1,6 +1,6 @@
-import { Stats } from "./stats";
+import { Stats } from './stats';
 
 export interface AssignedStats {
-    id: string,
-    stats: Stats
+	id: string,
+	stats: Stats
 }

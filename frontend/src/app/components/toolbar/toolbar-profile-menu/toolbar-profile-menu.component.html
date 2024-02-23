@@ -1,24 +1,24 @@
 <button mat-button class="dropdown-menu-button" [matMenuTriggerFor]="menu">
-	<div class="user" style="--color: {{color}}">
-		<ng-container *ngIf="!isSmallScreen()">{{ fullName }}</ng-container>
-		<div class="user-icon">
-			<img [src]="profilePicture">
-			<p *ngIf="!profilePicture" class="initials"> {{ initials }} </p>
-		</div>
-	</div>
-	<mat-icon class="header-profile-menu-mat-icon" [inline]="true">arrow_drop_down</mat-icon>
+  <div class="user" style="--color: {{ color }}">
+    <ng-container *ngIf="!isSmallScreen()">{{ fullName }}</ng-container>
+    <div class="user-icon">
+      <img [src]="profilePicture" />
+      <p *ngIf="!profilePicture" class="initials">{{ initials }}</p>
+    </div>
+  </div>
+  <mat-icon class="header-profile-menu-mat-icon" [inline]="true">arrow_drop_down</mat-icon>
 </button>
 
 <mat-menu #menu="matMenu" [overlapTrigger]="false" xPosition="before">
-	<button *ngIf="showNotifications()" (click)="showNotificationsFeed()" mat-menu-item>
-		<mat-icon>inbox</mat-icon>
-		<span class="notifications-counter">
-			<p>{{ unseenNotifications() }}</p>
-		</span>
-		{{ 'NAV.NOTIFICATIONS' | translate }}
-	</button>
-	<button (click)="logout()" mat-menu-item>
-		<mat-icon>logout</mat-icon>
-		{{ 'NAV.LOGOUT' | translate }}
-	</button>
+  <button *ngIf="showNotifications()" (click)="showNotificationsFeed()" mat-menu-item>
+    <mat-icon>inbox</mat-icon>
+    <span class="notifications-counter">
+      <p>{{ unseenNotifications() }}</p>
+    </span>
+    {{ "NAV.NOTIFICATIONS" | translate }}
+  </button>
+  <button (click)="logout()" mat-menu-item>
+    <mat-icon>logout</mat-icon>
+    {{ "NAV.LOGOUT" | translate }}
+  </button>
 </mat-menu>

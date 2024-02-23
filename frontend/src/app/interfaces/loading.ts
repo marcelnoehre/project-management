@@ -1,6 +1,6 @@
 export interface Loading {
-    step: string,
-    information: string,
-    percentage: number,
-    data: unknown
+	step: string,
+	information: string,
+	percentage: number,
+	data: unknown
 }

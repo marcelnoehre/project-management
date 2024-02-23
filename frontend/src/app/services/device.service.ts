@@ -35,7 +35,7 @@ export class DeviceService implements OnDestroy {
 			.subscribe((event: NavigationEnd) => {
 				this._activeRoute = event.urlAfterRedirects;
 			}
-		);
+			);
 	}
 
 	public get activeRoute(): string {

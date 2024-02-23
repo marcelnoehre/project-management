@@ -12,7 +12,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { TimelineModule } from 'primeng/timeline';
-import { NgApexchartsModule } from "ng-apexcharts";
+import { NgApexchartsModule } from 'ng-apexcharts';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
@@ -44,40 +44,40 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
 }
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    LoginComponent,
-    RegistrationComponent,
-    CreateProjectComponent,
-    SidenavComponent,
-    ToolbarComponent,
-    ToolbarProfileMenuComponent,
-    DialogComponent,
-    DashboardComponent,
-    UserSettingsComponent,
-    ProjectSettingsComponent,
-    CreateTaskComponent,
-    KanbanBoardComponent,
-    ImportTasksComponent,
-    TrashBinComponent,
-    SpinnerIconComponent,
-    NotificationsFeedComponent,
-    TaskDetailViewComponent,
-    StatsComponent
-  ],
-  imports: [
-    BrowserModule,
-    NgChartsModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MaterialModule,
-    HttpClientModule,
-    DragDropModule,
-    ColorPickerModule,
-    TimelineModule,
-    NgApexchartsModule,
+	declarations: [
+		AppComponent,
+		LoginComponent,
+		RegistrationComponent,
+		CreateProjectComponent,
+		SidenavComponent,
+		ToolbarComponent,
+		ToolbarProfileMenuComponent,
+		DialogComponent,
+		DashboardComponent,
+		UserSettingsComponent,
+		ProjectSettingsComponent,
+		CreateTaskComponent,
+		KanbanBoardComponent,
+		ImportTasksComponent,
+		TrashBinComponent,
+		SpinnerIconComponent,
+		NotificationsFeedComponent,
+		TaskDetailViewComponent,
+		StatsComponent
+	],
+	imports: [
+		BrowserModule,
+		NgChartsModule,
+		AppRoutingModule,
+		BrowserAnimationsModule,
+		FormsModule,
+		ReactiveFormsModule,
+		MaterialModule,
+		HttpClientModule,
+		DragDropModule,
+		ColorPickerModule,
+		TimelineModule,
+		NgApexchartsModule,
 		TranslateModule.forRoot({
 			loader: {
 				provide: TranslateLoader,
@@ -85,8 +85,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
 				deps: [HttpClient]
 			}
 		})
-  ],
-  providers: [UserService, NotificationsService],
-  bootstrap: [AppComponent]
+	],
+	providers: [UserService, NotificationsService],
+	bootstrap: [AppComponent]
 })
 export class AppModule { }

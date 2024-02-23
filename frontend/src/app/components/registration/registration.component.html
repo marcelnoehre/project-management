@@ -1,162 +1,159 @@
 <div class="registration-container">
-	<mat-card appearance="outlined" class="registration-card">
-		<mat-card-header class="registration-card-header">
-            <h1>{{ 'REGISTRATION.HEADER' | translate }}</h1>
-        </mat-card-header>
-		<mat-card-content class="p-0">
-			<form [formGroup]="registrationForm">
-				<div>
-					<mat-form-field appearance="outline" class="registration-form-field" MatInput>
-						<mat-label> {{ 'USER.USERNAME' | translate }} </mat-label>
-						<input #inputUser
-							id="username-input"
-                            name="username"
-							formControlName="usernameFormControl"
-							placeholder="{{'USER.USERNAME'|translate}}"
-							matInput
-							required
-							minlength="4"
-							maxlength="16"
-							data-cy="registration-username"
-						/>
-						<mat-icon matPrefix> person </mat-icon>
-						<mat-error *ngIf="hasError('usernameFormControl', 'required')"> {{ 'ERROR.REQUIRED.USERNAME' | translate }} </mat-error>
-						<mat-error *ngIf="hasError('usernameFormControl', 'minlength')">{{ 'ERROR.MINLENGTH.USERNAME' | translate }}</mat-error>
-					</mat-form-field>
-				</div>
-				<div>
-					<mat-form-field appearance="outline" class="registration-form-field" MatInput>
-						<mat-label> {{ 'USER.FULLNAME' | translate }} </mat-label>
-						<input
-							id="fullName-input"
-                            name="fullName"
-							formControlName="fullnameFormControl"
-							placeholder="{{'USER.FULLNAME'|translate}}"
-							matInput
-							required
-							maxlength="32"
-							data-cy="registration-fullName"
-						/>
-						<mat-icon matPrefix> badge </mat-icon>
-						<mat-error *ngIf="hasError('fullnameFormControl', 'required')">{{ 'ERROR.REQUIRED.FULLNAME' | translate }}</mat-error>
-					</mat-form-field>
-				</div>
-				<div>
-					<mat-form-field appearance="outline" class="registration-form-field">
-						<mat-label>{{ 'USER.LANGUAGE' | translate }}</mat-label>
-						<mat-select 
-							id="language-select"
-							name="language"
-							formControlName="languageFormControl"
-							placeholder="{{'USER.LANGUAGE'|translate}}"
-							data-cy="registration-language"
-						>
-							<mat-option
-								*ngFor="let lang of languages"
-								[value]="lang.key"
-							>
-								{{ lang.label }}
-							</mat-option>
-						</mat-select>
-						<mat-icon matPrefix> language </mat-icon>
-					</mat-form-field>
-				</div>
-				<mat-icon [matTooltip]="passwordInformation()" matTooltipPosition="right" class="pb-1">info</mat-icon>
-				<div>
-					<mat-form-field appearance="outline" class="registration-form-field">
-						<mat-label> {{ 'USER.PASSWORD' | translate }}</mat-label>
-						<input
-							id="password-input"
-							name="password"
-							formControlName="passwordFormControl"
-							placeholder="{{'USER.PASSWORD'|translate}}"
-							[type]="hidePassword ? 'password' : 'text'"
-							matInput
-							required
-							minlength="8"
-							pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@#$%^&+=*]).{8,}$"
-							data-cy="registration-password"
-						/>
-						<mat-icon matPrefix> lock </mat-icon>
-						<button
-							id="hide-password-button"
-							type="button"
-							[attr.aria-label]="'Hide password'"
-							[attr.aria-pressed]="hidePassword"
-							(click)="hidePassword = !hidePassword"
-							matSuffix
-							mat-icon-button
-							data-cy="registration-hide-password"
-						>
-							<mat-icon> {{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
-						</button>
-						<mat-error *ngIf="hasError('passwordFormControl', 'required')"> {{ 'ERROR.REQUIRED.PASSWORD' | translate }} </mat-error>
-						<mat-error *ngIf="hasError('passwordFormControl', 'minlength')"> {{ 'ERROR.MINLENGTH.PASSWORD' | translate }} </mat-error>
-						<mat-error *ngIf="!hasError('passwordFormControl', 'minlength') && hasError('passwordFormControl', 'pattern')"> {{ 'ERROR.PATTERN' | translate }} </mat-error>
-					</mat-form-field>
-				</div>
-                <div>
-					<mat-form-field appearance="outline" class="registration-form-field">
-						<mat-label> {{ 'USER.REPEAT_PASSWORD' | translate }}</mat-label>
-						<input
-							id="password-repeat-input"
-							name="password-repeat"
-							formControlName="passwordRepeatFormControl"
-							placeholder="{{'USER.REPEAT_PASSWORD'|translate}}"
-							[type]="hidePasswordRepeat ? 'password' : 'text'"
-							matInput
-							required
-							minlength="8"
-							pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@#$%^&+=*]).{8,}$"
-							data-cy="registration-password-repeat"
-						/>
-						<mat-icon matPrefix> lock </mat-icon>
-						<button
-							id="hide-password-repeat-button"
-							type="button"
-							[attr.aria-label]="'Hide password'"
-							[attr.aria-pressed]="hidePasswordRepeat"
-							(click)="hidePasswordRepeat = !hidePasswordRepeat"
-							matSuffix
-							mat-icon-button
-							data-cy="registration-hide-password-repeat"
-						>
-							<mat-icon> {{ hidePasswordRepeat ? 'visibility_off' : 'visibility' }}</mat-icon>
-						</button>
-						<mat-error *ngIf="hasError('passwordRepeatFormControl', 'required')"> {{ 'ERROR.REQUIRED.REPEAT_PASSWORD' | translate }} </mat-error>
-						<mat-error *ngIf="hasError('passwordRepeatFormControl', 'minlength')"> {{ 'ERROR.MINLENGTH.REPEAT_PASSWORD' | translate }} </mat-error>
-						<mat-error *ngIf="!hasError('passwordRepeatFormControl', 'minlength') && hasError('passwordRepeatFormControl', 'pattern')"> {{ 'ERROR.PATTERN' | translate }} </mat-error>
-					</mat-form-field>
-				</div>
-				<div>
-					<button #submitRegistration
-						id="registration-button"
-						type="submit"
-						class="submit-button align-center"
-						color="primary"
-						[disabled]="!registrationForm.valid"
-						tabindex="0"
-						(click)="register()"
-						mat-raised-button
-						data-cy="registration-submit"
-					>
-						<app-spinner-icon class="material-icons" icon="login" [spinning]="loading"></app-spinner-icon>
-						<ng-container *ngIf="loading">&nbsp;</ng-container>
-						{{ 'REGISTRATION.REGISTER' | translate }}
-					</button>
-				</div>
-			</form>
-		</mat-card-content>
-		<mat-card-footer class="pt-2">
-            <div 
-				class="clickable" 
-				(click)="login()" 
-				(keyup.enter)="login()" 
-				tabindex="0"
-				data-cy="login-link"
-			>
-				{{'REGISTRATION.BACK'|translate}}
-			</div>
-        </mat-card-footer>
-	</mat-card>
+  <mat-card appearance="outlined" class="registration-card">
+    <mat-card-header class="registration-card-header">
+      <h1>{{ "REGISTRATION.HEADER" | translate }}</h1>
+    </mat-card-header>
+    <mat-card-content class="p-0">
+      <form [formGroup]="registrationForm">
+        <div>
+          <mat-form-field appearance="outline" class="registration-form-field" MatInput>
+            <mat-label> {{ "USER.USERNAME" | translate }} </mat-label>
+            <input
+              #inputUser
+              id="username-input"
+              name="username"
+              formControlName="usernameFormControl"
+              placeholder="{{ 'USER.USERNAME' | translate }}"
+              matInput
+              required
+              minlength="4"
+              maxlength="16"
+              data-cy="registration-username"
+            />
+            <mat-icon matPrefix> person </mat-icon>
+            <mat-error *ngIf="hasError('usernameFormControl', 'required')"> {{ "ERROR.REQUIRED.USERNAME" | translate }} </mat-error>
+            <mat-error *ngIf="hasError('usernameFormControl', 'minlength')">{{ "ERROR.MINLENGTH.USERNAME" | translate }}</mat-error>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field appearance="outline" class="registration-form-field" MatInput>
+            <mat-label> {{ "USER.FULLNAME" | translate }} </mat-label>
+            <input
+              id="fullName-input"
+              name="fullName"
+              formControlName="fullnameFormControl"
+              placeholder="{{ 'USER.FULLNAME' | translate }}"
+              matInput
+              required
+              maxlength="32"
+              data-cy="registration-fullName"
+            />
+            <mat-icon matPrefix> badge </mat-icon>
+            <mat-error *ngIf="hasError('fullnameFormControl', 'required')">{{ "ERROR.REQUIRED.FULLNAME" | translate }}</mat-error>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field appearance="outline" class="registration-form-field">
+            <mat-label>{{ "USER.LANGUAGE" | translate }}</mat-label>
+            <mat-select
+              id="language-select"
+              name="language"
+              formControlName="languageFormControl"
+              placeholder="{{ 'USER.LANGUAGE' | translate }}"
+              data-cy="registration-language"
+            >
+              <mat-option *ngFor="let lang of languages" [value]="lang.key">
+                {{ lang.label }}
+              </mat-option>
+            </mat-select>
+            <mat-icon matPrefix> language </mat-icon>
+          </mat-form-field>
+        </div>
+        <mat-icon [matTooltip]="passwordInformation()" matTooltipPosition="right" class="pb-1">info</mat-icon>
+        <div>
+          <mat-form-field appearance="outline" class="registration-form-field">
+            <mat-label> {{ "USER.PASSWORD" | translate }}</mat-label>
+            <input
+              id="password-input"
+              name="password"
+              formControlName="passwordFormControl"
+              placeholder="{{ 'USER.PASSWORD' | translate }}"
+              [type]="hidePassword ? 'password' : 'text'"
+              matInput
+              required
+              minlength="8"
+              pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@#$%^&+=*]).{8,}$"
+              data-cy="registration-password"
+            />
+            <mat-icon matPrefix> lock </mat-icon>
+            <button
+              id="hide-password-button"
+              type="button"
+              [attr.aria-label]="'Hide password'"
+              [attr.aria-pressed]="hidePassword"
+              (click)="hidePassword = !hidePassword"
+              matSuffix
+              mat-icon-button
+              data-cy="registration-hide-password"
+            >
+              <mat-icon> {{ hidePassword ? "visibility_off" : "visibility" }}</mat-icon>
+            </button>
+            <mat-error *ngIf="hasError('passwordFormControl', 'required')"> {{ "ERROR.REQUIRED.PASSWORD" | translate }} </mat-error>
+            <mat-error *ngIf="hasError('passwordFormControl', 'minlength')"> {{ "ERROR.MINLENGTH.PASSWORD" | translate }} </mat-error>
+            <mat-error *ngIf="!hasError('passwordFormControl', 'minlength') && hasError('passwordFormControl', 'pattern')">
+              {{ "ERROR.PATTERN" | translate }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field appearance="outline" class="registration-form-field">
+            <mat-label> {{ "USER.REPEAT_PASSWORD" | translate }}</mat-label>
+            <input
+              id="password-repeat-input"
+              name="password-repeat"
+              formControlName="passwordRepeatFormControl"
+              placeholder="{{ 'USER.REPEAT_PASSWORD' | translate }}"
+              [type]="hidePasswordRepeat ? 'password' : 'text'"
+              matInput
+              required
+              minlength="8"
+              pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@#$%^&+=*]).{8,}$"
+              data-cy="registration-password-repeat"
+            />
+            <mat-icon matPrefix> lock </mat-icon>
+            <button
+              id="hide-password-repeat-button"
+              type="button"
+              [attr.aria-label]="'Hide password'"
+              [attr.aria-pressed]="hidePasswordRepeat"
+              (click)="hidePasswordRepeat = !hidePasswordRepeat"
+              matSuffix
+              mat-icon-button
+              data-cy="registration-hide-password-repeat"
+            >
+              <mat-icon> {{ hidePasswordRepeat ? "visibility_off" : "visibility" }}</mat-icon>
+            </button>
+            <mat-error *ngIf="hasError('passwordRepeatFormControl', 'required')"> {{ "ERROR.REQUIRED.REPEAT_PASSWORD" | translate }} </mat-error>
+            <mat-error *ngIf="hasError('passwordRepeatFormControl', 'minlength')"> {{ "ERROR.MINLENGTH.REPEAT_PASSWORD" | translate }} </mat-error>
+            <mat-error *ngIf="!hasError('passwordRepeatFormControl', 'minlength') && hasError('passwordRepeatFormControl', 'pattern')">
+              {{ "ERROR.PATTERN" | translate }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div>
+          <button
+            #submitRegistration
+            id="registration-button"
+            type="submit"
+            class="submit-button align-center"
+            color="primary"
+            [disabled]="!registrationForm.valid"
+            tabindex="0"
+            (click)="register()"
+            mat-raised-button
+            data-cy="registration-submit"
+          >
+            <app-spinner-icon class="material-icons" icon="login" [spinning]="loading"></app-spinner-icon>
+            <ng-container *ngIf="loading">&nbsp;</ng-container>
+            {{ "REGISTRATION.REGISTER" | translate }}
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+    <mat-card-footer class="pt-2">
+      <div class="clickable" (click)="login()" (keyup.enter)="login()" tabindex="0" data-cy="login-link">
+        {{ "REGISTRATION.BACK" | translate }}
+      </div>
+    </mat-card-footer>
+  </mat-card>
 </div>

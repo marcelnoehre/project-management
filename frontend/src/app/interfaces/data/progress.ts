@@ -1,6 +1,6 @@
 export interface Progress {
-    amount: number,
-    success: number,
-    fail: number,
-    taskList: any[]
+	amount: number,
+	success: number,
+	fail: number,
+	taskList: any[]
 }

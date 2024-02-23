@@ -17,13 +17,13 @@ import { TaskProgress } from 'src/app/interfaces/data/task-progress';
 import { User } from 'src/app/interfaces/data/user';
 
 @Injectable({
-  providedIn: 'root'
+	providedIn: 'root'
 })
 export class TestService {
 
-  constructor(
-	private translate: TranslateService
-  ) { }
+	constructor(
+		private translate: TranslateService
+	) { }
 
 	// ### AUTH ###
 	public verify(token: string): Observable<User> {
@@ -281,11 +281,11 @@ export class TestService {
 			  1707949319137,
 			  1707949319299
 			],
-			NONE: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27],
-			TODO: [0,0,1,2,3,4,5,6,7,8,9,9,10,11,12,13,13,13,14,15,16,17,18,19,20,21,22],
-			PROGRESS: [0,0,0,0,0,1,2,3,4,5,6,6,6,7,8,9,9,9,9,9,9,10,11,12,13,14,15],
-			REVIEW: [0,0,0,0,0,0,0,1,2,3,4,4,4,4,5,6,6,6,6,6,6,6,6,7,8,9,10],
-			DONE: [0,0,0,0,0,0,0,0,0,1,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,4,5]
+			NONE: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27],
+			TODO: [0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 9, 10, 11, 12, 13, 13, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22],
+			PROGRESS: [0, 0, 0, 0, 0, 1, 2, 3, 4, 5, 6, 6, 6, 7, 8, 9, 9, 9, 9, 9, 9, 10, 11, 12, 13, 14, 15],
+			REVIEW: [0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 4, 4, 4, 5, 6, 6, 6, 6, 6, 6, 6, 6, 7, 8, 9, 10],
+			DONE: [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 5]
 		});
 	}
 
@@ -687,7 +687,7 @@ export class TestService {
 			{
 			  state: TaskState.NONE,
 			  tasks: [
-				{
+					{
 				  uid: 'DHfqbZ18jhH55SFWFGwO',
 				  author: 'mock',
 				  project: 'works',
@@ -695,17 +695,17 @@ export class TestService {
 				  assigned: '',
 				  state: TaskState.NONE,
 				  history: [
-					{
+							{
 					  previous: null,
 					  state: TaskState.NONE,
 					  timestamp: 1707706711326,
 					  username: 'mock'
-					}
+							}
 				  ],
 				  title: 'Documentation',
 				  order: 1
-				},
-				{
+					},
+					{
 				  uid: 'miOt2Q50MAV9onMGc00M',
 				  author: 'mock',
 				  project: 'works',
@@ -713,17 +713,17 @@ export class TestService {
 				  assigned: '',
 				  state: TaskState.NONE,
 				  history: [
-					{
+							{
 					  previous: null,
 					  state: TaskState.NONE,
 					  timestamp: 1707706711547,
 					  username: 'mock'
-					}
+							}
 				  ],
 				  title: 'Finalize Project',
 				  order: 2
-				},
-				{
+					},
+					{
 				  uid: 'L0LJoChgGLAh36tmUip1',
 				  author: 'mock',
 				  project: 'works',
@@ -731,17 +731,17 @@ export class TestService {
 				  assigned: '',
 				  state: TaskState.NONE,
 				  history: [
-					{
+							{
 					  previous: null,
 					  state: TaskState.NONE,
 					  timestamp: 1707706984237,
 					  username: 'mock'
-					}
+							}
 				  ],
 				  title: 'Documentation',
 				  order: 3
-				},
-				{
+					},
+					{
 				  uid: '9Iny1sv25Q66y7OE3fZI',
 				  author: 'mock',
 				  project: 'works',
@@ -749,17 +749,17 @@ export class TestService {
 				  assigned: '',
 				  state: TaskState.NONE,
 				  history: [
-					{
+							{
 					  previous: null,
 					  state: TaskState.NONE,
 					  timestamp: 1707706984404,
 					  username: 'mock'
-					}
+							}
 				  ],
 				  title: 'Finalize Project',
 				  order: 4
-				},
-				{
+					},
+					{
 				  uid: 'wsDH9KPgDuoiQqEugq4e',
 				  author: 'test',
 				  project: 'works',
@@ -767,22 +767,22 @@ export class TestService {
 				  assigned: '',
 				  state: TaskState.NONE,
 				  history: [
-					{
+							{
 					  previous: null,
 					  state: TaskState.NONE,
 					  timestamp: 1707948639928,
 					  username: 'test'
-					}
+							}
 				  ],
 				  title: 'TEST',
 				  order: 5
-				}
+					}
 			  ]
 			},
 			{
 			  state: TaskState.TODO,
 			  tasks: [
-				{
+					{
 				  uid: 'fOJ45cgoAmxnUWIhBHrw',
 				  author: 'mock',
 				  project: 'works',
@@ -790,17 +790,17 @@ export class TestService {
 				  assigned: '',
 				  state: TaskState.TODO,
 				  history: [
-					{
+							{
 					  previous: null,
 					  state: TaskState.TODO,
 					  timestamp: 1707706711761,
 					  username: 'mock'
-					}
+							}
 				  ],
 				  title: 'Complete Project Proposal',
 				  order: 1
-				},
-				{
+					},
+					{
 				  uid: 'FjkpaYdHyqrvIHM3z1wo',
 				  author: 'mock',
 				  project: 'works',
@@ -808,17 +808,17 @@ export class TestService {
 				  assigned: '',
 				  state: TaskState.TODO,
 				  history: [
-					{
+							{
 					  previous: null,
 					  state: TaskState.TODO,
 					  timestamp: 1707706711969,
 					  username: 'mock'
-					}
+							}
 				  ],
 				  title: 'Revise User Interface',
 				  order: 2
-				},
-				{
+					},
+					{
 				  uid: 'qa0IeDmEyV1C0ogSRdkV',
 				  author: 'mock',
 				  project: 'works',
@@ -826,17 +826,17 @@ export class TestService {
 				  assigned: '',
 				  state: TaskState.TODO,
 				  history: [
-					{
+							{
 					  previous: null,
 					  state: TaskState.TODO,
 					  timestamp: 1707706712166,
 					  username: 'mock'
-					}
+							}
 				  ],
 				  title: 'Client Presentation',
 				  order: 3
-				},
-				{
+					},
+					{
 				  uid: 'PHASIp2YXGwKALHqnsVs',
 				  author: 'mock',
 				  project: 'works',
@@ -844,17 +844,17 @@ export class TestService {
 				  assigned: '',
 				  state: TaskState.TODO,
 				  history: [
-					{
+							{
 					  previous: null,
 					  state: TaskState.TODO,
 					  timestamp: 1707706984558,
 					  username: 'mock'
-					}
+							}
 				  ],
 				  title: 'Complete Project Proposal',
 				  order: 4
-				},
-				{
+					},
+					{
 				  uid: 'TcxyseGyDpgTPPYHRn1l',
 				  author: 'mock',
 				  project: 'works',
@@ -862,22 +862,22 @@ export class TestService {
 				  assigned: '',
 				  state: TaskState.TODO,
 				  history: [
-					{
+							{
 					  previous: null,
 					  state: TaskState.TODO,
 					  timestamp: 1707706984701,
 					  username: 'mock'
-					}
+							}
 				  ],
 				  title: 'Revise User Interface',
 				  order: 5
-				}
+					}
 			  ]
 			},
 			{
 			  state: TaskState.PROGRESS,
 			  tasks: [
-				{
+					{
 				  uid: 'ap1qmOAuMnzrAJLcb4Jd',
 				  author: 'mock',
 				  project: 'works',
@@ -885,17 +885,17 @@ export class TestService {
 				  assigned: '',
 				  state: TaskState.PROGRESS,
 				  history: [
-					{
+							{
 					  previous: null,
 					  state: TaskState.PROGRESS,
 					  timestamp: 1707706712367,
 					  username: 'mock'
-					}
+							}
 				  ],
 				  title: 'Research Market Trends',
 				  order: 1
-				},
-				{
+					},
+					{
 				  uid: 'TFo1AG123JyitAETS52A',
 				  author: 'mock',
 				  project: 'works',
@@ -903,17 +903,17 @@ export class TestService {
 				  assigned: '',
 				  state: TaskState.PROGRESS,
 				  history: [
-					{
+							{
 					  previous: null,
 					  state: TaskState.PROGRESS,
 					  timestamp: 1707706712566,
 					  username: 'mock'
-					}
+							}
 				  ],
 				  title: 'Code Refactoring',
 				  order: 2
-				},
-				{
+					},
+					{
 				  uid: 'enm3q1D8bm0RuzYIFCjI',
 				  author: 'mock',
 				  project: 'works',
@@ -921,17 +921,17 @@ export class TestService {
 				  assigned: '',
 				  state: TaskState.PROGRESS,
 				  history: [
-					{
+							{
 					  previous: null,
 					  state: TaskState.PROGRESS,
 					  timestamp: 1707706984989,
 					  username: 'mock'
-					}
+							}
 				  ],
 				  title: 'Research Market Trends',
 				  order: 3
-				},
-				{
+					},
+					{
 				  uid: '26kZkgg5BaAfqn25FZTP',
 				  author: 'mock',
 				  project: 'works',
@@ -939,22 +939,22 @@ export class TestService {
 				  assigned: '',
 				  state: TaskState.PROGRESS,
 				  history: [
-					{
+							{
 					  previous: null,
 					  state: TaskState.PROGRESS,
 					  timestamp: 1707706985141,
 					  username: 'mock'
-					}
+							}
 				  ],
 				  title: 'Code Refactoring',
 				  order: 4
-				}
+					}
 			  ]
 			},
 			{
 			  state: TaskState.REVIEW,
 			  tasks: [
-				{
+					{
 				  uid: 'ayfiZN4sAIUmr3hRPpvA',
 				  author: 'mock',
 				  project: 'works',
@@ -962,17 +962,17 @@ export class TestService {
 				  assigned: '',
 				  state: TaskState.REVIEW,
 				  history: [
-					{
+							{
 					  previous: null,
 					  state: TaskState.REVIEW,
 					  timestamp: 1707706712767,
 					  username: 'mock'
-					}
+							}
 				  ],
 				  title: 'Develop Prototype',
 				  order: 1
-				},
-				{
+					},
+					{
 				  uid: 'N8bxoEq4g012sY5Y83bf',
 				  author: 'mock',
 				  project: 'works',
@@ -980,17 +980,17 @@ export class TestService {
 				  assigned: '',
 				  state: TaskState.REVIEW,
 				  history: [
-					{
+							{
 					  previous: null,
 					  state: TaskState.REVIEW,
 					  timestamp: 1707706712945,
 					  username: 'mock'
-					}
+							}
 				  ],
 				  title: 'Quality Assurance Testing',
 				  order: 2
-				},
-				{
+					},
+					{
 				  uid: 'dk8n2dxpQoybNkRp9kUE',
 				  author: 'mock',
 				  project: 'works',
@@ -998,17 +998,17 @@ export class TestService {
 				  assigned: '',
 				  state: TaskState.REVIEW,
 				  history: [
-					{
+							{
 					  previous: null,
 					  state: TaskState.REVIEW,
 					  timestamp: 1707706985307,
 					  username: 'mock'
-					}
+							}
 				  ],
 				  title: 'Develop Prototype',
 				  order: 3
-				},
-				{
+					},
+					{
 				  uid: 'o8TwVDf6sW57zJzcj4jS',
 				  author: 'mock',
 				  project: 'works',
@@ -1016,22 +1016,22 @@ export class TestService {
 				  assigned: '',
 				  state: TaskState.REVIEW,
 				  history: [
-					{
+							{
 					  previous: null,
 					  state: TaskState.REVIEW,
 					  timestamp: 1707706985455,
 					  username: 'mock'
-					}
+							}
 				  ],
 				  title: 'Quality Assurance Testing',
 				  order: 4
-				}
+					}
 			  ]
 			},
 			{
 			  state: TaskState.DONE,
 			  tasks: [
-				{
+					{
 				  uid: 'Ai1T0BCX4xRwLuD96fla',
 				  author: 'mock',
 				  project: 'works',
@@ -1039,17 +1039,17 @@ export class TestService {
 				  assigned: '',
 				  state: TaskState.DONE,
 				  history: [
-					{
+							{
 					  previous: null,
 					  state: TaskState.DONE,
 					  timestamp: 1707706713118,
 					  username: 'mock'
-					}
+							}
 				  ],
 				  title: 'Project Kickoff',
 				  order: 1
-				},
-				{
+					},
+					{
 				  uid: 'Ji0Vet5TsrlO32iZpwgq',
 				  author: 'mock',
 				  project: 'works',
@@ -1057,17 +1057,17 @@ export class TestService {
 				  assigned: '',
 				  state: TaskState.DONE,
 				  history: [
-					{
+							{
 					  previous: null,
 					  state: TaskState.DONE,
 					  timestamp: 1707706713301,
 					  username: 'mock'
-					}
+							}
 				  ],
 				  title: 'Release Version 1.0',
 				  order: 2
-				},
-				{
+					},
+					{
 				  uid: 'KNtKn3USQ8ULYkwmMxe7',
 				  author: 'mock',
 				  project: 'works',
@@ -1075,16 +1075,16 @@ export class TestService {
 				  assigned: '',
 				  state: TaskState.DONE,
 				  history: [
-					{
+							{
 					  previous: null,
 					  state: TaskState.DONE,
 					  timestamp: 1707706985601,
 					  username: 'mock'
-					}
+							}
 				  ],
 				  title: 'Project Kickoff',
 				  order: 3
-				}
+					}
 			  ]
 			}
 		];
@@ -1099,12 +1099,12 @@ export class TestService {
 			  description: 'Prepare comprehensive documentation for the project, including user manuals and technical guides.',
 			  assigned: '',
 			  history: [
-				{
+					{
 				  previous: null,
 				  state: TaskState.NONE,
 				  timestamp: 1707706984237,
 				  username: 'owner'
-				}
+					}
 			  ],
 			  title: 'Documentation',
 			  order: 3,
@@ -1117,12 +1117,12 @@ export class TestService {
 			  description: 'Create a prototype for the new product feature based on the research findings.',
 			  assigned: '',
 			  history: [
-				{
+					{
 				  previous: null,
 				  state: TaskState.REVIEW,
 				  timestamp: 1707706985307,
 				  username: 'owner'
-				}
+					}
 			  ],
 			  title: 'Develop Prototype',
 			  order: 3,
@@ -1135,12 +1135,12 @@ export class TestService {
 			  description: 'Conduct market research to identify current trends and customer preferences.',
 			  assigned: '',
 			  history: [
-				{
+					{
 				  previous: null,
 				  state: TaskState.PROGRESS,
 				  timestamp: 1707706984989,
 				  username: 'owner'
-				}
+					}
 			  ],
 			  title: 'Research Market Trends',
 			  order: 3,
@@ -1153,18 +1153,18 @@ export class TestService {
 			  description: 'Gather feedback on the prototype and make necessary revisions to the user interface.',
 			  assigned: '',
 			  history: [
-				{
+					{
 				  previous: null,
 				  state: TaskState.TODO,
 				  timestamp: 1707706984701,
 				  username: 'owner'
-				}
+					}
 			  ],
 			  title: 'Revise User Interface',
 			  order: 5,
 			  state: TaskState.DELETED
 			}
-		  ]
+		  ];
 	}
 
 	private import(): Progress {
@@ -1174,72 +1174,72 @@ export class TestService {
 			fail: 0,
 			taskList: [
 			  {
-				title: 'Documentation',
-				description: 'Prepare comprehensive documentation for the project, including user manuals and technical guides.',
-				state: TaskState.NONE,
-				author: 'mock'
+					title: 'Documentation',
+					description: 'Prepare comprehensive documentation for the project, including user manuals and technical guides.',
+					state: TaskState.NONE,
+					author: 'mock'
 			  },
 			  {
-				title: 'Finalize Project',
-				description: 'Review all aspects of the project and prepare for the final release.',
-				state: TaskState.NONE,
-				author: 'mock'
+					title: 'Finalize Project',
+					description: 'Review all aspects of the project and prepare for the final release.',
+					state: TaskState.NONE,
+					author: 'mock'
 			  },
 			  {
-				title: 'Complete Project Proposal',
-				description: 'Draft a detailed project proposal outlining goals, scope, and deliverables.',
-				state: TaskState.TODO,
-				author: 'mock'
+					title: 'Complete Project Proposal',
+					description: 'Draft a detailed project proposal outlining goals, scope, and deliverables.',
+					state: TaskState.TODO,
+					author: 'mock'
 			  },
 			  {
-				title: 'Revise User Interface',
-				description: 'Gather feedback on the prototype and make necessary revisions to the user interface.',
-				state: TaskState.TODO,
-				author: 'mock'
+					title: 'Revise User Interface',
+					description: 'Gather feedback on the prototype and make necessary revisions to the user interface.',
+					state: TaskState.TODO,
+					author: 'mock'
 			  },
 			  {
-				title: 'Client Presentation',
-				description: 'Prepare a presentation for the client showcasing the project progress and features.',
-				state: TaskState.TODO,
-				author: 'mock'
+					title: 'Client Presentation',
+					description: 'Prepare a presentation for the client showcasing the project progress and features.',
+					state: TaskState.TODO,
+					author: 'mock'
 			  },
 			  {
-				title: 'Research Market Trends',
-				description: 'Conduct market research to identify current trends and customer preferences.',
-				state: TaskState.PROGRESS,
-				author: 'mock'
+					title: 'Research Market Trends',
+					description: 'Conduct market research to identify current trends and customer preferences.',
+					state: TaskState.PROGRESS,
+					author: 'mock'
 			  },
 			  {
-				title: 'Code Refactoring',
-				description: 'Optimize and refactor existing codebase to improve performance and maintainability.',
-				state: TaskState.PROGRESS,
-				author: 'mock'
+					title: 'Code Refactoring',
+					description: 'Optimize and refactor existing codebase to improve performance and maintainability.',
+					state: TaskState.PROGRESS,
+					author: 'mock'
 			  },
 			  {
-				title: 'Develop Prototype',
-				description: 'Create a prototype for the new product feature based on the research findings.',
-				state: TaskState.REVIEW,
-				author: 'mock'
+					title: 'Develop Prototype',
+					description: 'Create a prototype for the new product feature based on the research findings.',
+					state: TaskState.REVIEW,
+					author: 'mock'
 			  },
 			  {
-				title: 'Quality Assurance Testing',
-				description: 'Conduct thorough testing to ensure the product meets quality standards.',
-				state: TaskState.REVIEW,
-				author: 'mock'
+					title: 'Quality Assurance Testing',
+					description: 'Conduct thorough testing to ensure the product meets quality standards.',
+					state: TaskState.REVIEW,
+					author: 'mock'
 			  },
 			  {
-				title: 'Project Kickoff',
-				description: 'Hold a meeting to officially start the project.',
-				state: TaskState.DONE,
-				author: 'mock'
+					title: 'Project Kickoff',
+					description: 'Hold a meeting to officially start the project.',
+					state: TaskState.DONE,
+					author: 'mock'
 			  },
 			  {
-				title: 'Release Version 1.0',
-				description: 'Publish the final version of the product.',
-				state: TaskState.DONE,
-				author: 'mock'
+					title: 'Release Version 1.0',
+					description: 'Publish the final version of the product.',
+					state: TaskState.DONE,
+					author: 'mock'
 			  }
 			]
-		}
+		};
 	}
 }

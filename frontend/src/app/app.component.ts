@@ -6,34 +6,34 @@ import { StorageService } from './services/storage.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+	selector: 'app-root',
+	templateUrl: './app.component.html',
+	styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  title = 'frontend';
+	title = 'frontend';
   
-  constructor(
-    private _translate: TranslateService,
-    private _event: EventService,
-    private _device: DeviceService,
-    private _storage: StorageService
-  ) {
+	constructor(
+		private _translate: TranslateService,
+		private _event: EventService,
+		private _device: DeviceService,
+		private _storage: StorageService
+	) {
 		const user = this._storage.getSessionEntry('user');
 		_translate.setDefaultLang(environment.defaultLanguage);
 		if (user?.language) {
-      _translate.use(user.language);
+			_translate.use(user.language);
 		} else {
-      _translate.use(_translate.getBrowserLang() || 'en');
+			_translate.use(_translate.getBrowserLang() || 'en');
 		}
-  }
+	}
 
-  ngOnInit(): void {
-    this._device.init();
-  }
+	ngOnInit(): void {
+		this._device.init();
+	}
 
-  @HostListener('document:click', ['$event'])
-  documentClick(event: any): void {
-    this._event.documentClick$.next(event.target);
-  }
+	@HostListener('document:click', ['$event'])
+	documentClick(event: any): void {
+		this._event.documentClick$.next(event.target);
+	}
 }

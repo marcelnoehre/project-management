@@ -1,43 +1,33 @@
 <div class="create-project-container" mat-dialog-container>
-	<h1 class="header" mat-dialog-title>{{ 'DIALOG.HEADLINE.CREATE_PROJECT' | translate }}</h1>
-	<mat-dialog-content class="mat-typography">
-		<p>
-			{{ 'DIALOG.INFO.CREATE_PROJECT' | translate }}
-		</p>
-		<form [formGroup]="projectForm">
-			<mat-form-field appearance="outline" class="project-form-field" MatInput>
-				<mat-label> {{ 'PROJECT.NAME' | translate }} </mat-label>
-				<input
-					id="project-input"
-					name="project"
-					class="project-form-field"
-					formControlName="projectFormControl"
-					placeholder="{{'PROJECT.NAME'|translate}}"
-					matInput
-				/>
-				<mat-icon matPrefix> add_box </mat-icon>
-			</mat-form-field>
-		</form>
-	</mat-dialog-content>
-	<div class="actions">
-		<button
-			(click)="closeDialog(false)"
-			[mat-dialog-close]="false"
-			color="dark" 
-			mat-raised-button
-		>
-			<mat-icon>clear</mat-icon>
-			{{ 'APP.CANCEL' | translate }}
-		</button>
-		<button
-			(click)="createProject()"
-			color="dark"
-			[disabled]="!projectValid()"
-			mat-raised-button
-		>
-			<app-spinner-icon class="material-icons" icon="add" [spinning]="loading"></app-spinner-icon>
-			<ng-container *ngIf="loading">&nbsp;</ng-container>
-			{{ 'APP.CREATE' | translate }}
-		</button>
-	</div>
+  <h1 class="header" mat-dialog-title>{{ "DIALOG.HEADLINE.CREATE_PROJECT" | translate }}</h1>
+  <mat-dialog-content class="mat-typography">
+    <p>
+      {{ "DIALOG.INFO.CREATE_PROJECT" | translate }}
+    </p>
+    <form [formGroup]="projectForm">
+      <mat-form-field appearance="outline" class="project-form-field" MatInput>
+        <mat-label> {{ "PROJECT.NAME" | translate }} </mat-label>
+        <input
+          id="project-input"
+          name="project"
+          class="project-form-field"
+          formControlName="projectFormControl"
+          placeholder="{{ 'PROJECT.NAME' | translate }}"
+          matInput
+        />
+        <mat-icon matPrefix> add_box </mat-icon>
+      </mat-form-field>
+    </form>
+  </mat-dialog-content>
+  <div class="actions">
+    <button (click)="closeDialog(false)" [mat-dialog-close]="false" color="dark" mat-raised-button>
+      <mat-icon>clear</mat-icon>
+      {{ "APP.CANCEL" | translate }}
+    </button>
+    <button (click)="createProject()" color="dark" [disabled]="!projectValid()" mat-raised-button>
+      <app-spinner-icon class="material-icons" icon="add" [spinning]="loading"></app-spinner-icon>
+      <ng-container *ngIf="loading">&nbsp;</ng-container>
+      {{ "APP.CREATE" | translate }}
+    </button>
+  </div>
 </div>
