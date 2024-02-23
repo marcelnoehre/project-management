@@ -20,15 +20,15 @@ import { Subscription } from 'rxjs';
 export class ToolbarProfileMenuComponent implements OnInit, OnDestroy {
 	@ViewChild('menu', { static: false })	menu!: MatMenu;
 
+	private _fullNameSubscription!: Subscription;
+	private _profilePictureSubscription!: Subscription;
+	private _initialsSubscription!: Subscription;
+	private _colorSubscription!: Subscription;
+
 	public fullName = '';
 	public profilePicture = '';
 	public initials = '';
 	public color = '';
-
-	private fullNameSubscription!: Subscription;
-	private profilePictureSubscription!: Subscription;
-	private initialsSubscription!: Subscription;
-	private colorSubscription!: Subscription;
 
 	constructor(
     	private _router: Router,
@@ -63,10 +63,10 @@ export class ToolbarProfileMenuComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnDestroy(): void {
-		if (this.fullNameSubscription) this.fullNameSubscription.unsubscribe();
-		if (this.profilePictureSubscription) this.profilePictureSubscription.unsubscribe();
-		if (this.initialsSubscription) this.initialsSubscription.unsubscribe();
-		if (this.colorSubscription) this.colorSubscription.unsubscribe();
+		if (this._fullNameSubscription) this._fullNameSubscription.unsubscribe();
+		if (this._profilePictureSubscription) this._profilePictureSubscription.unsubscribe();
+		if (this._initialsSubscription) this._initialsSubscription.unsubscribe();
+		if (this._colorSubscription) this._colorSubscription.unsubscribe();
 	}
 
 	public logout(): void {
