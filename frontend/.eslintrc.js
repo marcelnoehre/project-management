@@ -55,7 +55,8 @@ module.exports = {
 				"@typescript-eslint/comma-dangle": ["off"],
 				indent: "off",
 				"@typescript-eslint/indent": ["error", "tab"],
-				"arrow-spacing": ["error", { before: true, after: true }]
+				"arrow-spacing": ["error", { before: true, after: true }],
+				'@typescript-eslint/adjacent-overload-signatures': 'off'
 			}
 		},
 		{
