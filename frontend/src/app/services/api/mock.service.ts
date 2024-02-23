@@ -39,7 +39,7 @@ export class MockService extends AdapterService {
     projects: ['mockProject']
 	};
 
-  private buildURL(endpoint: string, file: string = 'mock') {
+  private buildURL(endpoint: string, file = 'mock') {
     return `assets/mock-data/${endpoint}/${file}.json`;
   }
 

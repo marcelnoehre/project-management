@@ -20,7 +20,7 @@ import { lastValueFrom } from 'rxjs';
   styleUrls: ['./project-settings.component.scss']
 })
 export class ProjectSettingsComponent implements OnInit {
-  private _loadingDelete: string = '';
+  private _loadingDelete = '';
   private _languages: Language[] = [
     {
       key: 'en',

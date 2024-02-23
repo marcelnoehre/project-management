@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit {
 
 	public loginForm!: FormGroup;
 	public hidePassword = true;
-	public loading: boolean = false;
+	public loading = false;
 
 	constructor(
 		private _snackbar: SnackbarService,

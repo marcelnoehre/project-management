@@ -24,7 +24,7 @@ export class RegistrationComponent implements OnInit {
   public registrationForm!: FormGroup;
   public hidePassword = true;
   public hidePasswordRepeat = true;
-  public loading: boolean = false;
+  public loading = false;
   public languages: Language[] = [
     {
       key: 'en',

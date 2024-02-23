@@ -8,7 +8,7 @@ import { Viewport } from '../enums/viewport.enum';
 })
 export class DeviceService implements OnDestroy {
 	private _width: number;
-	private _activeRoute: string = '/';
+	private _activeRoute = '/';
 	private _resizeSubscription$: Subscription;
 	private _resizeObservable$: Observable<Event>;
 

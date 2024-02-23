@@ -23,7 +23,7 @@ export class KanbanBoardComponent implements AfterViewInit {
   private _targets = [TaskState.NONE, TaskState.TODO, TaskState.PROGRESS, TaskState.REVIEW, TaskState.DONE, TaskState.DELETED];
   public stateList: string[] = [TaskState.NONE, TaskState.TODO, TaskState.PROGRESS, TaskState.REVIEW, TaskState.DONE, TaskState.DELETED];
   public taskList: State[] = [];
-  public loadingDelete: boolean = false;
+  public loadingDelete = false;
 
   constructor(
     private _api: ApiService,

@@ -14,8 +14,8 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./trash-bin.component.scss']
 })
 export class TrashBinComponent implements AfterViewInit {
-  private _loadingRestore: string = '';
-  private _loadingDelete: string = '';
+  private _loadingRestore = '';
+  private _loadingDelete = '';
   public loadingClear = false;
   public taskList: Task[] = [];
 
