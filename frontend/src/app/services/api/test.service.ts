@@ -624,7 +624,7 @@ export class TestService {
 					},
 				});
 			default:
-				throw new Error('ERROR.INVALID_TOKEN');
+				throw new Error('ERROR.INVALID_CREDENTIALS');
 		}
 	}
 

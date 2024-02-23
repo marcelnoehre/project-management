@@ -9,6 +9,7 @@ import { TestService } from 'src/app/services/api/test.service';
 import { ROUTES, Router, RouterModule } from '@angular/router';
 import { DashboardComponent } from '../dashboard/dashboard.component';
 import { RegistrationComponent } from '../registration/registration.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 describe('LoginComponent', () => {
 	const mockRoutes = [
@@ -28,9 +29,11 @@ describe('LoginComponent', () => {
 	let component: LoginComponent;
 	let fixture: ComponentFixture<LoginComponent>;
 	let translateService: TranslateService;
+	let snackbarSpy: jasmine.SpyObj<MatSnackBar>;
 	let router: Router;
 
 	beforeEach(() => {
+		snackbarSpy = jasmine.createSpyObj('MatSnackBar', ['open']);
 		TestBed.configureTestingModule({
 			imports: [AppModule, TranslateModule.forRoot(), RouterModule.forRoot(mockRoutes)],
 			declarations: [LoginComponent],
@@ -38,6 +41,7 @@ describe('LoginComponent', () => {
 				{ provide: TranslateService, useClass: TranslateService },
 				{ provide: ApiService, useClass: TestService },
 				{ provide: UserService, useValue: UserService },
+				{ provide: MatSnackBar, useValue: snackbarSpy },
 				{ provide: ROUTES, multi: true, useValue: [] }
 			]
 		});
@@ -117,13 +121,23 @@ describe('LoginComponent', () => {
 	});
 
 	describe('login', () => {
-		it('should login the user', fakeAsync(() => {
+		it('should login the user', async () => {
 			component.loginForm.controls['usernameFormControl'].setValue('owner');
 			component.loginForm.controls['passwordFormControl'].setValue('1234');
-			component.login();
-			tick();
+			await component.login();
 			expect(router.url).toBe('/');
-		}));
+		});
+
+		it('should display error for invalid credentials', async () => {
+			component.loginForm.controls['usernameFormControl'].setValue('invalid');
+			component.loginForm.controls['passwordFormControl'].setValue('1234');
+			await component.login();
+			expect(snackbarSpy.open).toHaveBeenCalledWith(
+				jasmine.any(Error),
+				'APP.OK',
+				{ duration: 7000, panelClass: 'info' }
+			);
+		});
 	});
 
 	describe('language', () => {
