@@ -50,7 +50,7 @@ describe('auth controller', () => {
     describe('verify', () => {
         const req = {
             query: {
-                token: 'mockToken',
+                token: 'owner',
             },
         } as unknown as Request;
 
@@ -89,11 +89,49 @@ describe('auth controller', () => {
           });
     });
 
+    describe('refreshToken', () => {
+        const req = {
+            query: {
+                token: 'owner',
+            },
+        } as unknown as Request;
+
+        it('should refresh token successfully', async () => {
+            authService.singleUser.mockResolvedValue(user);
+            await auth.refreshToken(req, res, next);
+            expect(authService.singleUser).toHaveBeenCalledWith(db, 'owner');
+            expect(res.json).toHaveBeenCalled();
+            expect(res.status).not.toHaveBeenCalled();
+            expect(res.send).not.toHaveBeenCalled();
+            expect(next).not.toHaveBeenCalled();
+        });
+        
+        it('should handle invalid token', async () => {
+            authService.singleUser.mockResolvedValue(null);
+            await auth.refreshToken(req, res, next);
+            expect(authService.singleUser).toHaveBeenCalledWith(db, 'owner');
+            expect(res.status).toHaveBeenCalledWith(403);
+            expect(res.send).toHaveBeenCalledWith({ message: 'ERROR.INVALID_TOKEN' });
+            expect(res.json).not.toHaveBeenCalled();
+            expect(next).not.toHaveBeenCalled();
+        });
+        
+        it('should handle errors during token refresh', async () => {
+            authService.singleUser.mockRejectedValue(new Error('Mock Error'));
+            await auth.refreshToken(req, res, next);
+            expect(authService.singleUser).toHaveBeenCalledWith(db, 'owner');
+            expect(res.status).not.toHaveBeenCalled();
+            expect(res.send).not.toHaveBeenCalled();
+            expect(res.json).not.toHaveBeenCalled();
+            expect(next).toHaveBeenCalledWith(new Error('Mock Error'));
+        });
+    });
+
     describe('login', () => {
         const req = {
             body: {
-                username: 'testuser',
-                password: 'testpassword',
+                username: 'owner',
+                password: '1234',
             },
         } as Request;
 
@@ -101,8 +139,8 @@ describe('auth controller', () => {
             authService.passwordValid.mockResolvedValue(true);
             authService.singleUser.mockResolvedValue(user);
             await auth.login(req, res, next);
-            expect(authService.passwordValid).toHaveBeenCalledWith(db, 'testuser', 'testpassword');
-            expect(authService.singleUser).toHaveBeenCalledWith(db, 'testuser');
+            expect(authService.passwordValid).toHaveBeenCalledWith(db, 'owner', '1234');
+            expect(authService.singleUser).toHaveBeenCalledWith(db, 'owner');
             expect(jwt.sign).toHaveBeenCalledWith(user, '3R#q!ZuFb2sPn8yT^@5vLmN7jA*C6hG', { expiresIn: '1h' });
             expect(res.json).toHaveBeenCalledWith(user);
             expect(res.status).not.toHaveBeenCalled();
@@ -113,7 +151,7 @@ describe('auth controller', () => {
         it('should handle invalid credentials', async () => {
             authService.passwordValid.mockResolvedValue(false);
             await auth.login(req, res, next);
-            expect(authService.passwordValid).toHaveBeenCalledWith(db, 'testuser', 'testpassword');
+            expect(authService.passwordValid).toHaveBeenCalledWith(db, 'owner', '1234');
             expect(res.status).toHaveBeenCalledWith(401);
             expect(res.send).toHaveBeenCalledWith({ message: 'ERROR.INVALID_CREDENTIALS' });
             expect(res.json).not.toHaveBeenCalled();
@@ -124,8 +162,8 @@ describe('auth controller', () => {
             authService.passwordValid.mockResolvedValue(true);
             authService.singleUser.mockResolvedValue(null);
             await auth.login(req, res, next);
-            expect(authService.passwordValid).toHaveBeenCalledWith(db, 'testuser', 'testpassword');
-            expect(authService.singleUser).toHaveBeenCalledWith(db, 'testuser');
+            expect(authService.passwordValid).toHaveBeenCalledWith(db, 'owner', '1234');
+            expect(authService.singleUser).toHaveBeenCalledWith(db, 'owner');
             expect(res.status).toHaveBeenCalledWith(500);
             expect(res.send).toHaveBeenCalledWith({ message: 'ERROR.INTERNAL' });
             expect(res.json).not.toHaveBeenCalled();
@@ -133,13 +171,13 @@ describe('auth controller', () => {
         });
     
         it('should handle errors thrown during execution', async () => {
-            authService.passwordValid.mockRejectedValue(new Error('Some error'));
+            authService.passwordValid.mockRejectedValue(new Error('Mock Error'));
             await auth.login(req, res, next);
-            expect(authService.passwordValid).toHaveBeenCalledWith(db, 'testuser', 'testpassword');
+            expect(authService.passwordValid).toHaveBeenCalledWith(db, 'owner', '1234');
             expect(res.status).not.toHaveBeenCalled();
             expect(res.send).not.toHaveBeenCalled();
             expect(res.json).not.toHaveBeenCalled();
-            expect(next).toHaveBeenCalledWith(new Error('Some error'));
+            expect(next).toHaveBeenCalledWith(new Error('Mock Error'));
         });
     });
 });
