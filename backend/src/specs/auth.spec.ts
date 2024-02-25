@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import * as authService from '../services/auth.service';
 import * as jwt from 'jsonwebtoken';
 import * as auth from '../controllers/auth.controller';
+import * as admin from 'firebase-admin';
 
 jest.mock('../services/auth.service');
 jest.mock('jsonwebtoken');
@@ -9,7 +10,7 @@ jest.mock('firebase-admin', () => ({
     initializeApp: jest.fn(),
     firestore: jest.fn(),
 }));
-
+const db = admin.firestore();
 const user = {
     username: "owner",
     fullName: "Mock Owner",
@@ -58,8 +59,8 @@ describe('auth controller', () => {
             authService.passwordValid.mockResolvedValue(true);
             authService.singleUser.mockResolvedValue(user);
             await auth.login(req, res, next);
-            // expect(authService.passwordValid).toHaveBeenCalledWith(db, 'testuser', 'testpassword');
-            // expect(authService.singleUser).toHaveBeenCalledWith(db, 'testuser');
+            expect(authService.passwordValid).toHaveBeenCalledWith(db, 'testuser', 'testpassword');
+            expect(authService.singleUser).toHaveBeenCalledWith(db, 'testuser');
             expect(jwt.sign).toHaveBeenCalledWith(user, '3R#q!ZuFb2sPn8yT^@5vLmN7jA*C6hG', { expiresIn: '1h' });
             expect(res.json).toHaveBeenCalledWith(user);
             expect(res.status).not.toHaveBeenCalled();
@@ -70,7 +71,7 @@ describe('auth controller', () => {
         it('should handle invalid credentials', async () => {
             authService.passwordValid.mockResolvedValue(false);
             await auth.login(req, res, next);
-            // expect(authService.passwordValid).toHaveBeenCalledWith(db, 'testuser', 'testpassword');
+            expect(authService.passwordValid).toHaveBeenCalledWith(db, 'testuser', 'testpassword');
             expect(res.status).toHaveBeenCalledWith(401);
             expect(res.send).toHaveBeenCalledWith({ message: 'ERROR.INVALID_CREDENTIALS' });
             expect(res.json).not.toHaveBeenCalled();
@@ -81,8 +82,8 @@ describe('auth controller', () => {
             authService.passwordValid.mockResolvedValue(true);
             authService.singleUser.mockResolvedValue(null);
             await auth.login(req, res, next);
-            // expect(authService.passwordValid).toHaveBeenCalledWith(db, 'testuser', 'testpassword');
-            // expect(authService.singleUser).toHaveBeenCalledWith(db, 'testuser');
+            expect(authService.passwordValid).toHaveBeenCalledWith(db, 'testuser', 'testpassword');
+            expect(authService.singleUser).toHaveBeenCalledWith(db, 'testuser');
             expect(res.status).toHaveBeenCalledWith(500);
             expect(res.send).toHaveBeenCalledWith({ message: 'ERROR.INTERNAL' });
             expect(res.json).not.toHaveBeenCalled();
@@ -92,7 +93,7 @@ describe('auth controller', () => {
         it('should handle errors thrown during execution', async () => {
             authService.passwordValid.mockRejectedValue(new Error('Some error'));
             await auth.login(req, res, next);
-            // expect(authService.passwordValid).toHaveBeenCalledWith(db, 'testuser', 'testpassword');
+            expect(authService.passwordValid).toHaveBeenCalledWith(db, 'testuser', 'testpassword');
             expect(res.status).not.toHaveBeenCalled();
             expect(res.send).not.toHaveBeenCalled();
             expect(res.json).not.toHaveBeenCalled();
