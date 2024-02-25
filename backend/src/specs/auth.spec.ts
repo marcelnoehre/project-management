@@ -35,13 +35,6 @@ const user = {
 }
 
 describe('auth controller', () => {
-    const req = {
-        body: {
-            username: 'testuser',
-            password: 'testpassword',
-        },
-    } as Request;
-
     const res = {
         json: jest.fn(),
         status: jest.fn(() => res),
@@ -54,7 +47,56 @@ describe('auth controller', () => {
         jest.clearAllMocks();
     });
 
+    describe('verify', () => {
+        const req = {
+            query: {
+                token: 'mockToken',
+            },
+        } as unknown as Request;
+
+        it('should verify successfully with a valid token', async () => {            
+            jest.spyOn(jwt, 'decode').mockReturnValue(user);
+            authService.singleUser.mockResolvedValue(user);
+            await auth.verify(req, res, next);
+            expect(authService.singleUser).toHaveBeenCalledWith(db, 'owner');
+            expect(res.json).toHaveBeenCalledWith(user);
+            expect(res.status).not.toHaveBeenCalled();
+            expect(res.send).not.toHaveBeenCalled();
+            expect(next).not.toHaveBeenCalled();
+        });
+        
+          it('should handle invalid token', async () => {
+            jest.spyOn(jwt, 'decode').mockReturnValue(user);
+            authService.singleUser.mockResolvedValue(null);
+            await auth.verify(req, res, next);
+            expect(authService.singleUser).toHaveBeenCalledWith(db, 'owner');
+            expect(res.status).toHaveBeenCalledWith(403);
+            expect(res.send).toHaveBeenCalledWith({ message: 'ERROR.INVALID_TOKEN' });
+            expect(res.json).not.toHaveBeenCalled();
+            expect(next).not.toHaveBeenCalled();
+          });
+        
+          it('should handle errors thrown during execution', async () => {
+            authService.singleUser.mockImplementation(() => {
+                throw new Error('Mock Error');
+            });
+            await auth.verify(req, res, next);
+            expect(authService.singleUser).toHaveBeenCalled();
+            expect(res.status).not.toHaveBeenCalled();
+            expect(res.send).not.toHaveBeenCalled();
+            expect(res.json).not.toHaveBeenCalled();
+            expect(next).toHaveBeenCalledWith(new Error('Mock Error'));
+          });
+    });
+
     describe('login', () => {
+        const req = {
+            body: {
+                username: 'testuser',
+                password: 'testpassword',
+            },
+        } as Request;
+
         it('should login successfully', async () => {
             authService.passwordValid.mockResolvedValue(true);
             authService.singleUser.mockResolvedValue(user);
@@ -100,5 +142,4 @@ describe('auth controller', () => {
             expect(next).toHaveBeenCalledWith(new Error('Some error'));
         });
     });
-
 });
