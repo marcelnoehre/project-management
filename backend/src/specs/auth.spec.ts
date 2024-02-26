@@ -225,4 +225,71 @@ describe('auth controller', () => {
             expect(next).toHaveBeenCalledWith(new Error('Mock Error'));
         });
     });
+
+    describe('updateUser', () => {
+        const req = {
+            body: {
+                token: 'owner',
+                attribute: 'fullName',
+                value: 'mock'
+            }
+        } as Request;
+
+        it('should update user attribute successfully', async () => {    
+            jest.spyOn(jwt, 'decode').mockReturnValue(user);
+            authService.singleUser.mockResolvedValue(user);
+            authService.updateAttribute.mockResolvedValue(true);
+            await auth.updateUser(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(authService.singleUser).toHaveBeenCalledWith(db, 'owner');
+            expect(authService.updateAttribute).toHaveBeenCalledWith(db, 'owner', 'fullName', 'mock');
+            expect(res.json).toHaveBeenCalledWith({ message: 'SUCCESS.UPDATE_ACCOUNT' });
+            expect(res.status).not.toHaveBeenCalled();
+            expect(res.send).not.toHaveBeenCalled();
+            expect(next).not.toHaveBeenCalled();
+        });
+    
+        it('should handle user not found', async () => {
+            jest.spyOn(jwt, 'decode').mockReturnValue(user);
+            authService.singleUser.mockResolvedValue(null);
+            await auth.updateUser(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(authService.singleUser).toHaveBeenCalledWith(db, 'owner');
+            expect(authService.updateAttribute).not.toHaveBeenCalled();
+            expect(res.status).toHaveBeenCalledWith(500);
+            expect(res.send).toHaveBeenCalledWith({ message: 'ERROR.INTERNAL' });
+            expect(res.json).not.toHaveBeenCalled();
+            expect(next).not.toHaveBeenCalled();
+        });
+    
+        it('should handle attribute update failure', async () => {
+            jest.spyOn(jwt, 'decode').mockReturnValue(user);
+            authService.singleUser.mockResolvedValue(user);
+            authService.updateAttribute.mockResolvedValue(false);
+            await auth.updateUser(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(authService.singleUser).toHaveBeenCalledWith(db, 'owner');
+            expect(authService.updateAttribute).toHaveBeenCalledWith(db, 'owner', 'fullName', 'mock');
+            expect(res.status).toHaveBeenCalledWith(500);
+            expect(res.send).toHaveBeenCalledWith({ message: 'ERROR.INTERNAL' });
+            expect(res.json).not.toHaveBeenCalled();
+            expect(next).not.toHaveBeenCalled();
+        });
+    
+        it('should handle errors during update process', async () => {
+            jest.spyOn(jwt, 'decode').mockReturnValue(user);
+            authService.singleUser.mockImplementation(() => {
+                throw new Error('Mock Error');
+            });
+            await auth.updateUser(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(authService.singleUser).toHaveBeenCalled();
+            expect(authService.updateAttribute).not.toHaveBeenCalled();
+            expect(res.status).not.toHaveBeenCalled();
+            expect(res.send).not.toHaveBeenCalled();
+            expect(res.json).not.toHaveBeenCalled();
+            expect(next).toHaveBeenCalledWith(new Error('Mock Error'));
+        });
+    });
+
 });
