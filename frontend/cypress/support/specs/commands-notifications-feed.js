@@ -15,9 +15,7 @@ const notificationOff = '[data-cy="notifications-off"]';
 const notificationDialog = '[data-cy="show-notifications-dialog"]';
 const userMenu = '[data-cy="user-menu"]';
 const deleteNotification = '[data-cy="delete-notifications"]';
-
-
-
+const toolbarLogout = '[data-cy="toolbar-logout"]';
 
 
 // constants for user input
@@ -53,6 +51,19 @@ Cypress.Commands.add('notificationDialog', () => {
     cy.get(deleteNotification).eq(0).click().wait(waitTime);
     cy.get(deleteNotification).eq(0).click().wait(waitTime);
 });
+
+Cypress.Commands.add('toolbarLogout', () => {
+    cy.visit(loginRoute);
+    // valid credentials
+    cy.get(usernameInput).click({force: true}).type(username).wait(waitTime);
+    cy.get(passwordInput).click({force: true}).type(password).wait(waitTime);
+    cy.get(hidePassword).click().wait(waitTime);
+    cy.get(loginButton).should(beEnabled);
+    cy.get(loginButton).click().wait(waitTime);
+    cy.get(userMenu).click().wait(waitTime);
+    cy.get(toolbarLogout).click().wait(waitTime);
+});
+
 
 
 

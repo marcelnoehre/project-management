@@ -14,6 +14,14 @@ describe('Should open the notification feed and delete all notifications', () =>
     });
 });
 
+describe('Should open the notification feed and delete all notifications', () => {
+  sessionStorage.clear();
+    it('2 notification should be delete so there are no messages', () => {
+        cy.viewport(1600, 900);
+        cy.toolbarLogout();
+    });
+});
+
 
 
 
