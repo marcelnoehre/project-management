@@ -16,6 +16,10 @@ admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
 });
 
+app.get('/', (req, res) => {
+  res.send(`Server is running at http://localhost:${port}`);
+});
+
 const authRouter = require('./src/routes/auth');
 app.use('/auth', authRouter);
 
@@ -39,3 +43,5 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
 });
+
+module.exports = app;
