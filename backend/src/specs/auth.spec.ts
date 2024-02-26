@@ -292,4 +292,68 @@ describe('auth controller', () => {
         });
     });
 
+    describe('toggleNotifications', () => {
+        const req = {
+            body: {
+                token: 'owner',
+                notificationsEnabled: true
+            }
+        } as Request;
+
+        it('should toggle notifications successfully', async () => {    
+            jest.spyOn(jwt, 'decode').mockReturnValue(user);
+            authService.singleUser.mockResolvedValue(user);
+            authService.updateUserAttribute.mockResolvedValue(true);
+            await auth.toggleNotifications(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(authService.singleUser).toHaveBeenCalledWith(db, 'owner');
+            expect(authService.updateUserAttribute).toHaveBeenCalledWith(db, 'owner', 'notificationsEnabled', true);
+            expect(res.json).toHaveBeenCalledWith({ message: 'SUCCESS.NOTIFICATIONS_ON' });
+            expect(res.status).not.toHaveBeenCalled();
+            expect(res.send).not.toHaveBeenCalled();
+            expect(next).not.toHaveBeenCalled();
+        });
+    
+        it('should handle user not found', async () => {
+            jest.spyOn(jwt, 'decode').mockReturnValue(user);
+            authService.singleUser.mockResolvedValue(null);
+            await auth.toggleNotifications(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(authService.singleUser).toHaveBeenCalledWith(db, 'owner');
+            expect(authService.updateUserAttribute).not.toHaveBeenCalled();
+            expect(res.status).toHaveBeenCalledWith(500);
+            expect(res.send).toHaveBeenCalledWith({ message: 'ERROR.INTERNAL' });
+            expect(res.json).not.toHaveBeenCalled();
+            expect(next).not.toHaveBeenCalled();
+        });
+    
+        it('should handle attribute update failure', async () => {
+            jest.spyOn(jwt, 'decode').mockReturnValue(user);
+            authService.singleUser.mockResolvedValue(user);
+            authService.updateUserAttribute.mockResolvedValue(false);
+            await auth.toggleNotifications(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(authService.singleUser).toHaveBeenCalledWith(db, 'owner');
+            expect(authService.updateUserAttribute).toHaveBeenCalledWith(db, 'owner', 'notificationsEnabled', true);
+            expect(res.status).toHaveBeenCalledWith(500);
+            expect(res.send).toHaveBeenCalledWith({ message: 'ERROR.INTERNAL' });
+            expect(res.json).not.toHaveBeenCalled();
+            expect(next).not.toHaveBeenCalled();
+        });
+    
+        it('should handle errors during toggle process', async () => {
+            jest.spyOn(jwt, 'decode').mockReturnValue(user);
+            authService.singleUser.mockImplementation(() => {
+                throw new Error('Mock Error');
+            });    
+            await auth.toggleNotifications(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(authService.singleUser).toHaveBeenCalled();
+            expect(authService.updateUserAttribute).not.toHaveBeenCalled();
+            expect(res.status).not.toHaveBeenCalled();
+            expect(res.send).not.toHaveBeenCalled();
+            expect(res.json).not.toHaveBeenCalled();
+            expect(next).toHaveBeenCalledWith(new Error('Mock Error'));
+        });
+    });
 });
