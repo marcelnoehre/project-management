@@ -34,7 +34,7 @@ describe('RequestService', () => {
 	});
 
 	describe('request types', () => {
-		it('should send GET request', inject([RequestService], (requestService: RequestService) => {
+		it('should send GET request', () => {
 			const mockData = { id: 1, name: 'mock' };
 			const params = { param1: 'value1', param2: 'value2' };
 			requestService.send(RequestType.GET, url, params).subscribe((data) => {
@@ -43,9 +43,9 @@ describe('RequestService', () => {
 			const req = httpMock.expectOne(`${url}?param1=value1&param2=value2`);
 			expect(req.request.method).toBe('GET');
 			req.flush(mockData);
-		}));
+		});
 		
-		it('should send POST request', inject([RequestService], (requestService: RequestService) => {
+		it('should send POST request', () => {
 			const mockData = { success: true };
 			const requestBody = { key: 'value' };
 			requestService.send(RequestType.POST, url, requestBody).subscribe((data) => {
@@ -55,9 +55,9 @@ describe('RequestService', () => {
 			expect(req.request.method).toBe('POST');
 			expect(req.request.body).toEqual(requestBody);
 			req.flush(mockData);
-		}));
+		});
 		
-		it('should send PUT request', inject([RequestService], (requestService: RequestService) => {
+		it('should send PUT request', () => {
 			const mockData = { success: true };
 			const requestBody = { key: 'value' };
 			requestService.send(RequestType.PUT, url, requestBody).subscribe((data) => {
@@ -67,9 +67,9 @@ describe('RequestService', () => {
 			expect(req.request.method).toBe('PUT');
 			expect(req.request.body).toEqual(requestBody);
 			req.flush(mockData);
-		}));
+		});
 		
-		it('should send DELETE request', inject([RequestService], (requestService: RequestService) => {
+		it('should send DELETE request', () => {
 			const mockData = { success: true };
 			const params = { param1: 'value1', param2: 'value2' };
 			requestService.send(RequestType.DELETE, url, params).subscribe((data) => {
@@ -78,33 +78,33 @@ describe('RequestService', () => {
 			const req = httpMock.expectOne(`${url}?param1=value1&param2=value2`);
 			expect(req.request.method).toBe('DELETE');
 			req.flush(mockData);
-		}));
+		});
 		
-		it('should throw an error for invalid request type', inject([RequestService], (requestService: RequestService) => {
+		it('should throw an error for invalid request type', () => {
 			const params = { param1: 'value1', param2: 'value2' };
 			expect(() => {
 				requestService.send('INVALID_REQUEST_TYPE' as RequestType, url, params);
 			}).toThrowError('ERROR.REQUEST_TYPE');
-		}));
+		});
 	});
 
 	describe('adjust url', () => {	
-		it('should adjust the URL without parameters', inject([RequestService], (requestService: RequestService) => {
+		it('should adjust the URL without parameters', () => {
 			const params = {};
 			const adjustedUrl = requestService['_adjustUrl'](url, params);
 			expect(adjustedUrl).toBe(url);
-		}));
+		});
 
-		it('should adjust the URL with one parameter', inject([RequestService], (requestService: RequestService) => {
+		it('should adjust the URL with one parameter', () => {
 			const params = { param1: 'value1' };
 			const adjustedUrl = requestService['_adjustUrl'](url, params);
 			expect(adjustedUrl).toBe(`${url}?param1=value1`);
-		}));
+		});
 		
-		it('should adjust the URL with multiple parameters', inject([RequestService], (requestService: RequestService) => {
+		it('should adjust the URL with multiple parameters', () => {
 			const params = { param1: 'value1', param2: 'value2', param3: 'value3' };
 			const adjustedUrl = requestService['_adjustUrl'](url, params);
 			expect(adjustedUrl).toBe(`${url}?param1=value1&param2=value2&param3=value3`);
-		}));
+		});
 	});
 });
