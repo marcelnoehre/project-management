@@ -1,10 +1,12 @@
 import { Request, Response, NextFunction } from 'express';
 import * as authService from '../services/auth.service';
+import * as notificationsService from '../services/notifications.service';
 import * as jwt from 'jsonwebtoken';
 import * as auth from '../controllers/auth.controller';
 import * as admin from 'firebase-admin';
 
 jest.mock('../services/auth.service');
+jest.mock('../services/notifications.service');
 jest.mock('jsonwebtoken');
 jest.mock('firebase-admin', () => ({
     initializeApp: jest.fn(),
@@ -350,6 +352,59 @@ describe('auth controller', () => {
             expect(jwt.decode).toHaveBeenCalledWith('owner');
             expect(authService.singleUser).toHaveBeenCalled();
             expect(authService.updateUserAttribute).not.toHaveBeenCalled();
+            expect(res.status).not.toHaveBeenCalled();
+            expect(res.send).not.toHaveBeenCalled();
+            expect(res.json).not.toHaveBeenCalled();
+            expect(next).toHaveBeenCalledWith(new Error('Mock Error'));
+        });
+    });
+
+    describe('deleteUser', () => {
+        const req = {
+            query: {
+                token: 'owner',
+            },
+        } as unknown as Request;
+
+        it('should delete user successfully', async () => {
+            jest.spyOn(jwt, 'decode').mockReturnValue(user);
+            authService.deleteUser.mockResolvedValue(true);
+            notificationsService.createTeamNotification.mockResolvedValue();
+            notificationsService.clearUserRelatedNotifications.mockResolvedValue();
+            await auth.deleteUser(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(authService.deleteUser).toHaveBeenCalledWith(db, 'owner');
+            expect(notificationsService.createTeamNotification).toHaveBeenCalledWith(db, 'MockProject', 'owner', 'NOTIFICATIONS.NEW.LEAVE_PROJECT', ['owner'], 'exit_to_app');
+            expect(notificationsService.clearUserRelatedNotifications).toHaveBeenCalledWith(db, 'MockProject', 'owner');
+            expect(res.json).toHaveBeenCalledWith({ message: 'SUCCESS.DELETE_ACCOUNT' });
+            expect(res.status).not.toHaveBeenCalled();
+            expect(res.send).not.toHaveBeenCalled();
+            expect(next).not.toHaveBeenCalled();
+        });
+    
+        it('should handle user not found during deletion', async () => {
+            jest.spyOn(jwt, 'decode').mockReturnValue(user);
+            authService.deleteUser.mockResolvedValue(false);
+            await auth.deleteUser(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(authService.deleteUser).toHaveBeenCalledWith(db, 'owner');
+            expect(notificationsService.createTeamNotification).not.toHaveBeenCalled();
+            expect(notificationsService.clearUserRelatedNotifications).not.toHaveBeenCalled();
+            expect(res.status).toHaveBeenCalledWith(500);
+            expect(res.send).toHaveBeenCalledWith({ message: 'ERROR.INTERNAL' });
+            expect(res.json).not.toHaveBeenCalled();
+            expect(next).not.toHaveBeenCalled();
+        });
+    
+        it('should handle errors during deletion process', async () => {
+            jest.spyOn(jwt, 'decode').mockImplementation(() => {
+                throw new Error('Mock Error');
+            });    
+            await auth.deleteUser(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(authService.deleteUser).not.toHaveBeenCalled();
+            expect(notificationsService.createTeamNotification).not.toHaveBeenCalled();
+            expect(notificationsService.clearUserRelatedNotifications).not.toHaveBeenCalled();
             expect(res.status).not.toHaveBeenCalled();
             expect(res.send).not.toHaveBeenCalled();
             expect(res.json).not.toHaveBeenCalled();
