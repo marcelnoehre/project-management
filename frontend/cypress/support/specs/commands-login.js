@@ -16,6 +16,10 @@ const registrationLink = '[data-cy="registration-link"]';
 const username = data.user.username.owner;
 const password = data.user.password.mock;
 const invalid = data.invalid;
+const noneUsername = 'none';
+const validPassword = '1234';
+
+
 
 // login with invalid credentials
 Cypress.Commands.add('loginInvalidUsername', () => {
@@ -42,6 +46,17 @@ Cypress.Commands.add('loginCorrect', () => {
     // valid credentials
     cy.get(usernameInput).click({force: true}).type(username).wait(waitTime);
     cy.get(passwordInput).click({force: true}).type(password).wait(waitTime);
+    cy.get(hidePassword).click().wait(waitTime);
+    cy.get(loginButton).should(beEnabled);
+    cy.get(loginButton).click().wait(waitTime);
+});
+
+// Valid login with unassigned User (username: None)
+Cypress.Commands.add('loginUserNone', () => {
+    cy.visit(loginRoute);
+
+    cy.get(usernameInput).click({ force: true }).type(noneUsername).wait(waitTime);
+    cy.get(passwordInput).click({ force: true }).type(validPassword).wait(waitTime);
     cy.get(hidePassword).click().wait(waitTime);
     cy.get(loginButton).should(beEnabled);
     cy.get(loginButton).click().wait(waitTime);

@@ -27,6 +27,16 @@ describe('Login process valid', () => {
     });
 });
 
+// Correct credentials unassigned User (username: none)
+describe('login process valid with User none', () => {
+    sessionStorage.clear();
+    it('Should login with credentials none', () => {
+        cy.viewport(1600, 900);
+        cy.loginUserNone();
+        cy.url().should('include', '/login');
+    });
+});
+
 // Redirect ot registration
 describe('Redirect to registration', () => {
     sessionStorage.clear();
@@ -36,3 +46,4 @@ describe('Redirect to registration', () => {
         cy.url().should('include', '/registration');
     });
 });
+
