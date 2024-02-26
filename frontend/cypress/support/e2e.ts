@@ -4,4 +4,5 @@ import './specs/commands-create-task';
 import './specs/commands-create-project'; 
 import './specs/commands-trashbin';
 import './specs/commands-import.task';
-import './specs/commands-project-settings'
+import './specs/commands-project-settings';
+import './specs/commands-notifications-feed';
