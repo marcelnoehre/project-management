@@ -78,12 +78,6 @@ describe('UserService', () => {
 			expect(userService.fullName).toBe('Test User');
 		});
 
-
-
-
-
-
-
 		it('should update the user attribute: language', () => {
 			userService.language = 'en';
 			expect(userService.language).toBe('en');
