@@ -1,4 +1,4 @@
-describe('Login to create a Task', () => {
+describe('Login to create a project', () => {
   //Login User without assigned Project + creating a test project
   sessionStorage.clear();
     it('Should log in with username "none" and password "1234" + create a  "testCreat" project', () => {
@@ -8,7 +8,7 @@ describe('Login to create a Task', () => {
 });
   
 // Login user without assigned Project + canceling the test project
-describe('Login process valid', () => {
+describe('Login to cancel the creating of a project', () => {
   sessionStorage.clear();
   it('Should log in with username "none" and password "1234" + cancel the creation of "test" project', () => {
       cy.viewport(1600, 900);
