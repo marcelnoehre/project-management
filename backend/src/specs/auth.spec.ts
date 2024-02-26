@@ -180,4 +180,49 @@ describe('auth controller', () => {
             expect(next).toHaveBeenCalledWith(new Error('Mock Error'));
         });
     });
+
+    describe('register', () => {
+        const req = {
+            body: {
+                username: 'mock',
+                fullName: 'Mock User',
+                language: 'en',
+                password: 'test*0TEST'
+            }
+        } as Request;
+
+        it('should register a new user successfully', async () => {
+            authService.isNewUser.mockResolvedValue(true);
+            authService.createUser.mockResolvedValue();
+            await auth.register(req, res, next);
+            expect(authService.isNewUser).toHaveBeenCalledWith(db, 'mock');
+            expect(authService.createUser).toHaveBeenCalledWith(db, 'mock', 'Mock User', 'en', 'test*0TEST');
+            expect(res.json).toHaveBeenCalledWith({ message: 'SUCCESS.REGISTRATION' });
+            expect(res.status).not.toHaveBeenCalled();
+            expect(res.send).not.toHaveBeenCalled();
+            expect(next).not.toHaveBeenCalled();
+        });
+    
+        it('should handle existing username', async () => {
+            authService.isNewUser.mockResolvedValue(false);
+            await auth.register(req, res, next);
+            expect(authService.isNewUser).toHaveBeenCalledWith(db, 'mock');
+            expect(authService.createUser).not.toHaveBeenCalled();
+            expect(res.status).toHaveBeenCalledWith(402);
+            expect(res.send).toHaveBeenCalledWith({ message: 'ERROR.USERNAME_TAKEN' });
+            expect(res.json).not.toHaveBeenCalled();
+            expect(next).not.toHaveBeenCalled();
+        });
+    
+        it('should handle errors thrown during registration', async () => {
+            authService.isNewUser.mockRejectedValue(new Error('Mock Error'));
+            await auth.register(req, res, next);
+            expect(authService.isNewUser).toHaveBeenCalledWith(db, 'mock');
+            expect(authService.createUser).not.toHaveBeenCalled();
+            expect(res.status).not.toHaveBeenCalled();
+            expect(res.send).not.toHaveBeenCalled();
+            expect(res.json).not.toHaveBeenCalled();
+            expect(next).toHaveBeenCalledWith(new Error('Mock Error'));
+        });
+    });
 });
