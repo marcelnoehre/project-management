@@ -38,5 +38,11 @@
     },
 
     "beEnabled":"be.enabled",
-    "testuser": "testuser"
+    "testuser": "testuser",
+
+    "mock": {
+    "mocktext": "this is an example",
+    "mockpassword": "Abcdef@1",
+    "mockinitials": "XY"
+        }
 }

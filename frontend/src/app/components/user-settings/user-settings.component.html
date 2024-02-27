@@ -13,6 +13,7 @@
             required
             minlength="4"
             maxlength="16"
+            data-cy="username-change"
           />
           <mat-icon matPrefix> person </mat-icon>
           <mat-error *ngIf="hasError('usernameFormControl', 'required')"> {{ "ERROR.REQUIRED.USERNAME" | translate }} </mat-error>
@@ -26,6 +27,7 @@
           tabindex="0"
           matSuffix
           mat-icon-button
+          data-cy="username-change-btn"
         >
           <app-spinner-icon class="material-icons" icon="done_all" [spinning]="isLoading('username')"></app-spinner-icon>
         </button>
@@ -41,6 +43,7 @@
             matInput
             required
             maxlength="32"
+            data-cy="fullname-change"
           />
           <mat-icon matPrefix> badge </mat-icon>
           <mat-error *ngIf="hasError('fullNameFormControl', 'required')"> {{ "ERROR.REQUIRED.FULLNAME" | translate }} </mat-error>
@@ -53,6 +56,7 @@
           tabindex="0"
           matSuffix
           mat-icon-button
+          data-cy="fullname-change-btn"
         >
           <app-spinner-icon class="material-icons" icon="done_all" [spinning]="isLoading('fullName')"></app-spinner-icon>
         </button>
@@ -60,8 +64,8 @@
       <div class="form-container">
         <mat-form-field appearance="outline" class="user-settings-form-field">
           <mat-label>{{ "USER.LANGUAGE" | translate }}</mat-label>
-          <mat-select id="language-select" name="language" formControlName="languageFormControl" placeholder="{{ 'USER.LANGUAGE' | translate }}">
-            <mat-option *ngFor="let lang of languages" [value]="lang.key">
+          <mat-select id="language-select" name="language" formControlName="languageFormControl" placeholder="{{ 'USER.LANGUAGE' | translate }}" data-cy="language-change">
+            <mat-option *ngFor="let lang of languages" [value]="lang.key" data-cy="language-change-dropdown">
               {{ lang.label }}
             </mat-option>
           </mat-select>
@@ -75,6 +79,7 @@
           tabindex="0"
           matSuffix
           mat-icon-button
+          data-cy="language-change-btn"
         >
           <app-spinner-icon class="material-icons" icon="done_all" [spinning]="isLoading('language')"></app-spinner-icon>
         </button>
@@ -92,6 +97,7 @@
             required
             minlength="8"
             pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@#$%^&+=*]).{8,}$"
+            data-cy="password-change"
           />
           <mat-icon matPrefix> lock </mat-icon>
           <button
@@ -103,6 +109,7 @@
             tabindex="0"
             matSuffix
             mat-icon-button
+            data-cy="password-change-hide"
           >
             <mat-icon> {{ hidePassword ? "visibility_off" : "visibility" }}</mat-icon>
           </button>
@@ -121,6 +128,7 @@
           tabindex="0"
           matSuffix
           mat-icon-button
+          data-cy="password-change-btn"
         >
           <app-spinner-icon class="material-icons" icon="done_all" [spinning]="isLoading('password')"></app-spinner-icon>
         </button>
@@ -137,6 +145,7 @@
             required
             minlength="2"
             maxlength="2"
+            data-cy="initials-change"
           />
           <mat-icon matPrefix> image </mat-icon>
           <mat-error *ngIf="hasError('initialsFormControl', 'required')"> {{ "ERROR.REQUIRED.INITIALS" | translate }} </mat-error>
@@ -150,6 +159,7 @@
           tabindex="0"
           matSuffix
           mat-icon-button
+          data-cy="initials-change-btn"
         >
           <app-spinner-icon class="material-icons" icon="done_all" [spinning]="isLoading('initials')"></app-spinner-icon>
         </button>
@@ -211,7 +221,7 @@
         </button>
       </div>
       <div class="delete" *ngIf="showDelete()">
-        <button color="warn" mat-raised-button (click)="deleteUser()" tabindex="0">
+        <button color="warn" mat-raised-button (click)="deleteUser()" tabindex="0" data-cy="delete-account-button">
           {{ "USER.DELETE" | translate }}
           <app-spinner-icon class="material-icons" icon="delete" [spinning]="loadingDelete"></app-spinner-icon>
         </button>
