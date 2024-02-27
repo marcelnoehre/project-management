@@ -3,7 +3,7 @@
     <mat-card class="stats-module">
       <mat-card-header>
         <h2 class="pb-4">Personal Stats</h2>
-        <button mat-mini-fab color="basic" class="regenerate" (click)="regenerateStat('personalStats')" tabindex="0">
+        <button mat-mini-fab color="basic" class="regenerate" (click)="regenerateStat('personalStats')" tabindex="0" data-cy="refresh-personal-stats">
           <app-spinner-icon class="material-icons" icon="refresh" [spinning]="isLoading('personalStats')"></app-spinner-icon>
         </button>
       </mat-card-header>
@@ -21,7 +21,7 @@
     <mat-card class="stats-module">
       <mat-card-header>
         <h2 class="pb-4">Stat Leaders</h2>
-        <button mat-mini-fab color="basic" class="regenerate" (click)="regenerateStat('statLeaders')" tabindex="0">
+        <button mat-mini-fab color="basic" class="regenerate" (click)="regenerateStat('statLeaders')" tabindex="0" data-cy="refresh-stat-leader">
           <app-spinner-icon class="material-icons" icon="refresh" [spinning]="isLoading('statLeaders')"></app-spinner-icon>
         </button>
       </mat-card-header>
@@ -44,7 +44,7 @@
     <mat-card class="stats-module">
       <mat-card-header>
         <h2 class="pb-4">Stats</h2>
-        <button mat-mini-fab color="basic" class="regenerate" (click)="regenerateStat('stats')" tabindex="0">
+        <button mat-mini-fab color="basic" class="regenerate" (click)="regenerateStat('stats')" tabindex="0" data-cy="refresh-stats">
           <app-spinner-icon class="material-icons" icon="refresh" [spinning]="isLoading('stats')"></app-spinner-icon>
         </button>
       </mat-card-header>
@@ -67,7 +67,7 @@
     <mat-card class="stats-module">
       <mat-card-header>
         <h2 class="pb-4">Task amount</h2>
-        <button mat-mini-fab color="basic" class="regenerate" (click)="regenerateStat('taskAmount')" tabindex="0">
+        <button mat-mini-fab color="basic" class="regenerate" (click)="regenerateStat('taskAmount')" tabindex="0" data-cy="refresh-task-amout">
           <app-spinner-icon class="material-icons" icon="refresh" [spinning]="isLoading('taskAmount')"></app-spinner-icon>
         </button>
       </mat-card-header>
@@ -80,6 +80,7 @@
             [options]="barChartOptions"
             [legend]="false"
             chartType="bar"
+            data-cy="task-amount-chart"
           >
           </canvas>
         </div>
@@ -90,7 +91,7 @@
     <mat-card class="stats-module">
       <mat-card-header>
         <h2 class="pb-4">Average Time</h2>
-        <button mat-mini-fab color="basic" class="regenerate" (click)="regenerateStat('averageTime')" tabindex="0">
+        <button mat-mini-fab color="basic" class="regenerate" (click)="regenerateStat('averageTime')" tabindex="0" data-cy="refresh-AvgTime">
           <app-spinner-icon class="material-icons" icon="refresh" [spinning]="isLoading('averageTime')"></app-spinner-icon>
         </button>
       </mat-card-header>
@@ -103,6 +104,7 @@
             [options]="barChartOptions"
             [legend]="false"
             chartType="bar"
+            data-cy="avg-time-chart"
           >
           </canvas>
         </div>
@@ -126,7 +128,7 @@
     <mat-card class="stats-module">
       <mat-card-header>
         <h2 class="pb-4">Work in Progress</h2>
-        <button mat-mini-fab color="basic" class="regenerate" (click)="regenerateStat('wip')" tabindex="0">
+        <button mat-mini-fab color="basic" class="regenerate" (click)="regenerateStat('wip')" tabindex="0" data-cy="refresh-progress-work">
           <app-spinner-icon class="material-icons" icon="refresh" [spinning]="isLoading('wip')"></app-spinner-icon>
         </button>
       </mat-card-header>
@@ -139,7 +141,7 @@
     <mat-card class="stats-module">
       <mat-card-header>
         <h2 class="pb-4">Task Progress</h2>
-        <button mat-mini-fab color="basic" class="regenerate" (click)="regenerateStat('taskProgress')" tabindex="0">
+        <button mat-mini-fab color="basic" class="regenerate" (click)="regenerateStat('taskProgress')" tabindex="0" data-cy="refresh-progress-task">
           <app-spinner-icon class="material-icons" icon="refresh" [spinning]="isLoading('taskProgress')"></app-spinner-icon>
         </button>
       </mat-card-header>
@@ -162,7 +164,7 @@
     <mat-card class="stats-module">
       <mat-card-header>
         <h2 class="pb-4">Project Roadmap</h2>
-        <button mat-mini-fab color="basic" class="regenerate" (click)="regenerateStat('projectRoadmap')" tabindex="0">
+        <button mat-mini-fab color="basic" class="regenerate" (click)="regenerateStat('projectRoadmap')" tabindex="0" data-cy="refresh-roadmap">
           <app-spinner-icon class="material-icons" icon="refresh" [spinning]="isLoading('projectRoadmap')"></app-spinner-icon>
         </button>
       </mat-card-header>
@@ -179,7 +181,7 @@
     </mat-card>
   </div>
   <div class="regenerate-all">
-    <button mat-raised-button (click)="regenerateAll()" tabindex="0">
+    <button mat-raised-button (click)="regenerateAll()" tabindex="0" data-cy="regenerate-stats">
       <app-spinner-icon class="material-icons" icon="refresh" [spinning]="isLoading('all')"></app-spinner-icon>
       <ng-container *ngIf="isLoading('all')">&nbsp;</ng-container>
       {{ "STATS.REGENERATE" | translate }}

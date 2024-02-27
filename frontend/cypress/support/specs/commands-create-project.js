@@ -17,10 +17,10 @@ const cancelProjectButton = '[data-cy="project-submit-cancel"]';
 
 // Constants for user input
 const invalid = data.invalid;
-const noneUsername = 'none';
-const validPassword = '1234';
-const testProjectCreate= 'testCreate';
-const testProjectCancel= 'testCancel'
+const noneUsername = data.user.username.none;
+const validPassword = data.user.password.mock;
+const buttonCreateProject= data.project.description.testCreate;
+const buttonCancelProject= data.project.description.testCancel
 
 // Login with "none" user and "1234" password
 Cypress.Commands.add('loginUserNoneCreate', () => {
@@ -31,10 +31,10 @@ Cypress.Commands.add('loginUserNoneCreate', () => {
     cy.get(hidePassword).click().wait(waitTime);
     cy.get(loginButton).should(beEnabled);
     cy.get(loginButton).click().wait(waitTime);
-    cy.get(projectInput).click({ force: true }).type(testProjectCreate).wait(waitTime);
+    cy.get(projectInput).click({ force: true }).type(buttonCreateProject).wait(waitTime);
     cy.get(createProjectButton).should(beEnabled);
     cy.get(createProjectButton).click({ force: true }).wait(waitTime);
-    //cy.visit(loginRouteProject);
+    
 }); 
 
 Cypress.Commands.add('loginUserNoneCancel', () => {
@@ -45,7 +45,6 @@ Cypress.Commands.add('loginUserNoneCancel', () => {
     cy.get(hidePassword).click().wait(waitTime);
     cy.get(loginButton).should(beEnabled);
     cy.get(loginButton).click().wait(waitTime);
-    cy.get(projectInput).click({ force: true }).type(testProjectCancel).wait(waitTime);
-    //cy.get(cancelProjectButton).should(beEnabled);
+    cy.get(projectInput).click({ force: true }).type(buttonCancelProject).wait(waitTime);
     cy.get(cancelProjectButton).click({ force: true }).wait(waitTime);
 }); 

@@ -22,9 +22,9 @@ const createTask = '[data-cy="create-task-submit"]';
 const username = data.user.username.owner;
 const password = data.user.password.mock;
 const enter = data.enter;
-const state = 'To Do'; 
-const taskTitel = 'Test task';
-const taskDescription = 'This is an example description'
+const state = data.task.taskstate.toDo;
+const taskTitel = data.task.taskTitel;
+const taskDescription = data.task.taskDescription
 
 
 // Valid login

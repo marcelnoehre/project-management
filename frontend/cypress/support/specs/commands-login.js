@@ -3,7 +3,7 @@ import * as data from '../../fixtures/data.json';
 //General constants
 const loginRoute = 'http://localhost:4200/login';
 const waitTime = data.waitTime;
-const beEnabled = 'be.enabled';
+const beEnabled = data.beEnabled;
 
 // Constants to access HTML
 const usernameInput = '[data-cy="login-username"]';
@@ -16,9 +16,8 @@ const registrationLink = '[data-cy="registration-link"]';
 const username = data.user.username.owner;
 const password = data.user.password.mock;
 const invalid = data.invalid;
-const noneUsername = 'none';
-const validPassword = '1234';
-
+const noneUsername = data.user.username.none;
+const validPassword = data.user.password.mock;
 
 
 // login with invalid credentials

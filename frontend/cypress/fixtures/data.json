@@ -19,5 +19,23 @@
         },
         "fullName": "full name",
         "language": "en"
-    }
+    },
+
+    "project": {
+        "description": {
+            "testCreate": "testCreateButton",
+            "testCancel": "testCancelButton"
+        }
+
+    },
+
+    "task": {
+        "taskTitel": "Test task",
+        "taskDescription": "This is an example description",
+        "taskstate": {
+            "toDo": "To Do"
+        }
+    },
+
+    "beEnabled":"be.enabled"
 }

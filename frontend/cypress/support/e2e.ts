@@ -6,3 +6,4 @@ import './specs/commands-trashbin';
 import './specs/commands-import.task';
 import './specs/commands-project-settings';
 import './specs/commands-notifications-feed';
+import './specs/commands-stats';

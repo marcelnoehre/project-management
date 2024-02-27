@@ -3,7 +3,7 @@ import * as data from '../../fixtures/data.json';
 //General constants
 const loginRoute = 'http://localhost:4200/login';
 const waitTime = data.waitTime;
-const beEnabled = 'be.enabled';
+const beEnabled = data.beEnabled;
 
 // Constants to access HTML
 const usernameInput = '[data-cy="login-username"]';
@@ -21,7 +21,6 @@ const toolbarLogout = '[data-cy="toolbar-logout"]';
 // constants for user input
 const username = data.user.username.admin;
 const password = data.user.password.mock;
-const testInvite = 'testuser';
 
 
 Cypress.Commands.add('notificationToggle', () => {

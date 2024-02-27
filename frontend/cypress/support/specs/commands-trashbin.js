@@ -3,7 +3,7 @@ import * as data from '../../fixtures/data.json';
 //General constants
 const loginRoute = 'http://localhost:4200/login';
 const waitTime = data.waitTime;
-const beEnabled = 'be.enabled';
+const beEnabled = data.beEnabled;
 
 // Constants to access HTML
 const usernameInput = '[data-cy="login-username"]';
@@ -30,7 +30,9 @@ Cypress.Commands.add('trashBinActionRestore', () => {
     cy.get(hidePassword).click().wait(waitTime);
     cy.get(loginButton).should(beEnabled);
     cy.get(loginButton).click().wait(waitTime);
+    // Navigation to trash-bin
     cy.get(dashboardCreateTask).click().wait(waitTime);
+    // Button to restore task
     cy.get(restoreData).eq(0).click().wait(waitTime);
 });
 
