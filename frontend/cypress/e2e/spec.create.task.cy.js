@@ -1,10 +1,22 @@
-describe('Login to create a Task', () => {
-  //Login User without assigned Project + creating a test project
+// Creating an invalid tesk task
+describe('Create a invalid Task', () => {
   sessionStorage.clear();
-    it('Should log in with username "none" and password "1234" + create a  "testCreat" project', () => {
+    it('should block create button and validate input fields', () => {
         cy.viewport(1600, 900);
-        cy.createTask();
+        cy.createTaskInvalid();
         cy.url().should('include', '/create');
     });
 });
+    
+
+// Creating a valid test task
+describe('Create a valid Task', () => {
+  sessionStorage.clear();
+    it('Should create a task succesfully with snackbar info', () => {
+        cy.viewport(1600, 900);
+        cy.createTaskValid();
+        cy.url().should('include', '/create');
+    });
+});
+
     

@@ -15,13 +15,12 @@ const restoreData = '[data-cy="restore-data"]';
 const deleteData = '[data-cy="delete-data"]';
 const clearData = '[data-cy="clear-data"]';
 
-
 // constants for user input
 const username = data.user.username.owner;
 const password = data.user.password.mock;
 
 
-// Valid login
+// Restore a task that was moved to trashbin
 Cypress.Commands.add('trashBinActionRestore', () => {
     cy.visit(loginRoute);
     // valid credentials
@@ -36,7 +35,7 @@ Cypress.Commands.add('trashBinActionRestore', () => {
     cy.get(restoreData).eq(0).click().wait(waitTime);
 });
 
-
+// delete a task in the trash bin
 Cypress.Commands.add('trashBinActionDelete', () => {
     cy.visit(loginRoute);
     // valid credentials
@@ -45,11 +44,12 @@ Cypress.Commands.add('trashBinActionDelete', () => {
     cy.get(hidePassword).click().wait(waitTime);
     cy.get(loginButton).should(beEnabled);
     cy.get(loginButton).click().wait(waitTime);
+    // navigate to trashbin
     cy.get(dashboardCreateTask).click().wait(waitTime);
     cy.get(deleteData).eq(0).click().wait(waitTime);
 });
 
-
+// clear your trashbin and delete all tasks in in 
 Cypress.Commands.add('trashBinActionClear', () => {
     cy.visit(loginRoute);
     // valid credentials
@@ -58,6 +58,7 @@ Cypress.Commands.add('trashBinActionClear', () => {
     cy.get(hidePassword).click().wait(waitTime);
     cy.get(loginButton).should(beEnabled);
     cy.get(loginButton).click().wait(waitTime);
+    // navigate to trashbin
     cy.get(dashboardCreateTask).click().wait(waitTime);
     cy.get(clearData).click().wait(waitTime);
 });

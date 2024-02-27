@@ -1,3 +1,4 @@
+// Test notifcation toggle
 describe('Should use the notification button to change the status', () => {
   sessionStorage.clear();
     it('should toggle on and off', () => {
@@ -6,17 +7,19 @@ describe('Should use the notification button to change the status', () => {
     });
 });
 
-describe('Should open the notification feed and delete all notifications', () => {
+// Delete notifiaction inside notification feed
+describe('Should open the notificationsfeed and delete all notifications', () => {
   sessionStorage.clear();
-    it('2 notification should be delete so there are no messages', () => {
+    it('Should delete 2 notifications from dialog', () => {
         cy.viewport(1600, 900);
         cy.notificationDialog();
     });
 });
 
-describe('Should open the notification feed and delete all notifications', () => {
+// Testing logout 
+describe('Should logout in toolbars', () => {
   sessionStorage.clear();
-    it('2 notification should be delete so there are no messages', () => {
+    it('Should lead to login page', () => {
         cy.viewport(1600, 900);
         cy.toolbarLogout();
     });

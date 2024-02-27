@@ -1,17 +1,17 @@
-describe('Action to restore a task in the trash-bin ', () => {
-  //Login User without assigned Project + creating a test project
+// Clicking on the charts to update visuals 
+describe('Testing clickable charts', () => {
   sessionStorage.clear();
-    it('Should visit Trash bin and do action "restore"', () => {
+    it('Should update the chartview', () => {
         cy.viewport(1600, 900);
         cy.chartClicks();
         cy.url().should('include', '/stats');
     });
 });
 
-describe('Action to restore a task in the trash-bin ', () => {
-  //Login User without assigned Project + creating a test project
+// Pressing all refresh buttons
+describe('Testing all refresh buttons', () => {
   sessionStorage.clear();
-    it('Should visit Trash bin and do action "restore"', () => {
+    it('Should refresh each chart/data', () => {
         cy.viewport(1600, 900);
         cy.refreshButtonsAll();
         cy.url().should('include', '/stats');
@@ -19,10 +19,10 @@ describe('Action to restore a task in the trash-bin ', () => {
 });
 
 
-describe('Action to restore a task in the trash-bin ', () => {
-  //Login User without assigned Project + creating a test project
+// Testing button
+describe('Testing regenerate all task button', () => {
   sessionStorage.clear();
-    it('Should visit Trash bin and do action "restore"', () => {
+    it('Should load the page again', () => {
         cy.viewport(1600, 900);
         cy.regenerateAllStats();
         cy.url().should('include', '/stats');

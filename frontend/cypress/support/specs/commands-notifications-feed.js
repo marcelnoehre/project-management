@@ -17,12 +17,12 @@ const userMenu = '[data-cy="user-menu"]';
 const deleteNotification = '[data-cy="delete-notifications"]';
 const toolbarLogout = '[data-cy="toolbar-logout"]';
 
-
 // constants for user input
 const username = data.user.username.admin;
 const password = data.user.password.mock;
 
 
+// Test toggle of Notification aleert
 Cypress.Commands.add('notificationToggle', () => {
     cy.visit(loginRoute);
     // valid credentials
@@ -31,12 +31,13 @@ Cypress.Commands.add('notificationToggle', () => {
     cy.get(hidePassword).click().wait(waitTime);
     cy.get(loginButton).should(beEnabled);
     cy.get(loginButton).click().wait(waitTime);
+    // toggele notification on and off
     cy.get(notificationOn).click({force: true}).wait(waitTime);
     cy.get(notificationOff).click({force: true}).wait(waitTime);
     cy.get(notificationOn).click({force: true}).wait(waitTime);
 });
 
-
+// Open and delete notifications
 Cypress.Commands.add('notificationDialog', () => {
     cy.visit(loginRoute);
     // valid credentials
@@ -45,12 +46,15 @@ Cypress.Commands.add('notificationDialog', () => {
     cy.get(hidePassword).click().wait(waitTime);
     cy.get(loginButton).should(beEnabled);
     cy.get(loginButton).click().wait(waitTime);
+    // use toolbar menu to open dialog
     cy.get(userMenu).click().wait(waitTime);
     cy.get(notificationDialog).click().wait(waitTime);
+    // delete notifications
     cy.get(deleteNotification).eq(0).click().wait(waitTime);
     cy.get(deleteNotification).eq(0).click().wait(waitTime);
 });
 
+// Use Logout in toolbar 
 Cypress.Commands.add('toolbarLogout', () => {
     cy.visit(loginRoute);
     // valid credentials
@@ -59,6 +63,7 @@ Cypress.Commands.add('toolbarLogout', () => {
     cy.get(hidePassword).click().wait(waitTime);
     cy.get(loginButton).should(beEnabled);
     cy.get(loginButton).click().wait(waitTime);
+    // Use toolbar logout 
     cy.get(userMenu).click().wait(waitTime);
     cy.get(toolbarLogout).click().wait(waitTime);
 });

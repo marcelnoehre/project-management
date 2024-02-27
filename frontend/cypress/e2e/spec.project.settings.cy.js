@@ -1,25 +1,25 @@
-describe('Should delete a user from project settings', () => {
-  //Login User without assigned Project + creating a test project
-  sessionStorage.clear();
-    it('Delete a user from project settings', () => {
-        cy.viewport(1600, 900);
-        cy.projectSettingsDeleteUser();
-        cy.url().should('include', '/settings/project');
-    });
-});
-
+// Cancel deletion of user inside project
 describe('Open the project settings an cancel the deletion', () => {
-  //Login User without assigned Project + creating a test project
   sessionStorage.clear();
-    it('Should cancel the deletion of a member in the dialog with cancel', () => {
+    it('Should cancel the removal of a member with cancel button', () => {
         cy.viewport(1600, 900);
         cy.projectSettingsCancelDelete();
         cy.url().should('include', '/settings/project');
     });
 });
 
+// Delete existing user from project
+describe('Delete a user from project', () => {
+  sessionStorage.clear();
+    it('Should delete a user from list', () => {
+        cy.viewport(1600, 900);
+        cy.projectSettingsDeleteUser();
+        cy.url().should('include', '/settings/project');
+    });
+});
+
+// Leave a project from the project settings
 describe('Leave the project', () => {
-  //Login User without assigned Project + creating a test project
   sessionStorage.clear();
     it('Should leave the project and start at the login screen', () => {
         cy.viewport(1600, 900);
@@ -28,9 +28,8 @@ describe('Leave the project', () => {
     });
 });
 
-
+// Invite a User by his username
 describe('Invite a user with his username', () => {
-  //Login User without assigned Project + creating a test project
   sessionStorage.clear();
     it('Should send back information in the snackbar', () => {
         cy.viewport(1600, 900);
