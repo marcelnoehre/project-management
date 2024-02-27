@@ -15,14 +15,15 @@ const dashboardCreateTask = '[data-cy=dashboard-app-ACCOUNT_SETTINGS]';;
 // constants for user input
 const username = data.user.username.admin;
 const password = data.user.password.mock;
-const mocktext = data.mock.mocktext
-const mockpassword = data.mock.mockpassword
-const mockinitials = data.mock.mockinitials
-const selectedLanguage = 'DE'
+const mocktext = data.mock.mocktext;
+const mockpassword = data.mock.mockpassword;
+const mockinitials = data.mock.mockinitials;
+const mocklanguage = data.mock.mocklanguage;
+const enter = data.enter;
+
 
 // Constants for button inputs
 const deleteAccountButton = '[data-cy="delete-account-button"]';
-const dialogFalse = '[data-cy="dialog-button-false"]';
 const dialogTrue = '[data-cy="dialog-button-true"]';
 
 // Constants for changing account settings
@@ -33,7 +34,6 @@ const changeFullname = '[data-cy="fullname-change"]';
 const changeFullnameBtn = '[data-cy="fullname-change-btn"]';
 
 const changeLanguage = '[data-cy="language-change"]';
-const changeLanguageDrop ='[data-cy="language-change-dropdown"]'; 
 const changeLanguageBtn = '[data-cy="language-change-btn"]';
 
 const changePassword = '[data-cy="password-change"]';
@@ -43,6 +43,43 @@ const changePasswordBtn = '[data-cy="password-change-btn"]';
 const changeInitials = '[data-cy="initials-change"]';
 const changeInitialsBtn = '[data-cy="initials-change-btn"]';
 
+const changeColour = '[data-cy="colour-change"]';
+const changeColourBtn = '[data-cy="color-change-btn"]';
+
+const changePicture = '[data-cy="picture-change"]';
+
+
+
+// Change picture
+Cypress.Commands.add('changePicture', () => {
+    cy.visit(loginRoute);
+    // valid credentials
+    cy.get(usernameInput).click({force: true}).type(username).wait(waitTime);
+    cy.get(passwordInput).click({force: true}).type(password).wait(waitTime);
+    cy.get(hidePassword).click().wait(waitTime);
+    cy.get(loginButton).should(beEnabled);
+    cy.get(loginButton).click().wait(waitTime);
+    // Navigation to account settings
+    cy.get(dashboardCreateTask).click().wait(waitTime);
+    // Change picture
+    cy.get(changePicture).click().wait(waitTime);
+});
+
+
+// Change colour of the user
+Cypress.Commands.add('changeColour', () => {
+    cy.visit(loginRoute);
+    // valid credentials
+    cy.get(usernameInput).click({force: true}).type(username).wait(waitTime);
+    cy.get(passwordInput).click({force: true}).type(password).wait(waitTime);
+    cy.get(hidePassword).click().wait(waitTime);
+    cy.get(loginButton).should(beEnabled);
+    cy.get(loginButton).click().wait(waitTime);
+    // Navigation to account settings
+    cy.get(dashboardCreateTask).click().wait(waitTime);
+    // Change username
+    cy.get(changeColour).click().wait(waitTime);
+});
 
 // Invalid Inputs
 Cypress.Commands.add('invalidInputs', () => {
@@ -98,6 +135,25 @@ Cypress.Commands.add('changeFullname', () => {
     cy.get(changeFullnameBtn).click().wait(waitTime);
     cy.get(dialogTrue).click().wait(waitTime);
 });
+
+
+// Change Language 
+Cypress.Commands.add('changeLanguage', () => {
+    cy.visit(loginRoute);
+    // valid credentials
+    cy.get(usernameInput).click({force: true}).type(username).wait(waitTime);
+    cy.get(passwordInput).click({force: true}).type(password).wait(waitTime);
+    cy.get(hidePassword).click().wait(waitTime);
+    cy.get(loginButton).should(beEnabled);
+    cy.get(loginButton).click().wait(waitTime);
+    // Navigation to account settings
+    cy.get(dashboardCreateTask).click().wait(waitTime);
+    // Change language
+    cy.get(changeLanguage).click({force: true}).type(mocklanguage).wait(waitTime).type(enter);
+    cy.get(changeLanguageBtn).click().wait(waitTime);
+    cy.get(dialogTrue).click().wait(waitTime);
+});
+
 
 // Change the password
 Cypress.Commands.add('changePassword', () => {

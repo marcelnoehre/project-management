@@ -176,6 +176,7 @@
             formControlName="colorFormControl"
             readonly
             matInput
+            data-cy="colour-change"
           />
           <mat-icon matPrefix> palette </mat-icon>
         </mat-form-field>
@@ -187,6 +188,7 @@
           tabindex="0"
           matSuffix
           mat-icon-button
+          data-cy="colour-change-btn"
         >
           <app-spinner-icon class="material-icons" icon="done_all" [spinning]="isLoading('color')"></app-spinner-icon>
         </button>
@@ -199,6 +201,7 @@
           type="file"
           (change)="onFileSelected($event)"
           class="file-input p-5"
+          data-cy="picture-change"
         />
         <div class="file-preview" *ngIf="hasProfilePicture()">
           <img [src]="profilePicture" />

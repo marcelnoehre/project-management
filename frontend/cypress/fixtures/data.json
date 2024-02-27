@@ -43,6 +43,7 @@
     "mock": {
     "mocktext": "this is an example",
     "mockpassword": "Abcdef@1",
-    "mockinitials": "XY"
+    "mockinitials": "XY",
+    "mocklanguage": "DEUTSCH"
         }
 }
