@@ -14,14 +14,14 @@ jest.mock('firebase-admin', () => ({
 }));
 const db = admin.firestore();
 const user = {
-    username: "owner",
-    fullName: "Mock Owner",
-    initials: "MO",
-    color: "#FFFFFF",
-    language: "en",
-    project: "MockProject",
-    permission: "OWNER",
-    profilePicture: "",
+    username: 'owner',
+    fullName: 'Mock Owner',
+    initials: 'MO',
+    color: '#FFFFFF',
+    language: 'en',
+    project: 'MockProject',
+    permission: 'OWNER',
+    profilePicture: '',
     notificationsEnabled: true,
     isLoggedIn: true,
     stats: {
