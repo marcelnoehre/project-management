@@ -102,7 +102,33 @@ describe('task controller', () => {
     });
     
     describe('getTrashBin', () => {
-    
+        const req = {
+            query: {
+                token: 'owner',
+            },
+        } as unknown as Request;
+
+        test('should successfully get trashed list and send response', async () => {
+            jest.spyOn(jwt, 'decode').mockReturnValue(user);
+            taskService.getTrashedList.mockResolvedValueOnce(taskList);
+            await task.getTrashBin(req, res, next);
+        
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(taskService.getTrashedList).toHaveBeenCalledWith(db, 'MockProject');
+            expect(res.json).toHaveBeenCalledWith(taskList);
+            expect(next).not.toHaveBeenCalled();
+          });
+        
+          test('should handle errors and call next', async () => {
+            jest.spyOn(jwt, 'decode').mockImplementation(() => {
+                throw new Error('Mock Error');
+            });
+            await task.getTrashBin(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(taskService.getTrashedList).not.toHaveBeenCalled();
+            expect(res.json).not.toHaveBeenCalled();
+            expect(next).toHaveBeenCalledWith(new Error('Mock Error'));
+          });
     });
     
     describe('createTask', () => {
