@@ -58,6 +58,24 @@ const taskList = [{
         ]
     }]
 }];
+const trashList = [{
+    uid: 'DHfqbZ18jhH55SFWFGwO',
+    author: 'owner',
+    project: 'MockProject',
+    title: 'MockTitle',
+    description: 'MockDescription',
+    assigned: '',
+    state: 'MockState',
+    order: 1,
+    history: [
+        {
+        previous: null,
+        state: 'MockState',
+        timestamp: 1707706711326,
+        username: 'owner'
+        }
+    ]
+}];
 
 describe('task controller', () => {
     const res = {
@@ -110,16 +128,16 @@ describe('task controller', () => {
 
         test('should successfully get trashed list and send response', async () => {
             jest.spyOn(jwt, 'decode').mockReturnValue(user);
-            taskService.getTrashedList.mockResolvedValueOnce(taskList);
+            taskService.getTrashedList.mockResolvedValueOnce(trashList);
             await task.getTrashBin(req, res, next);
         
             expect(jwt.decode).toHaveBeenCalledWith('owner');
             expect(taskService.getTrashedList).toHaveBeenCalledWith(db, 'MockProject');
-            expect(res.json).toHaveBeenCalledWith(taskList);
+            expect(res.json).toHaveBeenCalledWith(trashList);
             expect(next).not.toHaveBeenCalled();
           });
         
-          test('should handle errors and call next', async () => {
+        test('should handle errors and call next', async () => {
             jest.spyOn(jwt, 'decode').mockImplementation(() => {
                 throw new Error('Mock Error');
             });
@@ -128,11 +146,50 @@ describe('task controller', () => {
             expect(taskService.getTrashedList).not.toHaveBeenCalled();
             expect(res.json).not.toHaveBeenCalled();
             expect(next).toHaveBeenCalledWith(new Error('Mock Error'));
-          });
+        });
     });
     
     describe('createTask', () => {
-    
+        const req = {
+            body: {
+                token: 'owner',
+                title: 'MockTitle',
+                description: 'MockDescription',
+                assigned: 'assignedUser',
+                state: 'MockState',
+                tokenUser: 'owner',
+                order: 17
+            }
+        } as Request;
+
+        test('should successfully create task and send response', async () => {
+            jest.spyOn(jwt, 'decode').mockReturnValueOnce(user);
+            taskService.highestOrder.mockResolvedValueOnce(17);
+            await task.createTask(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(taskService.highestOrder).toHaveBeenCalledWith(db, 'MockProject', 'MockState');
+            expect(taskService.createTask).toHaveBeenCalledWith(db, 'owner', 'MockProject', 'MockTitle', 'MockDescription', 'assignedUser', 'MockState', 17);
+            expect(authService.updateUserStats).toHaveBeenCalledWith(db, 'owner', 'created', 1);
+            expect(authService.updateProjectStats).toHaveBeenCalledWith(db, 'MockProject', 'created', 1);
+            expect(notificationsService.createTeamNotification).toHaveBeenCalledWith(db, 'MockProject', 'owner', 'NOTIFICATIONS.NEW.CREATE_TASK', ['owner', 'MockTitle'], 'note_add');
+            expect(res.json).toHaveBeenCalledWith({ message: 'SUCCESS.CREATE_TASK' });
+            expect(next).not.toHaveBeenCalled();
+        });
+        
+        test('should handle errors and call next', async () => {
+            jest.spyOn(jwt, 'decode').mockImplementation(() => {
+                throw new Error('Mock Error');
+            });
+            await task.createTask(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(taskService.highestOrder).not.toHaveBeenCalled();
+            expect(taskService.createTask).not.toHaveBeenCalled();
+            expect(authService.updateUserStats).not.toHaveBeenCalled();
+            expect(authService.updateProjectStats).not.toHaveBeenCalled();
+            expect(notificationsService.createTeamNotification).not.toHaveBeenCalled();
+            expect(res.json).not.toHaveBeenCalled();
+            expect(next).toHaveBeenCalledWith(new Error('Mock Error'));
+        });
     });
     
     describe('importTasks', () => {
