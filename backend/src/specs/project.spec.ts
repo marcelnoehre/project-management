@@ -3,9 +3,11 @@ import * as authService from '../services/auth.service';
 import * as projectService from '../services/project.service';
 import * as notificationsService from '../services/notifications.service';
 import * as jwt from 'jsonwebtoken';
-import * as notifications from '../controllers/notifications.controller';
+import * as project from '../controllers/project.controller';
 import * as admin from 'firebase-admin';
 
+jest.mock('../services/auth.service');
+jest.mock('../services/project.service');
 jest.mock('../services/notifications.service');
 jest.mock('jsonwebtoken');
 jest.mock('firebase-admin', () => ({
@@ -35,6 +37,33 @@ const user = {
         cleared: 69
     }
 }
+const teamMembers = [
+    user,  
+    {
+        token: 'member',
+        username: 'member',
+        fullName: 'Mock Member',
+        initials: 'MM',
+        color: '#FFFFFF',
+        language: 'de',
+        project: 'mockProject',
+        permission: 'MEMBER',
+        profilePicture: '',
+        notificationsEnabled: false,
+        isLoggedIn: true,
+        stats: {
+            created: 64,
+            imported: 27,
+            updated: 89,
+            edited: 14,
+            trashed: 50,
+            restored: 73,
+            deleted: 3,
+            cleared: 67
+        }
+    }
+]
+
 
 describe('project controller', () => {
     const res = {
@@ -55,6 +84,43 @@ describe('project controller', () => {
                 token: 'owner'
             }
         } as unknown as Request;
+
+        it('should get team members', async () => {
+            jest.spyOn(jwt, 'decode').mockReturnValue(user);                            
+            projectService.getTeamMembers.mockResolvedValueOnce(teamMembers);
+            await project.getTeamMembers(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(projectService.getTeamMembers).toHaveBeenCalledWith(db, 'MockProject');
+            expect(res.json).toHaveBeenCalledWith(teamMembers);
+            expect(res.status).not.toHaveBeenCalled();
+            expect(res.send).not.toHaveBeenCalled();
+            expect(next).not.toHaveBeenCalled();
+        });
+        
+        it('should handle invalid project', async () => {
+            jest.spyOn(jwt, 'decode').mockReturnValue(user);
+            projectService.getTeamMembers.mockResolvedValueOnce([]);        
+            await project.getTeamMembers(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(projectService.getTeamMembers).toHaveBeenCalledWith(db, 'MockProject');
+            expect(res.json).not.toHaveBeenCalled();
+            expect(res.status).toHaveBeenCalledWith(500);
+            expect(res.send).toHaveBeenCalledWith({ message: 'ERROR.INTERNAL' });
+            expect(next).not.toHaveBeenCalled();
+        });
+        
+        it('should handle errors and call next', async () => {        
+            jest.spyOn(jwt, 'decode').mockImplementation(() => {
+              throw new Error('Mock error');
+            });
+            await project.getTeamMembers(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(projectService.getTeamMembers).not.toHaveBeenCalled();
+            expect(res.json).not.toHaveBeenCalled();
+            expect(res.status).not.toHaveBeenCalled();
+            expect(res.send).not.toHaveBeenCalled();
+            expect(next).toHaveBeenCalledWith(new Error('Mock error'));
+        });
     });
 
     describe('createProject', () => {
