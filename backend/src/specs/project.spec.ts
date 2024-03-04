@@ -68,7 +68,7 @@ const teamMembers = [
         }
     }
 ];
-const mockUser = {
+let mockUser = {
     username: 'mock',
     fullName: 'Mock FullName',
     initials: 'MF',
@@ -102,6 +102,28 @@ describe('project controller', () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
+        mockUser = {
+            username: 'mock',
+            fullName: 'Mock FullName',
+            initials: 'MF',
+            color: '#FFFFFF',
+            language: 'en',
+            project: '',
+            permission: '',
+            profilePicture: '',
+            notificationsEnabled: true,
+            isLoggedIn: true,
+            stats: {
+                created: 0,
+                imported: 0,
+                updated: 0,
+                edited: 0,
+                trashed: 0,
+                restored: 0,
+                deleted: 0,
+                cleared: 0
+            }
+        }
     });
 
     describe('getTeamMembers', () => {
@@ -249,8 +271,8 @@ describe('project controller', () => {
             expect(authService.updateUserData).toHaveBeenCalledWith(db, 'mock', { project: 'MockProject', permission: 'INVITED' });
             expect(projectService.updateProjectHistory).toHaveBeenCalledWith(db, 'MockProject', {
                 timestamp: expect.any(Number),
-                type: 'INVITED',
                 username: 'owner',
+                type: 'INVITED',
                 target: 'mock'
             });
             expect(notificationsService.createAdminNotification).toHaveBeenCalledWith(db, 'MockProject', 'owner', 'NOTIFICATIONS.NEW.INVITED', ['owner', 'mock'], 'cancel');
@@ -262,9 +284,8 @@ describe('project controller', () => {
         
         it('should handle already invited user', async () => {
             jest.spyOn(jwt, 'decode').mockReturnValue(owner);
-            const user = mockUser;
-            user.permission = 'INVITED';
-            authService.singleUser.mockResolvedValue(user);
+            mockUser.permission = 'INVITED';
+            authService.singleUser.mockResolvedValue(mockUser);
             await project.inviteUser(req, res, next);
             expect(jwt.decode).toHaveBeenCalledWith('owner');
             expect(authService.singleUser).toHaveBeenCalledWith(db, 'mock');
@@ -280,10 +301,8 @@ describe('project controller', () => {
         
         it('should handle user with project', async () => {
             jest.spyOn(jwt, 'decode').mockReturnValue(owner);
-            const user = mockUser;
-            user.permission = 'MEMBER';
-            user.project = 'AnotherProject';
-            authService.singleUser.mockResolvedValue(user);
+            mockUser.project = 'AnotherProject';
+            authService.singleUser.mockResolvedValue(mockUser);
             await project.inviteUser(req, res, next);
             expect(jwt.decode).toHaveBeenCalledWith('owner');
             expect(authService.singleUser).toHaveBeenCalledWith(db, 'mock');
@@ -334,16 +353,118 @@ describe('project controller', () => {
     describe('handleInvite', () => {
         const reqAccept = {
             body: {
-                token: 'owner',
+                token: 'mock',
                 decision: true
             }
         } as unknown as Request;
         const reqReject = {
             body: {
-                token: 'owner',
-                decision: true
+                token: 'mock',
+                decision: false
             }
         } as unknown as Request;
+
+        it('should accept invite', async () => {
+            mockUser.permission = 'INVITED';
+            mockUser.project = 'MockProject';
+            jest.spyOn(jwt, 'decode').mockReturnValue(mockUser);
+            authService.singleUser.mockResolvedValue(mockUser);
+            projectService.singleProject.mockResolvedValue(projectObj);
+            authService.updateUserData.mockResolvedValue();
+            projectService.updateProjectHistory.mockResolvedValue();
+            notificationsService.createTeamNotification.mockResolvedValue();
+            await project.handleInvite(reqAccept, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('mock');
+            expect(authService.singleUser).toHaveBeenCalledWith(db, 'mock');
+            expect(projectService.singleProject).toHaveBeenCalledWith(db, 'MockProject');
+            expect(authService.updateUserData).toHaveBeenCalledWith(db, 'mock', { project: 'MockProject', permission: 'MEMBER' });
+            expect(projectService.updateProjectHistory).toHaveBeenCalledWith(db, 'MockProject', {timestamp: expect.any(Number), type: 'JOINED', username: 'mock', target: null });
+            expect(notificationsService.createTeamNotification).toHaveBeenCalledWith(db, 'MockProject', 'mock', 'NOTIFICATIONS.NEW.JOINED', ['mock'], 'person_add');
+            expect(res.json).toHaveBeenCalledWith({ message: 'SUCCESS.INVITE_ACCEPTED' });
+            expect(res.status).not.toHaveBeenCalled();
+            expect(res.send).not.toHaveBeenCalled();
+            expect(next).not.toHaveBeenCalled();
+        });
+        
+        it('should reject invite', async () => {
+            mockUser.permission = 'INVITED';
+            mockUser.project = 'MockProject';
+            jest.spyOn(jwt, 'decode').mockReturnValue(mockUser);
+            authService.singleUser.mockResolvedValue(mockUser);
+            projectService.singleProject.mockResolvedValue(projectObj);
+            authService.updateUserData.mockResolvedValue();
+            projectService.updateProjectHistory.mockResolvedValue();
+            notificationsService.createAdminNotification.mockResolvedValue();
+            await project.handleInvite(reqReject, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('mock');
+            expect(authService.singleUser).toHaveBeenCalledWith(db, 'mock');
+            expect(projectService.singleProject).toHaveBeenCalledWith(db, 'MockProject');
+            expect(authService.updateUserData).toHaveBeenCalledWith(db, 'mock', { project: '', permission: '' });
+            expect(projectService.updateProjectHistory).toHaveBeenCalledWith(db, 'MockProject', {timestamp: expect.any(Number), type: 'REJECTED', username: 'mock', target: null });
+            expect(notificationsService.createAdminNotification).toHaveBeenCalledWith(db, 'MockProject', 'mock', 'NOTIFICATIONS.NEW.REJECTED', ['mock'], 'cancel');
+            expect(res.json).toHaveBeenCalledWith({ message: 'SUCCESS.INVITE_REJECTED' });
+            expect(res.status).not.toHaveBeenCalled();
+            expect(res.send).not.toHaveBeenCalled();
+            expect(next).not.toHaveBeenCalled();
+        });
+        
+        it('should handle invalid user', async () => {
+            mockUser.permission = 'INVITED';
+            mockUser.project = 'MockProject';
+            jest.spyOn(jwt, 'decode').mockReturnValue(mockUser);
+            authService.singleUser.mockResolvedValue(null);
+            projectService.singleProject.mockResolvedValue(projectObj);
+            await project.handleInvite(reqAccept, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('mock');
+            expect(authService.singleUser).toHaveBeenCalledWith(db, 'mock');
+            expect(projectService.singleProject).not.toHaveBeenCalled();
+            expect(authService.updateUserData).not.toHaveBeenCalled();
+            expect(projectService.updateProjectHistory).not.toHaveBeenCalled();
+            expect(notificationsService.createTeamNotification).not.toHaveBeenCalled();
+            expect(notificationsService.createAdminNotification).not.toHaveBeenCalled();
+            expect(res.json).not.toHaveBeenCalled();
+            expect(res.status).toHaveBeenCalledWith(500);
+            expect(res.send).toHaveBeenCalledWith({ message: 'ERROR.INTERNAL' });
+            expect(next).not.toHaveBeenCalled();
+        });
+
+        it('should handle invalid project', async () => {
+            mockUser.permission = 'INVITED';
+            mockUser.project = 'MockProject';
+            jest.spyOn(jwt, 'decode').mockReturnValue(mockUser);
+            authService.singleUser.mockResolvedValue(mockUser);
+            projectService.singleProject.mockResolvedValue(null);
+            await project.handleInvite(reqAccept, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('mock');
+            expect(authService.singleUser).toHaveBeenCalledWith(db, 'mock');
+            expect(projectService.singleProject).toHaveBeenCalledWith(db, 'MockProject');
+            expect(authService.updateUserData).not.toHaveBeenCalled();
+            expect(projectService.updateProjectHistory).not.toHaveBeenCalled();
+            expect(notificationsService.createTeamNotification).not.toHaveBeenCalled();
+            expect(notificationsService.createAdminNotification).not.toHaveBeenCalled();
+            expect(res.json).not.toHaveBeenCalled();
+            expect(res.status).toHaveBeenCalledWith(500);
+            expect(res.send).toHaveBeenCalledWith({ message: 'ERROR.INTERNAL' });
+            expect(next).not.toHaveBeenCalled();
+        });
+        
+        it('should handle errors and call next', async () => {
+            jest.spyOn(jwt, 'decode').mockImplementation(() => {
+                throw new Error('Mock error');
+            });
+            await project.handleInvite(reqAccept, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('mock');
+            expect(authService.singleUser).not.toHaveBeenCalled();
+            expect(projectService.singleProject).not.toHaveBeenCalled();
+            expect(authService.updateUserData).not.toHaveBeenCalled();
+            expect(projectService.updateProjectHistory).not.toHaveBeenCalled();
+            expect(notificationsService.createTeamNotification).not.toHaveBeenCalled();
+            expect(notificationsService.createAdminNotification).not.toHaveBeenCalled();
+            expect(res.json).not.toHaveBeenCalled();
+            expect(res.status).not.toHaveBeenCalled();
+            expect(res.send).not.toHaveBeenCalled();
+            expect(next).toHaveBeenCalledWith(new Error('Mock error'));
+        });
     });
 
     describe('updatePermission', () => {
