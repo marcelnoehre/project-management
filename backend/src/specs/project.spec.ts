@@ -652,6 +652,81 @@ describe('project controller', () => {
                 token: 'owner'
             }
         } as unknown as Request;
-    });
+    
+        it('should leave project', async () => {
+            jest.spyOn(jwt, 'decode').mockReturnValue(owner);        
+            authService.singleUser.mockResolvedValue(mockUser);
+            projectService.singleProject.mockResolvedValue(true);
+            authService.updateUserData.mockResolvedValue();
+            projectService.updateProjectHistory.mockResolvedValue();
+            notificationsService.createTeamNotification.mockResolvedValue();
+            notificationsService.clearUserRelatedNotifications.mockResolvedValue();
+            await project.leaveProject(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(authService.singleUser).toHaveBeenCalledWith(db, 'owner');
+            expect(projectService.singleProject).toHaveBeenCalledWith(db, 'MockProject');
+            expect(authService.updateUserData).toHaveBeenCalledWith(db, 'owner', { project: '', permission: '' });
+            expect(projectService.updateProjectHistory).toHaveBeenCalledWith(db, 'MockProject', { timestamp: expect.any(Number), type: 'LEFT', username: 'owner', target: null });
+            expect(notificationsService.createTeamNotification).toHaveBeenCalledWith(db, 'MockProject', 'owner', 'NOTIFICATIONS.NEW.LEAVE_PROJECT', ['owner'], 'exit_to_app');
+            expect(notificationsService.clearUserRelatedNotifications).toHaveBeenCalledWith(db, 'MockProject', 'owner');
+            expect(res.json).toHaveBeenCalledWith({ message: 'SUCCESS.LEAVE_PROJECT' });
+            expect(res.status).not.toHaveBeenCalled();
+            expect(res.send).not.toHaveBeenCalled();
+            expect(next).not.toHaveBeenCalled();
+        });
+        
+        it('should handle invalid user', async () => {
+            jest.spyOn(jwt, 'decode').mockReturnValue(owner);
+            authService.singleUser.mockResolvedValue(null);
+            projectService.singleProject.mockResolvedValue(projectObj);        
+            await project.leaveProject(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(authService.singleUser).toHaveBeenCalledWith(db, 'owner');
+            expect(projectService.singleProject).not.toHaveBeenCalled();
+            expect(authService.updateUserData).not.toHaveBeenCalled();
+            expect(projectService.updateProjectHistory).not.toHaveBeenCalled();
+            expect(notificationsService.createTeamNotification).not.toHaveBeenCalled();
+            expect(notificationsService.clearUserRelatedNotifications).not.toHaveBeenCalled();
+            expect(res.json).not.toHaveBeenCalled();
+            expect(res.status).toHaveBeenCalledWith(500);
+            expect(res.send).toHaveBeenCalledWith({ message: 'ERROR.INTERNAL' });
+            expect(next).not.toHaveBeenCalled();
+        });
 
+        it('should handle invalid project', async () => {
+            jest.spyOn(jwt, 'decode').mockReturnValue(owner);
+            authService.singleUser.mockResolvedValue(mockUser);
+            projectService.singleProject.mockResolvedValue(null);        
+            await project.leaveProject(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(authService.singleUser).toHaveBeenCalledWith(db, 'owner');
+            expect(projectService.singleProject).toHaveBeenCalledWith(db, 'MockProject');
+            expect(authService.updateUserData).not.toHaveBeenCalled();
+            expect(projectService.updateProjectHistory).not.toHaveBeenCalled();
+            expect(notificationsService.createTeamNotification).not.toHaveBeenCalled();
+            expect(notificationsService.clearUserRelatedNotifications).not.toHaveBeenCalled();
+            expect(res.json).not.toHaveBeenCalled();
+            expect(res.status).toHaveBeenCalledWith(500);
+            expect(res.send).toHaveBeenCalledWith({ message: 'ERROR.INTERNAL' });
+            expect(next).not.toHaveBeenCalled();
+        });
+        
+        it('should handle errors and call next', async () => {
+            jest.spyOn(jwt, 'decode').mockImplementation(() => {
+                throw new Error('Mock error');
+            });
+            await project.leaveProject(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(authService.singleUser).not.toHaveBeenCalled();
+            expect(projectService.singleProject).not.toHaveBeenCalled();
+            expect(authService.updateUserData).not.toHaveBeenCalled();
+            expect(projectService.updateProjectHistory).not.toHaveBeenCalled();
+            expect(notificationsService.createTeamNotification).not.toHaveBeenCalled();
+            expect(notificationsService.clearUserRelatedNotifications).not.toHaveBeenCalled();
+            expect(res.json).not.toHaveBeenCalled();
+            expect(res.status).not.toHaveBeenCalled();
+            expect(res.send).not.toHaveBeenCalled();
+            expect(next).toHaveBeenCalledWith(new Error('Mock error'));
+        });
+    });
 });
