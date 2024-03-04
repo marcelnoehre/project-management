@@ -585,7 +585,78 @@ describe('task controller', () => {
     });
     
     describe('deleteTask', () => {
-    
+        const req = {
+            query: {
+                token: 'owner',
+                uid: 'DHfqbZ18jhH55SFWFGwO'
+            }
+        }
+
+        it('should successfully delete task and send response', async () => {
+            jest.spyOn(jwt, 'decode').mockReturnValue(user);
+            taskService.singleTask.mockResolvedValue(taskObj);
+            taskService.deleteTask.mockResolvedValue();
+            authService.updateUserStats.mockResolvedValue();
+            authService.updateProjectStats.mockResolvedValue();
+            notificationsService.createRelatedNotification.mockResolvedValue();
+            taskService.getTrashedList.mockResolvedValue(taskList);
+            await task.deleteTask(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(taskService.singleTask).toHaveBeenCalledWith(db, 'DHfqbZ18jhH55SFWFGwO');
+            expect(taskService.deleteTask).toHaveBeenCalledWith(db, 'DHfqbZ18jhH55SFWFGwO');
+            expect(authService.updateUserStats).toHaveBeenCalledWith(db, 'owner', 'deleted', 1);
+            expect(authService.updateProjectStats).toHaveBeenCalledWith(db, 'MockProject', 'deleted', 1);
+            expect(notificationsService.createRelatedNotification).toHaveBeenCalledWith(
+              db,
+              'MockProject',
+              'owner',
+              'owner',
+              '',
+              'NOTIFICATIONS.NEW.DELETED_TASK',
+              ['owner', 'MockTitle'],
+              'delete'
+            );
+            expect(taskService.getTrashedList).toHaveBeenCalledWith(db, 'MockProject');
+            expect(res.json).toHaveBeenCalledWith(taskList);
+            expect(res.status).not.toHaveBeenCalled();
+            expect(res.send).not.toHaveBeenCalled();
+            expect(next).not.toHaveBeenCalled();
+        });
+        
+        it('should handle case where task does not exist and send appropriate status', async () => {
+            jest.spyOn(jwt, 'decode').mockReturnValue(user);
+            taskService.singleTask.mockResolvedValueOnce(null);
+            await task.deleteTask(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(taskService.singleTask).toHaveBeenCalledWith(db, 'DHfqbZ18jhH55SFWFGwO');
+            expect(taskService.deleteTask).not.toHaveBeenCalled();
+            expect(authService.updateUserStats).not.toHaveBeenCalled();
+            expect(authService.updateProjectStats).not.toHaveBeenCalled();
+            expect(notificationsService.createRelatedNotification).not.toHaveBeenCalled();
+            expect(taskService.getTrashedList).not.toHaveBeenCalled();
+            expect(res.json).not.toHaveBeenCalled();
+            expect(res.status).toHaveBeenCalledWith(500);
+            expect(res.send).toHaveBeenCalledWith({ message: 'ERROR.INTERNAL' });
+            expect(next).not.toHaveBeenCalled();
+        });
+        
+        it('should handle errors and call next', async () => {
+            jest.spyOn(jwt, 'decode').mockImplementation(() => {
+                throw new Error('Mock Error');
+            });
+            await task.deleteTask(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(taskService.singleTask).not.toHaveBeenCalled();
+            expect(taskService.deleteTask).not.toHaveBeenCalled();
+            expect(authService.updateUserStats).not.toHaveBeenCalled();
+            expect(authService.updateProjectStats).not.toHaveBeenCalled();
+            expect(notificationsService.createRelatedNotification).not.toHaveBeenCalled();
+            expect(taskService.getTrashedList).not.toHaveBeenCalled();
+            expect(res.json).not.toHaveBeenCalled();
+            expect(res.status).not.toHaveBeenCalled();
+            expect(res.send).not.toHaveBeenCalled();
+            expect(next).toHaveBeenCalledWith(new Error('Mock Error'));
+        });
     });
     
     describe('clearTrashBin', () => {
