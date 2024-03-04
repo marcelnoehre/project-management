@@ -8,7 +8,7 @@ import * as admin from 'firebase-admin';
 
 jest.mock('../services/auth.service');
 jest.mock('../services/stats.service');
-jest.mock('../services/projects.service');
+jest.mock('../services/project.service');
 jest.mock('jsonwebtoken');
 jest.mock('firebase-admin', () => ({
     initializeApp: jest.fn(),
@@ -57,6 +57,46 @@ describe('auth controller', () => {
                 token: 'owner'
             }
         } as unknown as Request;
+
+        test('should return user stats', async () => {
+            jest.spyOn(jwt, 'decode').mockReturnValue(user);
+            authService.singleUser.mockResolvedValue(user);
+            await stats.personalStats(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(authService.singleUser).toHaveBeenCalledWith(db, 'owner');
+            expect(res.json).toHaveBeenCalledWith(user.stats);
+            expect(next).not.toHaveBeenCalled();
+          });
+        
+        test('should handle invalid user', async () => {
+            jest.spyOn(jwt, 'decode').mockReturnValue(user);
+            authService.singleUser.mockResolvedValue(null);
+            await stats.personalStats(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(authService.singleUser).toHaveBeenCalledWith(db, 'owner');
+            expect(res.json).toHaveBeenCalledWith({
+                created: 0,
+                imported: 0,
+                updated: 0,
+                edited: 0,
+                trashed: 0,
+                restored: 0,
+                deleted: 0,
+                cleared: 0
+            });
+            expect(next).not.toHaveBeenCalled();
+        });
+        
+        test('should handle errors and call next', async () => {
+            jest.spyOn(jwt, 'decode').mockImplementation(() => {
+                throw new Error('Mock Error');
+            });
+            await stats.personalStats(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(authService.singleUser).not.toHaveBeenCalled();
+            expect(res.json).not.toHaveBeenCalled();
+            expect(next).toHaveBeenCalledWith(new Error('Mock Error'));
+        });
     });
 
     describe('stats', () => {
