@@ -153,6 +153,29 @@ describe('auth controller', () => {
                 token: 'owner'
             }
         } as unknown as Request;
+
+        it('should return stat leaders', async () => {
+            jest.spyOn(jwt, 'decode').mockReturnValue(user);
+            statsService.statLeaders.mockResolvedValueOnce(project.stats);
+            await stats.statLeaders(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(statsService.statLeaders).toHaveBeenCalledWith(db, 'MockProject');
+            expect(res.json).toHaveBeenCalledWith(project.stats);
+            expect(next).not.toHaveBeenCalled();
+        });
+        
+        it('should handle errors and call next', async () => {
+            jest.spyOn(jwt, 'decode').mockImplementation(() => {
+                throw new Error('Mock Error');
+            });
+            await stats.statLeaders(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(statsService.statLeaders).not.toHaveBeenCalled();
+            expect(res.json).not.toHaveBeenCalled();
+            expect(res.status).not.toHaveBeenCalled();
+            expect(res.send).not.toHaveBeenCalled();
+            expect(next).toHaveBeenCalledWith(new Error('Mock Error'));
+        });
     });
 
     describe('taskAmount', () => {
