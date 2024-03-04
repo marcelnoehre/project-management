@@ -50,10 +50,10 @@ const stateList = [{
         order: 1,
         history: [
             {
-            previous: null,
-            state: 'MockState',
-            timestamp: 1707706711326,
-            username: 'owner'
+                previous: null,
+                state: 'MockState',
+                timestamp: 1707706711326,
+                username: 'owner'
             }
         ]
     }]
@@ -69,10 +69,10 @@ const taskList = [{
     order: 1,
     history: [
         {
-        previous: null,
-        state: 'MockState',
-        timestamp: 1707706711326,
-        username: 'owner'
+            previous: null,
+            state: 'MockState',
+            timestamp: 1707706711326,
+            username: 'owner'
         }
     ]
 }];
@@ -257,7 +257,86 @@ describe('task controller', () => {
     });
     
     describe('updateTask', () => {
-    
+        const req = {
+            body: {
+                token: 'owner',
+                task: {
+                    uid: 'DHfqbZ18jhH55SFWFGwO',
+                    author: 'owner',
+                    project: 'MockProject',
+                    title: 'MockTitle',
+                    description: 'MockDescription',
+                    assigned: '',
+                    state: 'MockState',
+                    order: 1,
+                    history: [
+                        {
+                        previous: null,
+                        state: 'MockState',
+                        timestamp: 1707706711326,
+                        username: 'owner'
+                        }
+                    ]
+                }
+            }
+        };
+
+        it('should successfully update task and send response', async () => {
+            jest.spyOn(jwt, 'decode').mockReturnValue(user);
+            taskService.singleTask.mockResolvedValue(true);
+            taskService.updateTask.mockResolvedValue();
+            authService.updateUserStats.mockResolvedValue();
+            authService.updateProjectStats.mockResolvedValue();
+            notificationsService.createRelatedNotification.mockResolvedValue();
+            taskService.getTaskList.mockResolvedValue(taskList);
+            await task.updateTask(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(taskService.singleTask).toHaveBeenCalledWith(db, 'DHfqbZ18jhH55SFWFGwO');
+            expect(taskService.updateTask).toHaveBeenCalledWith(db, 'DHfqbZ18jhH55SFWFGwO', req.body.task);
+            expect(authService.updateUserStats).toHaveBeenCalledWith(db, 'owner', 'edited', 1);
+            expect(authService.updateProjectStats).toHaveBeenCalledWith(db, 'MockProject', 'edited', 1);
+            expect(notificationsService.createRelatedNotification).toHaveBeenCalledWith(db, 'MockProject', 'owner', 'owner', '', 'NOTIFICATIONS.NEW.EDITED_TASK', ['owner', 'MockTitle'], 'edit_square');
+            expect(taskService.getTaskList).toHaveBeenCalledWith(db, 'MockProject');
+            expect(res.json).toHaveBeenCalledWith(taskList);
+            expect(res.status).not.toHaveBeenCalled();
+            expect(res.send).not.toHaveBeenCalled();
+            expect(next).not.toHaveBeenCalled();
+        });
+        
+        it('should handle case where task does not exist and send appropriate status', async () => {
+            jest.spyOn(jwt, 'decode').mockReturnValue(user);
+            taskService.singleTask.mockResolvedValue(false);
+            await task.updateTask(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(taskService.singleTask).toHaveBeenCalledWith(db, 'DHfqbZ18jhH55SFWFGwO');
+            expect(taskService.updateTask).not.toHaveBeenCalled();
+            expect(authService.updateUserStats).not.toHaveBeenCalled();
+            expect(authService.updateProjectStats).not.toHaveBeenCalled();
+            expect(notificationsService.createRelatedNotification).not.toHaveBeenCalled();
+            expect(taskService.getTaskList).not.toHaveBeenCalled();
+            expect(res.json).not.toHaveBeenCalled();
+            expect(res.status).toHaveBeenCalledWith(500);
+            expect(res.send).toHaveBeenCalledWith({ message: 'ERROR.INTERNAL' });
+            expect(next).not.toHaveBeenCalled();
+        });
+        
+        it('should handle errors and call next', async () => {
+            jest.spyOn(jwt, 'decode').mockImplementation(() => {
+                throw new Error('Mock Error');
+            });
+            await task.updateTask(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(taskService.singleTask).not.toHaveBeenCalled();
+            expect(taskService.updateTask).not.toHaveBeenCalled();
+            expect(authService.updateUserStats).not.toHaveBeenCalled();
+            expect(authService.updateProjectStats).not.toHaveBeenCalled();
+            expect(notificationsService.createRelatedNotification).not.toHaveBeenCalled();
+            expect(taskService.getTaskList).not.toHaveBeenCalled();
+            expect(res.json).not.toHaveBeenCalled();
+            expect(res.status).not.toHaveBeenCalled();
+            expect(res.send).not.toHaveBeenCalled();
+            expect(next).toHaveBeenCalledWith(new Error('Mock Error'));
+        });
     });
     
     describe('updatePosition', () => {
