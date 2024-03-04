@@ -115,7 +115,7 @@ describe('task controller', () => {
             },
         } as unknown as Request;
 
-        it('should successfully get task list and send response', async () => {
+        it('should successfully get task list', async () => {
             jest.spyOn(jwt, 'decode').mockReturnValue(user);
             taskService.getTaskList.mockResolvedValue(stateList);
             await task.getTaskList(req, res, next);
@@ -144,7 +144,7 @@ describe('task controller', () => {
             },
         } as unknown as Request;
 
-        it('should successfully get trashed list and send response', async () => {
+        it('should successfully get trashed list', async () => {
             jest.spyOn(jwt, 'decode').mockReturnValue(user);
             taskService.getTrashedList.mockResolvedValue(taskList);
             await task.getTrashBin(req, res, next);
@@ -180,7 +180,7 @@ describe('task controller', () => {
             }
         } as Request;
 
-        it('should successfully create task and send response', async () => {
+        it('should successfully create task', async () => {
             jest.spyOn(jwt, 'decode').mockReturnValue(user);
             taskService.highestOrder.mockResolvedValue(17);
             await task.createTask(req, res, next);
@@ -221,7 +221,7 @@ describe('task controller', () => {
             }
         };
 
-        it('should successfully import tasks and send response', async () => {
+        it('should successfully import tasks', async () => {
             jest.spyOn(jwt, 'decode').mockReturnValue(user);
             taskService.importTask.mockImplementation((db, task, project, username) => {
                 if (task.title === 'Task 1') {
@@ -282,7 +282,7 @@ describe('task controller', () => {
             }
         };
 
-        it('should successfully update task and send response', async () => {
+        it('should successfully update task', async () => {
             jest.spyOn(jwt, 'decode').mockReturnValue(user);
             taskService.singleTask.mockResolvedValue(taskObj);
             taskService.updateTask.mockResolvedValue();
@@ -304,7 +304,7 @@ describe('task controller', () => {
             expect(next).not.toHaveBeenCalled();
         });
         
-        it('should handle case where task does not exist and send appropriate status', async () => {
+        it('should handle invalid task', async () => {
             jest.spyOn(jwt, 'decode').mockReturnValue(user);
             taskService.singleTask.mockResolvedValue(null);
             await task.updateTask(req, res, next);
@@ -350,7 +350,7 @@ describe('task controller', () => {
             }
         }
 
-        it('should successfully update position and send response', async () => {
+        it('should successfully update position', async () => {
             jest.spyOn(jwt, 'decode').mockReturnValue(user);
             taskService.singleTask.mockResolvedValue(taskObj);
             taskService.updateTask.mockResolvedValue();
@@ -398,7 +398,7 @@ describe('task controller', () => {
             expect(next).not.toHaveBeenCalled();
         });
         
-        it('should handle case where task does not exist and send appropriate status', async () => {
+        it('should handle invalid task', async () => {
             jest.spyOn(jwt, 'decode').mockReturnValue(user);
             taskService.singleTask.mockResolvedValue(null);
             await task.updatePosition(req, res, next);
@@ -442,7 +442,7 @@ describe('task controller', () => {
             }
         }
 
-        it('should successfully move task to trash bin and send response', async () => {
+        it('should successfully move task to trash bin', async () => {
             jest.spyOn(jwt, 'decode').mockReturnValue(user);
             taskService.singleTask.mockResolvedValue(taskObj);
             taskService.updateTask.mockResolvedValue();
@@ -473,7 +473,7 @@ describe('task controller', () => {
             expect(next).not.toHaveBeenCalled();
         });
         
-        it('should handle case where task does not exist and send appropriate status', async () => {
+        it('should handle invalid task', async () => {
             jest.spyOn(jwt, 'decode').mockReturnValue(user);
             taskService.singleTask.mockResolvedValue(null);
             await task.moveToTrashBin(req, res, next);
@@ -517,7 +517,7 @@ describe('task controller', () => {
             }
         }
 
-        it('should successfully restore task and send response', async () => {
+        it('should successfully restore task', async () => {
             jest.spyOn(jwt, 'decode').mockReturnValue(user);
             taskService.singleTask.mockResolvedValue(taskObj);
             taskService.updateTask.mockResolvedValue();
@@ -548,7 +548,7 @@ describe('task controller', () => {
             expect(next).not.toHaveBeenCalled();
         });
         
-        it('should handle case where task does not exist and send appropriate status', async () => {
+        it('should handle invalid task', async () => {
             jest.spyOn(jwt, 'decode').mockReturnValue(user);
             taskService.singleTask.mockResolvedValue(null);
             await task.restoreTask(req, res, next);
@@ -592,7 +592,7 @@ describe('task controller', () => {
             }
         }
 
-        it('should successfully delete task and send response', async () => {
+        it('should successfully delete task', async () => {
             jest.spyOn(jwt, 'decode').mockReturnValue(user);
             taskService.singleTask.mockResolvedValue(taskObj);
             taskService.deleteTask.mockResolvedValue();
@@ -623,7 +623,7 @@ describe('task controller', () => {
             expect(next).not.toHaveBeenCalled();
         });
         
-        it('should handle case where task does not exist and send appropriate status', async () => {
+        it('should handle invalid task', async () => {
             jest.spyOn(jwt, 'decode').mockReturnValue(user);
             taskService.singleTask.mockResolvedValueOnce(null);
             await task.deleteTask(req, res, next);
@@ -660,6 +660,62 @@ describe('task controller', () => {
     });
     
     describe('clearTrashBin', () => {
-    
+        const req = {
+            query: {
+                token: 'owner'
+            }
+        }
+
+        it('should successfully clear trash bin', async () => {
+            jest.spyOn(jwt, 'decode').mockReturnValue(user);
+            taskService.getTrashedList.mockResolvedValueOnce(taskList);
+            authService.updateUserStats.mockResolvedValueOnce();
+            authService.updateProjectStats.mockResolvedValueOnce();
+            notificationsService.createAdminNotification.mockResolvedValueOnce();
+            await task.clearTrashBin(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(taskService.getTrashedList).toHaveBeenCalledWith(db, 'MockProject');
+            expect(taskService.deleteTask).toHaveBeenCalledWith(db, 'DHfqbZ18jhH55SFWFGwO');
+            expect(authService.updateUserStats).toHaveBeenCalledWith(db, 'owner', 'deleted', 1);
+            expect(authService.updateProjectStats).toHaveBeenCalledWith(db, 'MockProject', 'deleted', 1);
+            expect(notificationsService.createAdminNotification).toHaveBeenCalledWith(db, 'MockProject', 'owner', 'NOTIFICATIONS.NEW.CLEARED_TRASH_BIN', ['owner'], 'delete_forever');
+            expect(res.json).toHaveBeenCalledWith({ message: 'SUCCESS.CLEAR_TRASH_BIN' });
+            expect(res.status).not.toHaveBeenCalled();
+            expect(res.send).not.toHaveBeenCalled();
+            expect(next).not.toHaveBeenCalled();
+        });
+        
+        it('should handle empty task list', async () => {
+            jest.spyOn(jwt, 'decode').mockReturnValue(user);
+            taskService.getTrashedList.mockResolvedValueOnce([]);
+            await task.clearTrashBin(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(taskService.getTrashedList).toHaveBeenCalledWith(db, 'MockProject');
+            expect(taskService.deleteTask).not.toHaveBeenCalled();
+            expect(authService.updateUserStats).not.toHaveBeenCalled();
+            expect(authService.updateProjectStats).not.toHaveBeenCalled();
+            expect(notificationsService.createAdminNotification).not.toHaveBeenCalled();
+            expect(res.json).not.toHaveBeenCalled();
+            expect(res.status).toHaveBeenCalledWith(500);
+            expect(res.send).toHaveBeenCalledWith({ message: 'ERROR.INTERNAL' });
+            expect(next).not.toHaveBeenCalled();
+        });
+        
+        it('should handle errors and call next', async () => {
+            jest.spyOn(jwt, 'decode').mockImplementation(() => {
+                throw new Error('Mock Error');
+            });
+            await task.clearTrashBin(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(taskService.getTrashedList).not.toHaveBeenCalled();
+            expect(taskService.deleteTask).not.toHaveBeenCalled();
+            expect(authService.updateUserStats).not.toHaveBeenCalled();
+            expect(authService.updateProjectStats).not.toHaveBeenCalled();
+            expect(notificationsService.createAdminNotification).not.toHaveBeenCalled();
+            expect(res.json).not.toHaveBeenCalled();
+            expect(res.status).not.toHaveBeenCalled();
+            expect(res.send).not.toHaveBeenCalled();
+            expect(next).toHaveBeenCalledWith(new Error('Mock Error'));
+        });
     });    
 });
