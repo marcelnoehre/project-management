@@ -206,7 +206,7 @@ async function optimizeOrder(req, res, next) {
     try {
         const token = req.body.token;
         const tokenUser = jwt.decode(token);
-        const tasks = statsService.getTaskList(db, tokenUser.project);
+        const tasks = await statsService.getTaskList(db, tokenUser.project);
         await statsService.optimizeOrder(tasks);
         res.json({message: 'SUCCESS.STATS.OPTIMIZE'});
     } catch (err) {
