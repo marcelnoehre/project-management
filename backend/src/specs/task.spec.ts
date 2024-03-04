@@ -37,7 +37,7 @@ const user = {
         cleared: 69
     }
 }
-const taskList = [{
+const stateList = [{
     state: 'MockState',
     tasks: [{
         uid: 'DHfqbZ18jhH55SFWFGwO',
@@ -58,7 +58,7 @@ const taskList = [{
         ]
     }]
 }];
-const trashList = [{
+const taskList = [{
     uid: 'DHfqbZ18jhH55SFWFGwO',
     author: 'owner',
     project: 'MockProject',
@@ -97,17 +97,17 @@ describe('task controller', () => {
             },
         } as unknown as Request;
 
-        test('should successfully get task list and send response', async () => {
+        it('should successfully get task list and send response', async () => {
             jest.spyOn(jwt, 'decode').mockReturnValue(user);
-            taskService.getTaskList.mockResolvedValue(taskList);
+            taskService.getTaskList.mockResolvedValue(stateList);
             await task.getTaskList(req, res, next);
             expect(jwt.decode).toHaveBeenCalledWith('owner');
             expect(taskService.getTaskList).toHaveBeenCalledWith(db, 'MockProject');
-            expect(res.json).toHaveBeenCalledWith(taskList);
+            expect(res.json).toHaveBeenCalledWith(stateList);
             expect(next).not.toHaveBeenCalled();
         });
         
-        test('should handle errors and call next', async () => {
+        it('should handle errors and call next', async () => {
             jest.spyOn(jwt, 'decode').mockImplementation(() => {
                 throw new Error('Mock Error');
             });    
@@ -126,18 +126,18 @@ describe('task controller', () => {
             },
         } as unknown as Request;
 
-        test('should successfully get trashed list and send response', async () => {
+        it('should successfully get trashed list and send response', async () => {
             jest.spyOn(jwt, 'decode').mockReturnValue(user);
-            taskService.getTrashedList.mockResolvedValueOnce(trashList);
+            taskService.getTrashedList.mockResolvedValue(taskList);
             await task.getTrashBin(req, res, next);
         
             expect(jwt.decode).toHaveBeenCalledWith('owner');
             expect(taskService.getTrashedList).toHaveBeenCalledWith(db, 'MockProject');
-            expect(res.json).toHaveBeenCalledWith(trashList);
+            expect(res.json).toHaveBeenCalledWith(taskList);
             expect(next).not.toHaveBeenCalled();
           });
         
-        test('should handle errors and call next', async () => {
+        it('should handle errors and call next', async () => {
             jest.spyOn(jwt, 'decode').mockImplementation(() => {
                 throw new Error('Mock Error');
             });
@@ -162,9 +162,9 @@ describe('task controller', () => {
             }
         } as Request;
 
-        test('should successfully create task and send response', async () => {
-            jest.spyOn(jwt, 'decode').mockReturnValueOnce(user);
-            taskService.highestOrder.mockResolvedValueOnce(17);
+        it('should successfully create task and send response', async () => {
+            jest.spyOn(jwt, 'decode').mockReturnValue(user);
+            taskService.highestOrder.mockResolvedValue(17);
             await task.createTask(req, res, next);
             expect(jwt.decode).toHaveBeenCalledWith('owner');
             expect(taskService.highestOrder).toHaveBeenCalledWith(db, 'MockProject', 'MockState');
@@ -176,7 +176,7 @@ describe('task controller', () => {
             expect(next).not.toHaveBeenCalled();
         });
         
-        test('should handle errors and call next', async () => {
+        it('should handle errors and call next', async () => {
             jest.spyOn(jwt, 'decode').mockImplementation(() => {
                 throw new Error('Mock Error');
             });
@@ -193,7 +193,67 @@ describe('task controller', () => {
     });
     
     describe('importTasks', () => {
-    
+        const req = {
+            body: {
+                token: 'owner',
+                tasks: [
+                    { title: 'Task 1', description: 'Description 1' },
+                    { title: 'Task 2', description: 'Description 2' }
+                ]
+            }
+        };
+
+        it('should successfully import tasks and send response', async () => {
+            jest.spyOn(jwt, 'decode').mockReturnValue(user);
+            taskService.importTask.mockImplementationOnce((db, task, project, username) => {
+                if (task.title === 'Task 1') {
+                    return { id: 1, title: 'Task 1', description: 'Description 1' };
+                } else {
+                    return null;
+                }
+            });
+            await task.importTasks(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(taskService.importTask).toHaveBeenCalledTimes(2);
+            expect(taskService.importTask).toHaveBeenCalledWith(db, { title: 'Task 1', description: 'Description 1' }, 'MockProject', 'owner');
+            expect(taskService.importTask).toHaveBeenCalledWith(db, { title: 'Task 2', description: 'Description 2' }, 'MockProject', 'owner');
+            expect(authService.updateUserStats).toHaveBeenCalledWith(db, 'owner', 'imported', 1);
+            expect(authService.updateProjectStats).toHaveBeenCalledWith(db, 'MockProject', 'imported', 1);
+            expect(notificationsService.createTeamNotification).toHaveBeenCalledWith(db, 'MockProject', 'owner', 'NOTIFICATIONS.NEW.IMPORTED_TASKS', ['owner'], 'upload_file');
+            expect(res.json).toHaveBeenCalledWith({amount: 2, success: 1, fail: 1, taskList: [{ id: 1, title: 'Task 1', description: 'Description 1' }]});
+            expect(next).not.toHaveBeenCalled();
+        });
+
+        it('should import 0 tasks', async () => {
+            jest.spyOn(jwt, 'decode').mockReturnValue(user);
+            taskService.importTask.mockImplementationOnce((db, task, project, username) => {
+                return null;
+            });
+            await task.importTasks(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(taskService.importTask).toHaveBeenCalledTimes(2);
+            expect(taskService.importTask).toHaveBeenCalledWith(db, { title: 'Task 1', description: 'Description 1' }, 'MockProject', 'owner');
+            expect(taskService.importTask).toHaveBeenCalledWith(db, { title: 'Task 2', description: 'Description 2' }, 'MockProject', 'owner');
+            expect(authService.updateUserStats).not.toHaveBeenCalled();
+            expect(authService.updateProjectStats).not.toHaveBeenCalled();
+            expect(notificationsService.createTeamNotification).not.toHaveBeenCalled();
+            expect(res.json).toHaveBeenCalledWith({amount: 2, success: 0, fail: 2, taskList: []});
+            expect(next).not.toHaveBeenCalled();
+        });
+        
+        it('should handle errors and call next', async () => {
+            jest.spyOn(jwt, 'decode').mockImplementation(() => {
+                throw new Error('Mock Error');
+            });
+            await task.importTasks(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(taskService.importTask).not.toHaveBeenCalled();
+            expect(authService.updateUserStats).not.toHaveBeenCalled();
+            expect(authService.updateProjectStats).not.toHaveBeenCalled();
+            expect(notificationsService.createTeamNotification).not.toHaveBeenCalled();
+            expect(res.json).not.toHaveBeenCalled();
+            expect(next).toHaveBeenCalledWith(new Error('Mock Error'));
+        });
     });
     
     describe('updateTask', () => {
