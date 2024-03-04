@@ -15,7 +15,7 @@ jest.mock('firebase-admin', () => ({
     firestore: jest.fn(),
 }));
 const db = admin.firestore();
-const user = {
+const owner = {
     username: 'owner',
     fullName: 'Mock Owner',
     initials: 'MO',
@@ -37,8 +37,13 @@ const user = {
         cleared: 69
     }
 }
+const projectObj = {
+    name: 'MockProject',
+    history: [],
+    stats: []
+}
 const teamMembers = [
-    user,  
+    owner,  
     {
         token: 'member',
         username: 'member',
@@ -62,8 +67,29 @@ const teamMembers = [
             cleared: 67
         }
     }
-]
-
+];
+const mockUser = {
+    username: 'mock',
+    fullName: 'Mock FullName',
+    initials: 'MF',
+    color: '#FFFFFF',
+    language: 'en',
+    project: '',
+    permission: '',
+    profilePicture: '',
+    notificationsEnabled: true,
+    isLoggedIn: true,
+    stats: {
+        created: 0,
+        imported: 0,
+        updated: 0,
+        edited: 0,
+        trashed: 0,
+        restored: 0,
+        deleted: 0,
+        cleared: 0
+    }
+}
 
 describe('project controller', () => {
     const res = {
@@ -86,8 +112,8 @@ describe('project controller', () => {
         } as unknown as Request;
 
         it('should get team members', async () => {
-            jest.spyOn(jwt, 'decode').mockReturnValue(user);                            
-            projectService.getTeamMembers.mockResolvedValueOnce(teamMembers);
+            jest.spyOn(jwt, 'decode').mockReturnValue(owner);                            
+            projectService.getTeamMembers.mockResolvedValue(teamMembers);
             await project.getTeamMembers(req, res, next);
             expect(jwt.decode).toHaveBeenCalledWith('owner');
             expect(projectService.getTeamMembers).toHaveBeenCalledWith(db, 'MockProject');
@@ -98,8 +124,8 @@ describe('project controller', () => {
         });
         
         it('should handle invalid project', async () => {
-            jest.spyOn(jwt, 'decode').mockReturnValue(user);
-            projectService.getTeamMembers.mockResolvedValueOnce([]);        
+            jest.spyOn(jwt, 'decode').mockReturnValue(owner);
+            projectService.getTeamMembers.mockResolvedValue([]);        
             await project.getTeamMembers(req, res, next);
             expect(jwt.decode).toHaveBeenCalledWith('owner');
             expect(projectService.getTeamMembers).toHaveBeenCalledWith(db, 'MockProject');
@@ -132,11 +158,11 @@ describe('project controller', () => {
         } as unknown as Request;
 
         it('should create a new project', async () => {
-            jest.spyOn(jwt, 'decode').mockReturnValue(user);
-            authService.singleUser.mockResolvedValueOnce(user);
-            projectService.isNewProject.mockResolvedValueOnce(true);
-            authService.updateUserData.mockResolvedValueOnce();
-            projectService.createProject.mockResolvedValueOnce();
+            jest.spyOn(jwt, 'decode').mockReturnValue(owner);
+            authService.singleUser.mockResolvedValue(owner);
+            projectService.isNewProject.mockResolvedValue(true);
+            authService.updateUserData.mockResolvedValue();
+            projectService.createProject.mockResolvedValue();
             await project.createProject(req, res, next);
             expect(jwt.decode).toHaveBeenCalledWith('owner');
             expect(authService.singleUser).toHaveBeenCalledWith(db, 'owner');
@@ -154,9 +180,9 @@ describe('project controller', () => {
         });
         
         it('should handle already existing project', async () => {
-            jest.spyOn(jwt, 'decode').mockReturnValue(user);
-            authService.singleUser.mockResolvedValueOnce(user);
-            projectService.isNewProject.mockResolvedValueOnce(false);
+            jest.spyOn(jwt, 'decode').mockReturnValue(owner);
+            authService.singleUser.mockResolvedValue(owner);
+            projectService.isNewProject.mockResolvedValue(false);
             await project.createProject(req, res, next);
             expect(jwt.decode).toHaveBeenCalledWith('owner');
             expect(authService.singleUser).toHaveBeenCalledWith(db, 'owner');
@@ -170,8 +196,8 @@ describe('project controller', () => {
         });
         
         it('should handle invalid user', async () => {
-            jest.spyOn(jwt, 'decode').mockReturnValue(user);        
-            authService.singleUser.mockResolvedValueOnce(null);
+            jest.spyOn(jwt, 'decode').mockReturnValue(owner);        
+            authService.singleUser.mockResolvedValue(null);
             await project.createProject(req, res, next);
             expect(jwt.decode).toHaveBeenCalledWith('owner');
             expect(authService.singleUser).toHaveBeenCalledWith(db, 'owner');
@@ -205,9 +231,104 @@ describe('project controller', () => {
         const req = {
             body: {
                 token: 'owner',
-                username: 'invite'
+                username: 'mock'
             }
         } as unknown as Request;
+
+        it('should invite user', async () => {
+            jest.spyOn(jwt, 'decode').mockReturnValue(owner);
+            authService.singleUser.mockResolvedValue(mockUser);
+            projectService.singleProject.mockResolvedValue(projectObj);
+            authService.updateUserData.mockResolvedValue();
+            projectService.updateProjectHistory.mockResolvedValue();
+            notificationsService.createAdminNotification.mockResolvedValue();
+            await project.inviteUser(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(authService.singleUser).toHaveBeenCalledWith(db, 'mock');
+            expect(projectService.singleProject).toHaveBeenCalledWith(db, 'MockProject');
+            expect(authService.updateUserData).toHaveBeenCalledWith(db, 'mock', { project: 'MockProject', permission: 'INVITED' });
+            expect(projectService.updateProjectHistory).toHaveBeenCalledWith(db, 'MockProject', {
+                timestamp: expect.any(Number),
+                type: 'INVITED',
+                username: 'owner',
+                target: 'mock'
+            });
+            expect(notificationsService.createAdminNotification).toHaveBeenCalledWith(db, 'MockProject', 'owner', 'NOTIFICATIONS.NEW.INVITED', ['owner', 'mock'], 'cancel');
+            expect(res.json).toHaveBeenCalledWith(mockUser);
+            expect(res.status).not.toHaveBeenCalled();
+            expect(res.send).not.toHaveBeenCalled();
+            expect(next).not.toHaveBeenCalled();
+        });
+        
+        it('should handle already invited user', async () => {
+            jest.spyOn(jwt, 'decode').mockReturnValue(owner);
+            const user = mockUser;
+            user.permission = 'INVITED';
+            authService.singleUser.mockResolvedValue(user);
+            await project.inviteUser(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(authService.singleUser).toHaveBeenCalledWith(db, 'mock');
+            expect(projectService.singleProject).not.toHaveBeenCalled();
+            expect(authService.updateUserData).not.toHaveBeenCalled();
+            expect(projectService.updateProjectHistory).not.toHaveBeenCalled();
+            expect(notificationsService.createAdminNotification).not.toHaveBeenCalled();
+            expect(res.json).not.toHaveBeenCalled();
+            expect(res.status).toHaveBeenCalledWith(423);
+            expect(res.send).toHaveBeenCalledWith({ message: 'ERROR.PENDING_INVITE' });
+            expect(next).not.toHaveBeenCalled();
+        });
+        
+        it('should handle user with project', async () => {
+            jest.spyOn(jwt, 'decode').mockReturnValue(owner);
+            const user = mockUser;
+            user.permission = 'MEMBER';
+            user.project = 'AnotherProject';
+            authService.singleUser.mockResolvedValue(user);
+            await project.inviteUser(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(authService.singleUser).toHaveBeenCalledWith(db, 'mock');
+            expect(projectService.singleProject).not.toHaveBeenCalled();
+            expect(authService.updateUserData).not.toHaveBeenCalled();
+            expect(projectService.updateProjectHistory).not.toHaveBeenCalled();
+            expect(notificationsService.createAdminNotification).not.toHaveBeenCalled();
+            expect(res.json).not.toHaveBeenCalled();
+            expect(res.status).toHaveBeenCalledWith(423);
+            expect(res.send).toHaveBeenCalledWith({ message: 'ERROR.HAS_PROJECT' });
+            expect(next).not.toHaveBeenCalled();
+        });
+        
+        it('should handle invalid user', async () => {
+            jest.spyOn(jwt, 'decode').mockReturnValue(owner);
+            authService.singleUser.mockResolvedValue(null);
+            await project.inviteUser(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(authService.singleUser).toHaveBeenCalledWith(db, 'mock');
+            expect(projectService.singleProject).not.toHaveBeenCalled();
+            expect(authService.updateUserData).not.toHaveBeenCalled();
+            expect(projectService.updateProjectHistory).not.toHaveBeenCalled();
+            expect(notificationsService.createAdminNotification).not.toHaveBeenCalled();
+            expect(res.json).not.toHaveBeenCalled();
+            expect(res.status).toHaveBeenCalledWith(404);
+            expect(res.send).toHaveBeenCalledWith({ message: 'ERROR.NO_ACCOUNT' });
+            expect(next).not.toHaveBeenCalled();
+        });
+        
+        it('should handle errors and call next', async () => {
+            jest.spyOn(jwt, 'decode').mockImplementation(() => {
+                throw new Error('Mock error');
+            });
+            await project.inviteUser(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(authService.singleUser).not.toHaveBeenCalled();
+            expect(projectService.singleProject).not.toHaveBeenCalled();
+            expect(authService.updateUserData).not.toHaveBeenCalled();
+            expect(projectService.updateProjectHistory).not.toHaveBeenCalled();
+            expect(notificationsService.createAdminNotification).not.toHaveBeenCalled();
+            expect(res.json).not.toHaveBeenCalled();
+            expect(res.status).not.toHaveBeenCalled();
+            expect(res.send).not.toHaveBeenCalled();
+            expect(next).toHaveBeenCalledWith(new Error('Mock error'));
+        });
     });
 
     describe('handleInvite', () => {
