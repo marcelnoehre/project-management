@@ -289,7 +289,7 @@ describe('task controller', () => {
             authService.updateUserStats.mockResolvedValue();
             authService.updateProjectStats.mockResolvedValue();
             notificationsService.createRelatedNotification.mockResolvedValue();
-            taskService.getTaskList.mockResolvedValue(taskList);
+            taskService.getTaskList.mockResolvedValue(stateList);
             await task.updateTask(req, res, next);
             expect(jwt.decode).toHaveBeenCalledWith('owner');
             expect(taskService.singleTask).toHaveBeenCalledWith(db, 'DHfqbZ18jhH55SFWFGwO');
@@ -298,7 +298,7 @@ describe('task controller', () => {
             expect(authService.updateProjectStats).toHaveBeenCalledWith(db, 'MockProject', 'edited', 1);
             expect(notificationsService.createRelatedNotification).toHaveBeenCalledWith(db, 'MockProject', 'owner', 'owner', '', 'NOTIFICATIONS.NEW.EDITED_TASK', ['owner', 'MockTitle'], 'edit_square');
             expect(taskService.getTaskList).toHaveBeenCalledWith(db, 'MockProject');
-            expect(res.json).toHaveBeenCalledWith(taskList);
+            expect(res.json).toHaveBeenCalledWith(stateList);
             expect(res.status).not.toHaveBeenCalled();
             expect(res.send).not.toHaveBeenCalled();
             expect(next).not.toHaveBeenCalled();
@@ -357,7 +357,7 @@ describe('task controller', () => {
             authService.updateUserStats.mockResolvedValue();
             authService.updateProjectStats.mockResolvedValue();
             notificationsService.createRelatedNotification.mockResolvedValue();
-            taskService.getTaskList.mockResolvedValue(taskList);
+            taskService.getTaskList.mockResolvedValue(stateList);
             await task.updatePosition(req, res, next);
             expect(jwt.decode).toHaveBeenCalledWith('owner');
             expect(taskService.singleTask).toHaveBeenCalledWith(db, 'DHfqbZ18jhH55SFWFGwO');
@@ -392,7 +392,7 @@ describe('task controller', () => {
               'edit_square'
             );
             expect(taskService.getTaskList).toHaveBeenCalledWith(db, 'MockProject');
-            expect(res.json).toHaveBeenCalledWith(taskList);
+            expect(res.json).toHaveBeenCalledWith(stateList);
             expect(res.status).not.toHaveBeenCalled();
             expect(res.send).not.toHaveBeenCalled();
             expect(next).not.toHaveBeenCalled();
@@ -510,7 +510,78 @@ describe('task controller', () => {
     });
     
     describe('restoreTask', () => {
-    
+        const req = {
+            body: {
+                token: 'owner',
+                uid: 'DHfqbZ18jhH55SFWFGwO'
+            }
+        }
+
+        it('should successfully restore task and send response', async () => {
+            jest.spyOn(jwt, 'decode').mockReturnValue(user);
+            taskService.singleTask.mockResolvedValue(taskObj);
+            taskService.updateTask.mockResolvedValue();
+            authService.updateUserStats.mockResolvedValue();
+            authService.updateProjectStats.mockResolvedValue();
+            notificationsService.createRelatedNotification.mockResolvedValue();
+            taskService.getTrashedList.mockResolvedValueOnce(taskList);
+            await task.restoreTask(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(taskService.singleTask).toHaveBeenCalledWith(db, 'DHfqbZ18jhH55SFWFGwO');
+            expect(taskService.updateTask).toHaveBeenCalledWith(db, 'DHfqbZ18jhH55SFWFGwO', { state: 'NewState' });
+            expect(authService.updateUserStats).toHaveBeenCalledWith(db, 'owner', 'restored', 1);
+            expect(authService.updateProjectStats).toHaveBeenCalledWith(db, 'MockProject', 'restored', 1);
+            expect(notificationsService.createRelatedNotification).toHaveBeenCalledWith(
+              db,
+              'MockProject',
+              'owner',
+              'owner',
+              '',
+              'NOTIFICATIONS.NEW.RESTORED_TASK',
+              ['owner', 'MockTitle'],
+              'undo'
+            );
+            expect(taskService.getTrashedList).toHaveBeenCalledWith(db, 'MockProject');
+            expect(res.json).toHaveBeenCalledWith(taskList);
+            expect(res.status).not.toHaveBeenCalled();
+            expect(res.send).not.toHaveBeenCalled();
+            expect(next).not.toHaveBeenCalled();
+        });
+        
+        it('should handle case where task does not exist and send appropriate status', async () => {
+            jest.spyOn(jwt, 'decode').mockReturnValue(user);
+            taskService.singleTask.mockResolvedValue(null);
+            await task.restoreTask(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(taskService.singleTask).toHaveBeenCalledWith(db, 'DHfqbZ18jhH55SFWFGwO');
+            expect(taskService.updateTask).not.toHaveBeenCalled();
+            expect(authService.updateUserStats).not.toHaveBeenCalled();
+            expect(authService.updateProjectStats).not.toHaveBeenCalled();
+            expect(notificationsService.createRelatedNotification).not.toHaveBeenCalled();
+            expect(taskService.getTrashedList).not.toHaveBeenCalled();
+            expect(res.json).not.toHaveBeenCalled();
+            expect(res.status).toHaveBeenCalledWith(500);
+            expect(res.send).toHaveBeenCalledWith({ message: 'ERROR.INTERNAL' });
+            expect(next).not.toHaveBeenCalled();
+        });
+        
+        it('should handle errors and call next', async () => {
+            jest.spyOn(jwt, 'decode').mockImplementation(() => {
+                throw new Error('Mock Error');
+            });
+            await task.restoreTask(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(taskService.singleTask).not.toHaveBeenCalled();
+            expect(taskService.updateTask).not.toHaveBeenCalled();
+            expect(authService.updateUserStats).not.toHaveBeenCalled();
+            expect(authService.updateProjectStats).not.toHaveBeenCalled();
+            expect(notificationsService.createRelatedNotification).not.toHaveBeenCalled();
+            expect(taskService.getTrashedList).not.toHaveBeenCalled();
+            expect(res.json).not.toHaveBeenCalled();
+            expect(res.status).not.toHaveBeenCalled();
+            expect(res.send).not.toHaveBeenCalled();
+            expect(next).toHaveBeenCalledWith(new Error('Mock Error'));
+        });
     });
     
     describe('deleteTask', () => {
