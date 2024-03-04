@@ -275,7 +275,7 @@ describe('auth controller', () => {
 
         it('should return work in progress data', async () => {
             jest.spyOn(jwt, 'decode').mockReturnValue(user);
-            statsService.wip.mockResolvedValueOnce(17);
+            statsService.wip.mockResolvedValue(17);
             await stats.wip(req, res, next);
             expect(jwt.decode).toHaveBeenCalledWith('owner');
             expect(statsService.wip).toHaveBeenCalledWith(db, 'MockProject');
@@ -325,7 +325,7 @@ describe('auth controller', () => {
             expect(res.status).not.toHaveBeenCalledWith();
             expect(res.send).not.toHaveBeenCalledWith();
             expect(next).toHaveBeenCalledWith(new Error('Mock Error'));
-          });
+        });
     });
 
     describe('projectRoadmap', () => {
@@ -334,6 +334,43 @@ describe('auth controller', () => {
                 token: 'owner'
             }
         } as unknown as Request;
+
+        it('should return project roadmap', async () => {
+            jest.spyOn(jwt, 'decode').mockReturnValue(user);
+            projectService.singleProject.mockResolvedValue(project);
+            statsService.projectRoadmap.mockResolvedValue(project.history);
+            await stats.projectRoadmap(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(projectService.singleProject).toHaveBeenCalledWith(db, 'MockProject');
+            expect(statsService.projectRoadmap).toHaveBeenCalledWith(project);
+            expect(res.json).toHaveBeenCalledWith(project.history);
+            expect(next).not.toHaveBeenCalled();
+        });
+
+        it('should return empty project roadmap', async () => {
+            jest.spyOn(jwt, 'decode').mockReturnValue(user);
+            projectService.singleProject.mockResolvedValue(null);
+            await stats.projectRoadmap(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(projectService.singleProject).toHaveBeenCalledWith(db, 'MockProject');
+            expect(statsService.projectRoadmap).not.toHaveBeenCalledWith();
+            expect(res.json).toHaveBeenCalledWith([]);
+            expect(next).not.toHaveBeenCalled();
+        });
+        
+        it('should handle errors and call next', async () => {
+            jest.spyOn(jwt, 'decode').mockImplementation(() => {
+                throw new Error('Mock Error');
+            });
+            await stats.projectRoadmap(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(projectService.singleProject).not.toHaveBeenCalled();
+            expect(statsService.projectRoadmap).not.toHaveBeenCalled();
+            expect(res.json).not.toHaveBeenCalled();
+            expect(res.status).not.toHaveBeenCalled();
+            expect(res.send).not.toHaveBeenCalled();
+            expect(next).toHaveBeenCalledWith(new Error('Mock Error'));
+        });
     });
 
     describe('optimizeOrder', () => {
