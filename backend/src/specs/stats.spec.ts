@@ -272,6 +272,29 @@ describe('auth controller', () => {
                 token: 'owner'
             }
         } as unknown as Request;
+
+        it('should return work in progress data', async () => {
+            jest.spyOn(jwt, 'decode').mockReturnValue(user);
+            statsService.wip.mockResolvedValueOnce(17);
+            await stats.wip(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(statsService.wip).toHaveBeenCalledWith(db, 'MockProject');
+            expect(res.json).toHaveBeenCalledWith(17);
+            expect(next).not.toHaveBeenCalled();
+        });
+        
+        it('should handle errors and call next', async () => {
+            jest.spyOn(jwt, 'decode').mockImplementation(() => {
+                throw new Error('Mock Error');
+            });
+            await stats.wip(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(statsService.wip).not.toHaveBeenCalled();
+            expect(res.json).not.toHaveBeenCalled();
+            expect(res.status).not.toHaveBeenCalledWith();
+            expect(res.send).not.toHaveBeenCalledWith();
+            expect(next).toHaveBeenCalledWith(new Error('Mock Error'));
+        });
     });
 
     describe('taskProgress', () => {
