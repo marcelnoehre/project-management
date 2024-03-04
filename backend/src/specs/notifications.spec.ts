@@ -74,7 +74,7 @@ describe('notifications controller', () => {
 
         it('should get notifications', async () => {
             jest.spyOn(jwt, 'decode').mockReturnValue(user);        
-            notificationsService.getNotifications.mockResolvedValueOnce(notificationsList);
+            notificationsService.getNotifications.mockResolvedValue(notificationsList);
             await notifications.getNotifications(req, res, next);
             expect(jwt.decode).toHaveBeenCalledWith('owner');
             expect(notificationsService.getNotifications).toHaveBeenCalledWith(db, 'MockProject', 'owner');
@@ -110,7 +110,7 @@ describe('notifications controller', () => {
         it('should update notifications', async () => {
             jest.spyOn(jwt, 'decode').mockReturnValue(user);                    
             notificationsService.updateNotifications.mockResolvedValue();
-            notificationsService.getNotifications.mockResolvedValueOnce(notificationsList);
+            notificationsService.getNotifications.mockResolvedValue(notificationsList);
             await notifications.updateNotifications(req, res, next);
             expect(jwt.decode).toHaveBeenCalledWith('owner');
             expect(notificationsService.updateNotifications).toHaveBeenCalledWith(db, ['1', '2'], ['3', '4'], 'owner', 'MockProject');

@@ -59,6 +59,14 @@ const states = {
     DONE: 5,
     DELETED: 6
 }
+const tasklist = {
+    NONE: [1],
+    TODO: [2, 2],
+    PROGRESS: [3, 3, 3],
+    REVIEW: [4, 4, 4, 4],
+    DONE: [5, 5, 5, 5, 5],
+    DELETED: [6, 6, 6, 6, 6, 6]
+};
 
 describe('auth controller', () => {
     const res = {
@@ -195,14 +203,6 @@ describe('auth controller', () => {
 
         it('should return task amounts', async () => {
             jest.spyOn(jwt, 'decode').mockReturnValue(user);
-            const tasklist = {
-                NONE: [1],
-                TODO: [2, 2],
-                PROGRESS: [3, 3, 3],
-                REVIEW: [4, 4, 4, 4],
-                DONE: [5, 5, 5, 5, 5],
-                DELETED: [6, 6, 6, 6, 6, 6]
-            };
             statsService.getTaskList.mockResolvedValue(tasklist);
             await stats.taskAmount(req, res, next);
             expect(jwt.decode).toHaveBeenCalledWith('owner');
@@ -379,5 +379,31 @@ describe('auth controller', () => {
                 token: 'owner'
             }
         } as unknown as Request;
+
+        it('should optimize task order', async () => {
+            jest.spyOn(jwt, 'decode').mockReturnValue(user);
+            statsService.getTaskList.mockResolvedValue(tasklist);
+            statsService.optimizeOrder.mockResolvedValue();
+            await stats.optimizeOrder(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(statsService.getTaskList).toHaveBeenCalledWith(db, 'MockProject');
+            expect(statsService.optimizeOrder).toHaveBeenCalledWith(tasklist);
+            expect(res.json).toHaveBeenCalledWith({ message: 'SUCCESS.STATS.OPTIMIZE' });
+            expect(next).not.toHaveBeenCalled();
+        });
+        
+        it('should handle errors and call next', async () => {
+            jest.spyOn(jwt, 'decode').mockImplementation(() => {
+                throw new Error('Mock Error');
+            });
+            await stats.optimizeOrder(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(statsService.getTaskList).not.toHaveBeenCalled();
+            expect(statsService.optimizeOrder).not.toHaveBeenCalled();
+            expect(res.json).not.toHaveBeenCalled();
+            expect(res.status).not.toHaveBeenCalled();
+            expect(res.send).not.toHaveBeenCalled();
+            expect(next).toHaveBeenCalledWith(new Error('Mock Error'));
+        });
     });
 });
