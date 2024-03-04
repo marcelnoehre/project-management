@@ -39,7 +39,7 @@ const user = {
 }
 const project = {
     name: 'MockProject',
-    history: [],
+    history: ['event_1', 'event_2', 'event_3'],
     stats: [{
         created: 91,
         imported: 10,
@@ -303,6 +303,29 @@ describe('auth controller', () => {
                 token: 'owner'
             }
         } as unknown as Request;
+
+        it('should return task progress data', async () => {
+            jest.spyOn(jwt, 'decode').mockReturnValue(user);
+            statsService.taskProgress.mockResolvedValue(project.history);
+            await stats.taskProgress(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(statsService.taskProgress).toHaveBeenCalledWith(db, 'MockProject');
+            expect(res.json).toHaveBeenCalledWith(project.history);
+            expect(next).not.toHaveBeenCalled();
+          });
+        
+        it('should handle errors and call next', async () => {
+            jest.spyOn(jwt, 'decode').mockImplementation(() => {
+                throw new Error('Mock Error');
+            });
+            await stats.taskProgress(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(statsService.taskProgress).not.toHaveBeenCalled();
+            expect(res.json).not.toHaveBeenCalled();
+            expect(res.status).not.toHaveBeenCalledWith();
+            expect(res.send).not.toHaveBeenCalledWith();
+            expect(next).toHaveBeenCalledWith(new Error('Mock Error'));
+          });
     });
 
     describe('projectRoadmap', () => {
