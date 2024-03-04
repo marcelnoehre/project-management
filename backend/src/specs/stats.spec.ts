@@ -37,6 +37,20 @@ const user = {
         cleared: 69
     }
 }
+const project = {
+    name: 'MockProject',
+    history: [],
+    stats: [{
+        created: 91,
+        imported: 10,
+        updated: 45,
+        edited: 78,
+        trashed: 32,
+        restored: 57,
+        deleted: 23,
+        cleared: 69
+    }]
+}
 
 describe('auth controller', () => {
     const res = {
@@ -58,7 +72,7 @@ describe('auth controller', () => {
             }
         } as unknown as Request;
 
-        test('should return user stats', async () => {
+        it('should return user stats', async () => {
             jest.spyOn(jwt, 'decode').mockReturnValue(user);
             authService.singleUser.mockResolvedValue(user);
             await stats.personalStats(req, res, next);
@@ -66,9 +80,9 @@ describe('auth controller', () => {
             expect(authService.singleUser).toHaveBeenCalledWith(db, 'owner');
             expect(res.json).toHaveBeenCalledWith(user.stats);
             expect(next).not.toHaveBeenCalled();
-          });
+        });
         
-        test('should handle invalid user', async () => {
+        it('should handle invalid user', async () => {
             jest.spyOn(jwt, 'decode').mockReturnValue(user);
             authService.singleUser.mockResolvedValue(null);
             await stats.personalStats(req, res, next);
@@ -87,7 +101,7 @@ describe('auth controller', () => {
             expect(next).not.toHaveBeenCalled();
         });
         
-        test('should handle errors and call next', async () => {
+        it('should handle errors and call next', async () => {
             jest.spyOn(jwt, 'decode').mockImplementation(() => {
                 throw new Error('Mock Error');
             });
@@ -105,6 +119,32 @@ describe('auth controller', () => {
                 token: 'owner'
             }
         } as unknown as Request;
+
+        it('should return project stats', async () => {
+            jest.spyOn(jwt, 'decode').mockReturnValue(user);
+            projectService.singleProject.mockResolvedValue(project);
+            statsService.stats.mockResolvedValue(project.stats);
+            await stats.stats(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(projectService.singleProject).toHaveBeenCalledWith(db, 'MockProject');
+            expect(statsService.stats).toHaveBeenCalledWith(db, project);
+            expect(res.json).toHaveBeenCalledWith(project.stats);
+            expect(next).not.toHaveBeenCalled();
+        });
+        
+        it('should handle errors and call next', async () => {
+            jest.spyOn(jwt, 'decode').mockImplementation(() => {
+                throw new Error('Mock Error');
+            });
+            await stats.stats(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(projectService.singleProject).not.toHaveBeenCalled();
+            expect(statsService.stats).not.toHaveBeenCalled();
+            expect(res.json).not.toHaveBeenCalled();
+            expect(res.status).not.toHaveBeenCalled();
+            expect(res.send).not.toHaveBeenCalled();
+            expect(next).toHaveBeenCalledWith(new Error('Mock Error'));
+        });
     });
 
     describe('statLeaders', () => {
