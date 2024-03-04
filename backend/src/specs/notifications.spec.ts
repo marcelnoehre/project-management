@@ -72,7 +72,7 @@ describe('notifications controller', () => {
             }
         }
 
-        it('should successfully get notifications', async () => {
+        it('should get notifications', async () => {
             jest.spyOn(jwt, 'decode').mockReturnValue(user);        
             notificationsService.getNotifications.mockResolvedValueOnce(notificationsList);
             await notifications.getNotifications(req, res, next);
@@ -99,7 +99,41 @@ describe('notifications controller', () => {
     });
 
     describe('updateNotifications', () => {
+        const req = {
+            body: {
+                token: 'owner',
+                removed: ['1', '2'],
+                seen: ['3', '4']
+            }
+        }
 
+        it('should update notifications', async () => {
+            jest.spyOn(jwt, 'decode').mockReturnValue(user);                    
+            notificationsService.updateNotifications.mockResolvedValue();
+            notificationsService.getNotifications.mockResolvedValueOnce(notificationsList);
+            await notifications.updateNotifications(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(notificationsService.updateNotifications).toHaveBeenCalledWith(db, ['1', '2'], ['3', '4'], 'owner', 'MockProject');
+            expect(notificationsService.getNotifications).toHaveBeenCalledWith(db, 'MockProject', 'owner');
+            expect(res.json).toHaveBeenCalledWith(notificationsList);
+            expect(res.status).not.toHaveBeenCalled();
+            expect(res.send).not.toHaveBeenCalled();
+            expect(next).not.toHaveBeenCalled();
+        });
+        
+        it('should handle errors and call next', async () => {
+            jest.spyOn(jwt, 'decode').mockImplementation(() => {
+                throw new Error('Mock Error');
+            });
+            await notifications.updateNotifications(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(notificationsService.updateNotifications).not.toHaveBeenCalled();
+            expect(notificationsService.getNotifications).not.toHaveBeenCalled();
+            expect(res.json).not.toHaveBeenCalled();
+            expect(res.status).not.toHaveBeenCalled();
+            expect(res.send).not.toHaveBeenCalled();
+            expect(next).toHaveBeenCalledWith(new Error('Mock Error'));
+        });
     });
 
 });

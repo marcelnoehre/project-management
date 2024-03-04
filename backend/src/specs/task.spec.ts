@@ -115,7 +115,7 @@ describe('task controller', () => {
             },
         } as unknown as Request;
 
-        it('should successfully get task list', async () => {
+        it('should get task list', async () => {
             jest.spyOn(jwt, 'decode').mockReturnValue(user);
             taskService.getTaskList.mockResolvedValue(stateList);
             await task.getTaskList(req, res, next);
@@ -144,7 +144,7 @@ describe('task controller', () => {
             },
         } as unknown as Request;
 
-        it('should successfully get trashed list', async () => {
+        it('should get trashed list', async () => {
             jest.spyOn(jwt, 'decode').mockReturnValue(user);
             taskService.getTrashedList.mockResolvedValue(taskList);
             await task.getTrashBin(req, res, next);
@@ -180,7 +180,7 @@ describe('task controller', () => {
             }
         } as Request;
 
-        it('should successfully create task', async () => {
+        it('should create task', async () => {
             jest.spyOn(jwt, 'decode').mockReturnValue(user);
             taskService.highestOrder.mockResolvedValue(17);
             await task.createTask(req, res, next);
@@ -221,7 +221,7 @@ describe('task controller', () => {
             }
         };
 
-        it('should successfully import tasks', async () => {
+        it('should import tasks', async () => {
             jest.spyOn(jwt, 'decode').mockReturnValue(user);
             taskService.importTask.mockImplementation((db, task, project, username) => {
                 if (task.title === 'Task 1') {
@@ -282,7 +282,7 @@ describe('task controller', () => {
             }
         };
 
-        it('should successfully update task', async () => {
+        it('should update task', async () => {
             jest.spyOn(jwt, 'decode').mockReturnValue(user);
             taskService.singleTask.mockResolvedValue(taskObj);
             taskService.updateTask.mockResolvedValue();
@@ -350,7 +350,7 @@ describe('task controller', () => {
             }
         }
 
-        it('should successfully update position', async () => {
+        it('should update position', async () => {
             jest.spyOn(jwt, 'decode').mockReturnValue(user);
             taskService.singleTask.mockResolvedValue(taskObj);
             taskService.updateTask.mockResolvedValue();
@@ -442,7 +442,7 @@ describe('task controller', () => {
             }
         }
 
-        it('should successfully move task to trash bin', async () => {
+        it('should move task to trash bin', async () => {
             jest.spyOn(jwt, 'decode').mockReturnValue(user);
             taskService.singleTask.mockResolvedValue(taskObj);
             taskService.updateTask.mockResolvedValue();
@@ -517,7 +517,7 @@ describe('task controller', () => {
             }
         }
 
-        it('should successfully restore task', async () => {
+        it('should restore task', async () => {
             jest.spyOn(jwt, 'decode').mockReturnValue(user);
             taskService.singleTask.mockResolvedValue(taskObj);
             taskService.updateTask.mockResolvedValue();
@@ -592,7 +592,7 @@ describe('task controller', () => {
             }
         }
 
-        it('should successfully delete task', async () => {
+        it('should delete task', async () => {
             jest.spyOn(jwt, 'decode').mockReturnValue(user);
             taskService.singleTask.mockResolvedValue(taskObj);
             taskService.deleteTask.mockResolvedValue();
@@ -666,7 +666,7 @@ describe('task controller', () => {
             }
         }
 
-        it('should successfully clear trash bin', async () => {
+        it('should clear trash bin', async () => {
             jest.spyOn(jwt, 'decode').mockReturnValue(user);
             taskService.getTrashedList.mockResolvedValueOnce(taskList);
             authService.updateUserStats.mockResolvedValueOnce();
