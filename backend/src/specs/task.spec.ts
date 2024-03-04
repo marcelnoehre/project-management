@@ -284,7 +284,7 @@ describe('task controller', () => {
 
         it('should successfully update task and send response', async () => {
             jest.spyOn(jwt, 'decode').mockReturnValue(user);
-            taskService.singleTask.mockResolvedValue(true);
+            taskService.singleTask.mockResolvedValue(taskObj);
             taskService.updateTask.mockResolvedValue();
             authService.updateUserStats.mockResolvedValue();
             authService.updateProjectStats.mockResolvedValue();
@@ -306,7 +306,7 @@ describe('task controller', () => {
         
         it('should handle case where task does not exist and send appropriate status', async () => {
             jest.spyOn(jwt, 'decode').mockReturnValue(user);
-            taskService.singleTask.mockResolvedValue(false);
+            taskService.singleTask.mockResolvedValue(null);
             await task.updateTask(req, res, next);
             expect(jwt.decode).toHaveBeenCalledWith('owner');
             expect(taskService.singleTask).toHaveBeenCalledWith(db, 'DHfqbZ18jhH55SFWFGwO');
@@ -400,7 +400,7 @@ describe('task controller', () => {
         
         it('should handle case where task does not exist and send appropriate status', async () => {
             jest.spyOn(jwt, 'decode').mockReturnValue(user);
-            taskService.singleTask.mockResolvedValue(false);
+            taskService.singleTask.mockResolvedValue(null);
             await task.updatePosition(req, res, next);
             expect(jwt.decode).toHaveBeenCalledWith('owner');
             expect(taskService.singleTask).toHaveBeenCalledWith(db, 'DHfqbZ18jhH55SFWFGwO');
@@ -435,7 +435,78 @@ describe('task controller', () => {
     });
     
     describe('moveToTrashBin', () => {
-    
+        const req = {
+            body: {
+                token: 'owner',
+                uid: 'DHfqbZ18jhH55SFWFGwO'
+            }
+        }
+
+        it('should successfully move task to trash bin and send response', async () => {
+            jest.spyOn(jwt, 'decode').mockReturnValue(user);
+            taskService.singleTask.mockResolvedValue(taskObj);
+            taskService.updateTask.mockResolvedValue();
+            authService.updateUserStats.mockResolvedValue();
+            authService.updateProjectStats.mockResolvedValue();
+            notificationsService.createRelatedNotification.mockResolvedValue();
+            taskService.getTaskList.mockResolvedValue(taskList);
+            await task.moveToTrashBin(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(taskService.singleTask).toHaveBeenCalledWith(db, 'DHfqbZ18jhH55SFWFGwO');
+            expect(taskService.updateTask).toHaveBeenCalledWith(db, 'DHfqbZ18jhH55SFWFGwO', { state: 'DELETED' });
+            expect(authService.updateUserStats).toHaveBeenCalledWith(db, 'owner', 'trashed', 1);
+            expect(authService.updateProjectStats).toHaveBeenCalledWith(db, 'MockProject', 'trashed', 1);
+            expect(notificationsService.createRelatedNotification).toHaveBeenCalledWith(
+              db,
+              'MockProject',
+              'owner',
+              'owner',
+              '',
+              'NOTIFICATIONS.NEW.TRASHED_TASK',
+              ['owner', 'MockTitle'],
+              'delete'
+            );
+            expect(taskService.getTaskList).toHaveBeenCalledWith(db, 'MockProject');
+            expect(res.json).toHaveBeenCalledWith(taskList);
+            expect(res.status).not.toHaveBeenCalled();
+            expect(res.send).not.toHaveBeenCalled();
+            expect(next).not.toHaveBeenCalled();
+        });
+        
+        it('should handle case where task does not exist and send appropriate status', async () => {
+            jest.spyOn(jwt, 'decode').mockReturnValue(user);
+            taskService.singleTask.mockResolvedValue(null);
+            await task.moveToTrashBin(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(taskService.singleTask).toHaveBeenCalledWith(db, 'DHfqbZ18jhH55SFWFGwO');
+            expect(taskService.updateTask).not.toHaveBeenCalled();
+            expect(authService.updateUserStats).not.toHaveBeenCalled();
+            expect(authService.updateProjectStats).not.toHaveBeenCalled();
+            expect(notificationsService.createRelatedNotification).not.toHaveBeenCalled();
+            expect(taskService.getTaskList).not.toHaveBeenCalled();
+            expect(res.json).not.toHaveBeenCalled();
+            expect(res.status).toHaveBeenCalledWith(500);
+            expect(res.send).toHaveBeenCalledWith({ message: 'ERROR.INTERNAL' });
+            expect(next).not.toHaveBeenCalled();
+        });
+        
+        it('should handle errors and call next', async () => {
+            jest.spyOn(jwt, 'decode').mockImplementation(() => {
+                throw new Error('Mock Error');
+            });
+            await task.moveToTrashBin(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(taskService.singleTask).not.toHaveBeenCalled();
+            expect(taskService.updateTask).not.toHaveBeenCalled();
+            expect(authService.updateUserStats).not.toHaveBeenCalled();
+            expect(authService.updateProjectStats).not.toHaveBeenCalled();
+            expect(notificationsService.createRelatedNotification).not.toHaveBeenCalled();
+            expect(taskService.getTaskList).not.toHaveBeenCalled();
+            expect(res.json).not.toHaveBeenCalled();
+            expect(res.status).not.toHaveBeenCalled();
+            expect(res.send).not.toHaveBeenCalled();
+            expect(next).toHaveBeenCalledWith(new Error('Mock Error'));
+        });
     });
     
     describe('restoreTask', () => {
