@@ -471,10 +471,83 @@ describe('project controller', () => {
         const req = {
             body: {
                 token: 'owner',
-                username: 'member',
-                permisison: 'OWNER'
+                username: 'mock',
+                permission: 'ADMIN'
             }
         } as unknown as Request;
+
+        it('should update permission', async () => {
+            jest.spyOn(jwt, 'decode').mockReturnValue(owner);
+            mockUser.permission = 'MEMBER';
+            mockUser.project = 'MockProject';
+            authService.singleUser.mockResolvedValue(mockUser);
+            projectService.singleProject.mockResolvedValue(projectObj);
+            authService.updateUserData.mockResolvedValue();
+            projectService.updateProjectHistory.mockResolvedValue();
+            projectService.getTeamMembers.mockResolvedValue(teamMembers);
+            await project.updatePermission(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(authService.singleUser).toHaveBeenCalledWith(db, 'mock');
+            expect(projectService.singleProject).toHaveBeenCalledWith(db, 'MockProject');
+            expect(authService.updateUserData).toHaveBeenCalledWith(db, 'mock', { permission: 'ADMIN' });
+            expect(projectService.updateProjectHistory).toHaveBeenCalledWith(db, 'MockProject', { timestamp: expect.any(Number), type: 'ADMIN', username: 'owner', target: 'mock' });
+            expect(projectService.getTeamMembers).toHaveBeenCalledWith(db, 'MockProject');
+            expect(res.json).toHaveBeenCalledWith(teamMembers);
+            expect(res.status).not.toHaveBeenCalled();
+            expect(res.send).not.toHaveBeenCalled();
+            expect(next).not.toHaveBeenCalled();
+        });
+        
+        it('should handle invalid user', async () => {
+            jest.spyOn(jwt, 'decode').mockReturnValue(owner);
+            authService.singleUser.mockResolvedValue(null);
+            projectService.singleProject.mockResolvedValue(projectObj);
+            await project.updatePermission(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(authService.singleUser).toHaveBeenCalledWith(db, 'mock');
+            expect(projectService.singleProject).not.toHaveBeenCalled();
+            expect(authService.updateUserData).not.toHaveBeenCalled();
+            expect(projectService.updateProjectHistory).not.toHaveBeenCalled();
+            expect(projectService.getTeamMembers).not.toHaveBeenCalled();
+            expect(res.json).not.toHaveBeenCalled();
+            expect(res.status).toHaveBeenCalledWith(500);
+            expect(res.send).toHaveBeenCalledWith({ message: 'ERROR.INTERNAL' });
+            expect(next).not.toHaveBeenCalled();
+        });
+
+        it('should handle invalid project', async () => {
+            jest.spyOn(jwt, 'decode').mockReturnValue(owner);
+            authService.singleUser.mockResolvedValue(mockUser);
+            projectService.singleProject.mockResolvedValue(null);
+            await project.updatePermission(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(authService.singleUser).toHaveBeenCalledWith(db, 'mock');
+            expect(projectService.singleProject).toHaveBeenCalledWith(db, 'MockProject');
+            expect(authService.updateUserData).not.toHaveBeenCalled();
+            expect(projectService.updateProjectHistory).not.toHaveBeenCalled();
+            expect(projectService.getTeamMembers).not.toHaveBeenCalled();
+            expect(res.json).not.toHaveBeenCalled();
+            expect(res.status).toHaveBeenCalledWith(500);
+            expect(res.send).toHaveBeenCalledWith({ message: 'ERROR.INTERNAL' });
+            expect(next).not.toHaveBeenCalled();
+        });
+        
+        it('should handle errors and call next', async () => {
+            jest.spyOn(jwt, 'decode').mockImplementation(() => {
+                throw new Error('Mock error');
+            });
+            await project.updatePermission(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(authService.singleUser).not.toHaveBeenCalled();
+            expect(projectService.singleProject).not.toHaveBeenCalled();
+            expect(authService.updateUserData).not.toHaveBeenCalled();
+            expect(projectService.updateProjectHistory).not.toHaveBeenCalled();
+            expect(projectService.getTeamMembers).not.toHaveBeenCalled();
+            expect(res.json).not.toHaveBeenCalled();
+            expect(res.status).not.toHaveBeenCalled();
+            expect(res.send).not.toHaveBeenCalled();
+            expect(next).toHaveBeenCalledWith(new Error('Mock error'));
+        });
     });
 
     describe('removeUser', () => {
