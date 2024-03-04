@@ -130,6 +130,75 @@ describe('project controller', () => {
                 project: 'MockProject'
             }
         } as unknown as Request;
+
+        it('should create a new project', async () => {
+            jest.spyOn(jwt, 'decode').mockReturnValue(user);
+            authService.singleUser.mockResolvedValueOnce(user);
+            projectService.isNewProject.mockResolvedValueOnce(true);
+            authService.updateUserData.mockResolvedValueOnce();
+            projectService.createProject.mockResolvedValueOnce();
+            await project.createProject(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(authService.singleUser).toHaveBeenCalledWith(db, 'owner');
+            expect(projectService.isNewProject).toHaveBeenCalledWith(db, 'MockProject');
+            expect(authService.updateUserData).toHaveBeenCalledWith(db, 'owner', {
+              project: 'MockProject',
+              permission: 'OWNER',
+              isLoggedIn: true
+            });
+            expect(projectService.createProject).toHaveBeenCalledWith(db, 'owner', 'MockProject');
+            expect(res.json).toHaveBeenCalledWith({ message: 'SUCCESS.CREATE_PROJECT' });
+            expect(res.status).not.toHaveBeenCalled();
+            expect(res.send).not.toHaveBeenCalled();
+            expect(next).not.toHaveBeenCalled();
+        });
+        
+        it('should handle already existing project', async () => {
+            jest.spyOn(jwt, 'decode').mockReturnValue(user);
+            authService.singleUser.mockResolvedValueOnce(user);
+            projectService.isNewProject.mockResolvedValueOnce(false);
+            await project.createProject(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(authService.singleUser).toHaveBeenCalledWith(db, 'owner');
+            expect(projectService.isNewProject).toHaveBeenCalledWith(db, 'MockProject');
+            expect(authService.updateUserData).not.toHaveBeenCalled();
+            expect(projectService.createProject).not.toHaveBeenCalled();
+            expect(res.json).not.toHaveBeenCalled();
+            expect(res.status).toHaveBeenCalledWith(409);
+            expect(res.send).toHaveBeenCalledWith({ message: 'ERROR.CREATE_PROJECT' });
+            expect(next).not.toHaveBeenCalled();
+        });
+        
+        it('should handle invalid user', async () => {
+            jest.spyOn(jwt, 'decode').mockReturnValue(user);        
+            authService.singleUser.mockResolvedValueOnce(null);
+            await project.createProject(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(authService.singleUser).toHaveBeenCalledWith(db, 'owner');
+            expect(projectService.isNewProject).not.toHaveBeenCalled();
+            expect(authService.updateUserData).not.toHaveBeenCalled();
+            expect(projectService.createProject).not.toHaveBeenCalled();
+            expect(res.json).not.toHaveBeenCalled();
+            expect(res.status).toHaveBeenCalledWith(500);
+            expect(res.send).toHaveBeenCalledWith({ message: 'ERROR.INTERNAL' });
+            expect(next).not.toHaveBeenCalled();
+        });
+        
+        it('should handle errors and call next', async () => {
+            jest.spyOn(jwt, 'decode').mockImplementation(() => {
+                throw new Error('Mock error');
+            });
+            await project.createProject(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(authService.singleUser).not.toHaveBeenCalled();
+            expect(projectService.isNewProject).not.toHaveBeenCalled();
+            expect(authService.updateUserData).not.toHaveBeenCalled();
+            expect(projectService.createProject).not.toHaveBeenCalled();
+            expect(res.json).not.toHaveBeenCalled();
+            expect(res.status).not.toHaveBeenCalled();
+            expect(res.send).not.toHaveBeenCalled();
+            expect(next).toHaveBeenCalledWith(new Error('Mock error'));
+        });
     });
 
     describe('inviteUser', () => {
