@@ -219,7 +219,7 @@ describe('task controller', () => {
                     { title: 'Task 2', description: 'Description 2' }
                 ]
             }
-        };
+        } as unknown as Request;
 
         it('should import tasks', async () => {
             jest.spyOn(jwt, 'decode').mockReturnValue(user);
@@ -280,7 +280,7 @@ describe('task controller', () => {
                 token: 'owner',
                 task: taskObj
             }
-        };
+        } as unknown as Request;
 
         it('should update task', async () => {
             jest.spyOn(jwt, 'decode').mockReturnValue(user);
@@ -348,7 +348,7 @@ describe('task controller', () => {
                 state: 'NewState',
                 order: 1
             }
-        }
+        } as unknown as Request;
 
         it('should update position', async () => {
             jest.spyOn(jwt, 'decode').mockReturnValue(user);
@@ -440,7 +440,7 @@ describe('task controller', () => {
                 token: 'owner',
                 uid: 'DHfqbZ18jhH55SFWFGwO'
             }
-        }
+        } as unknown as Request;
 
         it('should move task to trash bin', async () => {
             jest.spyOn(jwt, 'decode').mockReturnValue(user);
@@ -515,7 +515,7 @@ describe('task controller', () => {
                 token: 'owner',
                 uid: 'DHfqbZ18jhH55SFWFGwO'
             }
-        }
+        } as unknown as Request;
 
         it('should restore task', async () => {
             jest.spyOn(jwt, 'decode').mockReturnValue(user);
@@ -590,7 +590,7 @@ describe('task controller', () => {
                 token: 'owner',
                 uid: 'DHfqbZ18jhH55SFWFGwO'
             }
-        }
+        } as unknown as Request;
 
         it('should delete task', async () => {
             jest.spyOn(jwt, 'decode').mockReturnValue(user);
@@ -664,7 +664,7 @@ describe('task controller', () => {
             query: {
                 token: 'owner'
             }
-        }
+        } as unknown as Request;
 
         it('should clear trash bin', async () => {
             jest.spyOn(jwt, 'decode').mockReturnValue(user);

@@ -70,7 +70,7 @@ describe('notifications controller', () => {
             query: {
                 token: 'owner'
             }
-        }
+        } as unknown as Request;
 
         it('should get notifications', async () => {
             jest.spyOn(jwt, 'decode').mockReturnValue(user);        
@@ -105,7 +105,7 @@ describe('notifications controller', () => {
                 removed: ['1', '2'],
                 seen: ['3', '4']
             }
-        }
+        } as unknown as Request;
 
         it('should update notifications', async () => {
             jest.spyOn(jwt, 'decode').mockReturnValue(user);                    
