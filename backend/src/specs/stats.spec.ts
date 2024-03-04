@@ -51,6 +51,14 @@ const project = {
         cleared: 69
     }]
 }
+const states = {
+    NONE: 1,
+    TODO: 2,
+    PROGRESS: 3,
+    REVIEW: 4,
+    DONE: 5,
+    DELETED: 6
+}
 
 describe('auth controller', () => {
     const res = {
@@ -156,7 +164,7 @@ describe('auth controller', () => {
 
         it('should return stat leaders', async () => {
             jest.spyOn(jwt, 'decode').mockReturnValue(user);
-            statsService.statLeaders.mockResolvedValueOnce(project.stats);
+            statsService.statLeaders.mockResolvedValue(project.stats);
             await stats.statLeaders(req, res, next);
             expect(jwt.decode).toHaveBeenCalledWith('owner');
             expect(statsService.statLeaders).toHaveBeenCalledWith(db, 'MockProject');
@@ -192,6 +200,32 @@ describe('auth controller', () => {
                 token: 'owner'
             }
         } as unknown as Request;
+
+        it('should calculate average time for each state', async () => {
+            jest.spyOn(jwt, 'decode').mockReturnValue(user);
+            statsService.getTaskList.mockResolvedValue(project.stats);
+            statsService.averageTime.mockResolvedValue(states);
+            await stats.averageTime(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(statsService.getTaskList).toHaveBeenCalledWith(db, 'MockProject');
+            expect(statsService.averageTime).toHaveBeenCalledWith(project.stats);
+            expect(res.json).toHaveBeenCalledWith(states);
+            expect(next).not.toHaveBeenCalled();
+        });
+        
+        it('should handle tasks with no history entries', async () => {
+            jest.spyOn(jwt, 'decode').mockImplementation(() => {
+                throw new Error('Mock Error');
+            });
+            await stats.averageTime(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(statsService.getTaskList).not.toHaveBeenCalled();
+            expect(statsService.averageTime).not.toHaveBeenCalled();
+            expect(res.json).not.toHaveBeenCalled();
+            expect(res.status).not.toHaveBeenCalled();
+            expect(res.send).not.toHaveBeenCalled();
+            expect(next).toHaveBeenCalledWith(new Error('Mock Error'));
+        });
     });
 
     describe('wip', () => {
