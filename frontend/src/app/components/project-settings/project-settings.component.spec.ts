@@ -4,15 +4,24 @@ import { ProjectSettingsComponent } from './project-settings.component';
 import { AppModule } from 'src/app/app.module';
 import { environment } from 'src/environments/environment';
 import { Permission } from 'src/app/enums/permission.enum';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ApiService } from 'src/app/services/api/api.service';
+import { TestService } from 'src/app/services/api/test.service';
 
 describe('ProjectSettingsComponent', () => {
 	let component: ProjectSettingsComponent;
 	let fixture: ComponentFixture<ProjectSettingsComponent>;
+	let snackbarSpy: jasmine.SpyObj<MatSnackBar>;
 
 	beforeEach(() => {
+		snackbarSpy = jasmine.createSpyObj('MatSnackBar', ['open']);
 		TestBed.configureTestingModule({
 			imports: [AppModule],
-			declarations: [ProjectSettingsComponent]
+			declarations: [ProjectSettingsComponent],
+			providers: [
+				{ provide: MatSnackBar, useValue: snackbarSpy },
+				{ provide: ApiService, useClass: TestService }
+			]
 		});
 		fixture = TestBed.createComponent(ProjectSettingsComponent);
 		component = fixture.componentInstance;
@@ -148,5 +157,36 @@ describe('ProjectSettingsComponent', () => {
 			component.inviteForm.get('usernameFormControl')?.setValue('mockUsername');
 			expect(component.hasError('usernameFormControl', 'required')).toBe(false);
 		});
+	});
+
+	describe('invite user', () => {
+		it('should invite a user', async () => {
+			component.inviteForm.get('usernameFormControl')?.setValue('inviteAnother');
+			await component.ngOnInit();
+			component['_user'].user = component.members[0];
+			const amount = component.members.length;
+			await component.inviteUser();
+			expect(component.members.length).toBe(amount + 1);
+			expect(component['_username']).toBeFalsy();
+			expect(snackbarSpy.open).toHaveBeenCalledWith('SUCCESS.INVITE_DELIVERD', 'APP.OK', { duration: 7000, panelClass: 'info' });
+		});
+
+		it('should handle none existing user', async () => {
+			component.inviteForm.get('usernameFormControl')?.setValue('invalid');
+			await component.ngOnInit();
+			component['_user'].user = component.members[0];
+			const amount = component.members.length;
+			await component.inviteUser();
+			expect(component.members.length).toBe(amount);
+			expect(component['_username']).toBe('invalid');
+			expect(snackbarSpy.open).toHaveBeenCalledWith(jasmine.any(Error), 'APP.OK', { duration: 7000, panelClass: 'info' });
+		});
+	});
+
+	it('should update the permission', async () => {
+		await component.ngOnInit();
+		component['_user'].user = component.members[0];
+		await component.updatePermission('member', {value: Permission.ADMIN});
+		expect(snackbarSpy.open).toHaveBeenCalledWith('SUCCESS.PERMISSION_UPDATED', 'APP.OK', { duration: 7000, panelClass: 'info' });
 	});
 });
