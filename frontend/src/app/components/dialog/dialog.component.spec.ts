@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DialogComponent } from './dialog.component';
 import { AppModule } from 'src/app/app.module';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { environment } from 'src/environments/environment';
 
 describe('DialogComponent', () => {
 	let component: DialogComponent;
@@ -22,7 +23,28 @@ describe('DialogComponent', () => {
 		fixture.detectChanges();
 	});
 
-	it('should create', () => {
-		expect(component).toBeTruthy();
+	describe('setup', () => {
+		it('should load test environment', () => {
+			expect(environment.environement).toBe('test');
+		});
+	
+		it('should create', () => {
+			expect(component).toBeTruthy();
+		});
 	});
+
+	it ('should initialize dialog data', async () => {
+		component['_data'] = {
+			headline: 'MockHeadline',
+			description: 'MockDescription',
+			falseButton: 'MockFalse',
+			trueButton: 'MockTrue'
+		};
+		await component.ngOnInit();
+		expect(component.headline).toBe('MockHeadline');
+		expect(component.description).toBe('MockDescription');
+		expect(component.falseButton).toBe('MockFalse');
+		expect(component.trueButton).toBe('MockTrue');
+	});
+	
 });
