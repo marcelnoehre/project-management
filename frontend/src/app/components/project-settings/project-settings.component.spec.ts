@@ -90,4 +90,63 @@ describe('ProjectSettingsComponent', () => {
 			expect(component.usernameValid()).toBeFalsy();
 		});
 	});
+
+	describe('checks', () => {
+		it('should get the language', () => {
+			expect(component.getLanguage('en')).toBe('English');
+		});
+
+		it('should not get the language', () => {
+			expect(component.getLanguage('xyz')).toBe('xyz');
+		});
+
+		it('should be editable', () => {
+			component['_user'].permission = Permission.ADMIN;
+			expect(component.isEditable(Permission.ADMIN)).toBe(false);
+		});
+
+		it('should be not editable', () => {
+			component['_user'].permission = Permission.ADMIN;
+			expect(component.isEditable(Permission.MEMBER)).toBe(true);
+		});
+
+		it('should be leavable', () => {
+			component['_user'].permission = Permission.ADMIN;
+			expect(component.isLeavable()).toBe(false);
+		});
+
+		it('should be not leavable', () => {
+			component['_user'].permission = Permission.OWNER;
+			expect(component.isLeavable()).toBe(true);
+		});
+
+		it('should show invite', () => {
+			component['_user'].permission = Permission.ADMIN;
+			expect(component.showInvite()).toBe(true);
+		});
+
+		it('should not show invite', () => {
+			component['_user'].permission = Permission.MEMBER;
+			expect(component.showInvite()).toBe(false);
+		});
+
+		it('should disabled remove', () => {
+			component['_user'].permission = Permission.OWNER;
+			expect(component.disableRemove('ADMIN')).toBe(false);
+		});
+
+		it('should not disable remove', () => {
+			component['_user'].permission = Permission.ADMIN;
+			expect(component.disableRemove('ADMIN')).toBe(true);
+		});
+
+		it('should have an error', () => {
+			expect(component.hasError('usernameFormControl', 'required')).toBe(true);
+		});
+
+		it('should not have an error', () => {
+			component.inviteForm.get('usernameFormControl')?.setValue('mockUsername');
+			expect(component.hasError('usernameFormControl', 'required')).toBe(false);
+		});
+	});
 });
