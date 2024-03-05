@@ -4,7 +4,6 @@ import { CreateProjectComponent } from './create-project.component';
 import { AppModule } from 'src/app/app.module';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { environment } from 'src/environments/environment';
-import { StorageService } from 'src/app/services/storage.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 describe('CreateProjectComponent', () => {
@@ -25,7 +24,6 @@ describe('CreateProjectComponent', () => {
 		});
 		fixture = TestBed.createComponent(CreateProjectComponent);
 		component = fixture.componentInstance;
-		TestBed.inject(StorageService);
 		fixture.detectChanges();
 	});
 
