@@ -45,7 +45,7 @@ export class ToolbarComponent {
 	}
 
 	public isLoggedIn(): boolean {
-		this.notificationsEnabled = this._user.user?.notificationsEnabled;
+		this.notificationsEnabled = this._user.notificationsEnabled;
 		return this._user.isLoggedIn && this._user.project !== '';
 	}
 }

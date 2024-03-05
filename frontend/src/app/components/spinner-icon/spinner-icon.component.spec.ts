@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SpinnerIconComponent } from './spinner-icon.component';
 import { AppModule } from 'src/app/app.module';
+import { environment } from 'src/environments/environment';
 
 describe('SpinnerIconComponent', () => {
 	let component: SpinnerIconComponent;
@@ -17,7 +18,13 @@ describe('SpinnerIconComponent', () => {
 		fixture.detectChanges();
 	});
 
-	it('should create', () => {
-		expect(component).toBeTruthy();
+	describe('setup', () => {
+		it('should load test environment', () => {
+			expect(environment.environement).toBe('test');
+		});
+
+		it('should create', () => {
+			expect(component).toBeTruthy();
+		});
 	});
 });
