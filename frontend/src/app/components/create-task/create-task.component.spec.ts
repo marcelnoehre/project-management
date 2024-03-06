@@ -6,6 +6,8 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { environment } from 'src/environments/environment';
 import { Permission } from 'src/app/enums/permission.enum';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ApiService } from 'src/app/services/api/api.service';
+import { TestService } from 'src/app/services/api/test.service';
 
 describe('CreateTaskComponent', () => {
 	let component: CreateTaskComponent;
@@ -19,6 +21,7 @@ describe('CreateTaskComponent', () => {
 			declarations: [CreateTaskComponent],
 			providers: [
 				{ provide: TranslateService, useClass: TranslateService },
+				{ provide: ApiService, useClass: TestService },
 				{ provide: MatSnackBar, useValue: snackbarSpy }
 			]
 		});
