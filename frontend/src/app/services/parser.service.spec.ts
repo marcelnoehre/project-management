@@ -37,13 +37,15 @@ describe('ParserService', () => {
 				description: 'Description 1', 
 				author: 'Author 1', 
 				assigned: 'Assigned 1', 
-				state: TaskState.NONE
+				state: TaskState.NONE,
+				order: 1
 			}, {
 				title: 'Task 2', 
 				description: 'Description 2', 
 				author: 'Author 2', 
 				assigned: 'Assigned 2', 
-				state: TaskState.TODO
+				state: TaskState.TODO,
+				order: 1
 			}
 		];		
 		expect(exportObject).toEqual(expectedObject);
