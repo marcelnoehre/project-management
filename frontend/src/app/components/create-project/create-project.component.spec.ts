@@ -67,6 +67,4 @@ describe('CreateProjectComponent', () => {
 			expect(component.projectValid()).toBeTruthy();
 		});
 	});
-
-	// TODO: test create project send snackbar but have to mock session user
 });
