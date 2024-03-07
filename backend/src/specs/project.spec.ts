@@ -348,6 +348,26 @@ describe('project controller', () => {
             expect(res.send).not.toHaveBeenCalled();
             expect(next).toHaveBeenCalledWith(new Error('Mock error'));
         });
+
+        it('should handle an internal error', async () => {
+            jest.spyOn(jwt, 'decode').mockReturnValue(owner);
+            authService.singleUser.mockResolvedValue(mockUser);
+            projectService.singleProject.mockResolvedValue(null);
+            authService.updateUserData.mockResolvedValue();
+            projectService.updateProjectHistory.mockResolvedValue();
+            notificationsService.createAdminNotification.mockResolvedValue();
+            await project.inviteUser(req, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(authService.singleUser).toHaveBeenCalledWith(db, 'mock');
+            expect(projectService.singleProject).toHaveBeenCalledWith(db, 'MockProject');
+            expect(authService.updateUserData).not.toHaveBeenCalled();
+            expect(projectService.updateProjectHistory).not.toHaveBeenCalled();
+            expect(notificationsService.createAdminNotification).not.toHaveBeenCalled();
+            expect(res.json).not.toHaveBeenCalled();
+            expect(res.status).toHaveBeenCalledWith(500);
+            expect(res.send).toHaveBeenCalledWith({message: 'ERROR.INTERNAL'});
+            expect(next).not.toHaveBeenCalled();
+        });
     });
 
     describe('handleInvite', () => {

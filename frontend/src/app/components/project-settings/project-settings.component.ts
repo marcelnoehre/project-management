@@ -159,10 +159,8 @@ export class ProjectSettingsComponent implements OnInit {
 	}
 
 	public isEditable(permission: Permission): boolean {
-		if (permission === Permission.ADMIN) {
+		if (permission === Permission.ADMIN || permission === Permission.MEMBER) {
 			return this._user.hasPermission(Permission.OWNER);
-		} else if (permission === Permission.MEMBER) {
-			return this._user.hasPermission(Permission.ADMIN);
 		} else {
 			return false;
 		}

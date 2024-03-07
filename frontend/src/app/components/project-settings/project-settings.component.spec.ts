@@ -110,13 +110,14 @@ describe('ProjectSettingsComponent', () => {
 		});
 
 		it('should be editable', () => {
-			component['_user'].permission = Permission.ADMIN;
-			expect(component.isEditable(Permission.ADMIN)).toBe(false);
+			component['_user'].permission = Permission.OWNER;
+			expect(component.isEditable(Permission.ADMIN)).toBe(true);
+			expect(component.isEditable(Permission.MEMBER)).toBe(true);
 		});
 
 		it('should be not editable', () => {
 			component['_user'].permission = Permission.ADMIN;
-			expect(component.isEditable(Permission.MEMBER)).toBe(true);
+			expect(component.isEditable(Permission.MEMBER)).toBe(false);
 		});
 
 		it('should be leavable', () => {

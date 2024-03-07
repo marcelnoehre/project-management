@@ -1,6 +1,6 @@
 export const environment = {
 	environement: 'default',
-	selectedApi: 'mock', // db || mock
+	selectedApi: 'db', // db || mock
 	apiBasePath: 'http://localhost:3000/',
 	defaultLanguage: 'en'
 };

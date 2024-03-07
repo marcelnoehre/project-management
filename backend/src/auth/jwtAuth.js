@@ -19,5 +19,6 @@ function jwtAuth(token, res, next) {
 
 module.exports = {
     query,
-    body
+    body,
+    jwtAuth
 };
