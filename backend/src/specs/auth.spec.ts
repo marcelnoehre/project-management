@@ -237,6 +237,27 @@ describe('auth controller', () => {
             }
         } as Request;
 
+        it('should update username successfully', async () => {    
+            jest.spyOn(jwt, 'decode').mockReturnValue(user);
+            authService.singleUser.mockResolvedValue(user);
+            authService.updateAttribute.mockResolvedValue(true);
+            const usernameReq = {
+                body: {
+                    token: 'owner',
+                    attribute: 'username',
+                    value: 'mock'
+                }
+            } as Request;
+            await auth.updateUser(usernameReq, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(authService.singleUser).toHaveBeenCalledWith(db, 'owner');
+            expect(authService.updateAttribute).toHaveBeenCalledWith(db, 'owner', 'username', 'mock');
+            expect(res.json).toHaveBeenCalledWith({ message: 'SUCCESS.UPDATE_USERNAME' });
+            expect(res.status).not.toHaveBeenCalled();
+            expect(res.send).not.toHaveBeenCalled();
+            expect(next).not.toHaveBeenCalled();
+        });
+
         it('should update user attribute successfully', async () => {    
             jest.spyOn(jwt, 'decode').mockReturnValue(user);
             authService.singleUser.mockResolvedValue(user);
@@ -302,7 +323,7 @@ describe('auth controller', () => {
             }
         } as Request;
 
-        it('should toggle notifications successfully', async () => {    
+        it('should toggle notifications (on) successfully', async () => {    
             jest.spyOn(jwt, 'decode').mockReturnValue(user);
             authService.singleUser.mockResolvedValue(user);
             authService.updateUserAttribute.mockResolvedValue(true);
@@ -311,6 +332,26 @@ describe('auth controller', () => {
             expect(authService.singleUser).toHaveBeenCalledWith(db, 'owner');
             expect(authService.updateUserAttribute).toHaveBeenCalledWith(db, 'owner', 'notificationsEnabled', true);
             expect(res.json).toHaveBeenCalledWith({ message: 'SUCCESS.NOTIFICATIONS_ON' });
+            expect(res.status).not.toHaveBeenCalled();
+            expect(res.send).not.toHaveBeenCalled();
+            expect(next).not.toHaveBeenCalled();
+        });
+
+        it('should toggle notifications (off) successfully', async () => {    
+            jest.spyOn(jwt, 'decode').mockReturnValue(user);
+            authService.singleUser.mockResolvedValue(user);
+            authService.updateUserAttribute.mockResolvedValue(true);
+            const reqOff = {
+                body: {
+                    token: 'owner',
+                    notificationsEnabled: false
+                }
+            } as Request;
+            await auth.toggleNotifications(reqOff, res, next);
+            expect(jwt.decode).toHaveBeenCalledWith('owner');
+            expect(authService.singleUser).toHaveBeenCalledWith(db, 'owner');
+            expect(authService.updateUserAttribute).toHaveBeenCalledWith(db, 'owner', 'notificationsEnabled', false);
+            expect(res.json).toHaveBeenCalledWith({ message: 'SUCCESS.NOTIFICATIONS_OFF' });
             expect(res.status).not.toHaveBeenCalled();
             expect(res.send).not.toHaveBeenCalled();
             expect(next).not.toHaveBeenCalled();
