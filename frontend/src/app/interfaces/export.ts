@@ -5,5 +5,6 @@ export interface Export {
 	description: string,
 	author: string,
 	assigned: string,
-	state: TaskState
+	state: TaskState,
+	order: number
 }

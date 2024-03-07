@@ -21,14 +21,18 @@
               <tr>
                 <th>title</th>
                 <th>description</th>
-                <th>state</th>
                 <th>author</th>
+                <th>assigned</th>
+                <th>state</th>
+                <th>order</th>
               </tr>
               <tr *ngFor="let task of taskList">
                 <td>{{ task.title }}</td>
                 <td>{{ task.description }}</td>
-                <td>{{ task.state }}</td>
                 <td>{{ task.author }}</td>
+                <td>{{ task.assigned }}</td>
+                <td>{{ task.state }}</td>
+                <td>{{ task.order }}</td>
               </tr>
             </table>
             <div class="import-submission p-2">
