@@ -37,6 +37,12 @@
         }
     },
 
+    "taskView":{
+        "taskViewTitel": "This is a changed titel",
+        "taskViewDescription": "This is a changed description"
+    },
+
+
     "beEnabled":"be.enabled",
     "testuser": "testuser",
 

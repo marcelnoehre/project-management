@@ -50,7 +50,6 @@ Cypress.Commands.add('loginUserNoneCreate', () => {
 
     // create project with button
     cy.get(createProjectButton).should(beEnabled);
-    cy.get(createProjectButton).click({ force: true }).wait(waitTime);
-    
+    cy.get(createProjectButton).click({ force: true }).wait(waitTime); 
 }); 
 

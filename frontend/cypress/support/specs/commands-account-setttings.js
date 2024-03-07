@@ -81,6 +81,7 @@ Cypress.Commands.add('changeColour', () => {
     cy.get(changeColour).click().wait(waitTime);
 });
 
+
 // Invalid Inputs
 Cypress.Commands.add('invalidInputs', () => {
     cy.visit(loginRoute);
@@ -98,6 +99,7 @@ Cypress.Commands.add('invalidInputs', () => {
     cy.get(changePassword).clear().wait(waitTime);
     cy.get(changeInitials).clear().wait(waitTime);
 });
+
 
 // Change the Username
 Cypress.Commands.add('changeUsername', () => {
@@ -174,6 +176,7 @@ Cypress.Commands.add('changePassword', () => {
 
 });
 
+
 // Change the initials
 Cypress.Commands.add('changeInitials', () => {
     cy.visit(loginRoute);
@@ -191,6 +194,7 @@ Cypress.Commands.add('changeInitials', () => {
     cy.get(changeInitialsBtn).click().wait(waitTime);
     cy.get(dialogTrue).click().wait(waitTime);
 });
+
 
 // Delete Account
 Cypress.Commands.add('deleteAccount', () => {

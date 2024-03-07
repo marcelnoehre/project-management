@@ -8,3 +8,4 @@ import './specs/commands-project-settings';
 import './specs/commands-notifications-feed';
 import './specs/commands-stats';
 import './specs/commands-account-setttings';
+import './specs/commands-board';

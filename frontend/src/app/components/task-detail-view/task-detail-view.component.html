@@ -4,7 +4,7 @@
     <form>
       <mat-form-field appearance="outline" class="task-detail-view-form-field" MatInput>
         <mat-label> {{ "TASK.TITLE" | translate }}</mat-label>
-        <input id="title-input" [(ngModel)]="task.title" name="title" placeholder="{{ 'TASK.TITLE' | translate }}" matInput />
+        <input id="title-input" [(ngModel)]="task.title" name="title" placeholder="{{ 'TASK.TITLE' | translate }}" matInput data-cy="taskViewTitel" />
         <mat-icon matPrefix> person </mat-icon>
       </mat-form-field>
       <mat-form-field appearance="outline" class="task-detail-view-form-field" MatInput>
@@ -17,11 +17,12 @@
           type="text"
           rows="10"
           matInput
+          data-cy="taskViewDescription"
         ></textarea>
       </mat-form-field>
       <mat-form-field appearance="outline" class="task-detail-view-form-field">
         <mat-label>{{ "TASK.ASSIGN" | translate }}</mat-label>
-        <mat-select id="assigned-select" name="assigned" placeholder="{{ 'TASK.ASSIGN' | translate }}" [(ngModel)]="task.assigned">
+        <mat-select id="assigned-select" name="assigned" placeholder="{{ 'TASK.ASSIGN' | translate }}" [(ngModel)]="task.assigned" data-cy="taskViewAssignedUser">
           <mat-option *ngFor="let member of members" [value]="member.username">
             {{ member.username }}
           </mat-option>
@@ -31,11 +32,11 @@
     </form>
   </mat-dialog-content>
   <mat-dialog-actions class="actions">
-    <button (click)="closeDialog(false)" [mat-dialog-close]="false" color="dark" tabindex="0" mat-raised-button>
+    <button (click)="closeDialog(false)" [mat-dialog-close]="false" color="dark" tabindex="0" mat-raised-button data-cy="cancelTaskBtn">
       {{ "APP.CANCEL" | translate }}
       <mat-icon>clear</mat-icon>
     </button>
-    <button [disabled]="disableSubmit()" (click)="updateTaskDetails()" color="dark" tabindex="0" mat-raised-button>
+    <button [disabled]="disableSubmit()" (click)="updateTaskDetails()" color="dark" tabindex="0" mat-raised-button data-cy="confirmTaskBtn">
       <app-spinner-icon class="material-icons" icon="done_all" [spinning]="loading"></app-spinner-icon>
       <ng-container *ngIf="loading">&nbsp;</ng-container>
       {{ "APP.CONFIRM" | translate }}
