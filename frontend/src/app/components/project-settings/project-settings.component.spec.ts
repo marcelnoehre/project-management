@@ -190,4 +190,38 @@ describe('ProjectSettingsComponent', () => {
 		await component.updatePermission('member', {value: Permission.ADMIN});
 		expect(snackbarSpy.open).toHaveBeenCalledWith('SUCCESS.PERMISSION_UPDATED', 'APP.OK', { duration: 7000, panelClass: 'info' });
 	});
+
+	describe('remove user', () => {
+		it('should remove the user', async () => {
+			component['_user'].token = 'owner';
+			await component.ngOnInit();
+			const amount = component.members.length;
+			await component.processRemove('mock', 0, true);
+			expect(component.members.length).toBe(amount - 1);
+			expect(snackbarSpy.open).toHaveBeenCalledWith('SUCCESS.REMOVE_MEMBER', 'APP.OK', { duration: 7000, panelClass: 'info' });
+		});
+
+		it('should not remove the user', async () => {
+			component['_user'].token = 'owner';
+			await component.ngOnInit();
+			const amount = component.members.length;
+			await component.processRemove('mock', 0, false);
+			expect(component.members.length).toBe(amount);
+			expect(snackbarSpy.open).not.toHaveBeenCalled();
+		});
+	});
+
+	describe('leave project', () => {
+		it('should leave the project', async () => {
+			component['_user'].token = 'owner';
+			await component.processLeave(true);
+			expect(snackbarSpy.open).toHaveBeenCalledWith('SUCCESS.LEAVE_PROJECT', 'APP.OK', { duration: 7000, panelClass: 'info' });
+		});
+
+		it('should not leave the project', async () => {
+			component['_user'].token = 'owner';
+			await component.processLeave(false);
+			expect(snackbarSpy.open).not.toHaveBeenCalled();
+		});
+	});
 });
