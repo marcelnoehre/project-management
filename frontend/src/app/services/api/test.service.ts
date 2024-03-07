@@ -631,9 +631,9 @@ export class TestService {
 	private invite(username: string): Observable<User> {
 		if (username === 'inviteAnother') {
 			return of({
-				token: 'invitedAnother',
-				username: 'invitedAnother',
-				fullName: 'Mock InvitedAnother',
+				token: 'inviteAnother',
+				username: 'inviteAnother',
+				fullName: 'Mock inviteAnother',
 				initials: 'MI',
 				color: '#FFFFFF',
 				language: 'en',
@@ -650,8 +650,8 @@ export class TestService {
 					trashed: 0,
 					restored: 0,
 					deleted: 0,
-					cleared: 0,
-				},
+					cleared: 0
+				}
 			});
 		} else {
 			throw Error('ERROR.NO_ACCOUNT');

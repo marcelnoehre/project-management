@@ -130,12 +130,12 @@ export class StatsComponent implements OnInit {
 			data: [
 				{
 					data: [
-						this.data.taskAmount.NONE,
-						this.data.taskAmount.TODO,
-						this.data.taskAmount.PROGRESS,
-						this.data.taskAmount.REVIEW,
-						this.data.taskAmount.DONE,
-						this.data.taskAmount.DELETED
+						this.data.taskAmount?.NONE,
+						this.data.taskAmount?.TODO,
+						this.data.taskAmount?.PROGRESS,
+						this.data.taskAmount?.REVIEW,
+						this.data.taskAmount?.DONE,
+						this.data.taskAmount?.DELETED
 					],
 					label: 'Task Amount',
 					backgroundColor: [
@@ -147,7 +147,6 @@ export class StatsComponent implements OnInit {
 						TaskStateColor.DELETED
 					]
 				}
-      
 			],
 			labels: [
 				TaskState.NONE,
@@ -165,10 +164,10 @@ export class StatsComponent implements OnInit {
 			data: [
 				{
 					data: [
-						this.data.averageTime.NONE * this._unitFactor[this._activeUnit],
-						this.data.averageTime.TODO * this._unitFactor[this._activeUnit],
-						this.data.averageTime.PROGRESS * this._unitFactor[this._activeUnit],
-						this.data.averageTime.REVIEW * this._unitFactor[this._activeUnit]
+						this.data?.averageTime?.NONE * this._unitFactor[this._activeUnit],
+						this.data?.averageTime?.TODO * this._unitFactor[this._activeUnit],
+						this.data?.averageTime?.PROGRESS * this._unitFactor[this._activeUnit],
+						this.data?.averageTime?.REVIEW * this._unitFactor[this._activeUnit]
 					],
 					label: 'Task Amount',
 					backgroundColor: [

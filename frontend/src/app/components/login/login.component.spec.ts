@@ -105,18 +105,18 @@ describe('LoginComponent', () => {
 		});
 		
 		it('should check if username is invalid', () => {
-		component.loginForm.controls['usernameFormControl'].setValue('');
-		expect(component.userValid()).toBeFalsy();
+			component.loginForm.controls['usernameFormControl'].setValue('');
+			expect(component.userValid()).toBeFalsy();
 		});
 	
 		it('should check if password is valid', () => {
-		component.loginForm.controls['passwordFormControl'].setValue('validPassword');
-		expect(component.passwordValid()).toBeTruthy();
+			component.loginForm.controls['passwordFormControl'].setValue('validPassword');
+			expect(component.passwordValid()).toBeTruthy();
 		});
 	
 		it('should check if password is invalid', () => {
-		component.loginForm.controls['passwordFormControl'].setValue('');
-		expect(component.passwordValid()).toBeFalsy();
+			component.loginForm.controls['passwordFormControl'].setValue('');
+			expect(component.passwordValid()).toBeFalsy();
 		});
 	});
 
@@ -161,5 +161,4 @@ describe('LoginComponent', () => {
 		tick();
 		expect(router.url).toBe('/registration');
 	}));
-
 });
