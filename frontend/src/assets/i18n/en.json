@@ -14,12 +14,12 @@
     "NAV": {
         "DASHBOARD": "Dashboard",
         "BOARD": "Board",
-        "CREATE_TASK": "Create task",
-        "IMPORT_TASKS": "Import tasks",
-        "TRASH_BIN": "Trash bin",
+        "CREATE_TASK": "Create Task",
+        "IMPORT_TASKS": "Import Tasks",
+        "TRASH_BIN": "Trash Bin",
         "STATS": "Statistics",
-        "PROJECT_SETTINGS": "Project settings",
-        "ACCOUNT_SETTINGS": "Account settings",
+        "PROJECT_SETTINGS": "Project Settings",
+        "ACCOUNT_SETTINGS": "Account Settings",
         "NOTIFICATIONS": "Notifications",
         "LOGOUT": "Logout"
     },
@@ -130,6 +130,9 @@
         "ASSIGN": "Assign",
         "STATE": "State",
         "CREATE": "Create",
+        "AUTHOR": "Author",
+        "ASSIGNED": "Assigned",
+        "PRIORITIZATION": "Prioritization",
         "STATE_ENUM": {
             "NONE": "No status",
             "TODO": "ToDo",
@@ -137,7 +140,11 @@
             "REVIEW": "In Review",
             "DONE": "Done"
         },
-        "DETAIL_VIEW": "Detail View"
+        "DETAIL_VIEW": "Detail View",
+        "IMPORT": {
+            "SUCCESS": "Success",
+            "Failed": "Failed"
+        }
     },
     "NOTIFICATIONS": {
         "FEED": "Notifications",
@@ -161,6 +168,16 @@
         }
     },
     "STATS": {
+        "HEADER": {
+            "PERSONAL_STATS": "Personal Stats",
+            "STAT_LEADERS": "Stat Leaders",
+            "STATS": "Stats",
+            "TASK_AMOUNT": "Task Amount",
+            "AVERAGE_TIME": "Average Time",
+            "WIP": "Work In Progress",
+            "TASK_PROGRESS": "Task Progress",
+            "PROJECT_ROADMAP": "Project Roadmap"
+        },
         "LOADING": {
             "INIT": "Initializing the stats retrieval...",
             "OPTIMIZE_ORDER": "Optimizing the task storage...",

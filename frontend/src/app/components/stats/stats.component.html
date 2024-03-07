@@ -2,7 +2,7 @@
   <div class="stats-row">
     <mat-card class="stats-module">
       <mat-card-header>
-        <h2 class="pb-4">Personal Stats</h2>
+        <h2 class="pb-4">{{ 'STATS.HEADER.PERSONAL_STATS' | translate }}</h2>
         <button mat-mini-fab color="basic" class="regenerate" (click)="regenerateStat('personalStats')" tabindex="0">
           <app-spinner-icon class="material-icons" icon="refresh" [spinning]="isLoading('personalStats')"></app-spinner-icon>
         </button>
@@ -20,7 +20,7 @@
   <div class="stats-row">
     <mat-card class="stats-module">
       <mat-card-header>
-        <h2 class="pb-4">Stat Leaders</h2>
+        <h2 class="pb-4">{{ 'STATS.HEADER.STAT_LEADERS' | translate }}</h2>
         <button mat-mini-fab color="basic" class="regenerate" (click)="regenerateStat('statLeaders')" tabindex="0">
           <app-spinner-icon class="material-icons" icon="refresh" [spinning]="isLoading('statLeaders')"></app-spinner-icon>
         </button>
@@ -43,7 +43,7 @@
   <div class="stats-row">
     <mat-card class="stats-module">
       <mat-card-header>
-        <h2 class="pb-4">Stats</h2>
+        <h2 class="pb-4">{{ 'STATS.HEADER.STATS' | translate }}</h2>
         <button mat-mini-fab color="basic" class="regenerate" (click)="regenerateStat('stats')" tabindex="0">
           <app-spinner-icon class="material-icons" icon="refresh" [spinning]="isLoading('stats')"></app-spinner-icon>
         </button>
@@ -66,7 +66,7 @@
   <div class="stats-row">
     <mat-card class="stats-module">
       <mat-card-header>
-        <h2 class="pb-4">Task amount</h2>
+        <h2 class="pb-4">{{ 'STATS.HEADER.TASK_AMOUNT' | translate }}</h2>
         <button mat-mini-fab color="basic" class="regenerate" (click)="regenerateStat('taskAmount')" tabindex="0">
           <app-spinner-icon class="material-icons" icon="refresh" [spinning]="isLoading('taskAmount')"></app-spinner-icon>
         </button>
@@ -89,7 +89,7 @@
   <div class="stats-row">
     <mat-card class="stats-module">
       <mat-card-header>
-        <h2 class="pb-4">Average Time</h2>
+        <h2 class="pb-4">{{ 'STATS.HEADER.AVERAGE_TIME' | translate }}</h2>
         <button mat-mini-fab color="basic" class="regenerate" (click)="regenerateStat('averageTime')" tabindex="0">
           <app-spinner-icon class="material-icons" icon="refresh" [spinning]="isLoading('averageTime')"></app-spinner-icon>
         </button>
@@ -125,7 +125,7 @@
   <div class="stats-row">
     <mat-card class="stats-module">
       <mat-card-header>
-        <h2 class="pb-4">Work in Progress</h2>
+        <h2 class="pb-4">{{ 'STATS.HEADER.WIP' | translate }}</h2>
         <button mat-mini-fab color="basic" class="regenerate" (click)="regenerateStat('wip')" tabindex="0">
           <app-spinner-icon class="material-icons" icon="refresh" [spinning]="isLoading('wip')"></app-spinner-icon>
         </button>
@@ -138,7 +138,7 @@
   <div class="stats-row">
     <mat-card class="stats-module">
       <mat-card-header>
-        <h2 class="pb-4">Task Progress</h2>
+        <h2 class="pb-4">{{ 'STATS.HEADER.TASK_PROGRESS' | translate }}</h2>
         <button mat-mini-fab color="basic" class="regenerate" (click)="regenerateStat('taskProgress')" tabindex="0">
           <app-spinner-icon class="material-icons" icon="refresh" [spinning]="isLoading('taskProgress')"></app-spinner-icon>
         </button>
@@ -161,7 +161,7 @@
   <div class="stats-row">
     <mat-card class="stats-module">
       <mat-card-header>
-        <h2 class="pb-4">Project Roadmap</h2>
+        <h2 class="pb-4">{{ 'STATS.HEADER.PROJECT_ROADMAP' | translate }}</h2>
         <button mat-mini-fab color="basic" class="regenerate" (click)="regenerateStat('projectRoadmap')" tabindex="0">
           <app-spinner-icon class="material-icons" icon="refresh" [spinning]="isLoading('projectRoadmap')"></app-spinner-icon>
         </button>
