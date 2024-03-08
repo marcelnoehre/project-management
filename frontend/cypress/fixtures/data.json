@@ -39,7 +39,10 @@
 
     "taskView":{
         "taskViewTitel": "This is a changed titel",
-        "taskViewDescription": "This is a changed description"
+        "taskViewDescription": "This is a changed description",
+        "columnFirst": ".column:first .task:first",
+        "taskFirst": "firstTask",
+        "mat-option": "mat-option"
     },
 
 

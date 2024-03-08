@@ -1,15 +1,15 @@
-// Change Titel in Task in Detail View
-describe('change assigned User in taskview', () => {
+// Cancel change on task in detail view
+describe('Testing detail view of task and cancel dialog', () => {
   sessionStorage.clear();
-    it('Should open task view and confirm assined user change', () => {
+    it('Should open and close detail view', () => {
         cy.viewport(1600, 900);
-        cy.taskAssignedChange(); 
+        cy.clickTaskCancel(); 
     });
 });
 
 
-// Change Titel in Task in Detail View
-describe('change titel in taskview', () => {
+// change titel in task in detail view
+describe('change title in detail view', () => {
   sessionStorage.clear();
     it('Should open task view and confirm title change', () => {
         cy.viewport(1600, 900);
@@ -18,27 +18,27 @@ describe('change titel in taskview', () => {
 });
 
 
-// Cancel Change on Task in Detail View
-describe('change description in Taskview', () => {
+// change description on task in detail view
+describe('change description in detail view', () => {
   sessionStorage.clear();
-    it('Should open taksview and change description', () => {
+    it('Should open detail view and change description', () => {
         cy.viewport(1600, 900);
         cy.taskDescriptionChange(); 
     });
 });
 
 
-// Cancel Change on Task in Detail View
-describe('Testing detial view of task and cancel Taskview', () => {
+// change assigned user of a task in detail view
+describe('change assigned User in detail view', () => {
   sessionStorage.clear();
-    it('Should open and close taskview', () => {
+    it('Should open detail view and confirm assined user change', () => {
         cy.viewport(1600, 900);
-        cy.clickTaskCancel(); 
+        cy.taskAssignedChange(); 
     });
 });
 
 
-// Invalid Inputs
+// Downloads
 describe('Testing diffrent download buttons', () => {
   sessionStorage.clear();
     it('Should start the diffrent downloads', () => {
