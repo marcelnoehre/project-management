@@ -1,7 +1,7 @@
 {
     "waitTime": 750,
     "enter": "{enter}",
-    "mock": "mock",
+    "mocktext": "mock",
     "invalid": "invalid",
     "tooShort": "x",
     "user": {
@@ -19,5 +19,40 @@
         },
         "fullName": "full name",
         "language": "en"
-    }
+    },
+
+    "project": {
+        "description": {
+            "testCreate": "testCreateButton",
+            "testCancel": "testCancelButton"
+        }
+
+    },
+
+    "task": {
+        "taskTitel": "Test task",
+        "taskDescription": "This is an example description",
+        "taskstate": {
+            "toDo": "To Do"
+        }
+    },
+
+    "taskView":{
+        "taskViewTitel": "This is a changed titel",
+        "taskViewDescription": "This is a changed description",
+        "columnFirst": ".column:first .task:first",
+        "taskFirst": "firstTask",
+        "mat-option": "mat-option"
+    },
+
+
+    "beEnabled":"be.enabled",
+    "testuser": "testuser",
+
+    "mock": {
+    "mocktext": "this is an example",
+    "mockpassword": "Abcdef@1",
+    "mockinitials": "XY",
+    "mocklanguage": "DEUTSCH"
+        }
 }

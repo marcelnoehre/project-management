@@ -1,4 +1,4 @@
-<button mat-button class="dropdown-menu-button" [matMenuTriggerFor]="menu" tabindex="0">
+<button mat-button class="dropdown-menu-button" [matMenuTriggerFor]="menu" tabindex="0" data-cy="user-menu">
   <div class="user" style="--color: {{ color }}">
     <ng-container *ngIf="!isSmallScreen()">{{ fullName }}</ng-container>
     <div class="user-icon">
@@ -10,14 +10,14 @@
 </button>
 
 <mat-menu #menu="matMenu" [overlapTrigger]="false" xPosition="before">
-  <button *ngIf="showNotifications()" (click)="showNotificationsFeed()" mat-menu-item tabindex="0">
+  <button *ngIf="showNotifications()" (click)="showNotificationsFeed()" mat-menu-item tabindex="0" data-cy="show-notifications-dialog" >
     <mat-icon>inbox</mat-icon>
     <span class="notifications-counter">
       <p>{{ unseenNotifications() }}</p>
     </span>
     {{ "NAV.NOTIFICATIONS" | translate }}
   </button>
-  <button (click)="logout()" mat-menu-item tabindex="0">
+  <button (click)="logout()" mat-menu-item tabindex="0" data-cy="toolbar-logout">
     <mat-icon>logout</mat-icon>
     {{ "NAV.LOGOUT" | translate }}
   </button>

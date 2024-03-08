@@ -11,6 +11,7 @@
         [cdkDropListConnectedTo]="stateList"
         [cdkDropListData]="state.tasks"
         (cdkDropListDropped)="drop($event)"
+        data-cy="clickTask"
       >
         <div cdkDrag class="task p-2 my-2" *ngFor="let task of state.tasks" (click)="showDetails(task)" tabindex="0" (keyup.enter)="showDetails(task)">
           <div [id]="task.uid">
@@ -21,19 +22,19 @@
     </div>
   </div>
   <div class="tools">
-    <div class="trash-bin p-2" cdkDropList id="DELETED" [cdkDropListConnectedTo]="stateList" cdkDropListData="[]" (cdkDropListDropped)="drop($event)">
+    <div class="trash-bin p-2" cdkDropList id="DELETED" [cdkDropListConnectedTo]="stateList" cdkDropListData="[]" (cdkDropListDropped)="drop($event)" data-cy="tash_bin_board">
       <app-spinner-icon class="material-icons" icon="delete" [spinning]="loadingDelete"></app-spinner-icon>
     </div>
     <div class="actions">
-      <button mat-raised-button (click)="json()" tabindex="0">
+      <button mat-raised-button (click)="json()" tabindex="0" data-cy="json_button">
         JSON
         <mat-icon>download</mat-icon>
       </button>
-      <button mat-raised-button (click)="xml()" tabindex="0">
+      <button mat-raised-button (click)="xml()" tabindex="0" data-cy="xml_button">
         XML
         <mat-icon>download</mat-icon>
       </button>
-      <button mat-raised-button (click)="yaml()" tabindex="0">
+      <button mat-raised-button (click)="yaml()" tabindex="0" data-cy="yaml_button">
         YAML
         <mat-icon>download</mat-icon>
       </button>

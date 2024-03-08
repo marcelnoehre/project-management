@@ -1,0 +1,149 @@
+[
+  {
+    "title": "Documentation",
+    "description": "Prepare comprehensive documentation for the project, including user manuals and technical guides.",
+    "author": "mock",
+    "assigned": "",
+    "state": "NONE"
+  },
+  {
+    "title": "Finalize Project",
+    "description": "Review all aspects of the project and prepare for the final release.",
+    "author": "mock",
+    "assigned": "",
+    "state": "NONE"
+  },
+  {
+    "title": "Documentation",
+    "description": "Prepare comprehensive documentation for the project, including user manuals and technical guides.",
+    "author": "mock",
+    "assigned": "",
+    "state": "NONE"
+  },
+  {
+    "title": "Finalize Project",
+    "description": "Review all aspects of the project and prepare for the final release.",
+    "author": "mock",
+    "assigned": "",
+    "state": "NONE"
+  },
+  {
+    "title": "TEST",
+    "description": "",
+    "author": "test",
+    "assigned": "",
+    "state": "NONE"
+  },
+  {
+    "title": "Complete Project Proposal",
+    "description": "Draft a detailed project proposal outlining goals, scope, and deliverables.",
+    "author": "mock",
+    "assigned": "",
+    "state": "TODO"
+  },
+  {
+    "title": "Revise User Interface",
+    "description": "Gather feedback on the prototype and make necessary revisions to the user interface.",
+    "author": "mock",
+    "assigned": "",
+    "state": "TODO"
+  },
+  {
+    "title": "Client Presentation",
+    "description": "Prepare a presentation for the client showcasing the project progress and features.",
+    "author": "mock",
+    "assigned": "",
+    "state": "TODO"
+  },
+  {
+    "title": "Complete Project Proposal",
+    "description": "Draft a detailed project proposal outlining goals, scope, and deliverables.",
+    "author": "mock",
+    "assigned": "",
+    "state": "TODO"
+  },
+  {
+    "title": "Revise User Interface",
+    "description": "Gather feedback on the prototype and make necessary revisions to the user interface.",
+    "author": "mock",
+    "assigned": "",
+    "state": "TODO"
+  },
+  {
+    "title": "Research Market Trends",
+    "description": "Conduct market research to identify current trends and customer preferences.",
+    "author": "mock",
+    "assigned": "",
+    "state": "PROGRESS"
+  },
+  {
+    "title": "Code Refactoring",
+    "description": "Optimize and refactor existing codebase to improve performance and maintainability.",
+    "author": "mock",
+    "assigned": "",
+    "state": "PROGRESS"
+  },
+  {
+    "title": "Research Market Trends",
+    "description": "Conduct market research to identify current trends and customer preferences.",
+    "author": "mock",
+    "assigned": "",
+    "state": "PROGRESS"
+  },
+  {
+    "title": "Code Refactoring",
+    "description": "Optimize and refactor existing codebase to improve performance and maintainability.",
+    "author": "mock",
+    "assigned": "",
+    "state": "PROGRESS"
+  },
+  {
+    "title": "Develop Prototype",
+    "description": "Create a prototype for the new product feature based on the research findings.",
+    "author": "mock",
+    "assigned": "",
+    "state": "REVIEW"
+  },
+  {
+    "title": "Quality Assurance Testing",
+    "description": "Conduct thorough testing to ensure the product meets quality standards.",
+    "author": "mock",
+    "assigned": "",
+    "state": "REVIEW"
+  },
+  {
+    "title": "Develop Prototype",
+    "description": "Create a prototype for the new product feature based on the research findings.",
+    "author": "mock",
+    "assigned": "",
+    "state": "REVIEW"
+  },
+  {
+    "title": "Quality Assurance Testing",
+    "description": "Conduct thorough testing to ensure the product meets quality standards.",
+    "author": "mock",
+    "assigned": "",
+    "state": "REVIEW"
+  },
+  {
+    "title": "Project Kickoff",
+    "description": "Hold a meeting to officially start the project.",
+    "author": "mock",
+    "assigned": "",
+    "state": "DONE"
+  },
+  {
+    "title": "Release Version 1.0",
+    "description": "Publish the final version of the product.",
+    "author": "mock",
+    "assigned": "",
+    "state": "DONE"
+  },
+  {
+    "title": "Project Kickoff",
+    "description": "Hold a meeting to officially start the project.",
+    "author": "mock",
+    "assigned": "",
+    "state": "DONE"
+  }
+]

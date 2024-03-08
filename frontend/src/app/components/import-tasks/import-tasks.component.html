@@ -15,6 +15,7 @@
             type="file"
             class="file-input p-5 mt-4"
             (change)="onFileSelected($event)"
+            data-cy="import-task"
           />
           <div *ngIf="hasTaskList()" class="import-preview">
             <table>
