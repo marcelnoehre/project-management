@@ -1,1 +1,214 @@
-{}
+{
+    "APP": {
+        "OK": "OK",
+        "CANCEL": "Abbrechen",
+        "CREATE": "Erstellen",
+        "REMOVE": "Entfernen",
+        "CONFIRM": "Bestätigen",
+        "ACCEPT": "Akzeptieren",
+        "REJECT": "Ablehnen",
+        "CLEAR": "Leeren",
+        "IMPORT": "Importieren",
+        "RESET": "Zurücksetzen"
+    },
+    "NAV": {
+        "DASHBOARD": "Übersicht",
+        "BOARD": "Board",
+        "CREATE_TASK": "Aufgabe erstellen",
+        "IMPORT_TASKS": "Aufgaben importieren",
+        "TRASH_BIN": "Papierkorb",
+        "STATS": "Statistiken",
+        "PROJECT_SETTINGS": "Projekteinstellungen",
+        "ACCOUNT_SETTINGS": "Kontoeinstellungen",
+        "NOTIFICATIONS": "Benachrichtigungen",
+        "LOGOUT": "Abmelden"
+    },
+    "ERROR": {
+        "INTERNAL": "Interner Serverfehler!",
+        "INVALID_TOKEN": "Aus Sicherheitsgründen abgemeldet!",
+        "REQUIRED": {
+            "USERNAME": "Benutzername erforderlich!",
+            "FULLNAME": "Vollständiger Name erforderlich!",
+            "PASSWORD": "Passwort erforderlich!",
+            "INITIALS": "Initialen erforderlich!",
+            "REPEAT_PASSWORD": "Passwort-Wiederholung erforderlich!",
+            "TITLE": "Titel erforderlich!"
+        },
+        "MINLENGTH": {
+            "USERNAME": "Benutzername zu kurz!",
+            "PASSWORD": "Passwort zu kurz!",
+            "REPEAT_PASSWORD": "Passwort-Wiederholung zu kurz!",
+            "INITIALS": "Initialen zu kurz!"
+        },
+        "PATTERN": "Muster stimmt nicht überein",
+        "PASSWORDS_MATCH": "Passwörter stimmen nicht überein!",
+        "INVALID_CREDENTIALS": "Ungültige Anmeldedaten!",
+        "REGISTRATION": "Registrierung fehlgeschlagen!",
+        "USERNAME_TAKEN": "Benutzername bereits vergeben!",
+        "NO_ACCOUNT": "Konto nicht gefunden!",
+        "CREATE_PROJECT": "Projektname bereits vergeben!",
+        "PENDING_INVITE": "Nutzer hat ausstehende Einladung!",
+        "HAS_PROJECT": "Nutzer ist bereits Mitglied eines anderen Projekts!",
+        "IN_PROJECT": "Nutzer ist bereits Mitglied Ihres Projekts!",
+        "NO_VALID_SECTION": "Bitte die Aufgabe in eine Kategorie oder den Papierkorb verschieben!"
+    },
+    "SUCCESS": {
+        "LOGOUT": "Erfolgreich abgemeldet!",
+        "REGISTRATION": "Erfolgreich registriert!",
+        "UPDATE_ACCOUNT" : "Konto wurde aktualisiert!",
+        "UPDATE_USERNAME" : "Konto wurde aktualisiert! Jetzt mit neuem Benutzernamen anmelden.",
+        "NOTIFICATIONS_ON": "Benachrichtigungen aktiviert!",
+        "NOTIFICATIONS_OFF": "Benachrichtigungen deaktiviert!",
+        "CREATE_PROJECT": "Projekt erfolgreich erstellt!",
+        "PERMISSION_UPDATED": "Berechtigungen aktualisiert!",
+        "REMOVE_MEMBER": "Aus dem Projekt entfernt!",
+        "LEAVE_PROJECT": "Projekt verlassen!",
+        "INVITE_DELIVERD": "Einladung erfolgreich zugestellt!",
+        "INVITE_ACCEPTED": "Beitritt erfolgreich!",
+        "INVITE_REJECTED": "Einladung gelöscht! Projekt erstellen oder um neue Einladung bitten.",
+        "DELETE_ACCOUNT": "Konto erfolgreich gelöscht!",
+        "CREATE_TASK": "Aufgabe erfolgreich erstellt!",
+        "IMPORT_TASKS": "Import der Aufgaben abgeschlossen!",
+        "EDIT_TASK": "Aufgabe erfolgreich bearbeitet!",
+        "MOVE_TO_TRASH": "Aufgabe in den Papierkorb verschoben!",
+        "CLEAR_TRASH_BIN": "Papierkorb geleert!",
+        "TASK_RESTORED": "Aufgabe '{{title}}' wiederhergestellt!",
+        "TASK_DELETED": "Aufgabe '{{title}}' dauerhaft gelöscht!"
+    },
+    "USER" : {
+        "USERNAME": "Benutzername",
+        "PASSWORD": "Passwort",
+        "REPEAT_PASSWORD": "Passwort wiederholen",
+        "NEW_PASSWORD": "Neues Passwort",
+        "FULLNAME": "Vollständiger Name",
+        "LANGUAGE": "Sprache",
+        "PERMISSION": "Berechtigung",
+        "INITIALS": "Initialen",
+        "COLOR": "Farbe",
+        "PROFILEPICTURE": "Profilbild",
+        "DELETE": "Konto löschen",
+        "DELETED": " (gelöscht)"
+    },
+    "LOGIN": {
+        "HEADER": "Kanban",
+		"LOGIN": "Anmelden",
+        "NOT_REGISTERED": "Noch kein Konto? ",
+        "REGISTRATION": "Registrieren."
+    },
+    "REGISTRATION": {
+        "HEADER": "Benutzerkonto erstellen",
+        "REGISTER": "Registrieren",
+        "BACK": "Zurück zum Login",
+        "PASSWORD_FORMAT": "Das Passwort muss mindestens 1 Großbuchstaben, mindestens 1 Kleinbuchstaben, mindestens 1 Ziffer und mindestens 1 der folgenden Sonderzeichen enthalten: @#$%^&+=*"
+    },
+    "DIALOG": {
+        "HEADLINE": {
+            "CREATE_PROJECT": "Sie sind derzeit kein Mitglied eines Projekts",
+            "INVITE": "Einladung",
+            "REMOVE_MEMBER": "{{username}} entfernen?",
+            "CHANGE_ATTRIBUTE": "{{attribute}} ändern",
+            "LEAVE_PROJECT": "Projekt verlassen",
+            "DELETE_ACCOUNT": "Unwiderruflich löschen!"
+        },
+        "INFO": {
+            "CREATE_PROJECT": "Erstellen Sie ein neues Projekt oder bitten Sie Ihren Teamleiter, Ihnen eine Einladung zu senden",
+            "INVITE": "Sie haben eine Einladung zum Projekt {{project}} erhalten",
+            "REMOVE_MEMBER": "Wenn Sie den Benutzer entfernen, hat er keinen Zugriff mehr auf das Projekt. Vorhandene Aufgaben bleiben unter diesem Benutzernamen aufgelistet.",
+            "CHANGE_ATTRIBUTE": "Sind Sie sicher, dass Sie Ihr {{attribute}} ändern möchten?",
+            "LEAVE_PROJECT": "Sind Sie sicher, dass Sie das Projekt verlassen möchten?",
+            "DELETE_ACCOUNT": "Sind Sie sicher, dass Sie Ihr Konto löschen möchten?"
+        }
+    },
+    "PROJECT": {
+        "NAME": "Projektname",
+        "ACTIONS": "Aktionen",
+        "INVITE": "Benutzer zum Projekt einladen",
+        "LEAVE": "Projekt verlassen"
+    },
+    "TASK": {
+        "TITLE": "Titel",
+        "DESCRIPTION": "Beschreibung",
+        "ASSIGN": "Zuweisen",
+        "STATE": "Status",
+        "CREATE": "Erstellen",
+        "AUTHOR": "Autor",
+        "ASSIGNED": "Zugewiesen",
+        "PRIORITIZATION": "Priorisierung",
+        "STATE_ENUM": {
+            "NONE": "Kein Status",
+            "TODO": "Zu erledigen",
+            "PROGRESS": "In Bearbeitung",
+            "REVIEW": "In Überprüfung",
+            "DONE": "Abgeschlossen"
+        },
+        "DETAIL_VIEW": "Detailansicht",
+        "IMPORT": {
+            "SUCCESS": "Erfolg",
+            "Failed": "Fehlgeschlagen"
+        }
+    },
+    "NOTIFICATIONS": {
+        "FEED": "Benachrichtigungen",
+        "TYPE": "Typ",
+        "TIMESTAMP": "Zeitstempel",
+        "MESSAGE": "Nachricht",
+        "NEW": {
+            "INVITED": "{{data_0}} hat {{data_1}} zum Projekt eingeladen",
+            "JOINED": "{{data_0}} ist dem Team beigetreten",
+            "REJECTED": "{{data_0}} hat die Einladung abgelehnt",
+            "LEAVE_PROJECT": "{{data_0}} hat das Team verlassen",
+            "REMOVED": "{{data_0}} wurde von {{data_1}} aus dem Team entfernt",
+            "CREATE_TASK": "{{data_0}} hat eine neue Aufgabe '{{data_1}}' erstellt",
+            "IMPORTED_TASKS": "{{data_0}} hat neue Aufgaben importiert",
+            "EDITED_TASK": "{{data_0}} hat die Aufgabe '{{data_1}}' bearbeitet",
+            "UPDATE_TASK_POSITION": "{{data_0}} hat den Status der Aufgabe '{{data_1}}' aktualisiert",
+            "TRASHED_TASK": "{{data_0}} hat die Aufgabe '{{data_1}}' in den Papierkorb verschoben",
+            "RESTORED_TASK": "{{data_0}} hat die Aufgabe '{{data_1}}' wiederhergestellt",
+            "DELETED_TASK": "{{data_0}} hat die Aufgabe '{{data_1}}' unwiderruflich gelöscht",
+            "CLEARED_TRASH_BIN": "{{data_0}} hat den Papierkorb geleert"
+        }
+    },
+    "STATS": {
+        "HEADER": {
+            "PERSONAL_STATS": "Persönliche Statistiken",
+            "STAT_LEADERS": "Statistikführer",
+            "STATS": "Statistiken",
+            "TASK_AMOUNT": "Aufgabenmenge",
+            "AVERAGE_TIME": "Durchschnittliche Zeit",
+            "WIP": "Arbeit in Bearbeitung",
+            "TASK_PROGRESS": "Fortschritt der Aufgaben",
+            "PROJECT_ROADMAP": "Projekt-Roadmap"
+        },
+        "LOADING": {
+            "INIT": "Statistikabfrage wird initialisiert...",
+            "OPTIMIZE_ORDER": "Aufgabenspeicherung wird optimiert...",
+            "PERSONAL_STATS": "Persönliche Statistiken werden abgerufen...",
+            "STATS": "Allgemeine Statistiken werden abgerufen...",
+            "STAT_LEADERS": "Statistikführer werden abgerufen...",
+            "TASK_AMOUNT": "Aufgabenmengen werden abgerufen...",
+            "AVERAGE_TIME": "Durchschnittszeiten der Status werden abgerufen...",
+            "WIP": "Arbeit in Bearbeitung (WIP) wird abgerufen...",
+            "TASK_PROGRESS": "Fortschritt der Aufgaben wird abgerufen...",
+            "PROJECT_ROADMAP": "Projekt-Roadmap wird abgerufen...",
+            "DONE": "Statistikabfrage abgeschlossen!",
+            "STORAGE": "Die nach dem letzten Login berechneten Daten werden geladen..."
+        },
+        "WIP_INFO": "Derzeit sind {{wip}} Aufgaben in Bearbeitung",
+        "WIP_INFO_SINGLE": "Derzeit ist 1 Aufgabe in Bearbeitung",
+        "WIP_INFO_NONE": "Derzeit ist keine Aufgabe in Bearbeitung",
+        "PROJECT": "Projekt",
+        "OTHERS": "Andere",
+        "PROJECT_ROADMAP": {
+            "CREATED": "{{username}} hat das Projekt erstellt",
+            "INVITED": "{{username}} hat {{target}} zum Projekt eingeladen",
+            "REJECTED": "{{username}} hat die Einladung abgelehnt",
+            "JOINED": "{{username}} ist dem Projekt beigetreten",
+            "REMOVED": "{{username}} hat {{target}} aus dem Projekt entfernt",
+            "LEFT": "{{username}} hat das Projekt verlassen",
+            "ADMIN": "{{username}} hat {{target}} die Berechtigung 'ADMIN' gegeben",
+            "MEMBER": "{{username}} hat {{target}} die Berechtigung 'MITGLIED' gegeben"
+        },
+        "REGENERATE": "Alle Statistiken neu generieren"
+    }
+}
+

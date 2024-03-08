@@ -1,1 +1,215 @@
-{}
+{
+    "APP": {
+        "OK": "Aceptar",
+        "CANCEL": "Cancelar",
+        "CREATE": "Crear",
+        "REMOVE": "Eliminar",
+        "CONFIRM": "Confirmar",
+        "ACCEPT": "Aceptar",
+        "REJECT": "Rechazar",
+        "CLEAR": "Limpiar",
+        "IMPORT": "Importar",
+        "RESET": "Restablecer"
+    },
+    "NAV": {
+        "DASHBOARD": "Tablero",
+        "BOARD": "Tablero",
+        "CREATE_TASK": "Crear Tarea",
+        "IMPORT_TASKS": "Importar Tareas",
+        "TRASH_BIN": "Papelera",
+        "STATS": "Estadísticas",
+        "PROJECT_SETTINGS": "Configuración del Proyecto",
+        "ACCOUNT_SETTINGS": "Configuración de la Cuenta",
+        "NOTIFICATIONS": "Notificaciones",
+        "LOGOUT": "Cerrar Sesión"
+    },
+    "ERROR": {
+        "INTERNAL": "¡Error interno del servidor!",
+        "INVALID_TOKEN": "¡Ha cerrado la sesión por razones de seguridad!",
+        "REQUIRED": {
+            "USERNAME": "¡Se requiere el nombre de usuario!",
+            "FULLNAME": "¡Se requiere el nombre completo!",
+            "PASSWORD": "¡Se requiere la contraseña!",
+            "INITIALS": "¡Se requieren las iniciales!",
+            "REPEAT_PASSWORD": "¡Se requiere la repetición de la contraseña!",
+            "TITLE": "¡Se requiere el título!"
+        },
+        "MINLENGTH": {
+            "USERNAME": "¡Nombre de usuario demasiado corto!",
+            "PASSWORD": "¡Contraseña demasiado corta!",
+            "REPEAT_PASSWORD": "¡Repetición de contraseña demasiado corta!",
+            "INITIALS": "¡Iniciales demasiado cortas!"
+        },
+        "PATTERN": "No coincide con el patrón",
+        "PASSWORDS_MATCH": "¡Las contraseñas no coinciden!",
+        "INVALID_CREDENTIALS": "¡Credenciales inválidas!",
+        "REGISTRATION": "¡Fallo en el registro!",
+        "USERNAME_TAKEN": "¡Nombre de usuario ya en uso!",
+        "NO_ACCOUNT": "¡No se pudo encontrar la cuenta!",
+        "CREATE_PROJECT": "¡Nombre del proyecto ya en uso!",
+        "PENDING_INVITE": "¡El usuario tiene una invitación pendiente!",
+        "HAS_PROJECT": "¡El usuario ya es miembro de otro proyecto!",
+        "IN_PROJECT": "¡El usuario ya es miembro de su proyecto!",
+        "NO_VALID_SECTION": "¡Coloque la tarea en una categoría o en la papelera!"
+    },
+    "SUCCESS": {
+        "LOGOUT": "¡Ha cerrado sesión correctamente!",
+        "REGISTRATION": "¡Registrado exitosamente!",
+        "UPDATE_ACCOUNT" : "¡La cuenta ha sido actualizada!",
+        "UPDATE_USERNAME" : "¡La cuenta ha sido actualizada! Ahora puedes iniciar sesión con el nuevo nombre de usuario.",
+        "NOTIFICATIONS_ON": "¡Las notificaciones se han activado!",
+        "NOTIFICATIONS_OFF": "¡Las notificaciones se han desactivado!",
+        "CREATE_PROJECT": "¡Proyecto creado exitosamente!",
+        "PERMISSION_UPDATED": "¡Los permisos han sido actualizados!",
+        "REMOVE_MEMBER": "¡Eliminado del proyecto!",
+        "LEAVE_PROJECT": "¡Ha dejado el proyecto!",
+        "INVITE_DELIVERD": "¡Invitación entregada con éxito!",
+        "INVITE_ACCEPTED": "¡Unión exitosa!",
+        "INVITE_REJECTED": "¡La invitación ha sido eliminada! Crea un proyecto o solicita una nueva invitación.",
+        "DELETE_ACCOUNT": "¡La cuenta ha sido eliminada correctamente!",
+        "CREATE_TASK": "¡Tarea creada exitosamente!",
+        "IMPORT_TASKS": "¡La importación de tareas se ha completado!",
+        "EDIT_TASK": "¡Tarea editada exitosamente!",
+        "MOVE_TO_TRASH": "¡La tarea ha sido movida a la papelera!",
+        "CLEAR_TRASH_BIN": "¡La papelera ha sido vaciada!",
+        "TASK_RESTORED": "¡La tarea '{{title}}' ha sido restaurada!",
+        "TASK_DELETED": "¡La tarea '{{title}}' ha sido eliminada permanentemente!"
+    },
+    "USER" : {
+        "USERNAME": "Nombre de Usuario",
+        "PASSWORD": "Contraseña",
+        "REPEAT_PASSWORD": "Repetir Contraseña",
+        "NEW_PASSWORD": "Nueva Contraseña",
+        "FULLNAME": "Nombre Completo",
+        "LANGUAGE": "Idioma",
+        "PERMISSION": "Permiso",
+        "INITIALS": "Iniciales",
+        "COLOR": "Color",
+        "PROFILEPICTURE": "Foto de Perfil",
+        "DELETE": "Eliminar Cuenta",
+        "DELETED": " (eliminado)"
+    },
+    "LOGIN": {
+        "HEADER": "Kanban",
+		"LOGIN": "Iniciar Sesión",
+        "NOT_REGISTERED": "¿Todavía no tienes una cuenta? ",
+        "REGISTRATION": "Regístrate."
+    },
+    "REGISTRATION": {
+        "HEADER": "Crear Cuenta",
+        "REGISTER": "Registrar",
+        "BACK": "Volver a iniciar sesión",
+        "PASSWORD_FORMAT": "La contraseña debe contener al menos 1 letra mayúscula, al menos 1 letra minúscula, al menos 1 dígito y al menos 1 de los siguientes caracteres especiales: @#$%^&+=*"
+    },
+    "DIALOG": {
+        "HEADLINE": {
+            "CREATE_PROJECT": "Actualmente no eres miembro de un proyecto",
+            "INVITE": "Invitación",
+            "REMOVE_MEMBER": "¿Eliminar a {{username}}?",
+            "CHANGE_ATTRIBUTE": "Cambiar {{attribute}}",
+            "LEAVE_PROJECT": "Abandonar proyecto",
+            "DELETE_ACCOUNT": "Eliminar irrevocablemente!"
+        },
+        "INFO": {
+            "CREATE_PROJECT": "Crea un nuevo proyecto o pide a tu líder de equipo que te envíe una invitación",
+            "INVITE": "Has recibido una invitación al proyecto {{project}}",
+            "REMOVE_MEMBER": "Si eliminas al usuario, ya no tendrá acceso al proyecto. Las tareas existentes seguirán enumeradas bajo este nombre de usuario.",
+            "CHANGE_ATTRIBUTE": "¿Estás seguro de que quieres cambiar tu {{attribute}}?",
+            "LEAVE_PROJECT": "¿Estás seguro de que quieres abandonar el proyecto?",
+            "DELETE_ACCOUNT": "¿Estás seguro de que quieres eliminar tu cuenta?"
+        }
+    },
+    "PROJECT": {
+        "NAME": "Nombre del Proyecto",
+        "ACTIONS": "Acciones",
+        "INVITE": "Invitar a un usuario al proyecto",
+        "LEAVE": "Abandonar proyecto"
+    },
+    "TASK": {
+        "TITLE": "Título",
+        "DESCRIPTION": "Descripción",
+        "ASSIGN": "Asignar",
+        "STATE": "Estado",
+        "CREATE": "Crear",
+        "AUTHOR": "Autor",
+        "ASSIGNED": "Asignado",
+        "PRIORITIZATION": "Priorización",
+        "STATE_ENUM": {
+            "NONE": "Sin estado",
+            "TODO": "Por hacer",
+            "PROGRESS": "En progreso",
+            "REVIEW": "En revisión",
+            "DONE": "Completado"
+        },
+        "DETAIL_VIEW": "Vista Detallada",
+        "IMPORT": {
+            "SUCCESS": "Éxito",
+            "Failed": "Fallido"
+        }
+    },
+    "NOTIFICATIONS": {
+        "FEED": "Notificaciones",
+        "TYPE": "Tipo",
+        "TIMESTAMP": "Marca de tiempo",
+        "MESSAGE": "Mensaje",
+        "NEW": {
+            "INVITED": "{{data_0}} ha invitado a {{data_1}} al proyecto",
+            "JOINED": "{{data_0}} se unió al equipo",
+            "REJECTED": "{{data_0}} ha rechazado la invitación",
+            "LEAVE_PROJECT": "{{data_0}} ha abandonado el equipo",
+            "REMOVED": "{{data_0}} ha sido eliminado del equipo por {{data_1}}",
+            "CREATE_TASK": "{{data_0}} ha creado una nueva tarea '{{data_1}}'",
+            "IMPORTED_TASKS": "{{data_0}} ha importado nuevas tareas",
+            "EDITED_TASK": "{{data_0}} ha editado la tarea '{{data_1}}'",
+            "UPDATE_TASK_POSITION": "{{data_0}} ha actualizado el estado de la tarea '{{data_1}}'",
+            "TRASHED_TASK": "{{data_0}} ha movido la tarea '{{data_1}}' a la papelera",
+            "RESTORED_TASK": "{{data_0}} ha restaurado la tarea '{{data_1}}'",
+            "DELETED_TASK": "{{data_0}} ha eliminado la tarea '{{data_1}}' de forma irrevocable",
+            "CLEARED_TRASH_BIN": "{{data_0}} ha vaciado la papelera"
+        }
+    },
+    "STATS": {
+        "HEADER": {
+            "PERSONAL_STATS": "Estadísticas Personales",
+            "STAT_LEADERS": "Líderes Estadísticos",
+            "STATS": "Estadísticas",
+            "TASK_AMOUNT": "Cantidad de Tareas",
+            "AVERAGE_TIME": "Tiempo Promedio",
+            "WIP": "Trabajo en Progreso",
+            "TASK_PROGRESS": "Progreso de Tareas",
+            "PROJECT_ROADMAP": "Hoja de Ruta del Proyecto"
+        },
+        "LOADING": {
+            "INIT": "Inicializando la recuperación de estadísticas...",
+            "OPTIMIZE_ORDER": "Optimizando el almacenamiento de tareas...",
+            "PERSONAL_STATS": "Recuperando estadísticas personales...",
+            "STATS": "Recuperando estadísticas generales...",
+            "STAT_LEADERS": "Recuperando líderes estadísticos...",
+            "TASK_AMOUNT": "Recuperando cantidades de tareas...",
+            "AVERAGE_TIME": "Recuperando tiempo promedio de estados...",
+            "WIP": "Recuperando trabajo en progreso (WIP)...",
+            "TASK_PROGRESS": "Recuperando progreso de tareas...",
+            "PROJECT_ROADMAP": "Recuperando hoja de ruta del proyecto...",
+            "DONE": "¡Recuperación de estadísticas completada!",
+            "STORAGE": "Cargando los datos calculados después del último inicio de sesión..."
+        },
+        "WIP_INFO": "Actualmente hay {{wip}} tareas en progreso",
+        "WIP_INFO_SINGLE": "Actualmente hay 1 tarea en progreso",
+        "WIP_INFO_NONE": "No hay tareas en progreso actualmente",
+        "PROJECT": "Proyecto",
+        "OTHERS": "Otros",
+        "PROJECT_ROADMAP": {
+            "CREATED": "{{username}} creó el proyecto",
+            "INVITED": "{{username}} ha invitado a {{target}} al proyecto",
+            "REJECTED": "{{username}} ha rechazado la invitación",
+            "JOINED": "{{username}} se ha unido al proyecto",
+            "REMOVED": "{{username}} ha eliminado a {{target}} del proyecto",
+            "LEFT": "{{username}} ha abandonado el proyecto",
+            "ADMIN": "{{username}} le ha dado a {{target}} el permiso 'ADMIN'",
+            "MEMBER": "{{username}} le ha dado a {{target}} el permiso 'MIEMBRO'"
+        },
+        "REGENERATE": "Regenerar todas las estadísticas"
+    }
+}
+
+            
