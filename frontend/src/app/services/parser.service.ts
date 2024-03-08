@@ -19,7 +19,8 @@ export class ParserService {
 					description: task.description, 
 					author: task.author,
 					assigned: task.assigned,
-					state: task.state 
+					state: task.state,
+					order: task.order
 				});
 			});
 		});
@@ -30,11 +31,11 @@ export class ParserService {
 		return new Blob([JSON.stringify(taskList, null, 2)], { type: 'application/json' });
 	}
 
-	public tasksToXML(taskList: State[]): Blob {
+	public tasksToXML(taskList: Export[]): Blob {
 		return new Blob([JsonToXML.parse('root', taskList)], { type: 'application/xml' });
 	}
 
-	public tasksToYAML(taskList: State[]): Blob {
+	public tasksToYAML(taskList: Export[]): Blob {
 		return new Blob([YAML.stringify(taskList)], { type: 'text/yaml' });
 	}
 
@@ -46,17 +47,19 @@ export class ParserService {
 				taskList = JSON.parse(rawInput);
 				break;
 			case 'xml':
-				taskList = JSON.parse(XML.xml2json(rawInput, { compact: true, spaces: 2 })).root.row.map((row: any) => ({
-					state: row.state._text,
-					tasks: row.tasks.map((task: any) => ({
-						uid: task.uid._text,
-						author: task.author._text,
-						project: task.project._text,
-						state: task.state._text,
-						title: task.title._text,
-						description: task.description._text
-					}))
-				}));
+				taskList = [];
+				for (let task of JSON.parse(XML.xml2json(rawInput, { compact: true, spaces: 2 })).root.root) {
+					try {
+						taskList.push({
+							title: task.title._text,
+							description: task.description._text,
+							author: task.author._text,
+							assigned: task.assigned._text,
+							state: task.state._text,
+							order: task.order._text
+						});
+					} catch (err) { }
+				}
 				break;
 			case 'yml':
 			case 'yaml':

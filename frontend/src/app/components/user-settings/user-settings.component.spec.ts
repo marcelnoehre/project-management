@@ -4,17 +4,45 @@ import { UserSettingsComponent } from './user-settings.component';
 import { AppModule } from 'src/app/app.module';
 import { environment } from 'src/environments/environment';
 import { Permission } from 'src/app/enums/permission.enum';
+import { TestService } from 'src/app/services/api/test.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ApiService } from 'src/app/services/api/api.service';
+import { LoginComponent } from '../login/login.component';
+import { Router, RouterModule, ROUTES } from '@angular/router';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 describe('UserSettingsComponent', () => {
+	const mockRoutes = [
+		{
+			path: 'settings/user',
+			component: UserSettingsComponent
+		},
+		{
+			path: 'login',
+			component: LoginComponent
+		}
+	];
 	let component: UserSettingsComponent;
 	let fixture: ComponentFixture<UserSettingsComponent>;
+	let router: Router;
+	let translateService: TranslateService;
+	let snackbarSpy: jasmine.SpyObj<MatSnackBar>;
 
 	beforeEach(() => {
+		snackbarSpy = jasmine.createSpyObj('MatSnackBar', ['open']);
 		TestBed.configureTestingModule({
-			imports: [AppModule],
-			declarations: [UserSettingsComponent]
+			imports: [AppModule, TranslateModule.forRoot(), RouterModule.forRoot(mockRoutes)],
+			declarations: [UserSettingsComponent],
+			providers: [
+				{ provide: TranslateService, useClass: TranslateService },
+				{ provide: ROUTES, multi: true, useValue: [] },
+				{ provide: ApiService, useClass: TestService },
+				{ provide: MatSnackBar, useValue: snackbarSpy }
+			]
 		});
 		fixture = TestBed.createComponent(UserSettingsComponent);
+		translateService = TestBed.inject(TranslateService);
+		router = TestBed.inject(Router);
 		component = fixture.componentInstance;
 		fixture.detectChanges();
 	});
@@ -161,6 +189,75 @@ describe('UserSettingsComponent', () => {
 
 		it('should not be loading', () => {
 			expect(component.isLoading('username')).toBe(false);
+		});
+	});
+
+	describe('delete user', () => {
+		it('should update the username', async () => {
+			component['_user'].token = 'owner';
+			await component.processUpdateUser('username', 'mock', true);
+			expect(snackbarSpy.open).toHaveBeenCalledWith('SUCCESS.UPDATE_ACCOUNT', 'APP.OK', { duration: 7000, panelClass: 'info' });
+			expect(router.url).toBe('/login');
+		});
+
+		it('should update the fullName', async () => {
+			component['_user'].token = 'owner';
+			await component.processUpdateUser('fullName', 'mock', true);
+			expect(snackbarSpy.open).toHaveBeenCalledWith('SUCCESS.UPDATE_ACCOUNT', 'APP.OK', { duration: 7000, panelClass: 'info' });
+		});
+
+		it('should update the language', async () => {
+			component['_user'].token = 'owner';
+			translateService.use('de');
+			await component.processUpdateUser('language', 'en', true);
+			expect(snackbarSpy.open).toHaveBeenCalledWith('SUCCESS.UPDATE_ACCOUNT', 'APP.OK', { duration: 7000, panelClass: 'info' });
+			expect(translateService.currentLang).toBe('en');
+		});
+
+		it('should update the password', async () => {
+			component['_user'].token = 'owner';
+			await component.processUpdateUser('password', 'mock', true);
+			expect(snackbarSpy.open).toHaveBeenCalledWith('SUCCESS.UPDATE_ACCOUNT', 'APP.OK', { duration: 7000, panelClass: 'info' });
+			expect(component.userSettingsForm.get('passwordFormControl')?.value).toBe('');
+
+		});
+
+		it('should update the initials', async () => {
+			component['_user'].token = 'owner';
+			await component.processUpdateUser('initials', 'mock', true);
+			expect(snackbarSpy.open).toHaveBeenCalledWith('SUCCESS.UPDATE_ACCOUNT', 'APP.OK', { duration: 7000, panelClass: 'info' });
+		});
+
+		it('should update the color', async () => {
+			component['_user'].token = 'owner';
+			await component.processUpdateUser('color', 'mock', true);
+			expect(snackbarSpy.open).toHaveBeenCalledWith('SUCCESS.UPDATE_ACCOUNT', 'APP.OK', { duration: 7000, panelClass: 'info' });
+		});
+
+		it('should update the profilePicture', async () => {
+			component['_user'].token = 'owner';
+			await component.processUpdateUser('profilePicture', 'mock', true);
+			expect(snackbarSpy.open).toHaveBeenCalledWith('SUCCESS.UPDATE_ACCOUNT', 'APP.OK', { duration: 7000, panelClass: 'info' });
+		});
+
+		it('should not update the user', async () => {
+			component['_user'].token = 'owner';
+			await component.processUpdateUser('username', 'mock', false);
+			expect(snackbarSpy.open).not.toHaveBeenCalled();
+		});
+	});
+
+	describe('delete user', () => {
+		it('should delete the user', async () => {
+			component['_user'].token = 'mock';
+			await component.processDeleteUser(true);
+			expect(snackbarSpy.open).toHaveBeenCalledWith('SUCCESS.DELETE_ACCOUNT', 'APP.OK', { duration: 7000, panelClass: 'info' });
+		});
+
+		it('should not delete the user', async () => {
+			component['_user'].token = 'mock';
+			await component.processDeleteUser(false);
+			expect(snackbarSpy.open).not.toHaveBeenCalled();
 		});
 	});
 });

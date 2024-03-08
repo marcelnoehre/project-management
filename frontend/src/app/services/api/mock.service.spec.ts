@@ -17,11 +17,13 @@ describe('MockService', () => {
 		service = TestBed.inject(MockService);
 	});
 
-	it('should load test environment', () => {
-		expect(environment.environement).toBe('test');
-	});
-
-	it('should be created', () => {
-		expect(service).toBeTruthy();
+	describe('setup', () => {
+		it('should load test environment', () => {
+			expect(environment.environement).toBe('test');
+		});
+	
+		it('should create', () => {
+			expect(service).toBeTruthy();
+		});
 	});
 });

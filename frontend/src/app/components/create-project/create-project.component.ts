@@ -51,10 +51,15 @@ export class CreateProjectComponent {
 	}
 
 	public async createProject(): Promise<void> {
-		try {
-			const response = await lastValueFrom(this._api.createProject(this._sessionUser.token, this._project));
-			const token = await lastValueFrom(this._api.refreshToken(this._sessionUser.token));
 			this._user.user = this._sessionUser;
+			await this.processCreateProject();
+			this._dialogRef.close(true);
+	}
+
+	public async processCreateProject(): Promise<void> {
+		try {
+			const response = await lastValueFrom(this._api.createProject(this._user.token, this._project));
+			const token = await lastValueFrom(this._api.refreshToken(this._user.token));
 			this._user.token = token;
 			this._user.project = this._project;
 			this._user.permission = Permission.OWNER;
@@ -62,7 +67,6 @@ export class CreateProjectComponent {
 			this._storage.setSessionEntry('user', this._user.user);
 			this.loading = false;
 			this._snackbar.open(this._translate.instant(response.message));
-			this._dialogRef.close(true);
 		} catch (error) {
 			this.loading = false;
 			this._error.handleApiError(error);

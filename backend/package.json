@@ -7,7 +7,7 @@
     "start": "node index.js",
     "generate-swagger": "node swagger.js",
     "test": "jest",
-    "coverage": "jest --coverage"
+    "test-coverage": "jest --coverage"
   },
   "keywords": [],
   "author": "",

@@ -15,6 +15,7 @@ import { NotificationsService } from 'src/app/services/notifications.service';
 import { ErrorService } from 'src/app/services/error.service';
 import { lastValueFrom } from 'rxjs';
 import { ParserService } from 'src/app/services/parser.service';
+import { User } from 'src/app/interfaces/data/user';
 
 @Component({
 	selector: 'app-login',
@@ -83,13 +84,7 @@ export class LoginComponent implements OnInit {
 			this._storage.setSessionEntry('user', user);
 			if (user.project === '') {
 				this._dialog.open(CreateProjectComponent).afterClosed().subscribe((created) => {
-					if (created) {
-						this._notifications.init();
-						this.updateLanguage();
-						this._router.navigateByUrl('/');
-					} else {
-						this._storage.deleteSessionEntry('user');
-					}
+					this.processCreateProject(created);
 				});
 			} else if (user.permission === Permission.INVITED) {
 				const data = {
@@ -99,30 +94,7 @@ export class LoginComponent implements OnInit {
 					trueButton: this._translate.instant('APP.ACCEPT')
 				};
 				this._dialog.open(DialogComponent, { data, ...{} }).afterClosed().subscribe(async (accept) => {
-					try {
-						const response = await lastValueFrom(this._api.handleInvite(user.token, accept));
-						if (accept) {
-							this._user.user = user;
-							try {
-								const token = await lastValueFrom(this._api.refreshToken(this._user.token));
-								this._user.token = token;
-								this._user.permission = Permission.MEMBER;
-								this._user.project = user.project;
-								this._user.isLoggedIn = true;
-								this._notifications.init();
-								this._storage.setSessionEntry('user', this._user.user);
-								this.updateLanguage();
-								this._router.navigateByUrl('/');
-							} catch (err) {
-								this._error.handleApiError(err);
-							}
-						} else {
-							this._storage.deleteSessionEntry('user');
-						}
-						this._snackbar.open(this._translate.instant(response.message));
-					} catch (error) {
-						this._error.handleApiError(error);
-					}
+					await this.processHandleInvite(user, accept);
 				});
 			} else {
 				this._user.user = user;
@@ -135,6 +107,43 @@ export class LoginComponent implements OnInit {
 		} catch (loginError) {
 			this.loading = false;
 			this._error.handleApiError(loginError);
+		}
+	}
+
+	public processCreateProject(created: boolean): void {
+		if (created) {
+			this._notifications.init();
+			this.updateLanguage();
+			this._router.navigateByUrl('/');
+		} else {
+			this._storage.deleteSessionEntry('user');
+		}
+	}
+
+	public async processHandleInvite(user: User, accept: boolean): Promise<void> {
+		try {
+			const response = await lastValueFrom(this._api.handleInvite(user.token, accept));
+			if (accept) {
+				this._user.user = user;
+				try {
+					const token = await lastValueFrom(this._api.refreshToken(this._user.token));
+					this._user.token = token;
+					this._user.permission = Permission.MEMBER;
+					this._user.project = user.project;
+					this._user.isLoggedIn = true;
+					this._notifications.init();
+					this._storage.setSessionEntry('user', this._user.user);
+					this.updateLanguage();
+					this._router.navigateByUrl('/');
+				} catch (err) {
+					this._error.handleApiError(err);
+				}
+			} else {
+				this._storage.deleteSessionEntry('user');
+			}
+			this._snackbar.open(this._translate.instant(response.message));
+		} catch (error) {
+			this._error.handleApiError(error);
 		}
 	}
 

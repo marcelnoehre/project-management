@@ -102,7 +102,7 @@ export class UserSettingsComponent {
 	}
 
 	public async updateUser(attribute: string): Promise<void> {
-		let value = attribute === 'color' ? this.color : this.userSettingsForm.get(attribute + 'FormControl')?.value;
+		const value = attribute === 'color' ? this.color : this.userSettingsForm.get(attribute + 'FormControl')?.value;
 		const key = this._translate.instant('USER.' + attribute.toUpperCase());
 		const data = {
 			headline: this._translate.instant('DIALOG.HEADLINE.CHANGE_ATTRIBUTE', { attribute: key }),
@@ -112,50 +112,54 @@ export class UserSettingsComponent {
 		};
 		this._dialog.open(DialogComponent, { data, ...{} }).afterClosed().subscribe(
 			async (confirmed) => {
-				if (confirmed) {
-					if (attribute === 'password') value = await this._parser.sha256(value);
-					(this._loadingAttribute as any)[attribute] = true;          
-					try {
-						const response = await lastValueFrom(this._api.updateUser(this._user.token, attribute, value));
-						(this._loadingAttribute as any)[attribute] = false;
-						this._snackbar.open(this._translate.instant(response.message));
-						this._user.update(attribute, value);
-						this._initialUser = this._user.user;
-						this._storage.setSessionEntry('user', this._user.user);
-						switch (attribute) {
-							case 'username':
-								this._storage.clearSession();
-								this._user.user = this._storage.getSessionEntry('user');
-								this._router.navigateByUrl('/login');  
-								break;
-							case 'fullName':
-								this._event.updateFullName$.next(value);
-								break;
-							case 'language':
-								this._translate.use(value);
-								break;
-							case 'password':
-								this.userSettingsForm.get('passwordFormControl')?.setValue('');
-								break;
-							case 'initials':
-								this._event.updateInitials$.next(value);
-								break;
-							case 'color':
-								this._event.updateColor$.next(value);
-								break;
-							case 'profilePicture':
-								this._event.updateProfilePicture$.next(value);
-								break;
-							default:
-								break;
-						}
-					} catch (error) {
-						(this._loadingAttribute as any)[attribute] = false;
-						this._error.handleApiError(error);
-					}
-				}
+				await this.processUpdateUser(attribute, value, confirmed);
 			}
 		);
+	}
+
+	public async processUpdateUser(attribute: string, value: string, confirmed: boolean): Promise<void> {
+		if (confirmed) {
+			try {
+				if (attribute === 'password') value = await this._parser.sha256(value);
+				(this._loadingAttribute as any)[attribute] = true;          
+				const response = await lastValueFrom(this._api.updateUser(this._user.token, attribute, value));
+				(this._loadingAttribute as any)[attribute] = false;
+				this._snackbar.open(this._translate.instant(response.message));
+				this._user.update(attribute, value);
+				this._initialUser = this._user.user;
+				this._storage.setSessionEntry('user', this._user.user);
+				switch (attribute) {
+					case 'username':
+						this._storage.clearSession();
+						this._user.user = this._storage.getSessionEntry('user');
+						this._router.navigateByUrl('/login');  
+						break;
+					case 'fullName':
+						this._event.updateFullName$.next(value);
+						break;
+					case 'language':
+						this._translate.use(value);
+						break;
+					case 'password':
+						this.userSettingsForm.get('passwordFormControl')?.setValue('');
+						break;
+					case 'initials':
+						this._event.updateInitials$.next(value);
+						break;
+					case 'color':
+						this._event.updateColor$.next(value);
+						break;
+					case 'profilePicture':
+						this._event.updateProfilePicture$.next(value);
+						break;
+					default:
+						break;
+				}
+			} catch (error) {
+				(this._loadingAttribute as any)[attribute] = false;
+				this._error.handleApiError(error);
+			}
+		}
 	}
 
 	public async deleteUser(): Promise<void> {
@@ -167,22 +171,26 @@ export class UserSettingsComponent {
 		};
 		this._dialog.open(DialogComponent, { data, ...{} }).afterClosed().subscribe(
 			async (confirmed) => {
-				if (confirmed) {
-					this.loadingDelete = true;
-					try {
-						const response = await lastValueFrom(this._api.deleteUser(this._user.token));
-						this.loadingDelete = false;
-						this._storage.clearSession();
-						this._user.user = this._storage.getSessionEntry('user');
-						this._router.navigateByUrl('/login');
-						this._snackbar.open(this._translate.instant(response.message));
-					} catch (error) {
-						this.loadingDelete = false;
-						this._error.handleApiError(error);
-					}
-				}
+				await this.processDeleteUser(confirmed);
 			}
 		);
+	}
+
+	public async processDeleteUser(confirmed: boolean): Promise<void> {
+		if (confirmed) {
+			try {
+				this.loadingDelete = true;
+				const response = await lastValueFrom(this._api.deleteUser(this._user.token));
+				this.loadingDelete = false;
+				this._storage.clearSession();
+				this._user.user = this._storage.getSessionEntry('user');
+				this._router.navigateByUrl('/login');
+				this._snackbar.open(this._translate.instant(response.message));
+			} catch (error) {
+				this.loadingDelete = false;
+				this._error.handleApiError(error);
+			}
+		}
 	}
 
 	public get profilePicture(): string {
