@@ -45,6 +45,14 @@ export class UserSettingsComponent {
 		{
 			key: 'de',
 			label: 'Deutsch'
+		},
+		{
+			key: 'es',
+			label: 'Español'
+		},
+		{
+			key: 'fr',
+			label: 'Français'
 		}
 	];
 
