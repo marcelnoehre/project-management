@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { lastValueFrom } from 'rxjs';
+import { Permission } from 'src/app/enums/permission.enum';
 import { Task } from 'src/app/interfaces/data/task';
 import { User } from 'src/app/interfaces/data/user';
 import { ApiService } from 'src/app/services/api/api.service';
@@ -35,6 +36,35 @@ export class TaskDetailViewComponent implements OnInit {
 		this._initialTask = { ...this._data };
 		try {
 			this.members = await lastValueFrom(this._api.getTeamMembers(this._user.token));
+			let assigned = this._initialTask.assigned;
+			if ((this.members.filter((user) => user.username === assigned)).length === 0) {
+				assigned += this._translate.instant('USER.DELETED');
+				this._initialTask.assigned = assigned;
+				this.task.assigned = assigned;
+				this.members.push({
+					token: 'deleted',
+					username: assigned,
+					fullName: 'deleted',
+					initials: 'deleted',
+					color: 'deleted',
+					language: 'deleted',
+					project: 'deleted',
+					permission: Permission.NONE,
+					profilePicture: 'deleted',
+					notificationsEnabled: true,
+					isLoggedIn: false,
+					stats: {
+						created: -1,
+						imported: -1,
+						updated: -1,
+						edited: -1,
+						trashed: -1,
+						restored: -1,
+						deleted: -1,
+						cleared: -1,
+					}
+				});
+			}
 		} catch (error) {
 			this._error.handleApiError(error);
 		}

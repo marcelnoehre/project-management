@@ -86,7 +86,8 @@
         "INITIALS": "Initials",
         "COLOR": "Color",
         "PROFILEPICTURE": "Profile picture",
-        "DELETE": "Delete account"
+        "DELETE": "Delete account",
+        "DELETED": " (deleted)"
     },
     "LOGIN": {
         "HEADER": "Kanban",
