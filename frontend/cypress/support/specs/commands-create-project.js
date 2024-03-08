@@ -31,7 +31,7 @@ Cypress.Commands.add('loginUserNoneCancel', () => {
     cy.get(hidePassword).click().wait(waitTime);
     cy.get(loginButton).should(beEnabled);
     cy.get(loginButton).click().wait(waitTime);
-    cy.get(projectInput).click({ force: true }).type(buttonCancelProject).wait(waitTime);
+    cy.get(projectInput).click({ force: true }).clear().wait(waitTime);
 
     // cancel button
     cy.get(cancelProjectButton).click({ force: true }).wait(waitTime);

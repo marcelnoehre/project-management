@@ -1,7 +1,7 @@
 {
     "waitTime": 750,
     "enter": "{enter}",
-    "mock": "mock",
+    "mocktext": "mock",
     "invalid": "invalid",
     "tooShort": "x",
     "user": {

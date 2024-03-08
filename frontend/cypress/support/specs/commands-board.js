@@ -47,6 +47,8 @@ Cypress.Commands.add('clickTaskCancel', () => {
     cy.get(dashboardCreateTask).click().wait(waitTime);
     // Click on first task and cancel
     cy.get(columFirst).as(taskFirst).click().wait(waitTime);
+    cy.get(taskViewTitel).click({ force: true }).clear().wait(waitTime);
+    cy.get(taskViewDescription).click({ force: true }).clear().wait(waitTime);
     cy.get(cancelTaskButton).should(beEnabled);
     cy.get(cancelTaskButton).click({ force: true }).wait(waitTime); 
 });

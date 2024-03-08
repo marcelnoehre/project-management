@@ -18,7 +18,7 @@ const registerButton = '[data-cy="registration-submit"]';
 const loginLink = '[data-cy="login-link"]';
 
 // constants for user input
-const username = data.mock;
+const username = data.mocktext;
 const fullName = data.user.fullName;
 const language = data.user.language;
 const password = data.user.password.valid;

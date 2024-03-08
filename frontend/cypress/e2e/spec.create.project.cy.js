@@ -1,5 +1,5 @@
 // Login user without assigned Project + canceling the test project
-describe('Login to cancel the creating of a project', () => {
+describe('Cancel creating a project', () => {
   sessionStorage.clear();
   it('Should log in user without project and cancel project creation', () => {
       cy.viewport(1600, 900);

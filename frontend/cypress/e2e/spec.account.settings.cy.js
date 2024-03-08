@@ -1,90 +1,76 @@
-// Invalid Inputs
-describe('Testing change of profile picture', () => {
-  sessionStorage.clear();
-    it('Should change user icon', () => {
-        cy.viewport(1600, 900);
-        cy.changePicture(); 
-    });
-});
-
-
-describe('Testing change of colour', () => {
-  sessionStorage.clear();
-    it('Should change colour of icon in the toolbar', () => {
-        cy.viewport(1600, 900);
-        cy.changeColour(); 
-    });
-});
-
-
 // Invalid inputs
-describe('Testing validation of inputfields', () => {
+describe('Invalid changes for account settings', () => {
   sessionStorage.clear();
-    it('Should give validation alert', () => {
+    it('Should give validation in input fields', () => {
         cy.viewport(1600, 900);
         cy.invalidInputs(); 
     });
 });
 
 
+
+
+describe('Valid Changes for account settings', () => {
 // Change username
-describe('Change and confirm Input of new username', () => {
   sessionStorage.clear();
-    it('Should redirect to login screen', () => {
+    it('Should change and confrim username', () => {
         cy.viewport(1600, 900);
         cy.changeUsername();
         
     });
-});
 
 // Change fullname
-describe('Change and confirm Input of new fullname', () => {
   sessionStorage.clear();
-    it('Should show update fullname in toolbar', () => {
+    it('Should change and confrim fullname', () => {
         cy.viewport(1600, 900);
         cy.changeFullname();
       
     });
-});
-
 
 // Change the language
-describe('Testing change of language to Deutsch', () => {
   sessionStorage.clear();
-    it('Should change lang to Deutsch', () => {
+    it('Should change language to "Deutsch"', () => {
         cy.viewport(1600, 900);
         cy.changeLanguage(); 
     });
-});
 
 
 // Change passwort
-describe('Change and confirm Input of new password', () => {
   sessionStorage.clear();
-    it('Should show update in toolbar', () => {
+    it('Should change password', () => {
         cy.viewport(1600, 900);
         cy.changePassword();
       
     });
-});
 
 // Change initials
-describe('Change and confirm Input of new password', () => {
   sessionStorage.clear();
-    it('Should show update in toolbar', () => {
+    it('Should change and update initials', () => {
         cy.viewport(1600, 900);
         cy.changeInitials();
       
     });
-});
+
+// Profile picture
+  sessionStorage.clear();
+    it('Should change profile picture', () => {
+        cy.viewport(1600, 900);
+        cy.changePicture(); 
+    });
+
+// change colour
+  sessionStorage.clear();
+    it('Should change colour of icon in the toolbar', () => {
+        cy.viewport(1600, 900);
+        cy.changeColour(); 
+    });
+
 
 // Delete Account
-describe('Testing account delete', () => {
   sessionStorage.clear();
-    it('Should return a snackbar information', () => {
+    it('Should delete the account', () => {
         cy.viewport(1600, 900);
         cy.deleteAccount();
-      
     });
 });
 
