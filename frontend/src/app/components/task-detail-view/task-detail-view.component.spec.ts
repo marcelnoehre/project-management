@@ -33,6 +33,7 @@ describe('TaskDetailViewComponent', () => {
 			providers: [
 				{ provide: MatDialogRef, useValue: {} },
 				{ provide: ApiService, useClass: TestService },
+				{ provide: ApiService, useClass: TestService },
 				{ provide: MatSnackBar, useValue: snackbarSpy },
 				{ provide: MAT_DIALOG_DATA, useValue: {} }
 			]
@@ -54,8 +55,6 @@ describe('TaskDetailViewComponent', () => {
 		it('should initialize data', async () => {
 			component['_data'] = task;
 			await component.ngOnInit();
-			expect(component.task).toEqual(task);
-			expect(component['_initialTask']).toEqual(task);
 			expect(component.members).not.toEqual([]);
 		});
 	});

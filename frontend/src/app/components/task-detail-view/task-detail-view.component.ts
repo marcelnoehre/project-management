@@ -37,7 +37,7 @@ export class TaskDetailViewComponent implements OnInit {
 		try {
 			this.members = await lastValueFrom(this._api.getTeamMembers(this._user.token));
 			let assigned = this._initialTask.assigned;
-			if ((this.members.filter((user) => user.username === assigned)).length === 0) {
+			if (assigned !== '' && (this.members.filter((user) => user.username === assigned)).length === 0) {				
 				assigned += this._translate.instant('USER.DELETED');
 				this._initialTask.assigned = assigned;
 				this.task.assigned = assigned;
