@@ -20,31 +20,35 @@
           <div *ngIf="hasTaskList()" class="import-preview">
             <table>
               <tr>
-                <th>title</th>
-                <th>description</th>
-                <th>state</th>
-                <th>author</th>
+                <th>{{ 'TASK.TITLE' | translate }}</th>
+                <th>{{ 'TASK.DESCRIPTION' | translate }}</th>
+                <th>{{ 'TASK.AUTHOR' | translate }}</th>
+                <th>{{ 'TASK.ASSIGNED' | translate }}</th>
+                <th>{{ 'TASK.STATE' | translate }}</th>
+                <th>{{ 'TASK.PRIORITIZATION' | translate }}</th>
               </tr>
               <tr *ngFor="let task of taskList">
                 <td>{{ task.title }}</td>
                 <td>{{ task.description }}</td>
-                <td>{{ task.state }}</td>
                 <td>{{ task.author }}</td>
+                <td>{{ task.assigned }}</td>
+                <td>{{ task.state }}</td>
+                <td>{{ task.order }}</td>
               </tr>
             </table>
             <div class="import-submission p-2">
               <ng-container *ngIf="result">
-                <p>Success: {{ result.success }}</p>
-                <p>Failed: {{ result.fail }}</p>
+                <p>{{ 'TASK.IMPORT.SUCCESS' | translate }}: {{ result.success }}</p>
+                <p>{{ 'TASK.IMPORT.FAILED' | translate }}: {{ result.fail }}</p>
               </ng-container>
               <button mat-raised-button *ngIf="!result" color="accent" (click)="importTasks()" tabindex="0">
                 <app-spinner-icon class="material-icons" icon="upload" [spinning]="loading"></app-spinner-icon>
                 <ng-container *ngIf="loading">&nbsp;</ng-container>
-                {{ "APP.IMPORT" | translate }}
+                {{ 'APP.IMPORT' | translate }}
               </button>
-              <button mat-raised-button *ngIf="result" color="accent" (click)="reset()" tabindex="0">
+              <button mat-raised-button color="accent" (click)="reset()" tabindex="0">
                 <mat-icon>refresh</mat-icon>
-                {{ "APP.RESET" | translate }}
+                {{ 'APP.RESET' | translate }}
               </button>
             </div>
           </div>

@@ -16,9 +16,7 @@ export class DialogComponent implements OnInit {
 	constructor(
 		private _dialogRef: MatDialogRef<DialogComponent>,
 		@Inject(MAT_DIALOG_DATA) private _data: DialogData
-	) {
-
-	}
+	) { }
 
 	ngOnInit(): void {
 		this.headline = this._data.headline;
@@ -30,5 +28,4 @@ export class DialogComponent implements OnInit {
 	closeDialog(res: boolean): void {
 		this._dialogRef.close(res);
 	}
-
 }

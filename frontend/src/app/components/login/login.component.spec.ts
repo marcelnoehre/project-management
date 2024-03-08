@@ -10,8 +10,32 @@ import { ROUTES, Router, RouterModule } from '@angular/router';
 import { DashboardComponent } from '../dashboard/dashboard.component';
 import { RegistrationComponent } from '../registration/registration.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Permission } from 'src/app/enums/permission.enum';
 
 describe('LoginComponent', () => {
+	const invited = {
+		token: 'invited',
+		username: 'invited',
+		fullName: 'Mock Invited',
+		initials: 'MI',
+		color: '#FFFFFF',
+		language: 'es',
+		project: 'MockProject',
+		permission: Permission.INVITED,
+		profilePicture: '',
+		notificationsEnabled: true,
+		isLoggedIn: true,
+		stats: {
+			created: 77,
+			imported: 42,
+			updated: 19,
+			edited: 56,
+			trashed: 83,
+			restored: 5,
+			deleted: 38,
+			cleared: 91,
+		}
+	}
 	const mockRoutes = [
 		{
 			path: '',
@@ -105,18 +129,18 @@ describe('LoginComponent', () => {
 		});
 		
 		it('should check if username is invalid', () => {
-		component.loginForm.controls['usernameFormControl'].setValue('');
-		expect(component.userValid()).toBeFalsy();
+			component.loginForm.controls['usernameFormControl'].setValue('');
+			expect(component.userValid()).toBeFalsy();
 		});
 	
 		it('should check if password is valid', () => {
-		component.loginForm.controls['passwordFormControl'].setValue('validPassword');
-		expect(component.passwordValid()).toBeTruthy();
+			component.loginForm.controls['passwordFormControl'].setValue('validPassword');
+			expect(component.passwordValid()).toBeTruthy();
 		});
 	
 		it('should check if password is invalid', () => {
-		component.loginForm.controls['passwordFormControl'].setValue('');
-		expect(component.passwordValid()).toBeFalsy();
+			component.loginForm.controls['passwordFormControl'].setValue('');
+			expect(component.passwordValid()).toBeFalsy();
 		});
 	});
 
@@ -126,6 +150,40 @@ describe('LoginComponent', () => {
 			component.loginForm.controls['passwordFormControl'].setValue('1234');
 			await component.login();
 			expect(router.url).toBe('/');
+		});
+
+		it('should create a project', async () => {
+			router.navigateByUrl('/login');
+			component['_user'].language = 'es';
+			component.processCreateProject(true);
+			expect(translateService.currentLang).toBe('es');
+			expect(router.url).toBe('/');
+		});
+
+		it('should not create a project', async () => {
+			component['_user'].language = 'es';
+			component.processCreateProject(false);
+			expect(translateService.currentLang).toBeUndefined();
+		});
+
+		it('should accept invite', async () => {
+			component['_user'].token = 'invited';
+			component['_user'].language = 'es';
+			await component.processHandleInvite(invited, true);
+			expect(component['_user'].token).toBe('invited');
+			expect(component['_user'].permission).toBe(Permission.MEMBER);
+			expect(component['_user'].project).toBe('MockProject');
+			expect(component['_user'].isLoggedIn).toBe(true);
+			expect(translateService.currentLang).toBe('es');
+			expect(router.url).toBe('/');
+			expect(snackbarSpy.open).toHaveBeenCalledWith('SUCCESS.INVITE_ACCEPTED', 'APP.OK', { duration: 7000, panelClass: 'info' });	
+		});
+
+		it('should reject invite', async () => {
+			component['_user'].token = 'invited';
+			component['_user'].language = 'es';
+			await component.processHandleInvite(invited, false);
+			expect(snackbarSpy.open).toHaveBeenCalledWith('SUCCESS.INVITE_REJECTED', 'APP.OK', { duration: 7000, panelClass: 'info' });	
 		});
 
 		it('should display error for invalid credentials', async () => {
@@ -161,5 +219,4 @@ describe('LoginComponent', () => {
 		tick();
 		expect(router.url).toBe('/registration');
 	}));
-
 });

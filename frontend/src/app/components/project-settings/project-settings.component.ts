@@ -95,19 +95,23 @@ export class ProjectSettingsComponent implements OnInit {
 			trueButton: this._translate.instant('APP.REMOVE')
 		};
 		this._dialog.open(DialogComponent, { data, ...{} }).afterClosed().subscribe(async (remove) => {
-			if (remove) {
-				this._loadingDelete = username;
-				try {
-					const response = await lastValueFrom(this._api.removeUser(this._user.token, username));
-					this._loadingDelete = '';
-					this.members.splice(index, 1);
-					this._snackbar.open(this._translate.instant(response.message));
-				} catch (error) {
-					this._loadingDelete = '';
-					this._error.handleApiError(error);
-				}
-			}
+			await this.processRemove(username, index, remove);
 		});
+	}
+
+	public async processRemove(username: string, index: number, remove: boolean): Promise<void> {
+		if (remove) {
+			try {
+				this._loadingDelete = username;
+				const response = await lastValueFrom(this._api.removeUser(this._user.token, username));
+				this._loadingDelete = '';
+				this.members.splice(index, 1);
+				this._snackbar.open(this._translate.instant(response.message));
+			} catch (error) {
+				this._loadingDelete = '';
+				this._error.handleApiError(error);
+			}
+		}
 	}
 
 	public leaveProject(): void {
@@ -119,21 +123,25 @@ export class ProjectSettingsComponent implements OnInit {
 		};
 		this._dialog.open(DialogComponent, { data, ...{} }).afterClosed().subscribe(
 			async (confirmed) => {
-				if (confirmed) {
-					this.loadingLeave = true;
-					try {
-						const response = await lastValueFrom(this._api.leaveProject(this._user.token));
-						this.loadingLeave = false;
-						this._storage.deleteSessionEntry('user');
-						this._user.user = this._storage.getSessionEntry('user');
-						this._snackbar.open(this._translate.instant(response.message));
-						this._router.navigateByUrl('/login');
-					} catch (error) {
-						this.loadingLeave = false;
-						this._error.handleApiError(error);
-					}
-				}
+				await this.processLeave(confirmed);
 			});
+	}
+
+	public async processLeave(confirmed: boolean): Promise<void> {
+		if (confirmed) {
+			try {
+				this.loadingLeave = true;
+				const response = await lastValueFrom(this._api.leaveProject(this._user.token));
+				this.loadingLeave = false;
+				this._storage.deleteSessionEntry('user');
+				this._user.user = this._storage.getSessionEntry('user');
+				this._snackbar.open(this._translate.instant(response.message));
+				this._router.navigateByUrl('/login');
+			} catch (error) {
+				this.loadingLeave = false;
+				this._error.handleApiError(error);
+			}
+		}
 	}
 
 	public async updatePermission(username: string, event: any): Promise<void> {
@@ -159,10 +167,8 @@ export class ProjectSettingsComponent implements OnInit {
 	}
 
 	public isEditable(permission: Permission): boolean {
-		if (permission === Permission.ADMIN) {
+		if (permission === Permission.ADMIN || permission === Permission.MEMBER) {
 			return this._user.hasPermission(Permission.OWNER);
-		} else if (permission === Permission.MEMBER) {
-			return this._user.hasPermission(Permission.ADMIN);
 		} else {
 			return false;
 		}

@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node index.js",
     "generate-swagger": "node swagger.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest",
+    "test-coverage": "jest --coverage"
   },
   "keywords": [],
   "author": "",
@@ -18,5 +19,13 @@
     "firebase-tools": "^13.0.2",
     "swagger-autogen": "^2.23.7",
     "swagger-ui-express": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.12",
+    "@types/supertest": "^6.0.2",
+    "firebase-admin-mock": "^0.0.10",
+    "jest": "^29.7.0",
+    "supertest": "^6.3.4",
+    "ts-jest": "^29.1.2"
   }
 }

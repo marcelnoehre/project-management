@@ -98,11 +98,11 @@ export class KanbanBoardComponent implements AfterViewInit {
 	}
 
 	public xml(): void {
-		this._export(this._parser.tasksToXML(this.taskList), '.xml');
+		this._export(this._parser.tasksToXML(this._parser.exportFormat(this.taskList)), '.xml');
 	}
 
 	public yaml(): void {
-		this._export(this._parser.tasksToYAML(this.taskList), '.yaml');
+		this._export(this._parser.tasksToYAML(this._parser.exportFormat(this.taskList)), '.yaml');
 	}
 
 	public getColor(state: string): TaskStateColor {
