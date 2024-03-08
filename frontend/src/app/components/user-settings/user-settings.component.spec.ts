@@ -4,15 +4,24 @@ import { UserSettingsComponent } from './user-settings.component';
 import { AppModule } from 'src/app/app.module';
 import { environment } from 'src/environments/environment';
 import { Permission } from 'src/app/enums/permission.enum';
+import { TestService } from 'src/app/services/api/test.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ApiService } from 'src/app/services/api/api.service';
 
 describe('UserSettingsComponent', () => {
 	let component: UserSettingsComponent;
 	let fixture: ComponentFixture<UserSettingsComponent>;
+	let snackbarSpy: jasmine.SpyObj<MatSnackBar>;
 
 	beforeEach(() => {
+		snackbarSpy = jasmine.createSpyObj('MatSnackBar', ['open']);
 		TestBed.configureTestingModule({
 			imports: [AppModule],
-			declarations: [UserSettingsComponent]
+			declarations: [UserSettingsComponent],
+			providers: [
+				{ provide: ApiService, useClass: TestService },
+				{ provide: MatSnackBar, useValue: snackbarSpy }
+			]
 		});
 		fixture = TestBed.createComponent(UserSettingsComponent);
 		component = fixture.componentInstance;
@@ -161,6 +170,20 @@ describe('UserSettingsComponent', () => {
 
 		it('should not be loading', () => {
 			expect(component.isLoading('username')).toBe(false);
+		});
+	});
+
+	describe('delete user', () => {
+		it('should delete the user', async () => {
+			component['_user'].token = 'mock';
+			await component.processDeleteUser(true);
+			expect(snackbarSpy.open).toHaveBeenCalledWith('SUCCESS.DELETE_ACCOUNT', 'APP.OK', { duration: 7000, panelClass: 'info' });
+		});
+
+		it('should not delete the user', async () => {
+			component['_user'].token = 'mock';
+			await component.processDeleteUser(false);
+			expect(snackbarSpy.open).not.toHaveBeenCalled();
 		});
 	});
 });
