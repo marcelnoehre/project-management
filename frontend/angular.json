@@ -58,6 +58,20 @@
               "extractLicenses": false,
               "sourceMap": true,
               "namedChunks": true
+            },
+            "mock": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true,
+              "fileReplacements": [
+								{
+									"replace": "src/environments/environment.ts",
+									"with": "src/environments/environment.test.ts"
+								}
+							]
             }
           },
           "defaultConfiguration": "production"
@@ -72,7 +86,7 @@
               "browserTarget": "frontend:build:development"
             },
             "mock": {
-              "browserTarget": "frontend:build:development"
+              "browserTarget": "frontend:build:mock"
             }
           },
           "defaultConfiguration": "development"
@@ -103,14 +117,6 @@
             "scripts": []
           },
           "configurations": {
-						"mock": {
-							"fileReplacements": [
-								{
-									"replace": "src/environments/environment.ts",
-									"with": "src/environments/environment.mock.ts"
-								}
-							]
-						},
             "test": {
 							"fileReplacements": [
 								{

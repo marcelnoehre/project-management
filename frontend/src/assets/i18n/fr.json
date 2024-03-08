@@ -1,1 +1,213 @@
-{}
+{
+    "APP": {
+        "OK": "OK",
+        "CANCEL": "Annuler",
+        "CREATE": "Créer",
+        "REMOVE": "Supprimer",
+        "CONFIRM": "Confirmer",
+        "ACCEPT": "Accepter",
+        "REJECT": "Rejeter",
+        "CLEAR": "Effacer",
+        "IMPORT": "Importer",
+        "RESET": "Réinitialiser"
+    },
+    "NAV": {
+        "DASHBOARD": "Tableau de bord",
+        "BOARD": "Tableau",
+        "CREATE_TASK": "Créer une tâche",
+        "IMPORT_TASKS": "Importer des tâches",
+        "TRASH_BIN": "Corbeille",
+        "STATS": "Statistiques",
+        "PROJECT_SETTINGS": "Paramètres du projet",
+        "ACCOUNT_SETTINGS": "Paramètres du compte",
+        "NOTIFICATIONS": "Notifications",
+        "LOGOUT": "Se déconnecter"
+    },
+    "ERROR": {
+        "INTERNAL": "Erreur interne du serveur !",
+        "INVALID_TOKEN": "Déconnecté pour des raisons de sécurité !",
+        "REQUIRED": {
+            "USERNAME": "Nom d'utilisateur requis !",
+            "FULLNAME": "Nom complet requis !",
+            "PASSWORD": "Mot de passe requis !",
+            "INITIALS": "Initiales requises !",
+            "REPEAT_PASSWORD": "Répéter le mot de passe requis !",
+            "TITLE": "Titre requis !"
+        },
+        "MINLENGTH": {
+            "USERNAME": "Nom d'utilisateur trop court !",
+            "PASSWORD": "Mot de passe trop court !",
+            "REPEAT_PASSWORD": "Répéter le mot de passe trop court !",
+            "INITIALS": "Initiales trop courtes !"
+        },
+        "PATTERN": "Le motif ne correspond pas",
+        "PASSWORDS_MATCH": "Les mots de passe ne correspondent pas !",
+        "INVALID_CREDENTIALS": "Informations d'identification invalides !",
+        "REGISTRATION": "Échec de l'inscription !",
+        "USERNAME_TAKEN": "Nom d'utilisateur déjà pris !",
+        "NO_ACCOUNT": "Compte introuvable !",
+        "CREATE_PROJECT": "Nom de projet déjà pris !",
+        "PENDING_INVITE": "L'utilisateur a une invitation en attente !",
+        "HAS_PROJECT": "L'utilisateur est déjà membre d'un autre projet !",
+        "IN_PROJECT": "L'utilisateur est déjà membre de votre projet !",
+        "NO_VALID_SECTION": "Veuillez déplacer la tâche dans une catégorie ou la corbeille !"
+    },
+    "SUCCESS": {
+        "LOGOUT": "Déconnexion réussie !",
+        "REGISTRATION": "Inscription réussie !",
+        "UPDATE_ACCOUNT" : "Compte mis à jour !",
+        "UPDATE_USERNAME" : "Compte mis à jour ! Connectez-vous maintenant avec le nouveau nom d'utilisateur.",
+        "NOTIFICATIONS_ON": "Notifications activées !",
+        "NOTIFICATIONS_OFF": "Notifications désactivées !",
+        "CREATE_PROJECT": "Projet créé avec succès !",
+        "PERMISSION_UPDATED": "Permissions mises à jour !",
+        "REMOVE_MEMBER": "Membre retiré du projet !",
+        "LEAVE_PROJECT": "Quitter le projet !",
+        "INVITE_DELIVERD": "Invitation livrée avec succès !",
+        "INVITE_ACCEPTED": "Acceptation réussie !",
+        "INVITE_REJECTED": "Invitation supprimée ! Créez un projet ou demandez une nouvelle invitation.",
+        "DELETE_ACCOUNT": "Compte supprimé avec succès !",
+        "CREATE_TASK": "Tâche créée avec succès !",
+        "IMPORT_TASKS": "Importation des tâches terminée !",
+        "EDIT_TASK": "Tâche modifiée avec succès !",
+        "MOVE_TO_TRASH": "Tâche déplacée dans la corbeille !",
+        "CLEAR_TRASH_BIN": "Corbeille vidée !",
+        "TASK_RESTORED": "Tâche '{{title}}' restaurée !",
+        "TASK_DELETED": "Tâche '{{title}}' supprimée définitivement !"
+    },
+    "USER" : {
+        "USERNAME": "Nom d'utilisateur",
+        "PASSWORD": "Mot de passe",
+        "REPEAT_PASSWORD": "Répéter le mot de passe",
+        "NEW_PASSWORD": "Nouveau mot de passe",
+        "FULLNAME": "Nom complet",
+        "LANGUAGE": "Langue",
+        "PERMISSION": "Permission",
+        "INITIALS": "Initiales",
+        "COLOR": "Couleur",
+        "PROFILEPICTURE": "Image de profil",
+        "DELETE": "Supprimer le compte",
+        "DELETED": " (supprimé)"
+    },
+    "LOGIN": {
+        "HEADER": "Kanban",
+        "LOGIN": "Connexion",
+        "NOT_REGISTERED": "Pas encore de compte ? ",
+        "REGISTRATION": "Inscription."
+    },
+    "REGISTRATION": {
+        "HEADER": "Créer un compte utilisateur",
+        "REGISTER": "S'inscrire",
+        "BACK": "Retour à la connexion",
+        "PASSWORD_FORMAT": "Le mot de passe doit contenir au moins 1 lettre majuscule, au moins 1 lettre minuscule, au moins 1 chiffre et au moins 1 des caractères spéciaux suivants : @#$%^&+=*"
+    },
+    "DIALOG": {
+        "HEADLINE": {
+            "CREATE_PROJECT": "Vous n'êtes actuellement membre d'aucun projet",
+            "INVITE": "Invitation",
+            "REMOVE_MEMBER": "Supprimer {{username}} ?",
+            "CHANGE_ATTRIBUTE": "Modifier {{attribute}}",
+            "LEAVE_PROJECT": "Quitter le projet",
+            "DELETE_ACCOUNT": "Supprimer de manière irréversible !"
+        },
+        "INFO": {
+            "CREATE_PROJECT": "Créez un nouveau projet ou demandez à votre chef d'équipe de vous envoyer une invitation",
+            "INVITE": "Vous avez reçu une invitation pour le projet {{project}}",
+            "REMOVE_MEMBER": "Si vous supprimez l'utilisateur, il n'aura plus accès au projet. Les tâches existantes restent répertoriées sous ce nom d'utilisateur.",
+            "CHANGE_ATTRIBUTE": "Êtes-vous sûr de vouloir changer votre {{attribute}} ?",
+            "LEAVE_PROJECT": "Êtes-vous sûr de vouloir quitter le projet ?",
+            "DELETE_ACCOUNT": "Êtes-vous sûr de vouloir supprimer votre compte ?"
+        }
+    },
+    "PROJECT": {
+        "NAME": "Nom du projet",
+        "ACTIONS": "Actions",
+        "INVITE": "Inviter un utilisateur au projet",
+        "LEAVE": "Quitter le projet"
+    },
+    "TASK": {
+        "TITLE": "Titre",
+        "DESCRIPTION": "Description",
+        "ASSIGN": "Attribuer",
+        "STATE": "État",
+        "CREATE": "Créer",
+        "AUTHOR": "Auteur",
+        "ASSIGNED": "Attribué",
+        "PRIORITIZATION": "Priorisation",
+        "STATE_ENUM": {
+            "NONE": "Aucun état",
+            "TODO": "À faire",
+            "PROGRESS": "En cours",
+            "REVIEW": "En revue",
+            "DONE": "Terminé"
+        },
+        "DETAIL_VIEW": "Vue détaillée",
+        "IMPORT": {
+            "SUCCESS": "Succès",
+            "Failed": "Échec"
+        }
+    },
+    "NOTIFICATIONS": {
+        "FEED": "Notifications",
+        "TYPE": "Type",
+        "TIMESTAMP": "Horodatage",
+        "MESSAGE": "Message",
+        "NEW": {
+            "INVITED": "{{data_0}} a invité {{data_1}} au projet",
+            "JOINED": "{{data_0}} a rejoint l'équipe",
+            "REJECTED": "{{data_0}} a refusé l'invitation",
+            "LEAVE_PROJECT": "{{data_0}} a quitté l'équipe",
+            "REMOVED": "{{data_0}} a été supprimé de l'équipe par {{data_1}}",
+            "CREATE_TASK": "{{data_0}} a créé une nouvelle tâche '{{data_1}}'",
+            "IMPORTED_TASKS": "{{data_0}} a importé de nouvelles tâches",
+            "EDITED_TASK": "{{data_0}} a modifié la tâche '{{data_1}}'",
+            "UPDATE_TASK_POSITION": "{{data_0}} a mis à jour le statut de la tâche '{{data_1}}'",
+            "TRASHED_TASK": "{{data_0}} a déplacé la tâche '{{data_1}}' dans la corbeille",
+            "RESTORED_TASK": "{{data_0}} a restauré la tâche '{{data_1}}'",
+            "DELETED_TASK": "{{data_0}} a supprimé définitivement la tâche '{{data_1}}'",
+            "CLEARED_TRASH_BIN": "{{data_0}} a vidé la corbeille"
+        }
+    },
+    "STATS": {
+        "HEADER": {
+            "PERSONAL_STATS": "Statistiques personnelles",
+            "STAT_LEADERS": "Leaders statistiques",
+            "STATS": "Statistiques",
+            "TASK_AMOUNT": "Quantité de tâches",
+            "AVERAGE_TIME": "Temps moyen",
+            "WIP": "Travail en cours",
+            "TASK_PROGRESS": "Progression des tâches",
+            "PROJECT_ROADMAP": "Feuille de route du projet"
+        },
+        "LOADING": {
+            "INIT": "Initialisation de la récupération des statistiques...",
+            "OPTIMIZE_ORDER": "Optimisation du stockage des tâches...",
+            "PERSONAL_STATS": "Récupération des statistiques personnelles...",
+            "STATS": "Récupération des statistiques générales...",
+            "STAT_LEADERS": "Récupération des leaders statistiques...",
+            "TASK_AMOUNT": "Récupération de la quantité de tâches...",
+            "AVERAGE_TIME": "Récupération du temps moyen des états...",
+            "WIP": "Récupération du travail en cours (WIP)...",
+            "TASK_PROGRESS": "Récupération de la progression des tâches...",
+            "PROJECT_ROADMAP": "Récupération de la feuille de route du projet...",
+            "DONE": "Récupération des statistiques terminée !",
+            "STORAGE": "Chargement des données calculées après la dernière connexion..."
+        },
+        "WIP_INFO": "Il y a actuellement {{wip}} tâches en cours",
+        "WIP_INFO_SINGLE": "Il y a actuellement 1 tâche en cours",
+        "WIP_INFO_NONE": "Aucune tâche n'est actuellement en cours",
+        "PROJECT": "Projet",
+        "OTHERS": "Autres",
+        "PROJECT_ROADMAP": {
+            "CREATED": "{{username}} a créé le projet",
+            "INVITED": "{{username}} a invité {{target}} au projet",
+            "REJECTED": "{{username}} a décliné l'invitation",
+            "JOINED": "{{username}} a rejoint le projet",
+            "REMOVED": "{{username}} a retiré {{target}} du projet",
+            "LEFT": "{{username}} a quitté le projet",
+            "ADMIN": "{{username}} a donné la permission 'ADMIN' à {{target}}",
+            "MEMBER": "{{username}} a donné la permission 'MEMBRE' à {{target}}"
+        },
+        "REGENERATE": "Régénérer toutes les statistiques"
+    }
+}
