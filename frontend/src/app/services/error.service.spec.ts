@@ -43,7 +43,7 @@ describe('ErrorService', () => {
 	let snackbarServiceSpy: jasmine.SpyObj<SnackbarService>;
 	let translateServiceSpy: jasmine.SpyObj<TranslateService>;
 
-  	beforeEach(() => {
+	beforeEach(() => {
 		userServiceSpy = jasmine.createSpyObj('UserService', ['clearSession'], { user: null });
 		storageServiceSpy = jasmine.createSpyObj('StorageService', ['clearSession', 'getSessionEntry']);
 		routerSpy = jasmine.createSpyObj('Router', ['navigateByUrl']);
@@ -77,29 +77,29 @@ describe('ErrorService', () => {
 
 	describe('handleApiError', () => {
 		it('should handle 403 status code by calling handleInvalidUser', () => {
-		  const error = { status: 403 };
-		  spyOn(errorService, 'handleInvalidUser');
-		  errorService.handleApiError(error);
-		  expect(errorService.handleInvalidUser).toHaveBeenCalled();
+			const error = { status: 403 };
+			spyOn(errorService, 'handleInvalidUser');
+			errorService.handleApiError(error);
+			expect(errorService.handleInvalidUser).toHaveBeenCalled();
 		});
 	
 		it('should handle error with translated message', () => {
-		  const error = { error: { message: 'ERROR_MESSAGE_KEY' } };
-		  translateServiceSpy.instant.and.returnValue('Translated Error Message');
-		  errorService.handleApiError(error);
-		  expect(snackbarServiceSpy.open).toHaveBeenCalledWith('Translated Error Message');
+			const error = { error: { message: 'ERROR_MESSAGE_KEY' } };
+			translateServiceSpy.instant.and.returnValue('Translated Error Message');
+			errorService.handleApiError(error);
+			expect(snackbarServiceSpy.open).toHaveBeenCalledWith('Translated Error Message');
 		});
 	
 		it('should handle server error', () => {
-		  const error = { statusText: 'Server Error' };
-		  errorService.handleApiError(error);
-		  expect(snackbarServiceSpy.open).toHaveBeenCalledWith('Server Error');
+			const error = { statusText: 'Server Error' };
+			errorService.handleApiError(error);
+			expect(snackbarServiceSpy.open).toHaveBeenCalledWith('Server Error');
 		});
 	
 		it('should handle generic error', () => {
-		  const error = 'Mock Error';
-		  errorService.handleApiError(error);
-		  expect(snackbarServiceSpy.open).toHaveBeenCalledWith('Mock Error');
+			const error = 'Mock Error';
+			errorService.handleApiError(error);
+			expect(snackbarServiceSpy.open).toHaveBeenCalledWith('Mock Error');
 		});
 	});
 	

@@ -51,9 +51,9 @@ export class CreateProjectComponent {
 	}
 
 	public async createProject(): Promise<void> {
-			this._user.user = this._sessionUser;
-			await this.processCreateProject();
-			this._dialogRef.close(true);
+		this._user.user = this._sessionUser;
+		await this.processCreateProject();
+		this._dialogRef.close(true);
 	}
 
 	public async processCreateProject(): Promise<void> {

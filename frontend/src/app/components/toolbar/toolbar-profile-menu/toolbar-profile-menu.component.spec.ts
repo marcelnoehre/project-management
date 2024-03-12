@@ -42,7 +42,7 @@ describe('ToolbarProfileMenuComponent', () => {
 			deleted: 23,
 			cleared: 69,
 		},
-	}
+	};
 	let component: ToolbarProfileMenuComponent;
 	let fixture: ComponentFixture<ToolbarProfileMenuComponent>;
 	let router: Router;

@@ -64,7 +64,13 @@
       <div class="form-container">
         <mat-form-field appearance="outline" class="user-settings-form-field">
           <mat-label>{{ "USER.LANGUAGE" | translate }}</mat-label>
-          <mat-select id="language-select" name="language" formControlName="languageFormControl" placeholder="{{ 'USER.LANGUAGE' | translate }}" data-cy="language-change">
+          <mat-select
+            id="language-select"
+            name="language"
+            formControlName="languageFormControl"
+            placeholder="{{ 'USER.LANGUAGE' | translate }}"
+            data-cy="language-change"
+          >
             <mat-option *ngFor="let lang of languages" [value]="lang.key" data-cy="language-change-dropdown">
               {{ lang.label }}
             </mat-option>

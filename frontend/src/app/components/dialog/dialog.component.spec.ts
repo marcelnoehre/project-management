@@ -33,7 +33,7 @@ describe('DialogComponent', () => {
 		});
 	});
 
-	it ('should initialize dialog data', async () => {
+	it('should initialize dialog data', async () => {
 		component['_data'] = {
 			headline: 'MockHeadline',
 			description: 'MockDescription',

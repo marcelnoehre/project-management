@@ -1,4 +1,4 @@
-import { TestBed, inject } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 
 import { RequestService } from './request.service';
 import { RequestType } from '../enums/request-type.enum';
@@ -11,16 +11,16 @@ describe('RequestService', () => {
 	let httpMock: HttpTestingController;
   
 	beforeEach(() => {
-	  TestBed.configureTestingModule({
-		imports: [HttpClientTestingModule],
-		providers: [RequestService],
-	  });
-	  requestService = TestBed.inject(RequestService);
-	  httpMock = TestBed.inject(HttpTestingController);
+		TestBed.configureTestingModule({
+			imports: [HttpClientTestingModule],
+			providers: [RequestService],
+		});
+		requestService = TestBed.inject(RequestService);
+		httpMock = TestBed.inject(HttpTestingController);
 	});
   
 	afterEach(() => {
-	  httpMock.verify();
+		httpMock.verify();
 	});
 
 	describe('setup', () => {

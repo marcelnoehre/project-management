@@ -20,7 +20,7 @@ describe('TaskDetailViewComponent', () => {
 		state: TaskState.TODO,
 		history: [],
 		order: 1
-	}
+	};
 	let component: TaskDetailViewComponent;
 	let fixture: ComponentFixture<TaskDetailViewComponent>;
 	let snackbarSpy: jasmine.SpyObj<MatSnackBar>;

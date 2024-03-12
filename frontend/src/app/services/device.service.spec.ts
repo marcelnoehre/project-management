@@ -8,14 +8,12 @@ import { environment } from 'src/environments/environment';
 
 describe('DeviceService', () => {
 	let deviceService: DeviceService;
-	let router: Router;
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({
 			providers: [DeviceService, { provide: Router, useValue: { events: of(new NavigationEnd(0, '/', '/')) } }]
 		});
 		deviceService = TestBed.inject(DeviceService);
-		router = TestBed.inject(Router);
 	});
 
 	describe('setup', () => {

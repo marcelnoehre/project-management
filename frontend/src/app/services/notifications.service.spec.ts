@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { Notification } from '../interfaces/data/notification';
 import { NotificationsService } from './notifications.service';
 import { AppModule } from '../app.module';
 import { environment } from 'src/environments/environment';
@@ -11,22 +10,22 @@ import { UserService } from './user.service';
 describe('NotificationsService', () => {
 	const mockNotifications = [
 		{
-			uid: "lPMZOH0Hxy6z0mhZ9shV", 
-			message: "NOTIFICATIONS.NEW.JOINED", 
-			data: ["admin"], 
-			icon: "person_add", 
+			uid: 'lPMZOH0Hxy6z0mhZ9shV', 
+			message: 'NOTIFICATIONS.NEW.JOINED', 
+			data: ['admin'], 
+			icon: 'person_add', 
 			timestamp: 1707948598239, 
 			seen: false 
 		},
 		{ 
-			uid: "lk8id9WVL0N1o97vRDK6", 
-			message: "NOTIFICATIONS.NEW.CREATE_TASK", 
-			data: ["admin", "mock"], 
-			icon: "note_add", 
+			uid: 'lk8id9WVL0N1o97vRDK6', 
+			message: 'NOTIFICATIONS.NEW.CREATE_TASK', 
+			data: ['admin', 'mock'], 
+			icon: 'note_add', 
 			timestamp: 1707948640062, 
 			seen: true 
 		}
-	]
+	];
 
 	let notificationsService: NotificationsService;
 	let apiServiceSpy: jasmine.SpyObj<ApiService>;
@@ -45,7 +44,7 @@ describe('NotificationsService', () => {
 				{ provide: ApiService, useValue: apiServiceSpy },
 				{ provide: UserService, useValue: userServiceSpy },
 				{ provide: ErrorService, useValue: errorServiceSpy },
-			  ]
+			]
 		});
 
 		notificationsService = TestBed.inject(NotificationsService);
@@ -80,9 +79,9 @@ describe('NotificationsService', () => {
 			expect(notificationsService.isLoading()).toBeFalse();
 			expect(errorServiceSpy.handleApiError).toHaveBeenCalledWith(error);
 		});
-	  });
+	});
 	
-	  describe('update', () => {
+	describe('update', () => {
 		it('should update notifications and unseen count', async () => {
 			apiServiceSpy.updateNotifications.and.returnValue(of(mockNotifications));
 			userServiceSpy.token = 'mockToken';

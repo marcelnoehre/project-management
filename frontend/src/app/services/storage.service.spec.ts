@@ -42,10 +42,10 @@ describe('StorageService', () => {
 		});
 	
 		it('should clear local storage', () => {
-		  storageService.setLocalEntry(key, data);
-		  storageService.clearLocal();
-		  const result = storageService.isLocalEmpty();
-		  expect(result).toBe(true);
+			storageService.setLocalEntry(key, data);
+			storageService.clearLocal();
+			const result = storageService.isLocalEmpty();
+			expect(result).toBe(true);
 		});
 	});
 	

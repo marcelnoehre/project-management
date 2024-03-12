@@ -60,10 +60,60 @@ describe('ProjectSettingsComponent', () => {
 			await component.ngOnInit();
 			expect(component.members.length).toBe(4);
 			expect(component.members).toEqual([
-				{ token: 'owner', username: 'owner', fullName: 'Mock Owner', initials: 'MO', color: '#FFFFFF', language: 'en', project: 'MockProject', permission: Permission.OWNER, profilePicture: '', notificationsEnabled: true, isLoggedIn: true, stats: { created: 91, imported: 10, updated: 45, edited: 78, trashed: 32, restored: 57, deleted: 23, cleared: 69 } },
-				{ token: 'admin', username: 'admin', fullName: 'Mock Admin', initials: 'MA', color: '#FFFFFF', language: 'en', project: 'MockProject', permission: Permission.ADMIN, profilePicture: '', notificationsEnabled: true, isLoggedIn: true, stats: { created: 42, imported: 15, updated: 78, edited: 63, trashed: 29, restored: 51, deleted: 94, cleared: 12 } },
-				{ token: 'member', username: 'member', fullName: 'Mock Member', initials: 'MM', color: '#FFFFFF', language: 'de', project: 'mockProject', permission: Permission.MEMBER, profilePicture: '', notificationsEnabled: false, isLoggedIn: true, stats: { created: 64, imported: 27, updated: 89, edited: 14, trashed: 50, restored: 73, deleted: 3, cleared: 67 } },
-				{ token: 'invited', username: 'invited', fullName: 'Mock Invited', initials: 'MI', color: '#FFFFFF', language: 'en', project: 'MockProject', permission: Permission.INVITED, profilePicture: '', notificationsEnabled: true, isLoggedIn: true, stats: { created: 77, imported: 42, updated: 19, edited: 56, trashed: 83, restored: 5, deleted: 38, cleared: 91 } }
+				{
+					token: 'owner', 
+					username: 'owner', 
+					fullName: 'Mock Owner', 
+					initials: 'MO', 
+					color: '#FFFFFF', 
+					language: 'en', 
+					project: 'MockProject', 
+					permission: Permission.OWNER, 
+					profilePicture: '', 
+					notificationsEnabled: true, 
+					isLoggedIn: true, 
+					stats: { created: 91, imported: 10, updated: 45, edited: 78, trashed: 32, restored: 57, deleted: 23, cleared: 69 }
+				},
+				{ 
+					token: 'admin', 
+					username: 'admin', 
+					fullName: 'Mock Admin', 
+					initials: 'MA', 
+					color: '#FFFFFF', 
+					language: 'en', 
+					project: 'MockProject', 
+					permission: Permission.ADMIN, 
+					profilePicture: '', 
+					notificationsEnabled: true, 
+					isLoggedIn: true, 
+					stats: { created: 42, imported: 15, updated: 78, edited: 63, trashed: 29, restored: 51, deleted: 94, cleared: 12 } 
+				}, { 
+					token: 'member', 
+					username: 'member', 
+					fullName: 'Mock Member', 
+					initials: 'MM', 
+					color: '#FFFFFF', 
+					language: 'de', 
+					project: 'mockProject', 
+					permission: Permission.MEMBER, 
+					profilePicture: '', 
+					notificationsEnabled: false, 
+					isLoggedIn: true, 
+					stats: { created: 64, imported: 27, updated: 89, edited: 14, trashed: 50, restored: 73, deleted: 3, cleared: 67 } 
+				}, { 
+					token: 'invited', 
+					username: 'invited', 
+					fullName: 'Mock Invited', 
+					initials: 'MI', 
+					color: '#FFFFFF', 
+					language: 'en', 
+					project: 'MockProject', 
+					permission: Permission.INVITED, 
+					profilePicture: '', 
+					notificationsEnabled: true, 
+					isLoggedIn: true, 
+					stats: { created: 77, imported: 42, updated: 19, edited: 56, trashed: 83, restored: 5, deleted: 38, cleared: 91 }
+				}
 			]);
 		});
 	});
@@ -187,7 +237,7 @@ describe('ProjectSettingsComponent', () => {
 	it('should update the permission', async () => {
 		await component.ngOnInit();
 		component['_user'].user = component.members[0];
-		await component.updatePermission('member', {value: Permission.ADMIN});
+		await component.updatePermission('member', { value: Permission.ADMIN });
 		expect(snackbarSpy.open).toHaveBeenCalledWith('SUCCESS.PERMISSION_UPDATED', 'APP.OK', { duration: 7000, panelClass: 'info' });
 	});
 

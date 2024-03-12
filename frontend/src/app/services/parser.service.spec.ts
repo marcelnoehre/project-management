@@ -6,9 +6,13 @@ import { TaskState } from '../enums/task-state.enum';
 
 describe('ParserService', () => {
 	const stateList = [
-		{ state: TaskState.NONE, tasks: [{ title: 'Task 1', description: 'Description 1', author: 'Author 1', assigned: 'Assigned 1', state: TaskState.NONE, uid: 'mockUid', project: 'mockProject', order: 1, history: [] }] },
-		{ state: TaskState.TODO, tasks: [{ title: 'Task 2', description: 'Description 2', author: 'Author 2', assigned: 'Assigned 2', state: TaskState.TODO, uid: 'mockUid', project: 'mockProject', order: 1, history: [] }] },
-		{ state: TaskState.PROGRESS, tasks: [] },
+		{ 
+			state: TaskState.NONE, 
+			tasks: [{ title: 'Task 1', description: 'Description 1', author: 'Author 1', assigned: 'Assigned 1', state: TaskState.NONE, uid: 'mockUid', project: 'mockProject', order: 1, history: [] }]
+		}, { 
+			state: TaskState.TODO, 
+			tasks: [{ title: 'Task 2', description: 'Description 2', author: 'Author 2', assigned: 'Assigned 2', state: TaskState.TODO, uid: 'mockUid', project: 'mockProject', order: 1, history: [] }]
+		}, { state: TaskState.PROGRESS, tasks: [] },
 		{ state: TaskState.REVIEW, tasks: [] },
 		{ state: TaskState.DONE, tasks: [] }
 	];

@@ -35,7 +35,7 @@ describe('LoginComponent', () => {
 			deleted: 38,
 			cleared: 91,
 		}
-	}
+	};
 	const mockRoutes = [
 		{
 			path: '',

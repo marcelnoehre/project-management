@@ -39,5 +39,5 @@ describe('AppComponent', () => {
 	it('should initialize TranslateService with default language', () => {
 		const translateService: TranslateService = component['_translate'];
 		expect(translateService.getDefaultLang()).toBe(environment.defaultLanguage);
-	  });
+	});
 });

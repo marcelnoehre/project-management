@@ -56,7 +56,7 @@ describe('KanbanBoardComponent', () => {
 
 	describe('drop', () => {
 		it('should do nothing for invalid area', async () => {
-			const event = { event: { target: { id: 'invalid' }}};
+			const event = { event: { target: { id: 'invalid' } } };
 			await component.drop(event);
 			expect(snackbarSpy.open).not.toHaveBeenCalled();
 		});

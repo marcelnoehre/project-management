@@ -61,7 +61,8 @@ module.exports = {
 				"@typescript-eslint/no-non-null-assertion": "off",
 				"@typescript-eslint/no-explicit-any": "off",
 				"@typescript-eslint/no-loop-func": "off",
-				"no-prototype-builtins": "off"
+				"@typescript-eslint/dot-notation": "off",
+				"no-prototype-builtins": "off",
 			}
 		},
 		{

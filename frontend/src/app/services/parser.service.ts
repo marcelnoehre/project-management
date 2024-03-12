@@ -48,7 +48,7 @@ export class ParserService {
 				break;
 			case 'xml':
 				taskList = [];
-				for (let task of JSON.parse(XML.xml2json(rawInput, { compact: true, spaces: 2 })).root.root) {
+				for (const task of JSON.parse(XML.xml2json(rawInput, { compact: true, spaces: 2 })).root.root) {
 					try {
 						taskList.push({
 							title: task.title._text,
@@ -58,7 +58,9 @@ export class ParserService {
 							state: task.state._text,
 							order: task.order._text
 						});
-					} catch (err) { }
+					} catch (err) {
+						break;
+					}
 				}
 				break;
 			case 'yml':

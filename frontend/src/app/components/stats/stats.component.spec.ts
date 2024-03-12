@@ -157,7 +157,7 @@ describe('StatsComponent', () => {
 				TaskState.PROGRESS,
 				TaskState.REVIEW
 			]
-		})
+		});
 	});
 
 	describe('wip', () => {

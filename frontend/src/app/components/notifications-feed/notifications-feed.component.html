@@ -11,7 +11,13 @@
         </tr>
       </thead>
       <tbody class="content">
-        <tr *ngFor="let notification of notifications; index as i" [ngClass]="isNew(notification.seen)" (click)="seen(i, notification.uid)" tabindex="0" (keyup.enter)="seen(i, notification.uid)">
+        <tr
+          *ngFor="let notification of notifications; index as i"
+          [ngClass]="isNew(notification.seen)"
+          (click)="seen(i, notification.uid)"
+          tabindex="0"
+          (keyup.enter)="seen(i, notification.uid)"
+        >
           <td>
             <mat-icon>{{ notification.icon }}</mat-icon>
           </td>

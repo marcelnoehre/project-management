@@ -78,14 +78,14 @@ describe('ImportTasksComponent', () => {
 				fail: 0,
 				taskList: [
 					{ title: 'Documentation', description: 'Prepare comprehensive documentation for the project, including user manuals and technical guides.', state: TaskState.NONE, author: 'mock' },
-					{ title: 'Finalize Project', description: 'Review all aspects of the project and prepare for the final release.', state: TaskState.NONE,author: 'mock' },
-					{ title: 'Complete Project Proposal', description: 'Draft a detailed project proposal outlining goals, scope, and deliverables.', state: TaskState.TODO,author: 'mock' },
-					{ title: 'Revise User Interface', description: 'Gather feedback on the prototype and make necessary revisions to the user interface.', state: TaskState.TODO,author: 'mock' },
+					{ title: 'Finalize Project', description: 'Review all aspects of the project and prepare for the final release.', state: TaskState.NONE, author: 'mock' },
+					{ title: 'Complete Project Proposal', description: 'Draft a detailed project proposal outlining goals, scope, and deliverables.', state: TaskState.TODO, author: 'mock' },
+					{ title: 'Revise User Interface', description: 'Gather feedback on the prototype and make necessary revisions to the user interface.', state: TaskState.TODO, author: 'mock' },
 					{ title: 'Client Presentation', description: 'Prepare a presentation for the client showcasing the project progress and features.', state: TaskState.TODO, author: 'mock' },
 					{ title: 'Research Market Trends', description: 'Conduct market research to identify current trends and customer preferences.', state: TaskState.PROGRESS, author: 'mock' },
-					{ title: 'Code Refactoring', description: 'Optimize and refactor existing codebase to improve performance and maintainability.', state: TaskState.PROGRESS,author: 'mock' },
-					{ title: 'Develop Prototype', description: 'Create a prototype for the new product feature based on the research findings.', state: TaskState.REVIEW,author: 'mock' },
-					{ title: 'Quality Assurance Testing', description: 'Conduct thorough testing to ensure the product meets quality standards.', state: TaskState.REVIEW,author: 'mock' },
+					{ title: 'Code Refactoring', description: 'Optimize and refactor existing codebase to improve performance and maintainability.', state: TaskState.PROGRESS, author: 'mock' },
+					{ title: 'Develop Prototype', description: 'Create a prototype for the new product feature based on the research findings.', state: TaskState.REVIEW, author: 'mock' },
+					{ title: 'Quality Assurance Testing', description: 'Conduct thorough testing to ensure the product meets quality standards.', state: TaskState.REVIEW, author: 'mock' },
 					{ title: 'Project Kickoff', description: 'Hold a meeting to officially start the project.', state: TaskState.DONE, author: 'mock' },
 					{ title: 'Release Version 1.0', description: 'Publish the final version of the product.', state: TaskState.DONE, author: 'mock' }
 				]

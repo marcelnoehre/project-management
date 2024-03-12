@@ -10,7 +10,7 @@
 </button>
 
 <mat-menu #menu="matMenu" [overlapTrigger]="false" xPosition="before">
-  <button *ngIf="showNotifications()" (click)="showNotificationsFeed()" mat-menu-item tabindex="0" data-cy="show-notifications-dialog" >
+  <button *ngIf="showNotifications()" (click)="showNotificationsFeed()" mat-menu-item tabindex="0" data-cy="show-notifications-dialog">
     <mat-icon>inbox</mat-icon>
     <span class="notifications-counter">
       <p>{{ unseenNotifications() }}</p>

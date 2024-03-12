@@ -139,8 +139,8 @@ describe('RegistrationComponent', () => {
 		});
 		
 		it('should check if username is invalid', () => {
-		component.registrationForm.controls['usernameFormControl'].setValue('');
-		expect(component.usernameValid()).toBeFalsy();
+			component.registrationForm.controls['usernameFormControl'].setValue('');
+			expect(component.usernameValid()).toBeFalsy();
 		});
 
 		it('should check if full name is valid', () => {
@@ -149,8 +149,8 @@ describe('RegistrationComponent', () => {
 		});
 		
 		it('should check if full name is invalid', () => {
-		component.registrationForm.controls['fullnameFormControl'].setValue('');
-		expect(component.fullnameValid()).toBeFalsy();
+			component.registrationForm.controls['fullnameFormControl'].setValue('');
+			expect(component.fullnameValid()).toBeFalsy();
 		});
 	
 		it('should check if password is valid', () => {

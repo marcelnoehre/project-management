@@ -22,7 +22,13 @@
       </mat-form-field>
       <mat-form-field appearance="outline" class="task-detail-view-form-field">
         <mat-label>{{ "TASK.ASSIGN" | translate }}</mat-label>
-        <mat-select id="assigned-select" name="assigned" placeholder="{{ 'TASK.ASSIGN' | translate }}" [(ngModel)]="task.assigned" data-cy="taskViewAssignedUser">
+        <mat-select
+          id="assigned-select"
+          name="assigned"
+          placeholder="{{ 'TASK.ASSIGN' | translate }}"
+          [(ngModel)]="task.assigned"
+          data-cy="taskViewAssignedUser"
+        >
           <mat-option *ngFor="let member of members" [value]="member.username">
             {{ member.username }}
           </mat-option>

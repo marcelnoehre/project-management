@@ -28,7 +28,7 @@ export class ErrorService {
 			if (error?.statusText) {
 				this._snackbar.open(error.statusText);
 			} else {
-				if(error) this._snackbar.open(error);
+				if (error) this._snackbar.open(error);
 			}
 		}
 	}

@@ -59,10 +59,10 @@ describe('ToolbarComponent', () => {
 	describe('is logged in', () => {
 		it('should update notifications state', () => {
 			component['_user'].notificationsEnabled = true;
-			component.isLoggedIn()
+			component.isLoggedIn();
 			expect(component.notificationsEnabled).toBe(true);
 			component['_user'].notificationsEnabled = false;
-			component.isLoggedIn()
+			component.isLoggedIn();
 			expect(component.notificationsEnabled).toBe(false);
 		});
 

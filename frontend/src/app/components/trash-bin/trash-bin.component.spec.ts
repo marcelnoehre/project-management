@@ -12,77 +12,77 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 describe('TrashBinComponent', () => {
 	const taskList = [{
-			uid: 'L0LJoChgGLAh36tmUip1',
-			author: 'owner',
-			project: 'mockProject',
-			description: 'Prepare comprehensive documentation for the project, including user manuals and technical guides.',
-			assigned: '',
-			history: [
-				{
-					previous: null,
-					state: TaskState.NONE,
-					timestamp: 1707706984237,
-					username: 'owner',
-				},
-			],
-			title: 'Documentation',
-			order: 3,
-			state: TaskState.DELETED,
-		},
-		{
-			uid: 'dk8n2dxpQoybNkRp9kUE',
-			author: 'owner',
-			project: 'mockProject',
-			description: 'Create a prototype for the new product feature based on the research findings.',
-			assigned: '',
-			history: [
-				{
-					previous: null,
-					state: TaskState.REVIEW,
-					timestamp: 1707706985307,
-					username: 'owner',
-				},
-			],
-			title: 'Develop Prototype',
-			order: 3,
-			state: TaskState.DELETED,
-		},
-		{
-			uid: 'enm3q1D8bm0RuzYIFCjI',
-			author: 'owner',
-			project: 'mockProject',
-			description: 'Conduct market research to identify current trends and customer preferences.',
-			assigned: '',
-			history: [
-				{
-					previous: null,
-					state: TaskState.PROGRESS,
-					timestamp: 1707706984989,
-					username: 'owner',
-				},
-			],
-			title: 'Research Market Trends',
-			order: 3,
-			state: TaskState.DELETED,
-		},
-		{
-			uid: 'TcxyseGyDpgTPPYHRn1l',
-			author: 'owner',
-			project: 'mockProject',
-			description: 'Gather feedback on the prototype and make necessary revisions to the user interface.',
-			assigned: '',
-			history: [
-				{
-					previous: null,
-					state: TaskState.TODO,
-					timestamp: 1707706984701,
-					username: 'owner',
-				},
-			],
-			title: 'Revise User Interface',
-			order: 5,
-			state: TaskState.DELETED,
-		}
+		uid: 'L0LJoChgGLAh36tmUip1',
+		author: 'owner',
+		project: 'mockProject',
+		description: 'Prepare comprehensive documentation for the project, including user manuals and technical guides.',
+		assigned: '',
+		history: [
+			{
+				previous: null,
+				state: TaskState.NONE,
+				timestamp: 1707706984237,
+				username: 'owner',
+			},
+		],
+		title: 'Documentation',
+		order: 3,
+		state: TaskState.DELETED,
+	},
+	{
+		uid: 'dk8n2dxpQoybNkRp9kUE',
+		author: 'owner',
+		project: 'mockProject',
+		description: 'Create a prototype for the new product feature based on the research findings.',
+		assigned: '',
+		history: [
+			{
+				previous: null,
+				state: TaskState.REVIEW,
+				timestamp: 1707706985307,
+				username: 'owner',
+			},
+		],
+		title: 'Develop Prototype',
+		order: 3,
+		state: TaskState.DELETED,
+	},
+	{
+		uid: 'enm3q1D8bm0RuzYIFCjI',
+		author: 'owner',
+		project: 'mockProject',
+		description: 'Conduct market research to identify current trends and customer preferences.',
+		assigned: '',
+		history: [
+			{
+				previous: null,
+				state: TaskState.PROGRESS,
+				timestamp: 1707706984989,
+				username: 'owner',
+			},
+		],
+		title: 'Research Market Trends',
+		order: 3,
+		state: TaskState.DELETED,
+	},
+	{
+		uid: 'TcxyseGyDpgTPPYHRn1l',
+		author: 'owner',
+		project: 'mockProject',
+		description: 'Gather feedback on the prototype and make necessary revisions to the user interface.',
+		assigned: '',
+		history: [
+			{
+				previous: null,
+				state: TaskState.TODO,
+				timestamp: 1707706984701,
+				username: 'owner',
+			},
+		],
+		title: 'Revise User Interface',
+		order: 5,
+		state: TaskState.DELETED,
+	}
 	];
 	let snackbarSpy: jasmine.SpyObj<MatSnackBar>;
 	let component: TrashBinComponent;

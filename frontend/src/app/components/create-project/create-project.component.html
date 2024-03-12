@@ -21,28 +21,12 @@
     </form>
   </mat-dialog-content>
   <div class="actions">
-    <button 
-      (click)="closeDialog(false)" 
-      [mat-dialog-close]="false" 
-      color="dark" mat-raised-button 
-      tabindex="0" 
-      data-cy="project-submit-cancel">
-      <mat-icon>
-        clear
-      </mat-icon>
+    <button (click)="closeDialog(false)" [mat-dialog-close]="false" color="dark" mat-raised-button tabindex="0" data-cy="project-submit-cancel">
+      <mat-icon> clear </mat-icon>
       {{ "APP.CANCEL" | translate }}
     </button>
-    <button 
-      (click)="createProject()" 
-      color="dark" 
-      [disabled]="!projectValid()" 
-      mat-raised-button tabindex="0"
-      data-cy="project-submit-create">
-      <app-spinner-icon
-        class="material-icons" 
-        icon="add" 
-        [spinning]="loading">
-      </app-spinner-icon>
+    <button (click)="createProject()" color="dark" [disabled]="!projectValid()" mat-raised-button tabindex="0" data-cy="project-submit-create">
+      <app-spinner-icon class="material-icons" icon="add" [spinning]="loading"> </app-spinner-icon>
       <ng-container *ngIf="loading">&nbsp;</ng-container>
       {{ "APP.CREATE" | translate }}
     </button>

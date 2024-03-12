@@ -173,12 +173,12 @@ describe('UserSettingsComponent', () => {
 		});
 
 		it('should show delete button', () => {
-			component['_user'].permission = Permission.ADMIN
+			component['_user'].permission = Permission.ADMIN;
 			expect(component.showDelete()).toBe(true);
 		});
 
 		it('should not show delete button', () => {
-			component['_user'].permission = Permission.OWNER
+			component['_user'].permission = Permission.OWNER;
 			expect(component.showDelete()).toBe(false);
 		});
 

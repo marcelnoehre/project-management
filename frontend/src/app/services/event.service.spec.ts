@@ -23,39 +23,39 @@ describe('EventService', () => {
 
 	describe('emit events', () => {
 		it('should emit documentClick event', (done: DoneFn) => {
-			const element = document.createElement('div');
+			const domElement = document.createElement('div');
 			eventService.documentClick$.subscribe((element: Element) => {
-			  	expect(element).toBe(element);
+				expect(element).toBe(domElement);
 				done();
 			});
-			eventService.documentClick$.next(element);
+			eventService.documentClick$.next(domElement);
 		});
 		
 		it('should emit updateFullName event', (done: DoneFn) => {
-			const fullName = 'Mock User';
+			const localFullName = 'Mock User';
 			eventService.updateFullName$.subscribe((fullName: string) => {
-				expect(fullName).toBe(fullName);
+				expect(fullName).toBe(localFullName);
 				done();
 			});
-			eventService.updateFullName$.next(fullName);
+			eventService.updateFullName$.next(localFullName);
 		});	
 		
 		it('should emit updateInitials event', (done: DoneFn) => {
-			const initials = 'MU';
+			const localInitials = 'MU';
 			eventService.updateInitials$.subscribe((initials: string) => {
-				expect(initials).toBe(initials);
+				expect(initials).toBe(localInitials);
 				done();
 			});
-			eventService.updateInitials$.next(initials);
+			eventService.updateInitials$.next(localInitials);
 		});
 		
 		it('should emit updateColor event', (done: DoneFn) => {
-			const color = 'blue';
+			const localColor = 'blue';
 			eventService.updateColor$.subscribe((color: string) => {
-				expect(color).toBe(color);
+				expect(color).toBe(localColor);
 				done();
 			});
-			eventService.updateColor$.next(color);
+			eventService.updateColor$.next(localColor);
 		});
 		
 		it('should emit updateProfilePicture event', (done: DoneFn) => {

@@ -8,10 +8,10 @@ describe('UserService', () => {
 	let userService: UserService;
 
 	beforeEach(() => {
-	  TestBed.configureTestingModule({
-		providers: [UserService],
-	  });
-	  userService = TestBed.inject(UserService);
+		TestBed.configureTestingModule({
+			providers: [UserService],
+		});
+		userService = TestBed.inject(UserService);
 	});
 
 	describe('setup', () => {
@@ -27,27 +27,27 @@ describe('UserService', () => {
 	describe('combined set & get', () => {
 		it('should set user properties correctly', () => {
 			userService.user = {
-			  token: 'testToken',
-			  username: 'testUser',
-			  fullName: 'Test User',
-			  language: 'en',
-			  profilePicture: 'img.jpg',
-			  initials: 'TU',
-			  color: 'blue',
-			  project: 'Test Project',
-			  permission: Permission.ADMIN,
-			  notificationsEnabled: true,
-			  isLoggedIn: true,
-			  stats: {
-				created: 1,
-				imported: 2,
-				updated: 3,
-				edited: 4,
-				trashed: 5,
-				restored: 6,
-				deleted: 7,
-				cleared: 8,
-			  },
+				token: 'testToken',
+				username: 'testUser',
+				fullName: 'Test User',
+				language: 'en',
+				profilePicture: 'img.jpg',
+				initials: 'TU',
+				color: 'blue',
+				project: 'Test Project',
+				permission: Permission.ADMIN,
+				notificationsEnabled: true,
+				isLoggedIn: true,
+				stats: {
+					created: 1,
+					imported: 2,
+					updated: 3,
+					edited: 4,
+					trashed: 5,
+					restored: 6,
+					deleted: 7,
+					cleared: 8,
+				},
 			};
 		
 			expect(userService.token).toBe('testToken');
@@ -94,7 +94,7 @@ describe('UserService', () => {
 		});
 
 		it('should update the user attribute: color', () => {
-			userService.color= 'blue';
+			userService.color = 'blue';
 			expect(userService.color).toBe('blue');
 		});
 
