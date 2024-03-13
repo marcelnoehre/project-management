@@ -36,7 +36,7 @@ Cypress.Commands.add('projectSettingsCancelDelete', () => {
     // navigation to project settings 
     cy.get(dashboardCreateTask).click().wait(waitTime);
     // cancel remove
-    cy.get(removeUserButton).eq(0).click({force: true}).wait(waitTime);
+    cy.get(removeUserButton).eq(2).click({force: true}).wait(waitTime);
     cy.get(dialogFalse).click().wait(waitTime);
 });
 
@@ -52,7 +52,7 @@ Cypress.Commands.add('projectSettingsDeleteUser', () => {
     // navigation to project settings 
     cy.get(dashboardCreateTask).click().wait(waitTime);
     // remove user with button
-    cy.get(removeUserButton).eq(0).click({force: true}).wait(waitTime);
+    cy.get(removeUserButton).eq(2).click({force: true}).wait(waitTime);
     cy.get(dialogTrue).click().wait(waitTime);
 });
 
