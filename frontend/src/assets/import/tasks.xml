@@ -1,0 +1,163 @@
+<?xml version='1.0'?>
+<root>
+    <root>
+        <title>Documentation</title>
+        <description>Prepare comprehensive documentation for the project, including user manuals and technical guides.</description>
+        <author>marcel</author>
+        <assigned/>
+        <state>NONE</state>
+        <order>1</order>
+    </root>
+    <root>
+        <title>Finalize Project</title>
+        <description>Review all aspects of the project and prepare for the final release.</description>
+        <author>marcel</author>
+        <assigned/>
+        <state>NONE</state>
+        <order>2</order>
+    </root>
+    <root>
+        <title>Documentation</title>
+        <description>Prepare comprehensive documentation for the project, including user manuals and technical guides.</description>
+        <author>marcel</author>
+        <assigned/>
+        <state>NONE</state>
+        <order>3</order>
+    </root>
+    <root>
+        <title>Finalize Project</title>
+        <description>Review all aspects of the project and prepare for the final release.</description>
+        <author>marcel</author>
+        <assigned/>
+        <state>NONE</state>
+        <order>4</order>
+    </root>
+    <root>
+        <title>Complete Project Proposal</title>
+        <description>Draft a detailed project proposal outlining goals, scope, and deliverables.</description>
+        <author>marcel</author>
+        <assigned/>
+        <state>TODO</state>
+        <order>1</order>
+    </root>
+    <root>
+        <title>Revise User Interface</title>
+        <description>Gather feedback on the prototype and make necessary revisions to the user interface.</description>
+        <author>marcel</author>
+        <assigned/>
+        <state>TODO</state>
+        <order>2</order>
+    </root>
+    <root>
+        <title>Client Presentation</title>
+        <description>Prepare a presentation for the client showcasing the project progress and features.</description>
+        <author>marcel</author>
+        <assigned/>
+        <state>TODO</state>
+        <order>3</order>
+    </root>
+    <root>
+        <title>Complete Project Proposal</title>
+        <description>Draft a detailed project proposal outlining goals, scope, and deliverables.</description>
+        <author>marcel</author>
+        <assigned/>
+        <state>TODO</state>
+        <order>4</order>
+    </root>
+    <root>
+        <title>Revise User Interface</title>
+        <description>Gather feedback on the prototype and make necessary revisions to the user interface.</description>
+        <author>marcel</author>
+        <assigned/>
+        <state>TODO</state>
+        <order>5</order>
+    </root>
+    <root>
+        <title>Research Market Trends</title>
+        <description>Conduct market research to identify current trends and customer preferences.</description>
+        <author>marcel</author>
+        <assigned/>
+        <state>PROGRESS</state>
+        <order>1</order>
+    </root>
+    <root>
+        <title>Code Refactoring</title>
+        <description>Optimize and refactor existing codebase to improve performance and maintainability.</description>
+        <author>marcel</author>
+        <assigned/>
+        <state>PROGRESS</state>
+        <order>2</order>
+    </root>
+    <root>
+        <title>Research Market Trends</title>
+        <description>Conduct market research to identify current trends and customer preferences.</description>
+        <author>marcel</author>
+        <assigned/>
+        <state>PROGRESS</state>
+        <order>3</order>
+    </root>
+    <root>
+        <title>Code Refactoring</title>
+        <description>Optimize and refactor existing codebase to improve performance and maintainability.</description>
+        <author>marcel</author>
+        <assigned/>
+        <state>PROGRESS</state>
+        <order>4</order>
+    </root>
+    <root>
+        <title>Develop Prototype</title>
+        <description>Create a prototype for the new product feature based on the research findings.</description>
+        <author>marcel</author>
+        <assigned/>
+        <state>REVIEW</state>
+        <order>1</order>
+    </root>
+    <root>
+        <title>Quality Assurance Testing</title>
+        <description>Conduct thorough testing to ensure the product meets quality standards.</description>
+        <author>marcel</author>
+        <assigned/>
+        <state>REVIEW</state>
+        <order>2</order>
+    </root>
+    <root>
+        <title>Develop Prototype</title>
+        <description>Create a prototype for the new product feature based on the research findings.</description>
+        <author>marcel</author>
+        <assigned/>
+        <state>REVIEW</state>
+        <order>3</order>
+    </root>
+    <root>
+        <title>Quality Assurance Testing</title>
+        <description>Conduct thorough testing to ensure the product meets quality standards.</description>
+        <author>marcel</author>
+        <assigned/>
+        <state>REVIEW</state>
+        <order>4</order>
+    </root>
+    <root>
+        <title>Project Kickoff</title>
+        <description>Hold a meeting to officially start the project.</description>
+        <author>marcel</author>
+        <assigned/>
+        <state>DONE</state>
+        <order>1</order>
+    </root>
+    <root>
+        <title>Release Version 1.0</title>
+        <description>Publish the final version of the product.</description>
+        <author>marcel</author>
+        <assigned/>
+        <state>DONE</state>
+        <order>2</order>
+    </root>
+    <root>
+        <title>Project Kickoff</title>
+        <description>Hold a meeting to officially start the project.</description>
+        <author>marcel</author>
+        <assigned/>
+        <state>DONE</state>
+        <order>3</order>
+    </root>
+</root>

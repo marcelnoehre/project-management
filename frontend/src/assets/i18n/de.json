@@ -144,7 +144,7 @@
         "DETAIL_VIEW": "Detailansicht",
         "IMPORT": {
             "SUCCESS": "Erfolg",
-            "Failed": "Fehlgeschlagen"
+            "FAILED": "Fehlgeschlagen"
         }
     },
     "NOTIFICATIONS": {

@@ -41,7 +41,7 @@
                 <p>{{ "TASK.IMPORT.SUCCESS" | translate }}: {{ result.success }}</p>
                 <p>{{ "TASK.IMPORT.FAILED" | translate }}: {{ result.fail }}</p>
               </ng-container>
-              <button mat-raised-button *ngIf="!result" color="accent" (click)="importTasks()" tabindex="0">
+              <button mat-raised-button *ngIf="!result" color="primary" (click)="importTasks()" tabindex="0">
                 <app-spinner-icon class="material-icons" icon="upload" [spinning]="loading"></app-spinner-icon>
                 <ng-container *ngIf="loading">&nbsp;</ng-container>
                 {{ "APP.IMPORT" | translate }}
