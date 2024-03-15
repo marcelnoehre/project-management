@@ -29,6 +29,14 @@ export class ProjectSettingsComponent implements OnInit {
 		{
 			key: 'de',
 			label: 'Deutsch'
+		},
+		{
+			key: 'es',
+			label: 'Español'
+		},
+		{
+			key: 'fr',
+			label: 'Français'
 		}
 	];
 

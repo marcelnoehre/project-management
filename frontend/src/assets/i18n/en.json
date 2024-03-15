@@ -76,8 +76,8 @@
         "TASK_DELETED": "The task {{title}} has been permanently deleted!"
     },
     "USER" : {
-        "USERNAME": "username",
-        "PASSWORD": "password",
+        "USERNAME": "Username",
+        "PASSWORD": "Password",
         "REPEAT_PASSWORD": "Repeat password",
         "NEW_PASSWORD": "New password",
         "FULLNAME": "Fullname",
