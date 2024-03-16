@@ -47,6 +47,14 @@ describe('ProjectSettingsComponent', () => {
 				{
 					key: 'de',
 					label: 'Deutsch'
+				},
+				{
+					key: 'es',
+					label: 'Español'
+				},
+				{
+					key: 'fr',
+					label: 'Français'
 				}
 			]);
 			expect(component.permissions).toEqual([Permission.MEMBER, Permission.ADMIN]);
