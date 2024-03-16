@@ -10,7 +10,6 @@
     "test-headless": "ng test --configuration=test --browsers ChromeHeadless",
     "test-coverage": "ng test --configuration=test --browsers ChromeHeadless --code-coverage --watch=false",
     "e2e": "npx cypress open",
-    "e2e-headless": "npx cypress run",
     "lint": "ng lint",
     "lint-fix": "ng lint --fix",
     "start:dev": "ng serve --host 0.0.0.0 --disable-host-check --open",

@@ -84,7 +84,7 @@ Cypress.Commands.add('inviteMember', () => {
     // navigation to project settings
     cy.get(dashboardCreateTask).click().wait(waitTime);
     // send invatation
-    cy.get(inviteMemberInput).click().type(testInvite).wait(waitTime);
+    cy.get(inviteMemberInput).click({force: true}).type(testInvite).wait(waitTime);
     cy.get(inviteMemberButton).click().wait(waitTime);
 });
 
